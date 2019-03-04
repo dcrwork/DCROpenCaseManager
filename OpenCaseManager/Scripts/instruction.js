@@ -45,17 +45,19 @@
 $(document).ready(function () {
     // hide/show text of instruction web part
     $('.accordion').click(function () {
+        var panel = $(this).next('.panel');
+        var icon = $(this).find('#collapse-icon');
         var isCollapse = false;
-        if ($('.panel').is(":visible")) {
+        if (panel.is(":visible")) {
             isCollapse = true;
-            $("#collapse-icon").attr('class', '');
-            $('#collapse-icon').addClass('glyphicon glyphicon-chevron-right');
-            $('.panel').hide(1000);
+            icon.attr('class', '');
+            icon.addClass('glyphicon glyphicon-chevron-right');
+            panel.hide(1000);
         } else {
             isCollapse = false;
-            $("#collapse-icon").attr('class', '');
-            $('#collapse-icon').addClass('glyphicon glyphicon-chevron-down');
-            $('.panel').show(1000);
+            icon.attr('class', '');
+            icon.addClass('glyphicon glyphicon-chevron-down');
+            panel.show(1000);
         }
         window.localStorage.setItem('instructionCollapse', isCollapse);
     });
