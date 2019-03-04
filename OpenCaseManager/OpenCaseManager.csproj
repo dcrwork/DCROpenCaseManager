@@ -599,6 +599,8 @@
     <Content Include="Views\Form\GetWord.cshtml" />
     <Content Include="Views\Shared\_UnAuthorized.cshtml" />
     <Content Include="Views\Home\UnAuthorized.cshtml" />
+    <Content Include="Views\PartialViews\Activities.cshtml" />
+    <Content Include="Views\PartialViews\Timeline.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
