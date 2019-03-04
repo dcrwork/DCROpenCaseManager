@@ -404,6 +404,10 @@
     <Content Include="HtmlTemplates\FormTemplate.html" />
     <Content Include="HtmlTemplates\InstructionsForActiveXOutlook.html" />
     <Content Include="HtmlTemplates\FormInstruction.html" />
+    <Content Include="Img\DCR_indsats_mockups-01.png" />
+    <Content Include="Img\DCR_indsats_mockups-02.png" />
+    <Content Include="Img\DCR_indsats_mockups-03.png" />
+    <Content Include="Img\DCR_indsats_mockups-04.png" />
     <Content Include="Scripts\formserver.js" />
     <Content Include="Scripts\plugins\slick\ajax-loader.gif" />
     <Content Include="Scripts\plugins\slick\fonts\slick.svg" />
@@ -487,6 +491,7 @@
     <Content Include="fonts\OpenSans-Regular.ttf" />
     <Content Include="fonts\OpenSans-Semibold.ttf" />
     <Content Include="fonts\OpenSans-SemiboldItalic.ttf" />
+    <Content Include="Img\DCR_indsats_mockups_explained.pdf" />
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -563,15 +568,6 @@
     <Content Include="Scripts\Translations\node_modules\csvtojson\node_modules\async\README.md" />
     <Content Include="Scripts\Translations\node_modules\csvtojson\package.json" />
     <Content Include="Scripts\Translations\node_modules\csvtojson\readme.md" />
-    <Content Include="Web.config">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Web.Debug.config">
-      <DependentUpon>Web.config</DependentUpon>
-    </Content>
-    <Content Include="Web.Release.config">
-      <DependentUpon>Web.config</DependentUpon>
-    </Content>
     <Content Include="Areas\HelpPage\Views\_ViewStart.cshtml" />
     <Content Include="Content\Site.css" />
     <Content Include="Views\Web.config" />
@@ -599,6 +595,13 @@
     <Content Include="Views\Form\GetWord.cshtml" />
     <Content Include="Views\Shared\_UnAuthorized.cshtml" />
     <Content Include="Views\Home\UnAuthorized.cshtml" />
+    <Content Include="Web.config" />
+    <None Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+    <None Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
