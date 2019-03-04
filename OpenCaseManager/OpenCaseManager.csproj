@@ -496,6 +496,7 @@
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Properties\PublishProfiles\OpenCaseManager - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\OpenCaseManager - Web Deploy.pubxml" />
+    <None Include="Properties\PublishProfiles\OpenCaseManagerEarlyBird - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\core.js" />
     <Content Include="Scripts\CustomFunctions.js" />
