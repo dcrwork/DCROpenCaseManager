@@ -52,12 +52,12 @@ $(document).ready(function () {
             isCollapse = true;
             icon.attr('class', '');
             icon.addClass('glyphicon glyphicon-chevron-right');
-            panel.hide(1000);
+            panel.hide(100);
         } else {
             isCollapse = false;
             icon.attr('class', '');
             icon.addClass('glyphicon glyphicon-chevron-down');
-            panel.show(1000);
+            panel.show(100);
         }
         window.localStorage.setItem('instructionCollapse', isCollapse);
     });
@@ -67,6 +67,6 @@ $(document).ready(function () {
     if (isCollapsed == null || isCollapsed == "false") {
         $("#collapse-icon").attr('class', '');
         $('#collapse-icon').addClass('glyphicon glyphicon-chevron-down');
-        $('.panel').show(1000);
+        $('.panel').show(100);
     }
 });
