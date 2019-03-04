@@ -409,6 +409,10 @@
     <Content Include="Img\DCR_indsats_mockups-03.png" />
     <Content Include="Img\DCR_indsats_mockups-04.png" />
     <Content Include="Scripts\formserver.js" />
+    <Content Include="Scripts\plugins\Albe_Timeline\data-albe-timeline.js" />
+    <Content Include="Scripts\plugins\Albe_Timeline\jquery-albe-timeline.js" />
+    <Content Include="Scripts\plugins\Albe_Timeline\jquery-albe-timeline.min.js" />
+    <Content Include="Scripts\plugins\Albe_Timeline\style-albe-timeline.css" />
     <Content Include="Scripts\plugins\slick\ajax-loader.gif" />
     <Content Include="Scripts\plugins\slick\fonts\slick.svg" />
     <Content Include="Scripts\plugins\slick\slick-theme.css" />
@@ -595,13 +599,7 @@
     <Content Include="Views\Form\GetWord.cshtml" />
     <Content Include="Views\Shared\_UnAuthorized.cshtml" />
     <Content Include="Views\Home\UnAuthorized.cshtml" />
-    <Content Include="Web.config" />
-    <None Include="Web.Debug.config">
-      <DependentUpon>Web.config</DependentUpon>
-    </None>
-    <None Include="Web.Release.config">
-      <DependentUpon>Web.config</DependentUpon>
-    </None>
+    <Content Include="Views\PartialViews\Timeline.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
