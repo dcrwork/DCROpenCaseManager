@@ -564,15 +564,6 @@
     <Content Include="Scripts\Translations\node_modules\csvtojson\node_modules\async\README.md" />
     <Content Include="Scripts\Translations\node_modules\csvtojson\package.json" />
     <Content Include="Scripts\Translations\node_modules\csvtojson\readme.md" />
-    <Content Include="Web.config">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Web.Debug.config">
-      <DependentUpon>Web.config</DependentUpon>
-    </Content>
-    <Content Include="Web.Release.config">
-      <DependentUpon>Web.config</DependentUpon>
-    </Content>
     <Content Include="Areas\HelpPage\Views\_ViewStart.cshtml" />
     <Content Include="Content\Site.css" />
     <Content Include="Views\Web.config" />
