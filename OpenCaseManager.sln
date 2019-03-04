@@ -11,6 +11,15 @@ Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "OpenCaseManager.Database", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AcadreLib", "AcadrePWS\AcadreLib.csproj", "{2FEAEBE9-AB50-4ACA-89B3-31E342426858}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Img", "Img", "{AE08E4AE-D5AE-41B9-AFDD-591EE2F93DD5}"
+	ProjectSection(SolutionItems) = preProject
+		Img\DCR_indsats_mockups-01.png = Img\DCR_indsats_mockups-01.png
+		Img\DCR_indsats_mockups-02.png = Img\DCR_indsats_mockups-02.png
+		Img\DCR_indsats_mockups-03.png = Img\DCR_indsats_mockups-03.png
+		Img\DCR_indsats_mockups-04.png = Img\DCR_indsats_mockups-04.png
+		Img\DCR_indsats_mockups_explained.pdf = Img\DCR_indsats_mockups_explained.pdf
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
