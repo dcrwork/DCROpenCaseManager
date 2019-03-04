@@ -17,6 +17,8 @@ h3,
 h4,
 h5 { margin-top: 5px; margin-bottom: 5px; line-height: 1; }
 
+
+
 ul#timeline-menu { height: 50px; text-align: center; }
     ul#timeline-menu li { position: relative; float: left; list-style: none; margin: 0px; padding: 0px; }
         ul#timeline-menu li a { display: block; text-decoration: none; font-size: 16px; padding: 10px; padding-top: 20px; color: black; font-weight: bold; border-bottom: 5px solid transparent; }
@@ -47,7 +49,6 @@ section#timeline { position: relative; padding-bottom: 24px; overflow: hidden; }
 
             section#timeline > article > div.timelinePanel div.badge {
                 float: left;
-                left: 36%;
                 border-left: none;
                 display: inline-block;
                 padding: 8px 16px !important;
