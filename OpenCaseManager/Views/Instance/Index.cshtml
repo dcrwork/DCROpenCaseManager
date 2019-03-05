@@ -1,9 +1,29 @@
-﻿
+﻿<style>
+    html {
+        overflow-y: scroll;
+    }
+
+    .nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus {
+        color: #9C1A5E;
+        background-color: #fff;
+    }
+
+    .nav-tabs > li.active > a, .nav-tabs > a:hover {
+        text-decoration: underline;
+    }
+
+    .nav-tabs {
+        display: flex;
+        justify-content: center;
+    }
+</style>
+
 @{
     ViewBag.Title = "Instance";
 }
 
 @Html.Partial("~/Views/PartialViews/Instruction.cshtml")
+@Html.Partial("~/Views/PartialViews/Stamdata.cshtml")
 @Html.Partial("~/Views/PartialViews/TasksWithNote.cshtml")
 
 <div class="row tableDataRow">
@@ -27,12 +47,28 @@
 
 <div class="row tableDataRow">
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-        <h4 class="tasksHeading"><span data-locale data-apply="text" data-key="InstanceTasks">Instance Tasks</span></h4>
-        <div class="table-responsive" style="border:none">
-            @Html.Partial("~/Views/PartialViews/Tasks.cshtml")
+        <flex-container>
+            <ul class="nav nav-tabs mb-3" id="tabs-tab" role="tablist">
+                <li class="nav-item active">
+                    <a class="nav-link" id="tabs-activitiesb" data-toggle="tab" href="#tabs-activities" role="tab" aria-controls="tabs-activities" aria-selected="false">Activities</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="tabs-timeline-tab" data-toggle="tab" href="#tabs-timeline" role="tab" aria-controls="tabs-timeline" aria-selected="false">Timeline</a>
+                </li>
+            </ul>
+        </flex-container>
+        <div class="tab-content" id="tabs-tabContent">
+            <div class="tab-pane fade in active" id="tabs-activities" role="tabpanel" aria-labelledby="tabs-activities">
+                @Html.Partial("~/Views/PartialViews/Tasks.cshtml")
+            </div>
+            <div class="tab-pane fade in" id="tabs-timeline" role="tabpanel" aria-labelledby="tabs-timeline">
+                @Html.Partial("~/Views/PartialViews/Timeline.cshtml")
+            </div>
         </div>
     </div><!-- Cols Div End -->
 </div><!-- Row Div End -->
+
+@Html.Partial("~/Views/PartialViews/Document.cshtml")
 
 <script src="~/Scripts/instance.js"></script>
 
@@ -51,5 +87,4 @@
     }
 </script>
 <script src="~/Scripts/task.js"></script>
-
-@Html.Partial("~/Views/PartialViews/Document.cshtml")
+<script src="~/Scripts/stamdata.js"></script>

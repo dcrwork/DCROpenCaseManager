@@ -405,6 +405,10 @@
     <Content Include="HtmlTemplates\InstructionsForActiveXOutlook.html" />
     <Content Include="HtmlTemplates\FormInstruction.html" />
     <Content Include="Scripts\formserver.js" />
+    <Content Include="Scripts\plugins\Albe_Timeline\data-albe-timeline.js" />
+    <Content Include="Scripts\plugins\Albe_Timeline\jquery-albe-timeline.js" />
+    <Content Include="Scripts\plugins\Albe_Timeline\jquery-albe-timeline.min.js" />
+    <Content Include="Scripts\plugins\Albe_Timeline\style-albe-timeline.css" />
     <Content Include="Scripts\plugins\slick\ajax-loader.gif" />
     <Content Include="Scripts\plugins\slick\fonts\slick.svg" />
     <Content Include="Scripts\plugins\slick\slick-theme.css" />
@@ -520,6 +524,7 @@
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\search-case.js" />
     <Content Include="Scripts\plugins\slick\slick.min.js" />
+    <Content Include="Scripts\stamdata.js" />
     <Content Include="Scripts\task.js" />
     <Content Include="Scripts\Translations\da-DK.js" />
     <Content Include="Scripts\Translations\DCR translations - data.csv" />
@@ -590,6 +595,8 @@
     <Content Include="Views\Form\GetWord.cshtml" />
     <Content Include="Views\Shared\_UnAuthorized.cshtml" />
     <Content Include="Views\Home\UnAuthorized.cshtml" />
+    <Content Include="Views\PartialViews\Timeline.cshtml" />
+    <Content Include="Views\PartialViews\Stamdata.cshtml" />
     <Content Include="Web.config" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
