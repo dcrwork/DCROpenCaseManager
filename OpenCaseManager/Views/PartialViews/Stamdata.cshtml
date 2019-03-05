@@ -1,0 +1,61 @@
+﻿<style>
+    .expander {
+        cursor: pointer;
+        transition: 0.4s;
+    }
+
+    .information {
+        display: none;
+        background-color: lightgray;
+    }
+
+    .stamdata {
+        position: fixed;
+        top: 20%;
+        left: 0;
+        background-color: lightgrey;
+        border: 1px solid black;
+        width: 11%;
+        //margin-left: 2%;
+        padding: 10px;
+        z-index: 5; //Behøves nok ikke
+    }
+
+    .glyphicon {
+        margin-right: 5px;
+    }
+
+    .headline-stamdata {
+        margin-top: 10px;
+        margin-bottom: 10px;
+        transition: value 1s 
+    }
+</style>
+
+
+<div class="stamdata">
+    <h3 class="headline-stamdata">Stamdata</h3>
+    <div>
+        <h5><b>Navn</b></h5>
+        <p>Jens Jensen</p>
+        <h5><b>CPR</b></h5>
+        <p>123456-7891</p>
+        <h5><b>Køn</b></h5>
+        <p>Mand</p>
+    </div>
+    <div class="udvidet-stamdata">
+        <div class="table-responsive information">
+            <h3 class="headline-stamdata">Udvidet stamdata</h3>
+            <div>
+                <h4><b>Forælder</b></h4>
+                <h5><b>Navn</b></h5>
+                <p>Dorte Jensen</p>
+                <h5><b>CPR</b></h5>
+                <p>987654-3210</p>
+                <h5><b>Køn</b></h5>
+                <p>Kvinde</p>
+            </div>
+        </div>
+        <h4 class="expander"><span class="glyphicon glyphicon-plus"></span><span class="headline-stamdata" data-locale data-apply="text">Se udvidet Stamdata</span></h4>
+    </div>
+</div>
