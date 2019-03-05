@@ -46,25 +46,29 @@
 </div><!-- Row End -->
 
 <div class="row tableDataRow">
-    <flex-container>
-        <ul class="nav nav-tabs mb-3" id="tabs-tab" role="tablist">
-            <li class="nav-item active">
-                <a class="nav-link" id="tabs-activitiesb" data-toggle="tab" href="#tabs-activities" role="tab" aria-controls="tabs-activities" aria-selected="false">Activities</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" id="tabs-timeline-tab" data-toggle="tab" href="#tabs-timeline" role="tab" aria-controls="tabs-timeline" aria-selected="false">Timeline</a>
-            </li>
-        </ul>
-    </flex-container>
-    <div class="tab-content" id="tabs-tabContent">
-        <div class="tab-pane fade in active" id="tabs-activities" role="tabpanel" aria-labelledby="tabs-activities">
-            @Html.Partial("~/Views/PartialViews/Tasks.cshtml")
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <flex-container>
+            <ul class="nav nav-tabs mb-3" id="tabs-tab" role="tablist">
+                <li class="nav-item active">
+                    <a class="nav-link" id="tabs-activitiesb" data-toggle="tab" href="#tabs-activities" role="tab" aria-controls="tabs-activities" aria-selected="false">Activities</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="tabs-timeline-tab" data-toggle="tab" href="#tabs-timeline" role="tab" aria-controls="tabs-timeline" aria-selected="false">Timeline</a>
+                </li>
+            </ul>
+        </flex-container>
+        <div class="tab-content" id="tabs-tabContent">
+            <div class="tab-pane fade in active" id="tabs-activities" role="tabpanel" aria-labelledby="tabs-activities">
+                @Html.Partial("~/Views/PartialViews/Tasks.cshtml")
+            </div>
+            <div class="tab-pane fade in" id="tabs-timeline" role="tabpanel" aria-labelledby="tabs-timeline">
+                @Html.Partial("~/Views/PartialViews/Timeline.cshtml")
+            </div>
         </div>
-        <div class="tab-pane fade in" id="tabs-timeline" role="tabpanel" aria-labelledby="tabs-timeline">
-            @Html.Partial("~/Views/PartialViews/Timeline.cshtml")
-        </div>
-    </div>
-</div>
+    </div><!-- Cols Div End -->
+</div><!-- Row Div End -->
+
+@Html.Partial("~/Views/PartialViews/Document.cshtml")
 
 <script src="~/Scripts/instance.js"></script>
 
@@ -84,5 +88,3 @@
 </script>
 <script src="~/Scripts/task.js"></script>
 <script src="~/Scripts/stamdata.js"></script>
-
-@Html.Partial("~/Views/PartialViews/Document.cshtml")
