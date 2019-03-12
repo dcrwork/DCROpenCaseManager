@@ -309,6 +309,7 @@
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Commons\Common.cs" />
     <Compile Include="Commons\MyFontResolverPdfSharp.cs" />
+    <Compile Include="Controllers\ChildController.cs" />
     <Compile Include="Controllers\FileController.cs" />
     <Compile Include="Managers\DocumentManager.cs" />
     <Compile Include="Managers\IDocumnentManager.cs" />
@@ -599,6 +600,7 @@
     <Content Include="Views\PartialViews\Timeline.cshtml" />
     <Content Include="Views\PartialViews\Stamdata.cshtml" />
     <Content Include="Web.config" />
+    <Content Include="Views\Child\index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
