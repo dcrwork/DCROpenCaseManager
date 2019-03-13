@@ -271,8 +271,8 @@ function getDocuments() {
                     var returnHtml = '';
                     returnHtml = '<tr class="trStyleClass">' +
                         '<td style="display:none"> ' + item.Id + ' </td><td>' + GetIconType(item.Link) + '</td><td><a name="downloadDoc" href="#" documentLink="' + item.Link + '" documentId="' + item.Id + '" > ' + item.Title + '</a> </td><td>';
-                    returnHtml += '<span documentId=' + item.Id + ' name="editDoc" value="editDoc" class="spanMUS floatLeftPro fa fa-pencil-alt" title="' + translations.Edit + '"></span> ';
-                    returnHtml += '<span documentId=' + item.Id + ' name="deleteDoc" value="deleteDoc" class="spanMUS floatLeftPro fa fa-trash" title="' + translations.Delete + '"></span> ';
+                    returnHtml += '<span documentId=' + item.Id + ' name="editDoc" value="editDoc" class="spanMUS floatLeftPro glyphicon glyphicon-edit" title="' + translations.Edit + '"></span> ';
+                    returnHtml += '<span documentId=' + item.Id + ' name="deleteDoc" value="deleteDoc" class="spanMUS floatLeftPro glyphicon glyphicon-trash" title="' + translations.Delete + '"></span> ';
                     returnHtml += '</td>' + '</tr>';
 
                     list += returnHtml;
