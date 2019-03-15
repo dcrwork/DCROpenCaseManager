@@ -527,7 +527,6 @@
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\search-case.js" />
     <Content Include="Scripts\plugins\slick\slick.min.js" />
-    <Content Include="Scripts\stamdata.js" />
     <Content Include="Scripts\task.js" />
     <Content Include="Scripts\Translations\da-DK.js" />
     <Content Include="Scripts\Translations\DCR translations - data.csv" />

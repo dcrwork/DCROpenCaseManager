@@ -1,14 +1,11 @@
-﻿<table class="table tasksTable table-striped" id="tasksTable">
+﻿<h4 class="instancesHeading">Mine aktiviteter</h4>
+<table class="table tasksTable table-striped" id="tasksTable">
     <thead>
         <tr class="trStyleClass">
-            <th width="15%">
-                <span data-locale data-apply="text" data-key="Status">Status</span>
-            </th>
+            <th width="15%"><span data-locale data-apply="text" data-key="Status">Status</span></th>
             <th width=""><span data-locale data-apply="text" data-key="Title">Title</span></th>
             <th width=""><span data-locale data-apply="text" data-key="DueDate">Due Date</span></th>
-            <th width="">
-                <span data-locale data-apply="text" data-key="Responsible">Responsible</span>
-            </th>
+            <th width=""><span data-locale data-apply="text" data-key="Responsible">Responsible</span></th>
             <th width="9%"><span data-locale data-apply="text" data-key="Action">Action</span></th>
         </tr>
         <tr class="trStyleClass" id="singleInstanceFilters" style="display:none;">
@@ -31,3 +28,42 @@
     </thead>
     <tbody id="tasks"></tbody>
 </table>
+
+<h4 class="instancesHeading fold-down-headline"><span id="collapse-icon" class="glyphicon glyphicon-chevron-down"></span>Afventende</h4>
+<table class="table tasksTable table-striped">
+    <thead>
+        <tr class="trStyleClass">
+            <th width="15%"></th>
+            <th width=""><span data-locale data-apply="text" data-key="Title">Title</span></th>
+            <th width=""><span data-locale data-apply="text" data-key="Responsible">Responsible</span></th>
+            <th width=""><span data-locale data-apply="text" data-key="DueDate">Due Date</span></th>
+        </tr>
+    </thead>
+</table>
+
+<h4 class="instancesHeading fold-down-headline"><span id="collapse-icon" class="glyphicon glyphicon-chevron-down"></span>Afsluttede aktiviteter</h4>
+<table class="table tasksTable table-striped">
+    <thead>
+        <tr class="trStyleClass">
+            <th width="15%"></th>
+            <th width=""><span data-locale data-apply="text" data-key="Title">Title</span></th>
+            <th width=""><span data-locale data-apply="text" data-key="DueDate">Due Date</span></th>
+        </tr>
+    </thead>
+</table>
+
+<script>
+    $(document).on('click', '.fold-down-headline', function () {
+        var table = $(this).next('table');
+        var icon = $(this).find('.glyphicon');
+        if (table.is(':visible')) {
+            table.hide();
+            icon.removeClass('glyphicon-chevron-down');
+            icon.addClass('glyphicon-chevron-right');
+        } else {
+            table.show();
+            icon.removeClass('glyphicon-chevron-right');
+            icon.addClass('glyphicon-chevron-down');
+        }
+    });
+</script>

@@ -85,6 +85,7 @@
             list = "<tr class=\"trStyleClass\"><td colspan=\"100%\"> " + translations.NoRecordFound + " </td></tr>";
         else {
             for (i = 0; i < result.length; i++) {
+                if (i == 0) console.log(result[i]);
                 list += getTaskHtml(result[i], showCaseInfo);
             }
         }

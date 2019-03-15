@@ -16,9 +16,9 @@
         background-color: lightgrey;
         border: 1px solid black;
         width: 11%;
-        //margin-left: 2%;
+        margin-left: 5px;
         padding: 10px;
-        z-index: 5; //Behøves nok ikke
+        z-index: 5;
     }
 
     .glyphicon {
@@ -28,7 +28,7 @@
     .headline-stamdata {
         margin-top: 10px;
         margin-bottom: 10px;
-        transition: value 1s 
+        transition: value 1s
     }
 </style>
 
@@ -37,25 +37,53 @@
     <h3 class="headline-stamdata">Stamdata</h3>
     <div>
         <h5><b>Navn</b></h5>
-        <p>Jens Jensen</p>
+        <p>Louise Nielsen</p>
         <h5><b>CPR</b></h5>
-        <p>123456-7891</p>
+        <p>123456-7890</p>
         <h5><b>Køn</b></h5>
-        <p>Mand</p>
+        <p>Kvinde</p>
+        <h5><b>Adresse</b></h5>
+        <p>Gade 2, 2740 Skovlunde</p>
+        <h5><b>Sagsnummer</b></h5>
+        <p>#73283</p>
     </div>
     <div class="udvidet-stamdata">
         <div class="table-responsive information">
             <h3 class="headline-stamdata">Udvidet stamdata</h3>
             <div>
-                <h4><b>Forælder</b></h4>
-                <h5><b>Navn</b></h5>
-                <p>Dorte Jensen</p>
+                <h5><b>Forælder</b></h5>
+                <p>Helle Nielsen</p>
                 <h5><b>CPR</b></h5>
                 <p>987654-3210</p>
                 <h5><b>Køn</b></h5>
                 <p>Kvinde</p>
+                <h5><b>Adresse</b></h5>
+                <p>Gade 2, 2740 Skovlunde</p>
             </div>
         </div>
         <h4 class="expander"><span class="glyphicon glyphicon-plus"></span><span class="headline-stamdata" data-locale data-apply="text">Se udvidet Stamdata</span></h4>
     </div>
 </div>
+
+<script>
+    $(document).on('click', '.expander', function () {
+        var panel = $(this).prev('.information');
+        var icon = $(this).find('.glyphicon');
+        var text = $(this).find('.headline-stamdata');
+        if (panel.is(':visible')) {
+            panel.slideUp(1000);
+            icon.removeClass('glyphicon-minus');
+            icon.addClass('glyphicon-plus');
+            setTimeout(function () {
+                text.text('Se udvidet stamdata');
+            }, 1000);
+        } else {
+            panel.slideDown(1000);
+            icon.removeClass('glyphicon-plus');
+            icon.addClass('glyphicon-minus');
+            setTimeout(function () {
+                text.text('Se mindre');
+            }, 1000);
+        }
+    });
+</script>
