@@ -244,7 +244,7 @@
             item.EventTitle +
             '</a></td>' +
             '<td>' + (item.Due == null ? '&nbsp;' : moment(new Date(item.Due)).format('L LT')) + '</td>' +
-            '<td>' + item.ResponsibleName + '</td>' +
+            '<td>' + item.ResponsibleName.substr(0, 1).toUpperCase()+item.ResponsibleName.substr(1) + '</td>' +
             '<td>';
         if (item.CanExecute && item.Type.toLowerCase() !== "form") {
             returnHtml += '<button';
@@ -252,7 +252,7 @@
                 returnHtml += ' uievent="' + item.UIEventValue + '"';
             }
             returnHtml += ' type="button" taskid="' + item.EventId + '" eventType= "' + item.EventType + '" graphid="' + item.GraphId + '" simulationid="' + item.SimulationId + '" instanceid="'
-                + item.InstanceId + '" id="' + item.EventId + '" name="execute" value="execute" class="btn btn-info taskExecutionBtn"><img src="../Content/Images/execute.png" /></button><div class="title" style="display: none;">' + item.EventTitle + '</div> <div class="description" style="display: none;">' + item.Description + '</div>';
+                + item.InstanceId + '" id="' + item.EventId + '" name="execute" value="execute" class="taskExecutionBtn">Udfør</button><div class="title" style="display: none;">' + item.EventTitle + '</div> <div class="description" style="display: none;">' + item.Description + '</div>';
         }
         else if (item.CanExecute && item.Type.toLowerCase() == "form") {
             returnHtml += '<button title="Open" eventType= "' + item.EventType + '" graphid="' + item.GraphId + '" simulationid="' + item.SimulationId + '" token="' + item.Token + '" eventId="' + item.EventId + '" instanceid="' + item.InstanceId + '" id="openDcrForm" class="btn btn-info taskExecutionBtn" name="btnDcrFormServer"><i class="fas fa-external-link-alt"></i></button><div class="title" style="display: none;">' + item.EventTitle + '</div> <div class="description" style="display: none;">' + item.Description + '</div>';

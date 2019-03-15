@@ -111,17 +111,29 @@ h4.tasksHeading, h4.instancesHeading {
     border-radius: 4px;
 }
 
-.taskExecutionBtn, .addNewInstance {
+.taskExecutionBtn {
+    border: 2px solid #9C1A5E;
+    border-radius: 0px;
+    background-color: rgba(0, 0, 0, 0);
+    color: #333;
+}
+
+    .taskExecutionBtn:hover {
+        background-color: #9C1A5E;
+        color: white;
+    }
+
+.addNewInstance {
     padding: 0px;
     line-height: normal;
 }
 
-    .taskExecutionBtn:hover, .addNewInstance:hover, .addNewInstance:focus, div.modal-footer button.instanceAdd:hover, .submitBtn:hover, . .submitBtn:focus {
+    .addNewInstance:hover, .addNewInstance:focus, div.modal-footer button.instanceAdd:hover, .submitBtn:hover, . .submitBtn:focus {
         background: #701344;
         border: 1px solid #520e31;
     }
 
-.taskExecutionBtn, .addNewInstance, .submitBtn, button.instanceAdd, .submitBtn, button.instanceAdd, button.TasksWNoteBtn {
+.addNewInstance, .submitBtn, button.instanceAdd, .submitBtn, button.instanceAdd, button.TasksWNoteBtn {
     background-color: #9C1A5E;
     border: 1px solid #861651;
     color: #fff;

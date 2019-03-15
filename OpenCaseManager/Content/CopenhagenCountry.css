@@ -139,18 +139,18 @@ h4.tasksHeading, h4.instancesHeading {
     border-radius: 4px;
 }
 
-.taskExecutionBtn, .addNewInstance {
+.addNewInstance {
     padding: 0px;
     line-height: normal;
 }
 
-    .taskExecutionBtn:hover, .addNewInstance:hover, .addNewInstance:focus, div.modal-footer button.instanceAdd:hover {
+    .addNewInstance:hover, .addNewInstance:focus, div.modal-footer button.instanceAdd:hover {
         background: #007ea4;
         border: 1px solid #007ea4;
     }
 
 
-div.modal-footer button.instanceAdd, .taskExecutionBtn, .addNewInstance {
+div.modal-footer button.instanceAdd, .addNewInstance {
     background-color: #007ea4;
     border: 1px solid #007ea4;
 }
