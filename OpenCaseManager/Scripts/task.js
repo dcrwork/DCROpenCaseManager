@@ -219,7 +219,7 @@
         var taskStatusCssClass = 'includedTask';
         var taskStatus = '&nbsp;';
         if (item.IsPending) {
-            taskStatus = 'a';
+            taskStatus = "<img src='../Content/Images/priorityicon.svg' height='16' width='16'/>";
         }
         else if (item.IsExecuted) {
             taskStatus = 'b';
