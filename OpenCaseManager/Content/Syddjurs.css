@@ -4,6 +4,7 @@
     font-size: 14px;
     line-height: 1.35;
     color: #4a4a4a;
+    padding-right: 0 !important;
 }
 
 header div.page-header {
@@ -111,29 +112,29 @@ h4.tasksHeading, h4.instancesHeading {
     border-radius: 4px;
 }
 
-.taskExecutionBtn {
+.taskExecutionButton {
     border: 2px solid #9C1A5E;
     border-radius: 0px;
     background-color: rgba(0, 0, 0, 0);
     color: #333;
 }
 
-    .taskExecutionBtn:hover {
+    .taskExecutionButton:hover {
         background-color: #9C1A5E;
         color: white;
     }
 
-.addNewInstance {
+.taskExecutionBtn, .addNewInstance {
     padding: 0px;
     line-height: normal;
 }
 
-    .addNewInstance:hover, .addNewInstance:focus, div.modal-footer button.instanceAdd:hover, .submitBtn:hover, . .submitBtn:focus {
+    .taskExecutionBtn:hover, .addNewInstance:hover, .addNewInstance:focus, div.modal-footer button.instanceAdd:hover, .submitBtn:hover, . .submitBtn:focus {
         background: #701344;
         border: 1px solid #520e31;
     }
 
-.addNewInstance, .submitBtn, button.instanceAdd, .submitBtn, button.instanceAdd, button.TasksWNoteBtn {
+.taskExecutionBtn, .addNewInstance, .submitBtn, button.instanceAdd, .submitBtn, button.instanceAdd, button.TasksWNoteBtn {
     background-color: #9C1A5E;
     border: 1px solid #861651;
     color: #fff;
