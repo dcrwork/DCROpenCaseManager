@@ -1,0 +1,124 @@
+﻿<style>
+    .expander {
+        cursor: pointer;
+        transition: 0.4s;
+    }
+
+    .information {
+        display: none;
+        background-color: lightgray;
+    }
+
+    .glyphicon {
+        margin-right: 5px;
+    }
+
+    .add-journal-note-button {
+    }
+
+    .add-journal-note {
+        position: fixed;
+        top: 20%;
+        right: 0;
+        background-color: white;
+        border: 1px solid black;
+        width: 11%;
+        margin-left: 5px;
+        padding: 10px;
+        z-index: 5;
+        cursor: pointer;
+    }
+
+        .add-journal-note:hover {
+            background-color: lightgrey;
+        }
+
+    .headline-add-journal-note {
+        margin-top: 10px;
+        margin-bottom: 10px;
+        transition: value 1s
+    }
+</style>
+
+
+<div class="add-journal-note">
+    <h5 class="add-journal-note-button"><span class="glyphicon glyphicon-plus"></span><span class="headline-add-journal-note" data-locale data-apply="text">Tilføj journalnotat</span></h5>
+</div>
+
+
+
+<script>
+    $(document).on('click', '.add-journal-note-button', function () {
+
+    });
+</script>
+
+<!--
+function submitFiles() {
+    var docId = $('#documentId').val();
+    if (uploadFiles.length > 0) {
+        uploadFile(uploadFiles[0], docId);
+    }
+    else if (docId != '') {
+        uploadFile(null, docId);
+    }
+}
+
+function uploadFile(file, docId) {
+    if (isAdd && $('#documentName').val() != '') {
+        $.ajax({
+            url: window.location.origin + "/api/records/AddDocument",
+            type: 'POST',
+            headers: {
+                'filename': file.name,
+                'type': webPortalType,
+                'instanceId': instanceId,
+                'givenFileName': $('#documentName').val()
+            },
+            data: file,
+            async: false,
+            cache: false,
+            contentType: false,
+            enctype: 'multipart/form-data',
+            processData: false,
+            success: function (response) {
+                $('#addNewDocumentModal').modal('toggle');
+                getDocuments();
+                dropArea.classList.remove('highlight')
+                var $el = $('#fileElem');
+                $el.wrap('<form>').closest('form').get(0).reset();
+                $el.unwrap();
+            }
+        });
+    }
+    else if ($('#documentName').val() != '') {
+        $.ajax({
+            url: window.location.origin + "/api/records/UpdateDocument",
+            type: 'POST',
+            headers: {
+                'id': docId,
+                'filename': (file == null ? "" : file.name),
+                'type': webPortalType,
+                'instanceId': instanceId,
+                'givenFileName': $('#documentName').val(),
+                'isNewFileAdded': (file == null ? "false" : "true")
+            },
+            data: file,
+            async: false,
+            cache: false,
+            contentType: false,
+            enctype: 'multipart/form-data',
+            processData: false,
+            success: function (response) {
+                $('#addNewDocumentModal').modal('toggle');
+                getDocuments();
+                dropArea.classList.remove('highlight')
+                var $el = $('#fileElem');
+                $el.wrap('<form>').closest('form').get(0).reset();
+                $el.unwrap();
+            }
+        });
+    }
+}
+
+-->
