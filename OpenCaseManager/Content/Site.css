@@ -33,10 +33,6 @@ h4.tasksHeading, h4.instancesHeading, h4.phaseHeading {
     padding: 10px 10px;
 }
 
-.includedTask {
-    color: blue;
-}
-
 .executedTask {
     color: green;
 }

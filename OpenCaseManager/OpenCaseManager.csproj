@@ -397,6 +397,8 @@
     <Content Include="Content\Images\logokkDkHeader.png" />
     <Content Include="Content\Images\logoOpenManager.png" />
     <Content Include="Content\Images\pending.png" />
+    <Content Include="Content\Images\priorityicon.png" />
+    <Content Include="Content\Images\priorityicon.svg" />
     <Content Include="Content\Images\tasks.png" />
     <Content Include="Content\Images\update.png" />
     <Content Include="Content\jquery.treegrid.css" />
