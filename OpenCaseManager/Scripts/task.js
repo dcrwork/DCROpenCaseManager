@@ -113,11 +113,10 @@
         $('button[name="execute"]').on('click', function (e) {
             Swal.fire({
                 title: 'Er du sikker på at du vil markere denne aktivitet som udført?',
-                type: 'question',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',
-                confirmButtonText: 'Udørt'
+                confirmButtonText: 'Udført'
             }).then((result) => {
                 if (result.value) {
                     var elem = $(e.currentTarget);
