@@ -79,17 +79,28 @@
 
     // tasks html
     function tasksHtml(id, response, showCaseInfo) {
-        var result = JSON.parse(response)
-        var list = "";
+        var result = JSON.parse(response);
+        var user = window.App.user;
+        var ownList = "";
+        var othersList = "";
+        var doneList = "";
         if (result.length === 0)
-            list = "<tr class=\"trStyleClass\"><td colspan=\"100%\"> " + translations.NoRecordFound + " </td></tr>";
+            ownList = "<tr class=\"trStyleClass\"><td colspan=\"100%\"> " + translations.NoRecordFound + " </td></tr>";
         else {
             for (i = 0; i < result.length; i++) {
-                if (i == 0) console.log(result[i]);
-                list += getTaskHtml(result[i], showCaseInfo);
+                if (i == 2) console.log(result[i]);
+                if (result[i].Responsible != user.Id) {
+                    if (result[i].IsExecuted == false) othersList += getTaskHtmlForOthersTasks(result[i], showCaseInfo);
+                } else if (result[i].IsExecuted == true) {
+                    doneList += getTaskHtmlForDoneTasks(result[i], showCaseInfo);
+                } else {
+                    ownList += getTaskHtml(result[i], showCaseInfo);
+                }
             }
         }
-        $("#" + id).html("").append(list);
+        $("#" + id).html("").append(ownList);
+        $('.others-tasks').html('').append(othersList);
+        $('.done-tasks').html('').append(doneList);
 
         // expand/collapse description
         $('tr[name="description"]').on('click', function (e) {
@@ -223,6 +234,73 @@
         })
     }
 
+    function getTaskHtmlForDoneTasks(item, isFrontPage) {
+        var returnHtml = '';
+        var taskStatusCssClass = 'includedTask';
+        var taskStatus = (item.IsPending) ? "<img src='../Content/Images/priorityicon.svg' height='16' width='16'/>" : '&nbsp;';
+
+        var caseTitle = item.CaseTitle;
+        var caseLink = '#';
+
+        if (item.CaseLink !== null) {
+            caseLink = item.CaseLink;
+        }
+        if (item.Case !== null) {
+            caseTitle = item.Case + ' - ' + item.CaseTitle;
+        }
+        var instanceLink = "#";
+        if (isFrontPage) {
+            instanceLink = "../Instance?id=" + item.InstanceId;
+        }
+
+        returnHtml = '<tr isfrontPage="' + isFrontPage + '" name="description" class="trStyleClass">' +
+            '<td class="' + taskStatusCssClass + '">' + taskStatus + '</td >' +
+            '<td><a href="' + instanceLink + '">' + item.EventTitle + '</a></td>' +
+            '<td>' + (item.Due == null ? '&nbsp;' : moment(new Date(item.Due)).format('L LT')) + '</td></tr>';
+
+        if (item.Description !== '' && !isFrontPage) {
+            returnHtml += '<tr class="showMe" style="display:none"><td></td><td colspan="100%">' + item.Description + '</td></tr>';
+        } else if (item.Description !== '' && isFrontPage) {
+            returnHtml += '<tr class="showMe" style="display:none"><td></td><td colspan="100%"><p>' + translations.Description + " : " + item.Description + '</td></tr>' +
+                '<tr class="showMe" style="display:none"><td></td><td colspan="100%"> ' + translations.CaseNo + ' :  <a target="_blank" href="' + caseLink + '">' + caseTitle + '</a> </td></tr>';
+        }
+        return returnHtml;
+    }
+
+    function getTaskHtmlForOthersTasks(item, isFrontPage) {
+        var returnHtml = '';
+        var taskStatusCssClass = 'includedTask';
+        var taskStatus = (item.IsPending) ? "<img src='../Content/Images/priorityicon.svg' height='16' width='16'/>" : '&nbsp;';
+        
+        var caseTitle = item.CaseTitle;
+        var caseLink = '#';
+
+        if (item.CaseLink !== null) {
+            caseLink = item.CaseLink;
+        }
+        if (item.Case !== null) {
+            caseTitle = item.Case + ' - ' + item.CaseTitle;
+        }
+        var instanceLink = "#";
+        if (isFrontPage) {
+            instanceLink = "../Instance?id=" + item.InstanceId;
+        }
+
+        returnHtml = '<tr isfrontPage="' + isFrontPage + '" name="description" class="trStyleClass">' +
+            '<td class="' + taskStatusCssClass + '">' + taskStatus + '</td >' +
+            '<td><a href="' + instanceLink + '">' + item.EventTitle + '</a></td>' +
+            '<td>' + item.ResponsibleName.substr(0, 1).toUpperCase() + item.ResponsibleName.substr(1) + '</td>' +
+            '<td>' + (item.Due == null ? '&nbsp;' : moment(new Date(item.Due)).format('L LT')) + '</td></tr>';
+
+        if (item.Description !== '' && !isFrontPage) {
+            returnHtml += '<tr class="showMe" style="display:none"><td></td><td colspan="100%">' + item.Description + '</td></tr>';
+        } else if (item.Description !== '' && isFrontPage) {
+            returnHtml += '<tr class="showMe" style="display:none"><td></td><td colspan="100%"><p>' + translations.Description + " : " + item.Description + '</td></tr>' +
+                '<tr class="showMe" style="display:none"><td></td><td colspan="100%"> ' + translations.CaseNo + ' :  <a target="_blank" href="' + caseLink + '">' + caseTitle + '</a> </td></tr>';
+        }
+        return returnHtml;
+    }
+
     // html of each task
     function getTaskHtml(item, isFrontPage) {
         var returnHtml = '';
@@ -230,8 +308,7 @@
         var taskStatus = '&nbsp;';
         if (item.IsPending) {
             taskStatus = "<img src='../Content/Images/priorityicon.svg' height='16' width='16'/>";
-        }
-        else if (item.IsExecuted) {
+        } else if (item.IsExecuted) {
             taskStatus = 'b';
             taskStatusCssClass = 'executedTask';
         }
@@ -251,11 +328,8 @@
 
         returnHtml = '<tr isfrontPage="' + isFrontPage + '" name="description" class="trStyleClass">' +
             '<td class="' + taskStatusCssClass + '">' + taskStatus + '</td >' +
-            '<td><a href="' + instanceLink + '">' +
-            item.EventTitle +
-            '</a></td>' +
+            '<td><a href="' + instanceLink + '">' + item.EventTitle + '</a></td>' +
             '<td>' + (item.Due == null ? '&nbsp;' : moment(new Date(item.Due)).format('L LT')) + '</td>' +
-            '<td>' + item.ResponsibleName.substr(0, 1).toUpperCase()+item.ResponsibleName.substr(1) + '</td>' +
             '<td>';
         if (item.CanExecute && item.Type.toLowerCase() !== "form") {
             returnHtml += '<button';

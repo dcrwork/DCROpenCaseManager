@@ -47,7 +47,6 @@ namespace OpenCaseManager.Commons
         public static DataTable GetResponsibleDetails(IManager manager, IDataModelManager dataModelManager)
         {
             var data = GetResponsibleFullDetails(manager, dataModelManager);
-            data.Columns.Remove("Id");
             data.Columns.Remove("ManagerId");
             return data;
         }

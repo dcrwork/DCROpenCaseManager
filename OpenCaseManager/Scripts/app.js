@@ -268,6 +268,16 @@
         }
     }
 
+    function setResponsible() {
+        API.service('services/getResponsible', {})
+            .done(function (response) {
+                window.App.user = response[0];
+            })
+            .fail(function (e) {
+                showExceptionErrorMessage(e);
+            });
+    }
+
     function getTranslations(locale) {
         var getUrl = window.location;
         var baseUrl = getUrl.protocol + "//" + getUrl.host + "/";
@@ -1022,6 +1032,7 @@
         this.showInformationMessage = showInformationMessage;
         this.showTaskWithNotePopup = showTaskWithNotePopup;
         this.hideDocumentWebpart = hideDocumentWebpart;
+        this.setResponsible = setResponsible;
     };
 
     getTranslations(locale);
@@ -1032,6 +1043,7 @@
 $(document).ready(function () {
     var promise = new Promise(function (resolve, reject) {
         App.responsible(resolve);
+        App.setResponsible();
     });
 
     promise.then(function () {
