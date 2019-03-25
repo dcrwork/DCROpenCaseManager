@@ -59,14 +59,11 @@
 <script>
     $(document).on('click', '.add-journal-note-button', function () {
         function makeTextFile(text) {
-            //console.log(text + ' makeTextFile1')
             var data = new Blob([text], { type: 'text/plain' });
-            //console.log(data + ' makeTextFile2')
             return data;
         };
 
         function submitFiles(fileName, textContents) {
-            //console.log(fileName + textContents + ' submitFiles')
             var docId = $('.documentId').val();
             var file = makeTextFile(textContents);
             uploadFile(file, docId, fileName);
@@ -93,100 +90,9 @@
 
                 });
             }
-            /*
-            else if (fileName != '') {
-                $.ajax({
-                    url: window.location.origin + "/api/records/UpdateDocument",
-                    type: 'POST',
-                    headers: {
-                        'id': docId,
-                        'filename': (file == null ? "" : file.name),
-                        'type': 'JournalNote',
-                        'instanceId': instanceId,
-                        'givenFileName': fileName,
-                        'isNewFileAdded': (file == null ? "false" : "true")
-                    },
-                    data: file,
-                    async: false,
-                    cache: false,
-                    contentType: false,
-                    enctype: 'multipart/form-data',
-                    processData: false,
-                }); 
-            }*/
         }
         var documentName = $(this).closest('.add-journal-note').find('.documentName').val() + '.txt';
         var journalText = $(this).closest('.add-journal-note').find('.journalText').val();
         submitFiles(documentName, journalText);
     });
 </script>
-
-<!--
-function submitFiles() {
-    var docId = $('#documentId').val();
-    if (uploadFiles.length > 0) {
-        uploadFile(uploadFiles[0], docId);
-    }
-    else if (docId != '') {
-        uploadFile(null, docId);
-    }
-}
-
-function uploadFile(file, docId) {
-    if (isAdd && $('#documentName').val() != '') {
-        $.ajax({
-            url: window.location.origin + "/api/records/AddDocument",
-            type: 'POST',
-            headers: {
-                'filename': file.name,
-                'type': webPortalType,
-                'instanceId': instanceId,
-                'givenFileName': $('#documentName').val()
-            },
-            data: file,
-            async: false,
-            cache: false,
-            contentType: false,
-            enctype: 'multipart/form-data',
-            processData: false,
-            success: function (response) {
-                $('#addNewDocumentModal').modal('toggle');
-                getDocuments();
-                dropArea.classList.remove('highlight')
-                var $el = $('#fileElem');
-                $el.wrap('<form>').closest('form').get(0).reset();
-                $el.unwrap();
-            }
-        });
-    }
-    else if ($('#documentName').val() != '') {
-        $.ajax({
-            url: window.location.origin + "/api/records/UpdateDocument",
-            type: 'POST',
-            headers: {
-                'id': docId,
-                'filename': (file == null ? "" : file.name),
-                'type': webPortalType,
-                'instanceId': instanceId,
-                'givenFileName': $('#documentName').val(),
-                'isNewFileAdded': (file == null ? "false" : "true")
-            },
-            data: file,
-            async: false,
-            cache: false,
-            contentType: false,
-            enctype: 'multipart/form-data',
-            processData: false,
-            success: function (response) {
-                $('#addNewDocumentModal').modal('toggle');
-                getDocuments();
-                dropArea.classList.remove('highlight')
-                var $el = $('#fileElem');
-                $el.wrap('<form>').closest('form').get(0).reset();
-                $el.unwrap();
-            }
-        });
-    }
-}
-
--->
