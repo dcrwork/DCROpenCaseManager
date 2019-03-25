@@ -1,54 +1,59 @@
-﻿<div class="activitiesBox">
-    <h4 class="instancesHeading">Mine aktiviteter</h4>
+﻿<style>
+    .info-icon{
+        padding: 0px 0px 0px 8px;
+    }
+</style>
+
+<div class="activitiesBox">
+    <h4 class="instancesHeading">Mine aktiviteter<img src='../Content/Images/InfoIconV2.svg' class="info-icon"/></h4>
     <table class="table tasksTable table-striped" id="tasksTable">
         <thead>
             <tr class="trStyleClass">
-                <th width="15%"><span data-locale data-apply="text" data-key="Status">Status</span></th>
+                <th width="15%"></th>
                 <th width=""><span data-locale data-apply="text" data-key="Title">Title</span></th>
-                <th width=""><span data-locale data-apply="text" data-key="DueDate">Due Date</span></th>
-                <th width=""><span data-locale data-apply="text" data-key="Responsible">Responsible</span></th>
+                <th width=""><span data-locale data-apply="text" data-key="DueDate">Deadline</span></th>
                 <th width="9%"><span data-locale data-apply="text" data-key="Action">Action</span></th>
             </tr>
-            <tr class="trStyleClass" id="singleInstanceFilters" style="display:none;">
-                <th width="15%">
-                    <select id="taskStatusDropDown">
-                        <option data-locale data-apply="text" data-key="Default" selected value="0">Default</option>
-                        <option data-locale data-apply="text" data-key="OnlyEnabled" value="1">Only Enabled</option>
-                    </select>
-                </th>
-                <th width=""></th>
-                <th width=""></th>
-                <th width="">
-                    <select id="responsibleDropdown">
-                        <option data-locale data-apply="text" data-key="Default" selected value="0">Default</option>
-                        <option data-locale data-apply="text" data-key="MyTasks" value="1">My Tasks</option>
-                    </select>
-                </th>
-                <th width="9%"></th>
-            </tr>
+            <!--<tr class="trStyleClass" id="singleInstanceFilters" style="display:none;">
+        <th width="15%">
+            <select id="taskStatusDropDown">
+                <option data-locale data-apply="text" data-key="Default" selected value="0">Default</option>
+                <option data-locale data-apply="text" data-key="OnlyEnabled" value="1">Only Enabled</option>
+            </select>
+        </th>
+        <th width=""></th>
+        <th width=""></th>
+        <th width="">
+            <select id="responsibleDropdown">
+                <option data-locale data-apply="text" data-key="Default" selected value="0">Default</option>
+                <option data-locale data-apply="text" data-key="MyTasks" value="1">My Tasks</option>
+            </select>
+        </th>
+        <th width="9%"></th>
+    </tr>-->
         </thead>
         <tbody id="tasks"></tbody>
     </table>
 
-    <h4 class="instancesHeading fold-down-headline"><span id="collapse-icon" class="glyphicon glyphicon-chevron-down"></span>Afventende</h4>
+    <h4 class="instancesHeading fold-down-headline"><span id="collapse-icon" class="glyphicon glyphicon-chevron-down"></span>Afventende<img src='../Content/Images/InfoIconV2.svg' class="info-icon"/></h4>
     <table class="table tasksTable table-striped">
         <thead>
             <tr class="trStyleClass">
                 <th width="15%"></th>
-                <th width=""><span data-locale data-apply="text" data-key="Title">Title</span></th>
-                <th width=""><span data-locale data-apply="text" data-key="Responsible">Responsible</span></th>
-                <th width=""><span data-locale data-apply="text" data-key="DueDate">Due Date</span></th>
+                <th width=""><span data-locale data-apply="text" data-key="Title"></span></th>
+                <th width=""><span data-locale data-apply="text" data-key="Responsible"></span></th>
+                <th width="10%"><span data-locale data-apply="text" data-key="DueDate"></span></th>
             </tr>
         </thead>
     </table>
 
-    <h4 class="instancesHeading fold-down-headline"><span id="collapse-icon" class="glyphicon glyphicon-chevron-down"></span>Afsluttede aktiviteter</h4>
+    <h4 class="instancesHeading fold-down-headline"><span id="collapse-icon" class="glyphicon glyphicon-chevron-down"></span>Afsluttede aktiviteter<img src='../Content/Images/InfoIconV2.svg' class="info-icon"/></h4>
     <table class="table tasksTable table-striped">
         <thead>
             <tr class="trStyleClass">
                 <th width="15%"></th>
                 <th width=""><span data-locale data-apply="text" data-key="Title">Title</span></th>
-                <th width=""><span data-locale data-apply="text" data-key="DueDate">Due Date</span></th>
+                <th width=""><span data-locale data-apply="text">Dato</span></th>
             </tr>
         </thead>
     </table>

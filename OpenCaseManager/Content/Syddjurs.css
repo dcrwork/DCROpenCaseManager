@@ -1,5 +1,4 @@
 ﻿body {
-    background: #f4eded;
     font-family: Arial,'Source Sans Pro',sans-serif;
     font-size: 14px;
     line-height: 1.35;
@@ -42,6 +41,10 @@ div.footer div.footer-content {
 a {
     color: #9C1A5E;
     text-decoration: none;
+}
+
+.event-title {
+    color: #4A4A4A;
 }
 
     a:hover, a:focus {
@@ -115,7 +118,7 @@ h4.tasksHeading, h4.instancesHeading {
     border: 2px solid #9C1A5E;
     border-radius: 0px;
     background-color: rgba(0, 0, 0, 0);
-    color: #333;
+    color: #9C1A5E;
 }
 
     .taskExecutionButton:hover {
@@ -177,7 +180,6 @@ ul.phaseUl li.phaseItem {
 }*/
 
 .caseTitle {
-
 }
 
 span.entityLink {

@@ -251,11 +251,11 @@
 
         returnHtml = '<tr isfrontPage="' + isFrontPage + '" name="description" class="trStyleClass">' +
             '<td class="' + taskStatusCssClass + '">' + taskStatus + '</td >' +
-            '<td><a href="' + instanceLink + '">' +
+            '<td><a class="event-title" href="' + instanceLink + '">' +
             item.EventTitle +
             '</a></td>' +
             '<td>' + (item.Due == null ? '&nbsp;' : moment(new Date(item.Due)).format('L LT')) + '</td>' +
-            '<td>' + item.ResponsibleName.substr(0, 1).toUpperCase()+item.ResponsibleName.substr(1) + '</td>' +
+           /* '<td>' + item.ResponsibleName.substr(0, 1).toUpperCase()+item.ResponsibleName.substr(1) + '</td>' +*/
             '<td>';
         if (item.CanExecute && item.Type.toLowerCase() !== "form") {
             returnHtml += '<button';
