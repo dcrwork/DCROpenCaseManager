@@ -43,13 +43,81 @@
 
 <div class="add-journal-note">
     <h5 class="add-journal-note-button"><span class="glyphicon glyphicon-plus"></span><span class="headline-add-journal-note" data-locale data-apply="text">Tilføj journalnotat</span></h5>
+    <div class="form-group">
+        <label class="journalNameLabel"><span data-locale data-apply="text" data-key="Title">Title:</span></label>
+        <input type="text" class="documentName">
+        <input type="hidden" class="documentId">
+    </div>
+    <div class="form-group">
+        <label class="journalTextLabel"><span data-locale data-apply="text" data-key="Text">Text:</span></label>
+        <input type="text" class="journalText">
+    </div>
 </div>
 
 
 
 <script>
     $(document).on('click', '.add-journal-note-button', function () {
+        function makeTextFile(text) {
+            //console.log(text + ' makeTextFile1')
+            var data = new Blob([text], { type: 'text/plain' });
+            //console.log(data + ' makeTextFile2')
+            return data;
+        };
 
+        function submitFiles(fileName, textContents) {
+            //console.log(fileName + textContents + ' submitFiles')
+            var docId = $('.documentId').val();
+            var file = makeTextFile(textContents);
+            uploadFile(file, docId, fileName);
+
+        }
+
+        function uploadFile(file, docId, fileName) {
+            if (fileName != '') {
+                $.ajax({
+                    url: window.location.origin + "/api/records/AddDocument",
+                    type: 'POST',
+                    headers: {
+                        'filename': fileName,
+                        'type': 'JournalNote',
+                        'instanceId': instanceId,
+                        'givenFileName': fileName
+                    },
+                    data: file,
+                    async: false,
+                    cache: false,
+                    contentType: false,
+                    enctype: 'multipart/form-data',
+                    processData: false,
+
+                });
+            }
+            /*
+            else if (fileName != '') {
+                $.ajax({
+                    url: window.location.origin + "/api/records/UpdateDocument",
+                    type: 'POST',
+                    headers: {
+                        'id': docId,
+                        'filename': (file == null ? "" : file.name),
+                        'type': 'JournalNote',
+                        'instanceId': instanceId,
+                        'givenFileName': fileName,
+                        'isNewFileAdded': (file == null ? "false" : "true")
+                    },
+                    data: file,
+                    async: false,
+                    cache: false,
+                    contentType: false,
+                    enctype: 'multipart/form-data',
+                    processData: false,
+                }); 
+            }*/
+        }
+        var documentName = $(this).closest('.add-journal-note').find('.documentName').val() + '.txt';
+        var journalText = $(this).closest('.add-journal-note').find('.journalText').val();
+        submitFiles(documentName, journalText);
     });
 </script>
 
