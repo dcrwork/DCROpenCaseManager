@@ -392,7 +392,8 @@ namespace OpenCaseManager.Models
             Link,
             Responsible,
             InstanceId,
-            IsActive
+            IsActive,
+            UploadDate
         }
 
         public enum AddInstanceDescription
