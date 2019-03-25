@@ -15,7 +15,7 @@
       <Value Profile="(Default)">password</Value>
     </Setting>
     <Setting Name="PWSServiceUserDomain" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">syddjursnet</Value>
+      <Value Profile="(Default)">domain</Value>
     </Setting>
   </Settings>
 </SettingsFile>
