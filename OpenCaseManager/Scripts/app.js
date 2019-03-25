@@ -144,7 +144,7 @@
                         else {
                             getTasks(data.instanceId);
                             getInstanceDetails(data.instanceId);
-                            getPhases(data.instanceId);
+                            //getPhases(data.instanceId);
                         }
                     }
                     else {
@@ -161,7 +161,7 @@
                         else {
                             getTasks(data.instanceId);
                             getInstanceDetails(data.instanceId);
-                            getPhases(data.instanceId);
+                            //getPhases(data.instanceId);
                         }
                     } else {
                         MUS.musDetails(MUS.showMUS);

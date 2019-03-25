@@ -156,19 +156,23 @@ ul.events-log-ul {
 }
 
 table.entityDetailTable tr th {
-    color: #007ea4;
+    color: #4A4A4A;
     width: 80%;
+    font-size: larger;
 }
 
-table.entityDetailTable tbody tr {
+.activitiesBox {
+    width: 60%;
+}
+
+/*table.entityDetailTable tbody tr {
     background: #f9f9f9;
 }
 
     table.entityDetailTable tbody tr th,
     table.entityDetailTable tbody tr td {
         border-bottom: 1px solid #ddd;
-    }
-
+    }*/
 table.entityDetailTable {
     margin: 0px;
 }

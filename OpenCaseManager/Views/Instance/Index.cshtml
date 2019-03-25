@@ -22,13 +22,13 @@
 @Html.Partial("~/Views/PartialViews/Stamdata.cshtml")
 @Html.Partial("~/Views/PartialViews/TasksWithNote.cshtml")
 
-<div class="row tableDataRow">
+<!--<div class="row tableDataRow">
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
         <div class="phaseBlock">
             <ul class="phaseUl" id="processPhase"></ul>
         </div>
     </div>
-</div>
+</div>-->
 
 <div class="row tableDataRow">
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -60,11 +60,14 @@
             <div class="tab-pane fade in" id="tabs-timeline" role="tabpanel" aria-labelledby="tabs-timeline">
                 @Html.Partial("~/Views/PartialViews/Timeline.cshtml")
             </div>
+            <div class="tab-pane fade in" id="tabs-document" role="tabpanel" aria-labelledby="tabs-document">
+                @Html.Partial("~/Views/PartialViews/Document.cshtml")
+            </div>
         </div>
     </div><!-- Cols Div End -->
 </div><!-- Row Div End -->
 
-@Html.Partial("~/Views/PartialViews/Document.cshtml")
+
 
 <script src="~/Scripts/instance.js"></script>
 
