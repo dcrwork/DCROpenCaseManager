@@ -409,6 +409,7 @@
     <Content Include="HtmlTemplates\FormTemplate.html" />
     <Content Include="HtmlTemplates\InstructionsForActiveXOutlook.html" />
     <Content Include="HtmlTemplates\FormInstruction.html" />
+    <Content Include="Scripts\addButton.js" />
     <Content Include="Scripts\child.js" />
     <Content Include="Scripts\formserver.js" />
     <Content Include="Scripts\plugins\Albe_Timeline\data-albe-timeline.js" />
