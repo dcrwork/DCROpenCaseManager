@@ -7,57 +7,55 @@
     @Styles.Render("~/Content/css")
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
     <link href="~/Content/FontAwsome/css/all.min.css" rel="stylesheet" />
+    <link href="~/Content/ChildPage.css" rel="stylesheet" /> <!-- TODO finde ud af hvordan vi importerer dette stylesheet på en anden måde -->
 </head>
 <body>
     @Scripts.Render("~/bundles/jquery")
 
     <div class="wrapper">
         <header>
-            <div class="container inner-block" style="overflow: hidden;">
-                <div class="main-menu-top">
-                    <div class="container">
-                        <ul class="menu-header-ul">
-                            <li><a href="#" style="text-decoration: none;cursor:pointer"><span data-locale data-apply="text" data-key="Welcome">Welcome</span> <span id="userName"></span></a></li>
-                            <li><a href="~/mus"><span data-locale data-apply="text" data-key="MUS">MUS</span></a></li>
-                            <li><a href="~/Admin/Processes/"><span data-locale data-apply="text" data-key="Processes">Processes</span></a></li>
-                            <li><a href="~/Admin/SearchProcess/"><span data-locale data-apply="text" data-key="SearchProcess">Search Process</span></a></li>
-                            <li><a href="~/Form/"><span data-locale data-apply="text" data-key="Form">Form</span></a></li>
-                            <li><a href="~/"><span data-locale data-apply="text" data-key="Home">Home</span></a></li>
-                        </ul>
-                    </div>
+            <div class="main-menu-top">
+                <div class="container">
+                    <ul class="menu-header-ul">
+                        <li><a href="#" style="text-decoration: none;cursor:pointer"><span data-locale data-apply="text" data-key="Welcome">Welcome</span> <span id="userName"></span></a></li>
+                        <li><a href="~/mus"><span data-locale data-apply="text" data-key="MUS">MUS</span></a></li>
+                        <li><a href="~/Admin/Processes/"><span data-locale data-apply="text" data-key="Processes">Processes</span></a></li>
+                        <li><a href="~/Admin/SearchProcess/"><span data-locale data-apply="text" data-key="SearchProcess">Search Process</span></a></li>
+                        <li><a href="~/Form/"><span data-locale data-apply="text" data-key="Form">Form</span></a></li>
+                        <li><a href="~/"><span data-locale data-apply="text" data-key="Home">Home</span></a></li>
+                    </ul>
                 </div>
-                <div class="page-header clearfix">
-                    <div class="pull-left">
-                        <a href="../">
-                        </a>
-                    </div>
-                    <div class="search-field col-md-6 pull-right">
-                        <input type="text" placeholder="Search.." data-locale data-apply="attribute" data-attribute="placeholder" data-key="Search" id="searchCase">
-                        <i class="glyphicon glyphicon-search"></i>
-                    </div>
+            <div class="page-header clearfix">
+                <div class="pull-left">
+                    <a href="../">
+                    </a>
+                </div>
+                <div class="search-field col-md-6 pull-right">
+                    <input type="text" placeholder="Search.." data-locale data-apply="attribute" data-attribute="placeholder" data-key="Search" id="searchCase">
+                    <i class="glyphicon glyphicon-search"></i>
                 </div>
             </div>
+</div>
         </header>
         <main>
-            <div class="container inner-block">
-                <div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" id="confirmModal">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <button aria-hidden="true" class="close" type="button">x</button>
-                                <h4 class="modal-title">Confirm</h4>
-                            </div>
-                            <div class="modal-body">
-                                <p id="confirmMsg"></p>
-                            </div>
-                            <div class="modal-footer">
-                                <div class="pull-right">
-                                    <a href="javascript:void(0)" class="btn btn-default" id="confirmNo" title="Cancel">Cancel</a>
-                                    <a href="javascript:void(0)" class="btn groupedBtnStyling" id="confirmYes" title="Ok">Ok</a>
-                                </div>
+            <div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" id="confirmModal">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button aria-hidden="true" class="close" type="button">x</button>
+                            <h4 class="modal-title">Confirm</h4>
+                        </div>
+                        <div class="modal-body">
+                            <p id="confirmMsg"></p>
+                        </div>
+                        <div class="modal-footer">
+                            <div class="pull-right">
+                                <a href="javascript:void(0)" class="btn btn-default" id="confirmNo" title="Cancel">Cancel</a>
+                                <a href="javascript:void(0)" class="btn groupedBtnStyling" id="confirmYes" title="Ok">Ok</a>
                             </div>
                         </div>
                     </div>
+                </div>
                 </div>
                 <div style="position: fixed;top: 0;z-index: 10000000;width: 40%;text-align: center;left: 27%;" class="custom-container">
                 </div>
@@ -93,19 +91,16 @@
                 <!-- Modal End-->
 
                 @RenderBody()
-            </div>
         </main>
         <footer>
-            <div class="container inner-block">
-                <div class="footer">
-                    <div class="footer-content clearfix">
-                        <div class="col-lg-3 col-md-3 col-sm-3 pull-left">
-                            <div class="left-footer-img pull-left"></div>
-                        </div>
-                        <span class="col-lg-6 col-md-6 col-sm-6 allrights"></span>
-                        <div class="col-lg-3 col-md-3 col-sm-3 pull-right">
-                            <div class="right-footer-img pull-right"></div>
-                        </div>
+            <div class="footer">
+                <div class="footer-content clearfix">
+                    <div class="col-lg-3 col-md-3 col-sm-3 pull-left">
+                        <div class="left-footer-img pull-left"></div>
+                    </div>
+                    <span class="col-lg-6 col-md-6 col-sm-6 allrights"></span>
+                    <div class="col-lg-3 col-md-3 col-sm-3 pull-right">
+                        <div class="right-footer-img pull-right"></div>
                     </div>
                 </div>
             </div>
