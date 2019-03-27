@@ -50,12 +50,15 @@
     }
 
     .activitiesTitleBox {
-        margin-left: 50px;
+        margin-left: 100px;
     }
 
-    .stamdataBox {
-        width: 18%;
-        margin: 60px 0px 0px 60px;
+    .stamdataBox {       
+        margin-top: 20px;
+    }
+
+    .buttonsStamdataBox {
+        margin: 40px 0px 0px 60px;
     }
 </style>
 
@@ -64,16 +67,16 @@
 }
 
 
-@Html.Partial("~/Views/PartialViews/AddButton.cshtml", new ViewDataDictionary { { "add-text", "Tilføj dokument" } })
-@Html.Partial("~/Views/PartialViews/AddButton.cshtml", new ViewDataDictionary { { "add-text", "Tilføj journalnotat" } })
 
-@Html.Partial("~/Views/PartialViews/AddJournalNote.cshtml")
 
-@Html.Partial("~/Views/PartialViews/TasksWithNote.cshtml")
 
 <div class="wholeActionsPage">
-    <div class="stamdataBox">
-        @Html.Partial("~/Views/PartialViews/Stamdata.cshtml")
+    <div class="buttonsStamdataBox">
+        @Html.Partial("~/Views/PartialViews/AddButton.cshtml", new ViewDataDictionary { { "add-text", "Tilføj dokument" } })
+        @Html.Partial("~/Views/PartialViews/AddButton.cshtml", new ViewDataDictionary { { "add-text", "Tilføj journalnotat" } })
+        <div class="stamdataBox">
+            @Html.Partial("~/Views/PartialViews/Stamdata.cshtml")
+        </div>
     </div>
 
     <div class="activitiesTitleBox">
@@ -97,7 +100,7 @@
                 <li class="nav-item">
                     <a class="nav-link" id="pills-document-tab" data-toggle="tab" href="#pills-document" role="tab" aria-controls="pills-document" aria-selected="false">Dokumenter</a>
                 </li>
-            </ul> 
+            </ul>
             <div class="tab-content" id="pills-tabContent">
                 <div class="tab-pane fade in active" id="pills-activities" role="tabpanel" aria-labelledby="pills-activities">
                     @Html.Partial("~/Views/PartialViews/Tasks.cshtml")
@@ -107,7 +110,7 @@
                 </div>
                 <div class="tab-pane fade in" id="pills-document" role="tabpanel" aria-labelledby="pills-document">
                     @Html.Partial("~/Views/PartialViews/Document.cshtml")
-                </div>              
+                </div>
             </div>
         </div>
     </div>
