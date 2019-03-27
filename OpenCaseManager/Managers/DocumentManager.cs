@@ -52,7 +52,33 @@ namespace OpenCaseManager.Managers
                     }
                     filePath = directoryInfo.FullName;
                     break;
-                case "JournalNote":
+                case "JournalNoteImportant":
+                    directoryInfo = new DirectoryInfo(Configurations.Config.JournalNoteFileLocation);
+                    if (!directoryInfo.Exists)
+                    {
+                        directoryInfo.Create();
+                    }
+                    directoryInfo = new DirectoryInfo(Configurations.Config.JournalNoteFileLocation + "\\" + instanceId);
+                    if (!directoryInfo.Exists)
+                    {
+                        directoryInfo.Create();
+                    }
+                    filePath = directoryInfo.FullName;
+                    break;
+                case "JournalNoteLittle":
+                    directoryInfo = new DirectoryInfo(Configurations.Config.JournalNoteFileLocation);
+                    if (!directoryInfo.Exists)
+                    {
+                        directoryInfo.Create();
+                    }
+                    directoryInfo = new DirectoryInfo(Configurations.Config.JournalNoteFileLocation + "\\" + instanceId);
+                    if (!directoryInfo.Exists)
+                    {
+                        directoryInfo.Create();
+                    }
+                    filePath = directoryInfo.FullName;
+                    break;
+                case "JournalNoteBig":
                     directoryInfo = new DirectoryInfo(Configurations.Config.JournalNoteFileLocation);
                     if (!directoryInfo.Exists)
                     {
