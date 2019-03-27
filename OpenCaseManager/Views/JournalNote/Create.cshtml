@@ -1,16 +1,42 @@
 ﻿
 @{
     ViewBag.Title = "CreateJurnalNote";
+    var date = DateTime.Now.ToString("dd/MM/yyyy");
 }
 <link type="text/css" rel="stylesheet" href="~/Content/journalnote.css" />
 <h2>Create Journal Note</h2>
 <form class="form-create-journal-note">
     <label>Title</label>
     <input type="text" name="journal-title" />
-    <label name="data"></label>
-    <a>Edit date</a>
+    <label value="@date">Date: <span id="dateLabel" name="dateLabel"> @date </span></label>
+    <a data-toggle="modal" data-target="#changeDate">Edit date</a>
     <lable>Note</lable>
     <textarea></textarea>
     <input type="submit" value="Create" />
     <input type="submit" value="Save Draf" />
 </form>
+
+<div class="modal fade" id="changeDate" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title instanceModalHeading"><span data-locale data-apply="text" data-key="changeDate">Change Date</span></h4>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label for="instanceTitle"><span data-locale data-apply="text" data-key="Date">Date</span>:</label>
+                        <input type="date" class="form-control" id="dateInput" />
+                    </div>
+                </form>
+            </div>
+            <!-- modal Footer -->
+            <div class="modal-footer">
+                <button type="button" id="updateDate" data-toggle="modal" data-target="#changeDate" onclick="changedate('dateInput','dateLabel')"><span data-locale data-apply="text" data-key="changeDate">Change Date</span></button>
+            </div>
+        </div>
+    </div>
+</div><!-- Modal End-->
