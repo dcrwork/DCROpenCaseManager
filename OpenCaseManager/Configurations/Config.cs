@@ -67,6 +67,14 @@ namespace OpenCaseManager.Configurations
                 return ConfigurationManager.AppSettings["InstanceFileLocation"].ToString();
             }
         }
+
+        public static string JournalNoteFileLocation
+        {
+            get
+            {
+                return ConfigurationManager.AppSettings["JournalNoteFileLocation"].ToString();
+            }
+        }
         public static string FormInstructionHtmlLocation
         {
             get

@@ -413,6 +413,7 @@
     <Content Include="HtmlTemplates\FormInstruction.html" />
     <Content Include="karma.conf.js" />
     <Content Include="Scripts\child.js" />
+    <Content Include="Scripts\createprocess.js" />
     <Content Include="Scripts\formserver.js" />
     <Content Include="Scripts\jasmine\boot.js" />
     <Content Include="Scripts\jasmine\console.js" />
@@ -614,6 +615,7 @@
     <Content Include="Web.config" />
     <Content Include="Views\Child\index.cshtml" />
     <Content Include="Views\PartialViews\AddButton.cshtml" />
+    <Content Include="Views\PartialViews\AddJournalNote.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
