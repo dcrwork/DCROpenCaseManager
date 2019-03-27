@@ -449,6 +449,7 @@ namespace OpenCaseManager.Commons
             dataModelManager.AddParameter(DBEntityNames.Document.Type.ToString(), Enums.ParameterType._string, type);
             dataModelManager.AddParameter(DBEntityNames.Document.Link.ToString(), Enums.ParameterType._string, link);
             dataModelManager.AddParameter(DBEntityNames.Document.Responsible.ToString(), Enums.ParameterType._string, "$(loggedInUser)");
+            dataModelManager.AddParameter(DBEntityNames.Document.UploadDate.ToString(), Enums.ParameterType._datetime, DateTime.Now.ToString());
             if (!string.IsNullOrEmpty(instanceId))
             {
                 dataModelManager.AddParameter(DBEntityNames.Document.InstanceId.ToString(), Enums.ParameterType._int, instanceId);
