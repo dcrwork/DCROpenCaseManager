@@ -12,71 +12,70 @@
         display: flex;
         justify-content: center;
     }
+
+    .wholeActionsPage {
+        display: flex;
+        flex-direction: row;
+    }
+
+    .activitiesTitleBox {
+        margin-left: 50px;
+    }
+
+    .stamdataBox {
+        width: 18%;
+        margin: 60px 0px 0px 60px;
+    }
 </style>
 
 @{
     ViewBag.Title = "Instance";
 }
 
-@Html.Partial("~/Views/PartialViews/Instruction.cshtml")
-
 @Html.Partial("~/Views/PartialViews/TasksWithNote.cshtml")
 
-
-<!--<div class="row tableDataRow">
-    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-        <div class="phaseBlock">
-            <ul class="phaseUl" id="processPhase"></ul>
-        </div>
-    </div>
-</div>-->
-<div class="whole-actions-page">
-    <div class="stamdata-box">
+<div class="wholeActionsPage">
+    <div class="stamdataBox">
         @Html.Partial("~/Views/PartialViews/Stamdata.cshtml")
     </div>
 
+    <div class="activitiesTitleBox">
         <div class="row tableDataRow">
-            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                <table class="table table-responsive entityDetailTable">
-                    <tr>
-                        <th class="caseTitle"><span id="instanceTitle"></span></th>
-                        <td><span style="float:right;display:none;" class="caseLink"><a target="_blank" id="entityLink" href="#"><img width="12px" src="../content/images/caseLink.png"></a></span><span style="float:right;display:none;padding-right:10px;" class="caseNum"><span id="instanceCaseNo"></span></span></td>
-                    </tr>
-                </table>
-            </div>
+            <table class="table table-responsive entityDetailTable">
+                <tr>
+                    <th class="caseTitle"><span id="instanceTitle"></span></th>
+                </tr>
+            </table>
         </div><!-- Row End -->
 
         <div class="row tableDataRow">
-            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                <flex-container>
-                    <ul class="nav nav-tabs mb-3" id="tabs-tab" role="tablist">
-                        <li class="nav-item active">
-                            <a class="nav-link" id="tabs-activitiesb" data-toggle="tab" href="#tabs-activities" role="tab" aria-controls="tabs-activities" aria-selected="false">Activities</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" id="tabs-timeline-tab" data-toggle="tab" href="#tabs-timeline" role="tab" aria-controls="tabs-timeline" aria-selected="false">Timeline</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" id="tabs-document-tab" data-toggle="tab" href="#tabs-document" role="tab" aria-controls="tabs-document" aria-selected="false">Dokumenter</a>
-                        </li>
-                    </ul>
-                </flex-container>
-                <div class="tab-content" id="tabs-tabContent">
-                    <div class="tab-pane fade in active" id="tabs-activities" role="tabpanel" aria-labelledby="tabs-activities">
-                        @Html.Partial("~/Views/PartialViews/Tasks.cshtml")
-                    </div>
-                    <div class="tab-pane fade in" id="tabs-timeline" role="tabpanel" aria-labelledby="tabs-timeline">
-                        @Html.Partial("~/Views/PartialViews/Timeline.cshtml")
-                    </div>
-                    <div class="tab-pane fade in" id="tabs-document" role="tabpanel" aria-labelledby="tabs-document">
-                        @Html.Partial("~/Views/PartialViews/Document.cshtml")
-                    </div>
+            <flex-container>
+                <ul class="nav nav-tabs mb-3" id="tabs-tab" role="tablist">
+                    <li class="nav-item active">
+                        <a class="nav-link" id="tabs-activitiesb" data-toggle="tab" href="#tabs-activities" role="tab" aria-controls="tabs-activities" aria-selected="false">Activities</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="tabs-timeline-tab" data-toggle="tab" href="#tabs-timeline" role="tab" aria-controls="tabs-timeline" aria-selected="false">Timeline</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="tabs-document-tab" data-toggle="tab" href="#tabs-document" role="tab" aria-controls="tabs-document" aria-selected="false">Dokumenter</a>
+                    </li>
+                </ul>
+            </flex-container>
+            <div class="tab-content" id="tabs-tabContent">
+                <div class="tab-pane fade in active" id="tabs-activities" role="tabpanel" aria-labelledby="tabs-activities">
+                    @Html.Partial("~/Views/PartialViews/Tasks.cshtml")
                 </div>
-            </div><!-- Cols Div End -->
-        </div><!-- Row Div End -->
-    </div>
-</div>
-
+                <div class="tab-pane fade in" id="tabs-timeline" role="tabpanel" aria-labelledby="tabs-timeline">
+                    @Html.Partial("~/Views/PartialViews/Timeline.cshtml")
+                </div>
+                <div class="tab-pane fade in" id="tabs-document" role="tabpanel" aria-labelledby="tabs-document">
+                    @Html.Partial("~/Views/PartialViews/Document.cshtml")
+                </div>
+            </div>
+        </div>
+    </div><!-- Cols Div End -->
+</div><!-- Row Div End -->   
 
 <script src="~/Scripts/instance.js"></script>
 

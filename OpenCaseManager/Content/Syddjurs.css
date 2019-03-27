@@ -179,18 +179,11 @@ ul.phaseUl li.phaseItem {
     width: 25%;
 }*/
 
-.caseTitle {
-}
 
 span.entityLink {
     color: #9C1A5E;
     text-decoration: underline;
     cursor: pointer;
-}
-
-div.tableDataRow {
-    margin: 0px;
-    background: #fff;
 }
 
 /*table tbody tr.trStyleClass:hover {

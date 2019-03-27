@@ -158,42 +158,9 @@ ul.events-log-ul {
 table.entityDetailTable tr th {
     color: #4A4A4A;
     font-size: xx-large;
-    padding: 40px 0px 40px 150px;
+    padding: 0px;
 }
 
-.whole-actions-page {
-    display: flex;
-    flex-direction: row;
-}
-
-.actions-page{
-    width: 100%;
-}
-
-.stamdata-box {
-    width: 18%;
-    padding: 40px 0px 0px 50px;
-}
-
-.activitiesBox {
-    width: 70%; 
-    padding: 30px 0px 0px 0px;
-}
-
-#tabs-activities{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-/*table.entityDetailTable tbody tr {
-    background: #f9f9f9;
-}
-
-    table.entityDetailTable tbody tr th,
-    table.entityDetailTable tbody tr td {
-        border-bottom: 1px solid #ddd;
-    }*/
 table.entityDetailTable {
     margin: 0px;
 }
