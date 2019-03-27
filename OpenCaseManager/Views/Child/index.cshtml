@@ -5,12 +5,13 @@
 }
 
 <h2>Here should the skeleton of the page be</h2>
-<div class="col-lg-2 add-process-box">
-    <p data-toggle="modal" data-target="#create-process-modal" class="create-process-button">
-        <img src="~/Content/Images/addicon.svg" class="add-icon" />
-        <span class="add-process-text">Tilføj indsats</span>
-    </p>
+
+<div data-toggle="modal" data-target="#create-process-modal" class="create-process-button">
+    @Html.Partial("~/Views/PartialViews/AddButton.cshtml", new ViewDataDictionary { { "add-text", "Tilføj proces" } })
 </div>
+
+@Html.Partial("~/Views/PartialViews/AddButton.cshtml", new ViewDataDictionary { { "add-text", "Tilføj dokument" } })
+@Html.Partial("~/Views/PartialViews/AddButton.cshtml", new ViewDataDictionary { { "add-text", "Tilføj journalnotat" } })
 
 <div class="modal fade" id="create-process-modal" role="dialog">
     <div class="modal-dialog">
@@ -32,13 +33,13 @@
                         <input type="text" class="form-control" id="process-title" placeholder="Tilføj titel">
                     </div>
                     <div class="form-group">
-                        <div id="responsible"></div>                     
+                        <div id="responsible"></div>
                     </div>
                     <div class="modal-footer">
                         <button type="submit" id="create-process" class="btn btn-default">Tilføj</button>
-                        </div>
+                    </div>
                 </form>
-            </div>         
+            </div>
         </div>
     </div>
 </div>

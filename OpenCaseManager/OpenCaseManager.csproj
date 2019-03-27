@@ -614,6 +614,7 @@
     <Content Include="Views\PartialViews\Stamdata.cshtml" />
     <Content Include="Web.config" />
     <Content Include="Views\Child\index.cshtml" />
+    <Content Include="Views\PartialViews\AddButton.cshtml" />
     <Content Include="Views\PartialViews\AddJournalNote.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

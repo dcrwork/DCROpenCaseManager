@@ -52,6 +52,11 @@
 }
 
 @Html.Partial("~/Views/PartialViews/Instruction.cshtml")
+
+@Html.Partial("~/Views/PartialViews/AddButton.cshtml", new ViewDataDictionary { { "add-text", "Tilføj dokument" } })
+@Html.Partial("~/Views/PartialViews/AddButton.cshtml", new ViewDataDictionary { { "add-text", "Tilføj journalnotat" } })
+
+
 @Html.Partial("~/Views/PartialViews/Stamdata.cshtml")
 @Html.Partial("~/Views/PartialViews/AddJournalNote.cshtml")
 @Html.Partial("~/Views/PartialViews/TasksWithNote.cshtml")
