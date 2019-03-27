@@ -60,6 +60,15 @@
             });
     }
 
+    function getJournalHistory(response) {
+        var result = JSON.parse(response);
+        var doneList = '';
+        for (i = 0; i < result.length; i++) {
+            doneList += getTaskHtmlForDoneTasks(result[i], false);
+        }
+        $('.done-tasks').html('').append(doneList);
+    }
+
     // set single Instance Filter
     function showSingleInstanceFilter() {
         $('#singleInstanceFilters').show();
@@ -83,12 +92,10 @@
         var user = window.App.user;
         var ownList = "";
         var othersList = "";
-        var doneList = "";
-        if (result.length === 0)
+        if (result.length === 0) {
             ownList = "<tr class=\"trStyleClass\"><td colspan=\"100%\"> " + translations.NoRecordFound + " </td></tr>";
-        else {
+        } else {
             for (i = 0; i < result.length; i++) {
-                if (i == 2) console.log(result[i]);
                 if (result[i].Responsible != user.Id) {
                     if (result[i].IsExecuted == false) othersList += getTaskHtmlForOthersTasks(result[i], showCaseInfo);
                 } else {
@@ -98,7 +105,6 @@
         }
         $("#" + id).html("").append(ownList);
         $('.others-tasks').html('').append(othersList);
-        $('.done-tasks').html('').append(doneList);
 
         // expand/collapse description
         $('tr[name="description"]').on('click', function (e) {
@@ -234,27 +240,21 @@
     function getTaskHtmlForDoneTasks(item, isFrontPage) {
         var returnHtml = '';
         var taskStatusCssClass = 'includedTask';
-        var taskStatus = (item.IsPending) ? "<img src='../Content/Images/priorityicon.svg' height='16' width='16'/>" : '&nbsp;';
 
-        var caseTitle = item.CaseTitle;
+        var caseTitle = item.Title;
         var caseLink = '#';
-
-        if (item.CaseLink !== null) {
-            caseLink = item.CaseLink;
-        }
-        if (item.Case !== null) {
-            caseTitle = item.Case + ' - ' + item.CaseTitle;
-        }
+        
         var instanceLink = "#";
         if (isFrontPage) {
             instanceLink = "../Instance?id=" + item.InstanceId;
         }
 
         returnHtml = '<tr isfrontPage="' + isFrontPage + '" name="description" class="trStyleClass">' +
-            '<td class="' + taskStatusCssClass + '">' + taskStatus + '</td >' +
-            '<td><a href="' + instanceLink + '">' + item.EventTitle + '</a></td>' +
-            '<td>' + (item.Due == null ? '&nbsp;' : moment(new Date(item.Due)).format('L LT')) + '</td></tr>';
-
+            '<td class="' + taskStatusCssClass + '"></td >' +
+            '<td><a href="' + instanceLink + '">' + item.Title + '</a></td>' +
+            '<td>' + item.ResponsibleName.substr(0, 1).toUpperCase() + item.ResponsibleName.substr(1) + '</td>' +
+            '<td>' + moment(new Date(item.EventDate)).format('L LT') + '</td></tr>';
+        
         if (item.Description !== '' && !isFrontPage) {
             returnHtml += '<tr class="showMe" style="display:none"><td></td><td colspan="100%">' + item.Description + '</td></tr>';
         } else if (item.Description !== '' && isFrontPage) {
@@ -358,6 +358,7 @@
         this.showSingleInstanceFilter = showSingleInstanceFilter;
         this.hideTableColumns = hideTableColumns;
         this.tasksHtml = tasksHtml;
+        this.getJournalHistory = getJournalHistory;
     };
     return window.Task = new task;
 }(window));

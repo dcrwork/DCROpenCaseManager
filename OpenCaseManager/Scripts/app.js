@@ -194,6 +194,24 @@
             });
     }
 
+    function getJournalHistoryForInstance(instanceId) {
+        var query = {
+            "type": "SELECT",
+            "entity": "JournalHistoryForASingleInstance(" + instanceId + ")",
+            "resultSet": ["*"],
+            "filters": [],
+            "order": []
+        }
+
+        API.service('records', query)
+            .done(function (response) {
+                Task.getJournalHistory(response);
+            })
+            .fail(function (e) {
+                showExceptionErrorMessage(e);
+            });
+    }
+
     function getTasks(instanceId) {
         // get all tasks of all my instance
         var entityName = "InstanceTasks('$(loggedInUserId)')";
@@ -1010,6 +1028,7 @@
         this.responsible = getResponsible;
         this.getProcess = getProcess;
         this.getMyInstances = getMyInstances;
+        this.getJournalHistoryForInstance = getJournalHistoryForInstance;
         this.getTasks = getTasks;
         this.addInstance = addInstance;
         this.executeEvent = executeEvent;
