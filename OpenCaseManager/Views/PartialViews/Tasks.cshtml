@@ -1,5 +1,5 @@
 ﻿<style>
-    .info-icon{
+    .info-icon {
         padding: 0px 0px 0px 8px;
     }
 
@@ -19,8 +19,6 @@
         overflow-x: auto;
         text-align: justify;
     }
-
-
 </style>
 
 <div class="activitiesBox">
@@ -72,16 +70,16 @@
 
     <h4 class="instancesHeading fold-down-headline"><span id="collapse-icon" class="glyphicon glyphicon-chevron-right"></span>Afsluttede aktiviteter<img src='../Content/Images/InfoIconV2.svg' class="info-icon" /></h4>
     <div class="scrollTable2">
-        <table class="table tasksTable table-striped hiddenTaskTable">
-            <thead>
-                <tr class="trStyleClass">
-                    <th width="15%"></th>
-                    <th width=""><span data-locale data-apply="text" data-key="Title">Title</span></th>
-                    <th width=""><span data-locale data-apply="text">Dato</span></th>
-                </tr>
-            </thead>
-        </table>
-    </div>
+    <table class="table tasksTable table-striped hiddenTaskTable">
+        <thead>
+            <tr class="trStyleClass">
+                <th width="15%"></th>
+                <th width=""><span data-locale data-apply="text" data-key="Title">Title</span></th>
+                <th width=""><span data-locale data-apply="text">Dato</span></th>
+            </tr>
+        </thead>
+    </table>
+</div>
 </div>
 
 <script>
@@ -91,7 +89,7 @@
     });
 
     $(document).on('click', '.fold-down-headline', function () {
-        var table = $(this).next('table');
+        var table = $(this).next('.scrollTable2').find('table');
         var icon = $(this).find('.glyphicon');
         if (table.is(':visible')) {
             table.hide();
