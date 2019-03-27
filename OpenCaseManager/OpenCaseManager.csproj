@@ -311,6 +311,7 @@
     <Compile Include="Commons\MyFontResolverPdfSharp.cs" />
     <Compile Include="Controllers\ChildController.cs" />
     <Compile Include="Controllers\FileController.cs" />
+    <Compile Include="Controllers\JournalNoteController.cs" />
     <Compile Include="Managers\DocumentManager.cs" />
     <Compile Include="Managers\IDocumnentManager.cs" />
     <Compile Include="Models\DBEntityNames.cs" />
@@ -401,6 +402,7 @@
     <Content Include="Content\Images\priorityicon.svg" />
     <Content Include="Content\Images\tasks.png" />
     <Content Include="Content\Images\update.png" />
+    <Content Include="Content\journalnote.css" />
     <Content Include="Content\jquery.treegrid.css" />
     <Content Include="Content\noty\noty.css" />
     <Content Include="Content\noty\themes\mint.css" />
@@ -409,6 +411,7 @@
     <Content Include="HtmlTemplates\FormInstruction.html" />
     <Content Include="Scripts\child.js" />
     <Content Include="Scripts\formserver.js" />
+    <Content Include="Scripts\journalNote.js" />
     <Content Include="Scripts\plugins\Albe_Timeline\data-albe-timeline.js" />
     <Content Include="Scripts\plugins\Albe_Timeline\jquery-albe-timeline.js" />
     <Content Include="Scripts\plugins\Albe_Timeline\jquery-albe-timeline.min.js" />
@@ -601,14 +604,11 @@
     <Content Include="Views\Home\UnAuthorized.cshtml" />
     <Content Include="Views\PartialViews\Timeline.cshtml" />
     <Content Include="Views\PartialViews\Stamdata.cshtml" />
-    <Content Include="Web.config" />
     <Content Include="Views\Child\index.cshtml" />
-    <None Include="Web.Debug.config">
-      <DependentUpon>Web.config</DependentUpon>
-    </None>
-    <None Include="Web.Release.config">
-      <DependentUpon>Web.config</DependentUpon>
-    </None>
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Views\JournalNote\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
