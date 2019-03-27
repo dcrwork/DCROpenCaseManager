@@ -27,8 +27,8 @@
     setProcess();
 
     
-    $('#createProcess').on('click', function (e) {
-        var title = $('#processTitle').val();
+    $('#create-process').on('click', function (e) {
+        var title = $('#process-title').val();
         var graphId = $('#processes').find(":selected").val();
 
         var userRoles = new Array()
@@ -44,7 +44,7 @@
         
         if (title !== '' && graphId > 0) {
             App.addInstance(title, graphId, userRoles);
-            $('#createProcessModal').modal('toggle');
+            $('#create-process-modal').modal('toggle');
         }
         else {
             App.showWarningMessage(translations.InstanceCreateError);
