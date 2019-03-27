@@ -91,8 +91,6 @@
                 if (i == 2) console.log(result[i]);
                 if (result[i].Responsible != user.Id) {
                     if (result[i].IsExecuted == false) othersList += getTaskHtmlForOthersTasks(result[i], showCaseInfo);
-                } else if (result[i].IsExecuted == true) {
-                    doneList += getTaskHtmlForDoneTasks(result[i], showCaseInfo);
                 } else {
                     ownList += getTaskHtml(result[i], showCaseInfo);
                 }
@@ -143,8 +141,7 @@
 
                     if (eventType === "TasksWNote") {
                         App.showTaskWithNotePopup(data, elem, showCaseInfo, uievent);
-                    }
-                    else {
+                    } else {
                         App.executeEvent(data, showCaseInfo, uievent);
                     }
 

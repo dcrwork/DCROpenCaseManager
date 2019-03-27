@@ -87,12 +87,13 @@ namespace OpenCaseManager.Models
 
         public enum EventHistory
         {
-            Instance,
+            InstanceId,
             Sequence,
             EventId,
             Status,
             Description,
-            Details
+            Details,
+            ExecutionDate
         }
 
         public enum Form
