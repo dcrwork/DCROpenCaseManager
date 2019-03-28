@@ -442,7 +442,7 @@ namespace OpenCaseManager.Commons
         /// <param name="documentName"></param>
         /// <param name="type"></param>
         /// <param name="link"></param>
-        public static void AddDocument(string documentName, string type, string link, string instanceId, IManager manager, IDataModelManager dataModelManager)
+        public static void AddDocument(string documentName, string type, string link, string instanceId, DateTime eventDate, IManager manager, IDataModelManager dataModelManager)
         {
             dataModelManager.GetDefaultDataModel(Enums.SQLOperation.INSERT, DBEntityNames.Tables.Document.ToString());
             dataModelManager.AddParameter(DBEntityNames.Document.Title.ToString(), Enums.ParameterType._string, documentName);
@@ -455,7 +455,9 @@ namespace OpenCaseManager.Commons
                 dataModelManager.AddParameter(DBEntityNames.Document.InstanceId.ToString(), Enums.ParameterType._int, instanceId);
             }
 
-            manager.InsertData(dataModelManager.DataModel);
+            var dataTable = manager.InsertData(dataModelManager.DataModel);
+            var documentId = dataTable.Rows[0].ItemArray[0].ToString();
+            AddJournalHistory(instanceId, null, documentId, type, documentName, eventDate, false, manager, dataModelManager);
         }
 
         /// <summary>

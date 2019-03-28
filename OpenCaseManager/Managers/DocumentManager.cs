@@ -25,7 +25,7 @@ namespace OpenCaseManager.Managers
 
             switch (fileType)
             {
-                case "Personal":
+                case "PersonalDocument":
                     DirectoryInfo directoryInfo = new DirectoryInfo(Configurations.Config.PersonalFileLocation);
                     if (!directoryInfo.Exists)
                     {
@@ -39,7 +39,7 @@ namespace OpenCaseManager.Managers
                     }
                     filePath = directoryInfo.FullName;
                     break;
-                case "Instance":
+                case "InstanceDocument":
                     directoryInfo = new DirectoryInfo(Configurations.Config.InstanceFileLocation);
                     if (!directoryInfo.Exists)
                     {
@@ -115,7 +115,7 @@ namespace OpenCaseManager.Managers
             if (fileType == "Temp")
                 fileLink = filePath;
 
-            Common.AddDocument(givenFileName, fileType, fileLink, instanceId, manager, dataModelManager);
+            Common.AddDocument(givenFileName, fileType, fileLink, instanceId, DateTime.Now, manager, dataModelManager); //TODO: DateTime.Now should be changed when it is implemented that we can change the date for a journalnote
             return filePath;
         }
     }
