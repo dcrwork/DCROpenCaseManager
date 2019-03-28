@@ -134,7 +134,7 @@
             });
         }
         else {
-            API.service('services/ExecuteEvent', { taskId: data.taskId, instanceId: data.instanceId, graphId: data.graphId, simulationId: data.simulationId, eventId: data.eventId })
+            API.service('services/ExecuteEvent', { taskId: data.taskId, instanceId: data.instanceId, graphId: data.graphId, simulationId: data.simulationId, eventId: data.eventId, title: data.title, trueEventId: data.trueEventId })
                 .done(function (response) {
                     if (isMUS == null) {
                         if (isFrontPage) {
@@ -145,6 +145,7 @@
                             getTasks(data.instanceId);
                             getInstanceDetails(data.instanceId);
                             getPhases(data.instanceId);
+                            getJournalHistoryForInstance(data.instanceId);
                         }
                     }
                     else {
@@ -162,6 +163,7 @@
                             getTasks(data.instanceId);
                             getInstanceDetails(data.instanceId);
                             getPhases(data.instanceId);
+                            getJournalHistoryForInstance(data.instanceId);
                         }
                     } else {
                         MUS.musDetails(MUS.showMUS);
@@ -199,8 +201,14 @@
             "type": "SELECT",
             "entity": "JournalHistoryForASingleInstance(" + instanceId + ")",
             "resultSet": ["*"],
-            "filters": [],
-            "order": []
+            "filters": [{
+                "column": "Responsible",
+                "operator": "equal",
+                "value": '$(loggedInUserId)',
+                "valueType": "string",
+                "logicalOperator": "and"
+            }],
+            "order": [{ "column": "EventDate", "descending": true }]
         }
 
         API.service('records', query)

@@ -8,7 +8,7 @@
         var query = {
             "type": "SELECT",
             "entity": entityName,
-            "resultSet": ["EventId", "Responsible", "InstanceId", "EventTitle", "Due", "SimulationId", "GraphId", "IsPending", "IsExecuted", "CanExecute", "ResponsibleName", "Description", "IsUIEvent", "UIEventValue", "EventType", "[Type]", "[Case]", "CaseLink", "CaseTitle"],
+            "resultSet": ["EventId", "TrueEventId", "Responsible", "InstanceId", "EventTitle", "Due", "SimulationId", "GraphId", "IsPending", "IsExecuted", "CanExecute", "ResponsibleName", "Description", "IsUIEvent", "UIEventValue", "EventType", "[Type]", "[Case]", "CaseLink", "CaseTitle"],
             "filters": new Array(),
             "order": [{ "column": "IsPending", "descending": true }, { "column": "Due", "descending": true }, { "column": "IsEnabled", "descending": true }, { "column": "IsExecuted", "descending": false },
             { "column": "EventTitle", "descending": false }]
@@ -143,7 +143,17 @@
                     var graphId = elem.attr('graphId');
                     var simulationId = elem.attr('simulationId');
                     var uievent = elem.attr('uievent');
-                    var data = { taskId: taskId, instanceId: instanceId, graphId: graphId, simulationId: simulationId, eventId: eventId };
+                    var title = elem.next('.title').html();
+                    var trueEventId = elem.attr('trueEventId');
+                    var data = {
+                        taskId: taskId,
+                        instanceId: instanceId,
+                        graphId: graphId,
+                        simulationId: simulationId,
+                        eventId: eventId,
+                        title: title,
+                        trueEventId: trueEventId
+                    };
 
                     if (eventType === "TasksWNote") {
                         App.showTaskWithNotePopup(data, elem, showCaseInfo, uievent);
@@ -334,10 +344,10 @@
                 returnHtml += ' uievent="' + item.UIEventValue + '"';
             }
             returnHtml += ' type="button" taskid="' + item.EventId + '" eventType= "' + item.EventType + '" graphid="' + item.GraphId + '" simulationid="' + item.SimulationId + '" instanceid="'
-                + item.InstanceId + '" id="' + item.EventId + '" name="execute" value="execute" class="taskExecutionButton">Udført</button><div class="title" style="display: none;">' + item.EventTitle + '</div> <div class="description" style="display: none;">' + item.Description + '</div>';
+                + item.InstanceId + '" id="' + item.EventId + '" trueEventId="' + item.TrueEventId + '"name="execute" value="execute" class="taskExecutionButton">Udført</button><div class="title" style="display: none;">' + item.EventTitle + '</div> <div class="description" style="display: none;">' + item.Description + '</div>';
         }
         else if (item.CanExecute && item.Type.toLowerCase() == "form") {
-            returnHtml += '<button title="Open" eventType= "' + item.EventType + '" graphid="' + item.GraphId + '" simulationid="' + item.SimulationId + '" token="' + item.Token + '" eventId="' + item.EventId + '" instanceid="' + item.InstanceId + '" id="openDcrForm" class="btn btn-info taskExecutionButton" name="btnDcrFormServer"><i class="fas fa-external-link-alt"></i></button><div class="title" style="display: none;">' + item.EventTitle + '</div> <div class="description" style="display: none;">' + item.Description + '</div>';
+            returnHtml += '<button title="Open" eventType= "' + item.EventType + '" graphid="' + item.GraphId + '" simulationid="' + item.SimulationId + '" token="' + item.Token + '" eventId="' + item.EventId + '" trueEventId="' + item.TrueEventId + '" instanceid="' + item.InstanceId + '" id="openDcrForm" class="btn btn-info taskExecutionButton" name="btnDcrFormServer"><i class="fas fa-external-link-alt"></i></button><div class="title" style="display: none;">' + item.EventTitle + '</div> <div class="description" style="display: none;">' + item.Description + '</div>';
         }
         returnHtml += '</td>' + '</tr>';
 

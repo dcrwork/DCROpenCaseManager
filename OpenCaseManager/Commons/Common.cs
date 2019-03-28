@@ -459,6 +459,33 @@ namespace OpenCaseManager.Commons
         }
 
         /// <summary>
+        /// Add a journal note to the history table
+        /// </summary>
+        /// <param name="instanceId"></param>
+        /// <param name="eventId"></param>
+        /// <param name="documentId"></param>
+        /// <param name="type"></param>
+        /// <param name="title"></param>
+        /// <param name="eventDate"></param>
+        /// <param name="isLocked"></param>
+        public static void AddJournalHistory(string instanceId, string eventId, string documentId, string type, string title, DateTime eventDate, bool isLocked, IManager manager, IDataModelManager dataModelManager)
+        {
+            var locked = (isLocked) ? bool.TrueString : bool.FalseString;
+
+            dataModelManager.GetDefaultDataModel(Enums.SQLOperation.INSERT, DBEntityNames.Tables.JournalHistory.ToString());
+            dataModelManager.AddParameter(DBEntityNames.JournalHistory.InstanceId.ToString(), Enums.ParameterType._int, instanceId.ToString());
+            if (eventId != null) dataModelManager.AddParameter(DBEntityNames.JournalHistory.EventId.ToString(), Enums.ParameterType._int, eventId.ToString());
+            if (documentId != null) dataModelManager.AddParameter(DBEntityNames.JournalHistory.DocumentId.ToString(), Enums.ParameterType._int, documentId.ToString());
+            dataModelManager.AddParameter(DBEntityNames.JournalHistory.Type.ToString(), Enums.ParameterType._string, type);
+            dataModelManager.AddParameter(DBEntityNames.JournalHistory.Title.ToString(), Enums.ParameterType._string, title);
+            dataModelManager.AddParameter(DBEntityNames.JournalHistory.EventDate.ToString(), Enums.ParameterType._datetime, eventDate.ToString());
+            dataModelManager.AddParameter(DBEntityNames.JournalHistory.CreationDate.ToString(), Enums.ParameterType._datetime, DateTime.Now.ToString());
+            dataModelManager.AddParameter(DBEntityNames.JournalHistory.IsLocked.ToString(), Enums.ParameterType._boolean, locked);
+
+            manager.InsertData(dataModelManager.DataModel);
+        }
+
+        /// <summary>
         /// Save array bytes to specified location
         /// </summary>
         /// <param name="filePath"></param>
