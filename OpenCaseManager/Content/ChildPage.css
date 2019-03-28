@@ -1,0 +1,21 @@
+﻿.add-process-box {
+    background-color: #EDEDED; 
+    padding: 5px 10px 5px 10px;
+    height: 50px;
+}
+
+.add-process-text {
+    color: #4A4A4A;
+    font-size: 18px;
+    padding: 10px 5px 5px 10px;
+}
+
+.add-icon {
+    width: 40px;
+    padding: 5px;
+}
+
+.create-process-button{
+    cursor:pointer;
+}
+

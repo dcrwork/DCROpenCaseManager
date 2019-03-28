@@ -13,6 +13,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AcadreLib", "AcadrePWS\Acad
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Img", "Img", "{AE08E4AE-D5AE-41B9-AFDD-591EE2F93DD5}"
 	ProjectSection(SolutionItems) = preProject
+		C:\Users\olive\Desktop\DCR_All_my_children_primitive_mockup.jpg = C:\Users\olive\Desktop\DCR_All_my_children_primitive_mockup.jpg
 		Img\DCR_indsats_mockups-01.png = Img\DCR_indsats_mockups-01.png
 		Img\DCR_indsats_mockups-02.png = Img\DCR_indsats_mockups-02.png
 		Img\DCR_indsats_mockups-03.png = Img\DCR_indsats_mockups-03.png
