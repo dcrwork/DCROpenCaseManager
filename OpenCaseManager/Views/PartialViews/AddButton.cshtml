@@ -1,0 +1,26 @@
+﻿<style>
+    .add-box {
+        background-color: #EDEDED;
+        padding: 5px 10px 5px 10px;
+        height: 50px;
+        width: 230px;
+        margin-top: 15px;
+        cursor:pointer;
+    }
+
+    .add-text {
+        color: #4A4A4A;
+        font-size: 18px;
+        padding: 10px 5px 5px 10px;
+    }
+
+    .add-icon {
+        width: 40px;
+        padding: 5px;
+    }
+</style>
+
+<div class="add-box">
+    <img src="~/Content/Images/addicon.svg" class="add-icon" />
+    <span class="add-text" id="add-text">@this.ViewData["add-text"]</span>
+</div>

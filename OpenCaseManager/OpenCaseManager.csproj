@@ -311,6 +311,7 @@
     <Compile Include="Commons\MyFontResolverPdfSharp.cs" />
     <Compile Include="Controllers\ChildController.cs" />
     <Compile Include="Controllers\FileController.cs" />
+    <Compile Include="Controllers\JournalNoteController.cs" />
     <Compile Include="Managers\DocumentManager.cs" />
     <Compile Include="Managers\IDocumnentManager.cs" />
     <Compile Include="Models\DBEntityNames.cs" />
@@ -369,6 +370,7 @@
     <Content Include="Content\Images\add.png" />
     <Content Include="Content\Images\add2.png" />
     <Content Include="Content\Images\addicon.png" />
+    <Content Include="Content\Images\addicon.svg" />
     <Content Include="Content\Images\addInstance.png" />
     <Content Include="Content\Images\addNewForm.png" />
     <Content Include="Content\Images\addNewQuestion.png" />
@@ -401,14 +403,23 @@
     <Content Include="Content\Images\priorityicon.svg" />
     <Content Include="Content\Images\tasks.png" />
     <Content Include="Content\Images\update.png" />
+    <Content Include="Content\jasmine\jasmine.css" />
+    <Content Include="Content\jasmine\jasmine_favicon.png" />
     <Content Include="Content\jquery.treegrid.css" />
+    <Content Include="Content\ChildPage.css" />
     <Content Include="Content\noty\noty.css" />
     <Content Include="Content\noty\themes\mint.css" />
     <Content Include="HtmlTemplates\FormTemplate.html" />
     <Content Include="HtmlTemplates\InstructionsForActiveXOutlook.html" />
     <Content Include="HtmlTemplates\FormInstruction.html" />
+    <Content Include="karma.conf.js" />
     <Content Include="Scripts\child.js" />
+    <Content Include="Scripts\createprocess.js" />
     <Content Include="Scripts\formserver.js" />
+    <Content Include="Scripts\jasmine\boot.js" />
+    <Content Include="Scripts\jasmine\console.js" />
+    <Content Include="Scripts\jasmine\jasmine-html.js" />
+    <Content Include="Scripts\jasmine\jasmine.js" />
     <Content Include="Scripts\plugins\Albe_Timeline\data-albe-timeline.js" />
     <Content Include="Scripts\plugins\Albe_Timeline\jquery-albe-timeline.js" />
     <Content Include="Scripts\plugins\Albe_Timeline\jquery-albe-timeline.min.js" />
@@ -501,6 +512,7 @@
     <Content Include="Scripts\bootstrap-toggle.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="package.json" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Properties\PublishProfiles\OpenCaseManager - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\OpenCaseManager - Web Deploy.pubxml" />
@@ -601,9 +613,10 @@
     <Content Include="Views\Home\UnAuthorized.cshtml" />
     <Content Include="Views\PartialViews\Timeline.cshtml" />
     <Content Include="Views\PartialViews\Stamdata.cshtml" />
-    <Content Include="Web.config" />
     <Content Include="Views\Child\index.cshtml" />
+    <Content Include="Views\PartialViews\AddButton.cshtml" />
     <Content Include="Views\PartialViews\AddJournalNote.cshtml" />
+    <Content Include="Web.config" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -613,6 +626,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Specs\" />
     <Folder Include="Views\Account\" />
   </ItemGroup>
   <ItemGroup>

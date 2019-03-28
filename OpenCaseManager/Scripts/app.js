@@ -2,12 +2,11 @@
 
 (function (window) {
 
-    // api functions
-    function getProcess(getRole, showOnFrontPage) {
+    function getProcessAsync(filters){
         var query = {
             "type": "SELECT",
             "entity": "Process",
-            "filters": [
+            "filters": filters || [
                 {
                     "column": "Status",
                     "operator": "equal",
@@ -20,8 +19,22 @@
             "order": [{ "column": "title", "descending": false }]
         }
 
+        var result = API.service('records', query)
+            .done(function (response) {
+                return response;
+            })
+            .fail(function (e) {
+                showExceptionErrorMessage(e);
+            })
+        return result;
+    }
+
+    // api functions
+    function getProcess(getRole, showOnFrontPage) {
+        var filters;
+
         if (showOnFrontPage) {
-            query.filters.push(
+            filters = 
                 {
                     "column": "OnFrontPage",
                     "operator": "equal",
@@ -29,11 +42,9 @@
                     "valueType": "boolean",
                     "logicalOperator": "none"
                 }
-            );
         }
 
-        API.service('records', query)
-            .done(function (response) {
+        getProcessAsync(filters).done(function (response) {
                 if (getRole) {
                     renderData("instanceProcesses", response, getProcessHtml)
                     var graphId = $('#instanceProcesses').find(":selected").val();
@@ -96,14 +107,12 @@
 
         API.service('records/addInstance', data)
             .done(function (response) {
-
                 var result = JSON.parse(response);
                 var instanceId = result;
 
                 API.service('services/InitializeGraph', { instanceId: instanceId, graphId: graphId })
                     .done(function (response) {
-                        getMyInstances();
-                        getTasks();
+                        window.location.replace(`/instance?id=${instanceId}`);
                     })
                     .fail(function (e) {
                         showExceptionErrorMessage(e);
@@ -318,13 +327,14 @@
             });
     }
 
-    function getRoles(graphId, resolve) {
+    function getRoles(graphId, resolve, containerId) {
         //todo:mytasks-Check for Process Engine
         var data = { graphId: graphId };
         API.service('services/getProcessRoles', data)
             .done(function (response) {
                 var roles = JSON.parse(response);
                 roles = skipAutoRoles(roles);
+                console.log(roles);
                 if (roles.length > 0) {
                     if (resolve != null) {
                         resolve(roles);
@@ -338,7 +348,7 @@
                     }
                     API.service('records', query)
                         .done(function (response) {
-                            renderUserRolesData('userRoles', response, roles, getUserRoles);
+                            renderUserRolesData(containerId || 'userRoles', response, roles, getUserRoles);
                         })
                         .fail(function (e) {
                         });
@@ -736,9 +746,9 @@
         }
         $("#" + id).html("").append(list);
 
-        for (i = 0; i < result.length; i++) {
+      /*  for (i = 0; i < result.length; i++) {
             $('#multi-select-' + result[i].Id + '').multiselect();
-        }
+        }*/
     }
 
     function getUserRoles(role, users) {
@@ -1032,6 +1042,8 @@
     }
 
     var app = function () {
+        this.getProcessAsync = getProcessAsync;
+        this.getProcessHtml = getProcessHtml;
         this.api = window.API || {};
         this.responsible = getResponsible;
         this.getProcess = getProcess;
@@ -1060,6 +1072,7 @@
         this.showTaskWithNotePopup = showTaskWithNotePopup;
         this.hideDocumentWebpart = hideDocumentWebpart;
         this.setResponsible = setResponsible;
+        this.getUserRoles = getUserRoles;
     };
 
     getTranslations(locale);
