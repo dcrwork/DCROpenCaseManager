@@ -407,6 +407,7 @@
     <Content Include="Content\Images\InfoIconV2.svg" />
     <Content Include="Content\jasmine\jasmine.css" />
     <Content Include="Content\jasmine\jasmine_favicon.png" />
+    <Content Include="Content\journalnote.css" />
     <Content Include="Content\jquery.treegrid.css" />
     <Content Include="Content\ChildPage.css" />
     <Content Include="Content\noty\noty.css" />

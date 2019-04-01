@@ -1,6 +1,6 @@
 ﻿
 @{
-    ViewBag.Title = "CreateJurnalNote";
+    ViewBag.Title = "CreateJournalNote";
     var date = DateTime.Now.ToString("dd/MM/yyyy");
 }
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
@@ -11,16 +11,15 @@
 </style>
 
 <link type="text/css" rel="stylesheet" href="~/Content/journalnote.css" />
-<h2>Create Journal Note</h2>
 <form class="form-create-journal-note">
+    <h2>Create Journal Note</h2>
     <label>Title</label>
     <input type="text" name="journal-title" />
     <label value="@date">Date: <span id="dateLabel" name="dateLabel"> @date </span></label>
     <a data-toggle="modal" data-target="#changeDate">Edit date</a>
-    <lable>Note</lable>
+    <label>Note</label>
     <textarea></textarea>
-    <input type="submit" value="Create" />
-    <input type="submit" value="Save Draf" />
+    <input type="submit" class="btn-create" value="Create" />
 </form>
 
 <div class="modal fade" id="changeDate" role="dialog">
@@ -42,7 +41,7 @@
             </div>
             <!-- modal Footer -->
             <div class="modal-footer">
-                <button type="button" id="updateDate" data-toggle="modal" data-target="#changeDate" onclick="changedate('datepicker','dateLabel')"><span data-locale data-apply="text" data-key="changeDate">Change Date</span></button>
+                <button type="button" class="btn-update-date" id="updateDate" data-toggle="modal" data-target="#changeDate" onclick="changedate('datepicker','dateLabel')"><span data-locale data-apply="text" data-key="changeDate">Change Date</span></button>
             </div>
         </div>
     </div>
