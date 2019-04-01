@@ -143,7 +143,7 @@
             });
         }
         else {
-            API.service('services/ExecuteEvent', { taskId: data.taskId, instanceId: data.instanceId, graphId: data.graphId, simulationId: data.simulationId, eventId: data.eventId })
+            API.service('services/ExecuteEvent', { taskId: data.taskId, instanceId: data.instanceId, graphId: data.graphId, simulationId: data.simulationId, eventId: data.eventId, title: data.title, trueEventId: data.trueEventId })
                 .done(function (response) {
                     if (isMUS == null) {
                         if (isFrontPage) {
@@ -153,6 +153,7 @@
                         else {
                             getTasks(data.instanceId);
                             getInstanceDetails(data.instanceId);
+                            getJournalHistoryForInstance(data.instanceId);
                         }
                     }
                     else {
@@ -169,6 +170,7 @@
                         else {
                             getTasks(data.instanceId);
                             getInstanceDetails(data.instanceId);
+                            getJournalHistoryForInstance(data.instanceId);
                         }
                     } else {
                         MUS.musDetails(MUS.showMUS);
@@ -195,6 +197,30 @@
         API.service('records', query)
             .done(function (response) {
                 renderData("instanceDetails", response, getInstanceHtml)
+            })
+            .fail(function (e) {
+                showExceptionErrorMessage(e);
+            });
+    }
+
+    function getJournalHistoryForInstance(instanceId) {
+        var query = {
+            "type": "SELECT",
+            "entity": "JournalHistoryForASingleInstance(" + instanceId + ")",
+            "resultSet": ["*"],
+            "filters": [{
+                "column": "Responsible",
+                "operator": "equal",
+                "value": '$(loggedInUserId)',
+                "valueType": "string",
+                "logicalOperator": "and"
+            }],
+            "order": [{ "column": "EventDate", "descending": true }]
+        }
+
+        API.service('records', query)
+            .done(function (response) {
+                Task.getJournalHistory(response);
             })
             .fail(function (e) {
                 showExceptionErrorMessage(e);
@@ -273,6 +299,16 @@
                     showExceptionErrorMessage(e);
                 });
         }
+    }
+
+    function setResponsible() {
+        API.service('services/getResponsible', {})
+            .done(function (response) {
+                window.App.user = response[0];
+            })
+            .fail(function (e) {
+                showExceptionErrorMessage(e);
+            });
     }
 
     function getTranslations(locale) {
@@ -1010,6 +1046,7 @@
         this.responsible = getResponsible;
         this.getProcess = getProcess;
         this.getMyInstances = getMyInstances;
+        this.getJournalHistoryForInstance = getJournalHistoryForInstance;
         this.getTasks = getTasks;
         this.addInstance = addInstance;
         this.executeEvent = executeEvent;
@@ -1032,6 +1069,7 @@
         this.showInformationMessage = showInformationMessage;
         this.showTaskWithNotePopup = showTaskWithNotePopup;
         this.hideDocumentWebpart = hideDocumentWebpart;
+        this.setResponsible = setResponsible;
         this.getUserRoles = getUserRoles;
     };
 
@@ -1043,6 +1081,7 @@
 $(document).ready(function () {
     var promise = new Promise(function (resolve, reject) {
         App.responsible(resolve);
+        App.setResponsible();
     });
 
     promise.then(function () {

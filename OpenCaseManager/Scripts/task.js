@@ -8,7 +8,7 @@
         var query = {
             "type": "SELECT",
             "entity": entityName,
-            "resultSet": ["EventId", "Responsible", "InstanceId", "EventTitle", "Due", "SimulationId", "GraphId", "IsPending", "IsExecuted", "CanExecute", "ResponsibleName", "Description", "IsUIEvent", "UIEventValue", "EventType", "[Type]", "[Case]", "CaseLink", "CaseTitle"],
+            "resultSet": ["EventId", "TrueEventId", "Responsible", "InstanceId", "EventTitle", "Due", "SimulationId", "GraphId", "IsPending", "IsExecuted", "CanExecute", "ResponsibleName", "Description", "IsUIEvent", "UIEventValue", "EventType", "[Type]", "[Case]", "CaseLink", "CaseTitle"],
             "filters": new Array(),
             "order": [{ "column": "IsPending", "descending": true }, { "column": "Due", "descending": true }, { "column": "IsEnabled", "descending": true }, { "column": "IsExecuted", "descending": false },
             { "column": "EventTitle", "descending": false }]
@@ -60,6 +60,15 @@
             });
     }
 
+    function getJournalHistory(response) {
+        var result = JSON.parse(response);
+        var doneList = '';
+        for (i = 0; i < result.length; i++) {
+            doneList += getTaskHtmlForDoneTasks(result[i], false);
+        }
+        $('.done-tasks').html('').append(doneList);
+    }
+
     // set single Instance Filter
     function showSingleInstanceFilter() {
         $('#singleInstanceFilters').show();
@@ -79,17 +88,23 @@
 
     // tasks html
     function tasksHtml(id, response, showCaseInfo) {
-        var result = JSON.parse(response)
-        var list = "";
-        if (result.length === 0)
-            list = "<tr class=\"trStyleClass\"><td colspan=\"100%\"> " + translations.NoRecordFound + " </td></tr>";
-        else {
+        var result = JSON.parse(response);
+        var user = window.App.user;
+        var ownList = "";
+        var othersList = "";
+        if (result.length === 0) {
+            ownList = "<tr class=\"trStyleClass\"><td colspan=\"100%\"> " + translations.NoRecordFound + " </td></tr>";
+        } else {
             for (i = 0; i < result.length; i++) {
-                if (i == 0) console.log(result[i]);
-                list += getTaskHtml(result[i], showCaseInfo);
+                if (result[i].Responsible != user.Id) {
+                    if (result[i].IsExecuted == false) othersList += getTaskHtmlForOthersTasks(result[i], showCaseInfo);
+                } else {
+                    ownList += getTaskHtml(result[i], showCaseInfo);
+                }
             }
         }
-        $("#" + id).html("").append(list);
+        $("#" + id).html("").append(ownList);
+        $('.others-tasks').html('').append(othersList);
 
         // expand/collapse description
         $('tr[name="description"]').on('click', function (e) {
@@ -128,12 +143,21 @@
                     var graphId = elem.attr('graphId');
                     var simulationId = elem.attr('simulationId');
                     var uievent = elem.attr('uievent');
-                    var data = { taskId: taskId, instanceId: instanceId, graphId: graphId, simulationId: simulationId, eventId: eventId };
+                    var title = elem.next('.title').html();
+                    var trueEventId = elem.attr('trueEventId');
+                    var data = {
+                        taskId: taskId,
+                        instanceId: instanceId,
+                        graphId: graphId,
+                        simulationId: simulationId,
+                        eventId: eventId,
+                        title: title,
+                        trueEventId: trueEventId
+                    };
 
                     if (eventType === "TasksWNote") {
                         App.showTaskWithNotePopup(data, elem, showCaseInfo, uievent);
-                    }
-                    else {
+                    } else {
                         App.executeEvent(data, showCaseInfo, uievent);
                     }
 
@@ -223,6 +247,67 @@
         })
     }
 
+    function getTaskHtmlForDoneTasks(item, isFrontPage) {
+        var returnHtml = '';
+        var taskStatusCssClass = 'includedTask';
+
+        var caseTitle = item.Title;
+        var caseLink = '#';
+        
+        var instanceLink = "#";
+        if (isFrontPage) {
+            instanceLink = "../Instance?id=" + item.InstanceId;
+        }
+
+        returnHtml = '<tr isfrontPage="' + isFrontPage + '" name="description" class="trStyleClass">' +
+            '<td class="' + taskStatusCssClass + '"></td >' +
+            '<td><a href="' + instanceLink + '">' + item.Title + '</a></td>' +
+            '<td>' + item.ResponsibleName.substr(0, 1).toUpperCase() + item.ResponsibleName.substr(1) + '</td>' +
+            '<td>' + moment(new Date(item.EventDate)).format('L LT') + '</td></tr>';
+        
+        if (item.Description !== '' && !isFrontPage) {
+            returnHtml += '<tr class="showMe" style="display:none"><td></td><td colspan="100%">' + item.Description + '</td></tr>';
+        } else if (item.Description !== '' && isFrontPage) {
+            returnHtml += '<tr class="showMe" style="display:none"><td></td><td colspan="100%"><p>' + translations.Description + " : " + item.Description + '</td></tr>' +
+                '<tr class="showMe" style="display:none"><td></td><td colspan="100%"> ' + translations.CaseNo + ' :  <a target="_blank" href="' + caseLink + '">' + caseTitle + '</a> </td></tr>';
+        }
+        return returnHtml;
+    }
+
+    function getTaskHtmlForOthersTasks(item, isFrontPage) {
+        var returnHtml = '';
+        var taskStatusCssClass = 'includedTask';
+        var taskStatus = (item.IsPending) ? "<img src='../Content/Images/priorityicon.svg' height='16' width='16'/>" : '&nbsp;';
+        
+        var caseTitle = item.CaseTitle;
+        var caseLink = '#';
+
+        if (item.CaseLink !== null) {
+            caseLink = item.CaseLink;
+        }
+        if (item.Case !== null) {
+            caseTitle = item.Case + ' - ' + item.CaseTitle;
+        }
+        var instanceLink = "#";
+        if (isFrontPage) {
+            instanceLink = "../Instance?id=" + item.InstanceId;
+        }
+
+        returnHtml = '<tr isfrontPage="' + isFrontPage + '" name="description" class="trStyleClass">' +
+            '<td class="' + taskStatusCssClass + '">' + taskStatus + '</td >' +
+            '<td><a href="' + instanceLink + '">' + item.EventTitle + '</a></td>' +
+            '<td>' + item.ResponsibleName.substr(0, 1).toUpperCase() + item.ResponsibleName.substr(1) + '</td>' +
+            '<td>' + (item.Due == null ? '&nbsp;' : moment(new Date(item.Due)).format('L LT')) + '</td></tr>';
+
+        if (item.Description !== '' && !isFrontPage) {
+            returnHtml += '<tr class="showMe" style="display:none"><td></td><td colspan="100%">' + item.Description + '</td></tr>';
+        } else if (item.Description !== '' && isFrontPage) {
+            returnHtml += '<tr class="showMe" style="display:none"><td></td><td colspan="100%"><p>' + translations.Description + " : " + item.Description + '</td></tr>' +
+                '<tr class="showMe" style="display:none"><td></td><td colspan="100%"> ' + translations.CaseNo + ' :  <a target="_blank" href="' + caseLink + '">' + caseTitle + '</a> </td></tr>';
+        }
+        return returnHtml;
+    }
+
     // html of each task
     function getTaskHtml(item, isFrontPage) {
         var returnHtml = '';
@@ -230,8 +315,7 @@
         var taskStatus = '&nbsp;';
         if (item.IsPending) {
             taskStatus = "<img src='../Content/Images/priorityicon.svg' height='16' width='16'/>";
-        }
-        else if (item.IsExecuted) {
+        } else if (item.IsExecuted) {
             taskStatus = 'b';
             taskStatusCssClass = 'executedTask';
         }
@@ -251,12 +335,8 @@
 
         returnHtml = '<tr isfrontPage="' + isFrontPage + '" name="description" class="trStyleClass">' +
             '<td class="' + taskStatusCssClass + '">' + taskStatus + '</td >' +
-            '<td><a class="event-title" href="' + instanceLink + '">' +
-            item.EventTitle +
-            '</a></td>' +
+            '<td><a href="' + instanceLink + '">' + item.EventTitle + '</a></td>' +
             '<td>' + (item.Due == null ? '&nbsp;' : moment(new Date(item.Due)).format('L LT')) + '</td>' +
-            // TODO -> måske skal dette bruges senere til afventende (hente personen ud der ventes på)
-           /* '<td>' + item.ResponsibleName.substr(0, 1).toUpperCase()+item.ResponsibleName.substr(1) + '</td>' +*/
             '<td>';
         if (item.CanExecute && item.Type.toLowerCase() !== "form") {
             returnHtml += '<button';
@@ -264,10 +344,10 @@
                 returnHtml += ' uievent="' + item.UIEventValue + '"';
             }
             returnHtml += ' type="button" taskid="' + item.EventId + '" eventType= "' + item.EventType + '" graphid="' + item.GraphId + '" simulationid="' + item.SimulationId + '" instanceid="'
-                + item.InstanceId + '" id="' + item.EventId + '" name="execute" value="execute" class="taskExecutionButton">Udført</button><div class="title" style="display: none;">' + item.EventTitle + '</div> <div class="description" style="display: none;">' + item.Description + '</div>';
+                + item.InstanceId + '" id="' + item.EventId + '" trueEventId="' + item.TrueEventId + '"name="execute" value="execute" class="taskExecutionButton">Udført</button><div class="title" style="display: none;">' + item.EventTitle + '</div> <div class="description" style="display: none;">' + item.Description + '</div>';
         }
         else if (item.CanExecute && item.Type.toLowerCase() == "form") {
-            returnHtml += '<button title="Open" eventType= "' + item.EventType + '" graphid="' + item.GraphId + '" simulationid="' + item.SimulationId + '" token="' + item.Token + '" eventId="' + item.EventId + '" instanceid="' + item.InstanceId + '" id="openDcrForm" class="btn btn-info taskExecutionButton" name="btnDcrFormServer"><i class="fas fa-external-link-alt"></i></button><div class="title" style="display: none;">' + item.EventTitle + '</div> <div class="description" style="display: none;">' + item.Description + '</div>';
+            returnHtml += '<button title="Open" eventType= "' + item.EventType + '" graphid="' + item.GraphId + '" simulationid="' + item.SimulationId + '" token="' + item.Token + '" eventId="' + item.EventId + '" trueEventId="' + item.TrueEventId + '" instanceid="' + item.InstanceId + '" id="openDcrForm" class="btn btn-info taskExecutionButton" name="btnDcrFormServer"><i class="fas fa-external-link-alt"></i></button><div class="title" style="display: none;">' + item.EventTitle + '</div> <div class="description" style="display: none;">' + item.Description + '</div>';
         }
         returnHtml += '</td>' + '</tr>';
 
@@ -288,6 +368,7 @@
         this.showSingleInstanceFilter = showSingleInstanceFilter;
         this.hideTableColumns = hideTableColumns;
         this.tasksHtml = tasksHtml;
+        this.getJournalHistory = getJournalHistory;
     };
     return window.Task = new task;
 }(window));

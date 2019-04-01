@@ -25,7 +25,7 @@ namespace OpenCaseManager.Managers
 
             switch (fileType)
             {
-                case "Personal":
+                case "PersonalDocument":
                     DirectoryInfo directoryInfo = new DirectoryInfo(Configurations.Config.PersonalFileLocation);
                     if (!directoryInfo.Exists)
                     {
@@ -39,7 +39,7 @@ namespace OpenCaseManager.Managers
                     }
                     filePath = directoryInfo.FullName;
                     break;
-                case "Instance":
+                case "InstanceDocument":
                     directoryInfo = new DirectoryInfo(Configurations.Config.InstanceFileLocation);
                     if (!directoryInfo.Exists)
                     {
@@ -52,7 +52,33 @@ namespace OpenCaseManager.Managers
                     }
                     filePath = directoryInfo.FullName;
                     break;
-                case "JournalNote":
+                case "JournalNoteImportant":
+                    directoryInfo = new DirectoryInfo(Configurations.Config.JournalNoteFileLocation);
+                    if (!directoryInfo.Exists)
+                    {
+                        directoryInfo.Create();
+                    }
+                    directoryInfo = new DirectoryInfo(Configurations.Config.JournalNoteFileLocation + "\\" + instanceId);
+                    if (!directoryInfo.Exists)
+                    {
+                        directoryInfo.Create();
+                    }
+                    filePath = directoryInfo.FullName;
+                    break;
+                case "JournalNoteLittle":
+                    directoryInfo = new DirectoryInfo(Configurations.Config.JournalNoteFileLocation);
+                    if (!directoryInfo.Exists)
+                    {
+                        directoryInfo.Create();
+                    }
+                    directoryInfo = new DirectoryInfo(Configurations.Config.JournalNoteFileLocation + "\\" + instanceId);
+                    if (!directoryInfo.Exists)
+                    {
+                        directoryInfo.Create();
+                    }
+                    filePath = directoryInfo.FullName;
+                    break;
+                case "JournalNoteBig":
                     directoryInfo = new DirectoryInfo(Configurations.Config.JournalNoteFileLocation);
                     if (!directoryInfo.Exists)
                     {
@@ -89,7 +115,7 @@ namespace OpenCaseManager.Managers
             if (fileType == "Temp")
                 fileLink = filePath;
 
-            Common.AddDocument(givenFileName, fileType, fileLink, instanceId, manager, dataModelManager);
+            Common.AddDocument(givenFileName, fileType, fileLink, instanceId, DateTime.Now, manager, dataModelManager); //TODO: DateTime.Now should be changed when it is implemented that we can change the date for a journalnote
             return filePath;
         }
     }
