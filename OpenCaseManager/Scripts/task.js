@@ -136,7 +136,7 @@
 
         $('#executeTask').on('click', function (e) {
             console.log(elem);
-            /*
+            
             var eventId = elem.attr('id');
             var eventType = elem.attr('eventType');
             var taskId = elem.attr('taskId');
@@ -144,7 +144,17 @@
             var graphId = elem.attr('graphId');
             var simulationId = elem.attr('simulationId');
             var uievent = elem.attr('uievent');
-            var data = { taskId: taskId, instanceId: instanceId, graphId: graphId, simulationId: simulationId, eventId: eventId };
+            var title = elem.next('.title').html();
+            var trueEventId = elem.attr('trueEventId');
+            var data = {
+                taskId: taskId,
+                instanceId: instanceId,
+                graphId: graphId,
+                simulationId: simulationId,
+                eventId: eventId,
+                title: title,
+                trueEventId: trueEventId
+            };
 
             if (eventType === "TasksWNote") {
                 App.showTaskWithNotePopup(data, elem, showCaseInfo, uievent);
@@ -153,7 +163,7 @@
                 App.executeEvent(data, showCaseInfo, uievent);
             }
             $('#executeTaskModal').modal('toggle');
-            e.preventDefault();*/
+            e.preventDefault();
         });
 
         // open dcr form
