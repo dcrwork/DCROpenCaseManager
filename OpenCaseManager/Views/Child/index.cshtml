@@ -11,7 +11,7 @@
 </div>
 
 @Html.Partial("~/Views/PartialViews/AddButton.cshtml", new ViewDataDictionary { { "add-text", "Tilføj dokument" } })
-@Html.Partial("~/Views/PartialViews/AddButton.cshtml", new ViewDataDictionary { { "add-text", "Tilføj journalnotat" } })
+@Html.Partial("~/Views/PartialViews/AddButton.cshtml", new ViewDataDictionary { { "add-text", "Tilføj journalnotat" }, {"onClick", "CreateJournalNoteView()" } })
 
 <div class="modal fade" id="create-process-modal" role="dialog">
     <div class="modal-dialog">
