@@ -36,7 +36,6 @@
         padding: 0;
     }
 
-
     .nav > li > a {
         padding: 0px 15px;
     }
@@ -45,53 +44,72 @@
         padding: 15px 15px;
     }
 
+    .wholeActionsPage {
+        display: flex;
+        flex-direction: row;
+    }
+
+    .activitiesTitleBox {
+        margin-left: 100px;
+    }
+
+    .stamdataBox {       
+        margin-top: 20px;
+    }
+
+    .buttonsStamdataBox {
+        margin: 40px 0px 0px 60px;
+    }
+
+    .table > thead > tr > th,
+    .table > tbody > tr > th,
+    .table > tfoot > tr > th,
+    .table > thead > tr > td,
+    .table > tbody > tr > td,
+    .table > tfoot > tr > td {
+        border-top: none;
+    }
 </style>
 
 @{
     ViewBag.Title = "Instance";
 }
 
-@Html.Partial("~/Views/PartialViews/Instruction.cshtml")
-
-@Html.Partial("~/Views/PartialViews/AddButton.cshtml", new ViewDataDictionary { { "add-text", "Tilføj dokument" } })
-@Html.Partial("~/Views/PartialViews/AddButton.cshtml", new ViewDataDictionary { { "add-text", "Tilføj journalnotat" } })
 
 
-@Html.Partial("~/Views/PartialViews/Stamdata.cshtml")
-@Html.Partial("~/Views/PartialViews/AddJournalNote.cshtml")
-@Html.Partial("~/Views/PartialViews/TasksWithNote.cshtml")
 
-<div class="row tableDataRow">
-    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-        <div class="phaseBlock">
-            <ul class="phaseUl" id="processPhase"></ul>
+
+<div class="wholeActionsPage">
+    <div class="buttonsStamdataBox">
+        @Html.Partial("~/Views/PartialViews/AddButton.cshtml", new ViewDataDictionary { { "add-text", "Tilføj dokument" } })
+        @Html.Partial("~/Views/PartialViews/AddButton.cshtml", new ViewDataDictionary { { "add-text", "Tilføj journalnotat" } })
+        <div class="stamdataBox">
+            @Html.Partial("~/Views/PartialViews/Stamdata.cshtml")
         </div>
     </div>
-</div>
 
-<div class="container">
-    <div class="row tableDataRow">
-        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+    <div class="activitiesTitleBox">
+        <div class="row tableDataRow">
             <table class="table table-responsive entityDetailTable">
                 <tr>
                     <th class="caseTitle"><span id="instanceTitle"></span></th>
-                    <td><span style="float:right;display:none;" class="caseLink"><a target="_blank" id="entityLink" href="#"><img width="12px" src="../content/images/caseLink.png"></a></span><span style="float:right;display:none;padding-right:10px;" class="caseNum"><span id="instanceCaseNo"></span></span></td>
                 </tr>
             </table>
-        </div>
-    </div><!-- Row End -->
+        </div><!-- Row End -->
 
-    <div class="row tableDataRow">
-        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
-                    <li class="nav-item active">
-                        <a class="nav-link" id="pills-activitiesb" data-toggle="tab" href="#pills-activities" role="tab" aria-controls="pills-activities" aria-selected="false">Activities</a>
-                    </li>
-               
-                    <li class="nav-item">
-                        <a class="nav-link" id="pills-timeline-tab" data-toggle="tab" href="#pills-timeline" role="tab" aria-controls="pills-timeline" aria-selected="false">Timeline</a>
-                    </li>
-                </ul>
+        <div class="row tableDataRow">
+            <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                <li class="nav-item active">
+                    <a class="nav-link" id="pills-activitiesb" data-toggle="tab" href="#pills-activities" role="tab" aria-controls="pills-activities" aria-selected="false">Aktiviteter</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" id="pills-timeline-tab" data-toggle="tab" href="#pills-timeline" role="tab" aria-controls="pills-timeline" aria-selected="false">Tidslinje</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="pills-document-tab" data-toggle="tab" href="#pills-document" role="tab" aria-controls="pills-document" aria-selected="false">Dokumenter</a>
+                </li>
+            </ul>
             <div class="tab-content" id="pills-tabContent">
                 <div class="tab-pane fade in active" id="pills-activities" role="tabpanel" aria-labelledby="pills-activities">
                     @Html.Partial("~/Views/PartialViews/Tasks.cshtml")
@@ -99,12 +117,13 @@
                 <div class="tab-pane fade in" id="pills-timeline" role="tabpanel" aria-labelledby="pills-timeline">
                     @Html.Partial("~/Views/PartialViews/Timeline.cshtml")
                 </div>
+                <div class="tab-pane fade in" id="pills-document" role="tabpanel" aria-labelledby="pills-document">
+                    @Html.Partial("~/Views/PartialViews/Document.cshtml")
+                </div>
             </div>
-        </div><!-- Cols Div End -->
-    </div><!-- Row Div End -->
-</div>
-
-@Html.Partial("~/Views/PartialViews/Document.cshtml")
+        </div>
+    </div>
+</div><!-- Row Div End -->   
 
 <script src="~/Scripts/instance.js"></script>
 

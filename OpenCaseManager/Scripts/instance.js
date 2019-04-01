@@ -8,8 +8,9 @@ $(document).ready(function () {
 
     promise.then(function (result) {
         var instanceId = App.getParameterByName("id", window.location.href);
-        App.getPhases(instanceId);
+        //App.getPhases(instanceId);
         App.getTasks(instanceId);
+        App.getJournalHistoryForInstance(instanceId);
         App.getInstanceDetails(instanceId);
         $('#addNewDocumentText').text(translations.Documents);
     }, function (err) {

@@ -1,60 +1,138 @@
-﻿<h4 class="instancesHeading">Mine aktiviteter</h4>
-<table class="table tasksTable table-striped" id="tasksTable">
-    <thead>
-        <tr class="trStyleClass">
-            <th width="15%"><span data-locale data-apply="text" data-key="Status">Status</span></th>
-            <th width=""><span data-locale data-apply="text" data-key="Title">Title</span></th>
-            <th width=""><span data-locale data-apply="text" data-key="DueDate">Due Date</span></th>
-            <th width=""><span data-locale data-apply="text" data-key="Responsible">Responsible</span></th>
-            <th width="9%"><span data-locale data-apply="text" data-key="Action">Action</span></th>
-        </tr>
-        <tr class="trStyleClass" id="singleInstanceFilters" style="display:none;">
-            <th width="15%">
-                <select id="taskStatusDropDown">
-                    <option data-locale data-apply="text" data-key="Default" selected value="0">Default</option>
-                    <option data-locale data-apply="text" data-key="OnlyEnabled" value="1">Only Enabled</option>
-                </select>
-            </th>
-            <th width=""></th>
-            <th width=""></th>
-            <th width="">
-                <select id="responsibleDropdown">
-                    <option data-locale data-apply="text" data-key="Default" selected value="0">Default</option>
-                    <option data-locale data-apply="text" data-key="MyTasks" value="1">My Tasks</option>
-                </select>
-            </th>
-            <th width="9%"></th>
-        </tr>
-    </thead>
-    <tbody id="tasks"></tbody>
-</table>
+﻿<style>
+    .info-icon {
+        padding: 0px 0px 0px 8px;
+    }
 
-<h4 class="instancesHeading fold-down-headline"><span id="collapse-icon" class="glyphicon glyphicon-chevron-down"></span>Afventende</h4>
-<table class="table tasksTable table-striped">
-    <thead>
-        <tr class="trStyleClass">
-            <th width="15%"></th>
-            <th width=""><span data-locale data-apply="text" data-key="Title">Title</span></th>
-            <th width=""><span data-locale data-apply="text" data-key="Responsible">Responsible</span></th>
-            <th width=""><span data-locale data-apply="text" data-key="DueDate">Due Date</span></th>
-        </tr>
-    </thead>
-</table>
+    .activitiesBox {
+        width: 50vw;
+        padding: 30px 0px 0px 0px;
+    }
 
-<h4 class="instancesHeading fold-down-headline"><span id="collapse-icon" class="glyphicon glyphicon-chevron-down"></span>Afsluttede aktiviteter</h4>
-<table class="table tasksTable table-striped">
-    <thead>
-        <tr class="trStyleClass">
-            <th width="15%"></th>
-            <th width=""><span data-locale data-apply="text" data-key="Title">Title</span></th>
-            <th width=""><span data-locale data-apply="text" data-key="DueDate">Due Date</span></th>
-        </tr>
-    </thead>
-</table>
+    .scrollTable1 {
+        max-height: 45vh;
+        overflow-x: auto;
+        text-align: justify;
+    }
+
+    .scrollTable2 {
+        max-height: 25vh;
+        overflow-x: auto;
+        text-align: justify;
+    }
+
+    #collapse-icon{
+        cursor: pointer;
+    }
+
+    .hoverInfo {
+        position: relative;
+        display: inline-block;
+    }
+
+    .hoverInfo .hoverInfoText {
+        visibility: hidden;
+        width: 120px;
+        font-size: 14px;
+        background-color: #EFEFEF;
+        color: #4a4a4a;
+        padding: 10px;
+        text-align: start;
+        border-radius: 2px;
+        position: absolute;
+        z-index: 1;
+        top: -5px;
+        left: 140%;
+    }
+
+        .hoverInfo .hoverInfoText::after {
+            content: "";
+            position: absolute;
+            top: 25%;
+            right: 100%;
+            margin-top: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: transparent #EFEFEF transparent transparent;
+        }
+
+    .hoverInfo:hover .hoverInfoText {
+        visibility: visible;
+    }
+
+</style>
+
+<div class="activitiesBox">
+    <h4 class="instancesHeading">Mine aktiviteter<span class="hoverInfo"><img src='../Content/Images/InfoIconV2.svg' class="info-icon"/><span class="hoverInfoText">Dine aktiviteter som venter på at blive udført.</span></span></h4>
+    <div class="scrollTable1">
+        <table class="table tasksTable table-striped" id="tasksTable">
+            <thead>
+                <tr class="trStyleClass">
+                    <th width="15%"></th>
+                    <th width=""><span data-locale data-apply="text" data-key="Title"></span></th>
+                    <th width="18%"><span data-locale data-apply="text" data-key="DueDate"></span></th>
+                    <th width="10%"><span data-locale data-apply="text" data-key="Action"></span></th>
+                </tr> 
+                <!-- TODO -> Skal måske bruges senere når vi laver filtrering.
+                    <tr class="trStyleClass" id="singleInstanceFilters" style="display:none;">
+                    <th width="15%">
+                        <select id="taskStatusDropDown">
+                            <option data-locale data-apply="text" data-key="Default" selected value="0">Default</option>
+                            <option data-locale data-apply="text" data-key="OnlyEnabled" value="1">Only Enabled</option>
+                        </select>
+                    </th>
+                    <th width=""></th>
+                    <th width=""></th>
+                    <th width="">
+                        <select id="responsibleDropdown">
+                            <option data-locale data-apply="text" data-key="Default" selected value="0">Default</option>
+                            <option data-locale data-apply="text" data-key="MyTasks" value="1">My Tasks</option>
+                        </select>
+                    </th>
+                    <th width="9%"></th>
+                </tr>-->
+            </thead>
+            <tbody id="tasks"></tbody>
+        </table>
+    </div>
+
+    <h4 class="instancesHeading fold-down-headline"><span id="collapse-icon" class="glyphicon glyphicon-chevron-right"></span>Afventende<span class="hoverInfo"><img src='../Content/Images/InfoIconV2.svg' class="info-icon" /><span class="hoverInfoText">Aktiviteter du afventer at andre udfører.</span></span></h4>
+    <div class="scrollTable2">
+        <table class="table tasksTable table-striped hiddenTaskTable">
+            <thead>
+                <tr class="trStyleClass">
+                    <th width="15%"></th>
+                    <th width=""><span data-locale data-apply="text" data-key="Title"></span></th>
+                    <th width=""><span data-locale data-apply="text" data-key="Responsible"></span></th>
+                    <th width="10%"><span data-locale data-apply="text" data-key="DueDate"></span></th>
+                </tr>
+            </thead>
+          <tbody class="others-tasks"></tbody>
+        </table>
+    </div>
+
+    <h4 class="instancesHeading fold-down-headline"><span id="collapse-icon" class="glyphicon glyphicon-chevron-right"></span>Afsluttede aktiviteter<span class="hoverInfo"><img src='../Content/Images/InfoIconV2.svg' class="info-icon" /><span class="hoverInfoText">Aktiviteter du har udført.</span></span></h4>
+    <div class="scrollTable2">
+    <table class="table tasksTable table-striped hiddenTaskTable">
+        <thead>
+            <tr class="trStyleClass">
+                <th width="15%"></th>
+                <th width=""><span data-locale data-apply="text" data-key="Title">Title</span></th>
+                <th width=""><span data-locale data-apply="text">Dato</span></th>
+            </tr>
+        </thead>
+      <tbody class="done-tasks"></tbody>
+    </table>
+</div>
+</div>
 
 <script>
+    $(document).ready(function () {
+        var table = $('.hiddenTaskTable');
+        table.hide();
+    });
+
     $(document).on('click', '.fold-down-headline', function () {
-        var table = $(this).next('table');
+        var table = $(this).next('.scrollTable2').find('table');
         var icon = $(this).find('.glyphicon');
         if (table.is(':visible')) {
             table.hide();

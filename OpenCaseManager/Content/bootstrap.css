@@ -1410,7 +1410,6 @@ a.bg-danger:focus {
 .page-header {
   padding-bottom: 9px;
   margin: 40px 0 20px;
-  border-bottom: 1px solid #eee;
 }
 ul,
 ol {
@@ -2274,7 +2273,7 @@ th {
   padding: 8px;
   line-height: 1.42857143;
   vertical-align: top;
-  border-top: 1px solid #ddd;
+  border-top: 1px solid #ddd
 }
 .table > thead > tr > th {
   vertical-align: bottom;
@@ -4016,7 +4015,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
   max-width: none;
 }
 .nav-tabs {
-  border-bottom: 1px solid #ddd;
+  
 }
 .nav-tabs > li {
   float: left;
