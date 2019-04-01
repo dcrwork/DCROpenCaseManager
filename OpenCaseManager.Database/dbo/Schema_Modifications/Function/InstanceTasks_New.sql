@@ -1,5 +1,5 @@
 ﻿-- =============================================
--- Author:		Muddassar Latif
+-- Author: Jonathan E. Mogensen, Thais Kure Corneliusen  
 -- Create date: 20-04-2018
 -- Description:	Get Instances tasks based on responsible can execute or not
 -- =============================================
