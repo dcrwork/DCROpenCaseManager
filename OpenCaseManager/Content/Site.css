@@ -156,18 +156,10 @@ ul.events-log-ul {
 }
 
 table.entityDetailTable tr th {
-    color: #007ea4;
-    width: 80%;
+    color: #4A4A4A;
+    font-size: xx-large;
+    padding: 0px;
 }
-
-table.entityDetailTable tbody tr {
-    background: #f9f9f9;
-}
-
-    table.entityDetailTable tbody tr th,
-    table.entityDetailTable tbody tr td {
-        border-bottom: 1px solid #ddd;
-    }
 
 table.entityDetailTable {
     margin: 0px;

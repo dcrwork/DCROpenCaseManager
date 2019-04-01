@@ -394,6 +394,7 @@
     <Content Include="Content\Images\headerImg.jpg" />
     <Content Include="Content\Images\ie-internet-options.jpg" />
     <Content Include="Content\Images\ie-security-settings.jpg" />
+    <Content Include="Content\Images\InfoIcon.svg" />
     <Content Include="Content\Images\loader.gif" />
     <Content Include="Content\Images\logo.png" />
     <Content Include="Content\Images\logokkDkHeader.png" />
@@ -403,6 +404,7 @@
     <Content Include="Content\Images\priorityicon.svg" />
     <Content Include="Content\Images\tasks.png" />
     <Content Include="Content\Images\update.png" />
+    <Content Include="Content\Images\InfoIconV2.svg" />
     <Content Include="Content\jasmine\jasmine.css" />
     <Content Include="Content\jasmine\jasmine_favicon.png" />
     <Content Include="Content\jquery.treegrid.css" />

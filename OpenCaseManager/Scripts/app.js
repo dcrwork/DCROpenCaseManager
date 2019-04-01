@@ -153,7 +153,6 @@
                         else {
                             getTasks(data.instanceId);
                             getInstanceDetails(data.instanceId);
-                            getPhases(data.instanceId);
                             getJournalHistoryForInstance(data.instanceId);
                         }
                     }
@@ -171,7 +170,6 @@
                         else {
                             getTasks(data.instanceId);
                             getInstanceDetails(data.instanceId);
-                            getPhases(data.instanceId);
                             getJournalHistoryForInstance(data.instanceId);
                         }
                     } else {
