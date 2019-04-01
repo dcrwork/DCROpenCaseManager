@@ -20,7 +20,7 @@
         text-align: justify;
     }
 
-    #collapse-icon{
+    #collapse-icon {
         cursor: pointer;
     }
 
@@ -29,40 +29,83 @@
         display: inline-block;
     }
 
-    .hoverInfo .hoverInfoText {
-        visibility: hidden;
-        width: 120px;
-        font-size: 14px;
-        background-color: #EFEFEF;
-        color: #4a4a4a;
-        padding: 10px;
-        text-align: start;
-        border-radius: 2px;
-        position: absolute;
-        z-index: 1;
-        top: -5px;
-        left: 140%;
-    }
-
-        .hoverInfo .hoverInfoText::after {
-            content: "";
+        .hoverInfo .hoverInfoText {
+            visibility: hidden;
+            width: 120px;
+            font-size: 14px;
+            background-color: #EFEFEF;
+            color: #4a4a4a;
+            padding: 10px;
+            text-align: start;
+            border-radius: 2px;
             position: absolute;
-            top: 25%;
-            right: 100%;
-            margin-top: -5px;
-            border-width: 5px;
-            border-style: solid;
-            border-color: transparent #EFEFEF transparent transparent;
+            z-index: 1;
+            top: -5px;
+            left: 140%;
         }
 
-    .hoverInfo:hover .hoverInfoText {
-        visibility: visible;
+            .hoverInfo .hoverInfoText::after {
+                content: "";
+                position: absolute;
+                top: 25%;
+                right: 100%;
+                margin-top: -5px;
+                border-width: 5px;
+                border-style: solid;
+                border-color: transparent #EFEFEF transparent transparent;
+            }
+
+        .hoverInfo:hover .hoverInfoText {
+            visibility: visible;
+        }
+
+    .executeModalButtons button {
+        color: white;
+        border: none;
+        padding: 5px;
+        border-radius: 3px;
+        margin: 0 5px 0 5px;
+        width: 80px;
     }
+
+    .executeModalButtons{
+        display:flex;
+        justify-content: center;
+        border: none;
+        padding: 0 15px 15px 15px;
+    }
+
+    #executeTaskModal .modal-content{
+        width: 40vw;
+        max-width: 400px;
+        min-width: 300px;
+        border-radius: 4px;
+    }
+
+    #executeTaskModal .modal-body{
+        padding: 20px 15px 5px 15px;
+        text-align: center;
+    }
+
+    #executeTaskModal .modal-body>p{
+        font-size: 16px;
+        color: #4a4a4a;
+    }
+
+    .executeButton {
+        background-color: #63C647;
+    }
+
+    .cancelButton {
+        background-color: #E04141;
+    }
+
+
 
 </style>
 
 <div class="activitiesBox">
-    <h4 class="instancesHeading">Mine aktiviteter<span class="hoverInfo"><img src='../Content/Images/InfoIconV2.svg' class="info-icon"/><span class="hoverInfoText">Dine aktiviteter som venter på at blive udført.</span></span></h4>
+    <h4 class="instancesHeading">Mine aktiviteter<span class="hoverInfo"><img src='../Content/Images/InfoIconV2.svg' class="info-icon" /><span class="hoverInfoText">Dine aktiviteter som venter på at blive udført.</span></span></h4>
     <div class="scrollTable1">
         <table class="table tasksTable table-striped" id="tasksTable">
             <thead>
@@ -71,7 +114,7 @@
                     <th width=""><span data-locale data-apply="text" data-key="Title"></span></th>
                     <th width=""><span data-locale data-apply="text" data-key="DueDate"></span></th>
                     <th width="9%"><span data-locale data-apply="text" data-key="Action"></span></th>
-                </tr> 
+                </tr>
                 <!-- TODO -> Skal måske bruges senere når vi laver filtrering.
                     <tr class="trStyleClass" id="singleInstanceFilters" style="display:none;">
                     <th width="15%">
@@ -111,16 +154,33 @@
 
     <h4 class="instancesHeading fold-down-headline"><span id="collapse-icon" class="glyphicon glyphicon-chevron-right"></span>Afsluttede aktiviteter<span class="hoverInfo"><img src='../Content/Images/InfoIconV2.svg' class="info-icon" /><span class="hoverInfoText">Aktiviteter du har udført.</span></span></h4>
     <div class="scrollTable2">
-    <table class="table tasksTable table-striped hiddenTaskTable">
-        <thead>
-            <tr class="trStyleClass">
-                <th width="15%"></th>
-                <th width=""><span data-locale data-apply="text" data-key="Title">Title</span></th>
-                <th width=""><span data-locale data-apply="text">Dato</span></th>
-            </tr>
-        </thead>
-    </table>
+        <table class="table tasksTable table-striped hiddenTaskTable">
+            <thead>
+                <tr class="trStyleClass">
+                    <th width="15%"></th>
+                    <th width=""><span data-locale data-apply="text" data-key="Title">Title</span></th>
+                    <th width=""><span data-locale data-apply="text">Dato</span></th>
+                </tr>
+            </thead>
+        </table>
+    </div>
 </div>
+
+<!-- Modal popup for execute -->
+<div class="modal fade" id="executeTaskModal" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-body">
+                <p>Er du sikker på at du vil markere denne aktivitet som udført?</p>
+            </div>
+            <!-- modal Footer -->
+            <div class="modal-footer executeModalButtons">
+                <button type="button" id="executeTask" class="executeSubmit executeButton"><span data-locale data-apply="text">Udfør</span></button>
+                <button type="button" data-dismiss="modal" class="cancelButton"><span>Annuller</span></button>
+            </div>
+        </div>
+    </div>
 </div>
 
 <script>

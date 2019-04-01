@@ -9,22 +9,24 @@
         justify-content: center;
     }
 
-    .nav-pills .a {
-        font-size; 30px;
-    }
-    .nav-pills > li.active > a, .nav-pills > a:hover {
-        text-decoration: underline;
-    }
+        .nav-pills .a {
+            font-size;
+            30px;
+        }
+
+        .nav-pills > li.active > a, .nav-pills > a:hover {
+            text-decoration: underline;
+        }
 
     .nav > li > a {
         color: black;
         font-size: 20px;
     }
 
-    .nav > li > a:hover, .nav > li > a:focus {
-        text-decoration: underline;
-        background-color: white;
-    }
+        .nav > li > a:hover, .nav > li > a:focus {
+            text-decoration: underline;
+            background-color: white;
+        }
 
     .nav li + li:after {
         content: "";
@@ -53,7 +55,7 @@
         margin-left: 100px;
     }
 
-    .stamdataBox {       
+    .stamdataBox {
         margin-top: 20px;
     }
 
@@ -114,22 +116,23 @@
             </div>
         </div>
     </div>
-</div><!-- Row Div End -->   
+</div><!-- Row Div End -->
 
-<script src="~/Scripts/instance.js"></script>
 
-<script type="text/javascript">
-    var webPortalType = "Instance";
-    var instanceId = getParameterByName("id", window.location.href);
+    <script src="~/Scripts/instance.js"></script>
 
-    function getParameterByName(name, url) {
-        if (!url) url = window.location.href;
-        name = name.replace(/[\[\]]/g, "\\$&");
-        var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
-            results = regex.exec(url);
-        if (!results) return null;
-        if (!results[2]) return '';
-        return decodeURIComponent(results[2].replace(/\+/g, " "));
-    }
-</script>
-<script src="~/Scripts/task.js"></script>
+    <script type="text/javascript">
+        var webPortalType = "Instance";
+        var instanceId = getParameterByName("id", window.location.href);
+
+        function getParameterByName(name, url) {
+            if (!url) url = window.location.href;
+            name = name.replace(/[\[\]]/g, "\\$&");
+            var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+                results = regex.exec(url);
+            if (!results) return null;
+            if (!results[2]) return '';
+            return decodeURIComponent(results[2].replace(/\+/g, " "));
+        }
+    </script>
+    <script src="~/Scripts/task.js"></script>
