@@ -1,5 +1,5 @@
 -- =============================================
--- Author:		JoeJoe and T-Boi
+-- Author: Jonathan E. Mogensen, Thais Kure Corneliusen  
 -- Create date: 27-03-2019
 -- Description:	Get history of past executed tasks for an instance
 -- =============================================
