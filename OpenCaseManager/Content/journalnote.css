@@ -1,5 +1,40 @@
 ﻿.form-create-journal-note {
     display: flex;
     flex-direction: column;
+    max-width: 600px;
+    margin: 0 auto;
+}
 
+.form-create-journal-note label{
+    margin-top: 20px;
+    margin-bottom: 0;
+}
+
+button.btn-create, button.btn-update-date {
+    width: 100%;
+    max-width: 240px;
+    font-weight: 600;
+    height: 30px;
+    border: none;
+    margin: 10px auto 0 auto;
+    background-color: #63C647;
+}
+
+input[type="submit"].btn-save-draft{
+    background-color: #F4B516;
+}
+
+#ui-datepicker-div {
+    display: none;
+    background-color: #fff;
+    padding: 10px;
+    border: 1px solid #9C1A5E;
+    border-radius: 5px;
+}
+
+.ui-datepicker-next{
+    float: right;
+}
+#ui-datepicker-div td{
+    padding: 5px;
 }

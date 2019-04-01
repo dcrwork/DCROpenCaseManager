@@ -407,6 +407,7 @@
     <Content Include="Content\Images\InfoIconV2.svg" />
     <Content Include="Content\jasmine\jasmine.css" />
     <Content Include="Content\jasmine\jasmine_favicon.png" />
+    <Content Include="Content\journalnote.css" />
     <Content Include="Content\jquery.treegrid.css" />
     <Content Include="Content\ChildPage.css" />
     <Content Include="Content\noty\noty.css" />
@@ -422,6 +423,7 @@
     <Content Include="Scripts\jasmine\console.js" />
     <Content Include="Scripts\jasmine\jasmine-html.js" />
     <Content Include="Scripts\jasmine\jasmine.js" />
+    <Content Include="Scripts\journalNote.js" />
     <Content Include="Scripts\plugins\Albe_Timeline\data-albe-timeline.js" />
     <Content Include="Scripts\plugins\Albe_Timeline\jquery-albe-timeline.js" />
     <Content Include="Scripts\plugins\Albe_Timeline\jquery-albe-timeline.min.js" />
@@ -588,6 +590,7 @@
     <Content Include="Scripts\Translations\node_modules\csvtojson\readme.md" />
     <Content Include="Areas\HelpPage\Views\_ViewStart.cshtml" />
     <Content Include="Content\Site.css" />
+    <Content Include="Specs\CreateJournalNoteTest.js" />
     <Content Include="Views\Web.config" />
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
@@ -604,6 +607,7 @@
     <Content Include="Views\Process\Index.cshtml" />
     <Content Include="Views\Form\Index.cshtml" />
     <Content Include="Views\Form\GetPdf.cshtml" />
+    <Content Include="Views\JournalNote\Create.cshtml" />
     <Content Include="Views\PartialViews\Document.cshtml" />
     <Content Include="Views\File\DownloadFile.cshtml" />
     <Content Include="Views\PartialViews\Instruction.cshtml" />
@@ -628,7 +632,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Specs\" />
     <Folder Include="Views\Account\" />
   </ItemGroup>
   <ItemGroup>
