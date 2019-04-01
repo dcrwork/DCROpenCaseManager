@@ -405,7 +405,7 @@ namespace OpenCaseManager.Controllers.ApiControllers
 
                 switch (fileType)
                 {
-                    case "Personal":
+                    case "PersonalDocument":
                         var directoryInfo = new DirectoryInfo(Configurations.Config.PersonalFileLocation);
                         if (!directoryInfo.Exists)
                         {
@@ -419,13 +419,52 @@ namespace OpenCaseManager.Controllers.ApiControllers
                         }
                         filePath = directoryInfo.FullName;
                         break;
-                    case "Instance":
+                    case "InstanceDocument":
                         directoryInfo = new DirectoryInfo(Configurations.Config.InstanceFileLocation);
                         if (!directoryInfo.Exists)
                         {
                             directoryInfo.Create();
                         }
                         directoryInfo = new DirectoryInfo(Configurations.Config.InstanceFileLocation + "\\" + instanceId);
+                        if (!directoryInfo.Exists)
+                        {
+                            directoryInfo.Create();
+                        }
+                        filePath = directoryInfo.FullName;
+                        break;
+                    case "JournalNoteImportant":
+                        directoryInfo = new DirectoryInfo(Configurations.Config.JournalNoteFileLocation);
+                        if (!directoryInfo.Exists)
+                        {
+                            directoryInfo.Create();
+                        }
+                        directoryInfo = new DirectoryInfo(Configurations.Config.JournalNoteFileLocation + "\\" + instanceId);
+                        if (!directoryInfo.Exists)
+                        {
+                            directoryInfo.Create();
+                        }
+                        filePath = directoryInfo.FullName;
+                        break;
+                    case "JournalNoteLittle": //Should only temporarily be allowed to be edited
+                        directoryInfo = new DirectoryInfo(Configurations.Config.JournalNoteFileLocation);
+                        if (!directoryInfo.Exists)
+                        {
+                            directoryInfo.Create();
+                        }
+                        directoryInfo = new DirectoryInfo(Configurations.Config.JournalNoteFileLocation + "\\" + instanceId);
+                        if (!directoryInfo.Exists)
+                        {
+                            directoryInfo.Create();
+                        }
+                        filePath = directoryInfo.FullName;
+                        break;
+                    case "JournalNoteBig": //Should only temporarily be allowed to be edited
+                        directoryInfo = new DirectoryInfo(Configurations.Config.JournalNoteFileLocation);
+                        if (!directoryInfo.Exists)
+                        {
+                            directoryInfo.Create();
+                        }
+                        directoryInfo = new DirectoryInfo(Configurations.Config.JournalNoteFileLocation + "\\" + instanceId);
                         if (!directoryInfo.Exists)
                         {
                             directoryInfo.Create();
@@ -665,11 +704,11 @@ namespace OpenCaseManager.Controllers.ApiControllers
                     // delete document from file system
                     switch (type)
                     {
-                        case "Personal":
+                        case "PersonalDocument":
                             var currentUser = Common.GetCurrentUserName();
                             path = Configurations.Config.PersonalFileLocation + "\\" + currentUser + "\\" + document["Link"].ToString();
                             break;
-                        case "Instance":
+                        case "InstanceDocument":
                             path = Configurations.Config.InstanceFileLocation + "\\" + instanceId + "\\" + document["Link"].ToString();
                             break;
                     }
@@ -908,11 +947,11 @@ namespace OpenCaseManager.Controllers.ApiControllers
                 // delete document from file system
                 switch (type)
                 {
-                    case "Personal":
+                    case "PersonalDocument":
                         var currentUser = Common.GetCurrentUserName();
                         path = Configurations.Config.PersonalFileLocation + "\\" + currentUser + "\\" + document.Rows[0]["Link"].ToString();
                         break;
-                    case "Instance":
+                    case "InstanceDocument":
                         path = Configurations.Config.InstanceFileLocation + "\\" + instanceId + "\\" + document.Rows[0]["Link"].ToString();
                         break;
                 }
