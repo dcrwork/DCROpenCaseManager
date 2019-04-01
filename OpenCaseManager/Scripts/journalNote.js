@@ -4,7 +4,7 @@
 
 function formatDate(date) {
     var value = new Date(date);
-    return `${value.getDate()}/${value.getMonth()}/${value.getFullYear()}`;
+    return value.getDate() + "/" + value.getMonth() + "/" + value.getFullYear();
 }
 
 function changedate(inputId, lableId) {
