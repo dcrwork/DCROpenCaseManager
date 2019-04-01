@@ -124,46 +124,36 @@
             }
         });
 
+        var elem;
+
         // bind execute event
         $('button[name="execute"]').on('click', function (e) {
-            Swal.fire({
-                title: 'Er du sikker på at du vil markere denne aktivitet som udført?',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Udført'
-            }).then((result) => {
-                if (result.value) {
-                    var elem = $(e.currentTarget);
+            elem = $(e.currentTarget);
+            e.preventDefault();
 
-                    var eventId = elem.attr('id');
-                    var eventType = elem.attr('eventType');
-                    var taskId = elem.attr('taskId');
-                    var instanceId = elem.attr('instanceId');
-                    var graphId = elem.attr('graphId');
-                    var simulationId = elem.attr('simulationId');
-                    var uievent = elem.attr('uievent');
-                    var title = elem.next('.title').html();
-                    var trueEventId = elem.attr('trueEventId');
-                    var data = {
-                        taskId: taskId,
-                        instanceId: instanceId,
-                        graphId: graphId,
-                        simulationId: simulationId,
-                        eventId: eventId,
-                        title: title,
-                        trueEventId: trueEventId
-                    };
+        });
 
-                    if (eventType === "TasksWNote") {
-                        App.showTaskWithNotePopup(data, elem, showCaseInfo, uievent);
-                    } else {
-                        App.executeEvent(data, showCaseInfo, uievent);
-                    }
 
-                    e.preventDefault();
-                }
-            });
+        $('#executeTask').on('click', function (e) {
+            console.log(elem);
+            /*
+            var eventId = elem.attr('id');
+            var eventType = elem.attr('eventType');
+            var taskId = elem.attr('taskId');
+            var instanceId = elem.attr('instanceId');
+            var graphId = elem.attr('graphId');
+            var simulationId = elem.attr('simulationId');
+            var uievent = elem.attr('uievent');
+            var data = { taskId: taskId, instanceId: instanceId, graphId: graphId, simulationId: simulationId, eventId: eventId };
+
+            if (eventType === "TasksWNote") {
+                App.showTaskWithNotePopup(data, elem, showCaseInfo, uievent);
+            }
+            else {
+                App.executeEvent(data, showCaseInfo, uievent);
+            }
+            $('#executeTaskModal').modal('toggle');
+            e.preventDefault();*/
         });
 
         // open dcr form
@@ -344,7 +334,7 @@
                 returnHtml += ' uievent="' + item.UIEventValue + '"';
             }
             returnHtml += ' type="button" taskid="' + item.EventId + '" eventType= "' + item.EventType + '" graphid="' + item.GraphId + '" simulationid="' + item.SimulationId + '" instanceid="'
-                + item.InstanceId + '" id="' + item.EventId + '" trueEventId="' + item.TrueEventId + '"name="execute" value="execute" class="taskExecutionButton">Udført</button><div class="title" style="display: none;">' + item.EventTitle + '</div> <div class="description" style="display: none;">' + item.Description + '</div>';
+                + item.InstanceId + '" id="' + item.EventId + '" trueEventId="' + item.TrueEventId + '"name="execute" value="execute" class="taskExecutionButton" data-toggle="modal" data-target="#executeTaskModal">Udført</button><div class="title" style="display: none;">' + item.EventTitle + '</div> <div class="description" style="display: none;">' + item.Description + '</div>';
         }
         else if (item.CanExecute && item.Type.toLowerCase() == "form") {
             returnHtml += '<button title="Open" eventType= "' + item.EventType + '" graphid="' + item.GraphId + '" simulationid="' + item.SimulationId + '" token="' + item.Token + '" eventId="' + item.EventId + '" trueEventId="' + item.TrueEventId + '" instanceid="' + item.InstanceId + '" id="openDcrForm" class="btn btn-info taskExecutionButton" name="btnDcrFormServer"><i class="fas fa-external-link-alt"></i></button><div class="title" style="display: none;">' + item.EventTitle + '</div> <div class="description" style="display: none;">' + item.Description + '</div>';
