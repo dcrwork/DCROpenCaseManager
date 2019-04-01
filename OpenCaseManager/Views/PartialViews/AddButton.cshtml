@@ -20,7 +20,7 @@
     }
 </style>
 
-<div class="add-box">
+<div class="add-box" onClick="@this.ViewData["onClick"]">
     <img src="~/Content/Images/addicon.svg" class="add-icon" />
     <span class="add-text" id="add-text">@this.ViewData["add-text"]</span>
 </div>

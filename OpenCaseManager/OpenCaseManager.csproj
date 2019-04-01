@@ -604,6 +604,7 @@
     <Content Include="Views\Process\Index.cshtml" />
     <Content Include="Views\Form\Index.cshtml" />
     <Content Include="Views\Form\GetPdf.cshtml" />
+    <Content Include="Views\JournalNote\Create.cshtml" />
     <Content Include="Views\PartialViews\Document.cshtml" />
     <Content Include="Views\File\DownloadFile.cshtml" />
     <Content Include="Views\PartialViews\Instruction.cshtml" />

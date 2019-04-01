@@ -3,6 +3,13 @@
     ViewBag.Title = "CreateJurnalNote";
     var date = DateTime.Now.ToString("dd/MM/yyyy");
 }
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<style>
+    header {
+        display: none;
+    }
+</style>
+
 <link type="text/css" rel="stylesheet" href="~/Content/journalnote.css" />
 <h2>Create Journal Note</h2>
 <form class="form-create-journal-note">
@@ -29,13 +36,13 @@
                 <form>
                     <div class="form-group">
                         <label for="instanceTitle"><span data-locale data-apply="text" data-key="Date">Date</span>:</label>
-                        <input type="date" class="form-control" id="dateInput" />
+                        <input type="text" class="form-control" id="datepicker" />
                     </div>
                 </form>
             </div>
             <!-- modal Footer -->
             <div class="modal-footer">
-                <button type="button" id="updateDate" data-toggle="modal" data-target="#changeDate" onclick="changedate('dateInput','dateLabel')"><span data-locale data-apply="text" data-key="changeDate">Change Date</span></button>
+                <button type="button" id="updateDate" data-toggle="modal" data-target="#changeDate" onclick="changedate('datepicker','dateLabel')"><span data-locale data-apply="text" data-key="changeDate">Change Date</span></button>
             </div>
         </div>
     </div>
