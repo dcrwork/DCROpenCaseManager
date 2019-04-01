@@ -14,12 +14,12 @@
 <form class="form-create-journal-note">
     <h2>Create Journal Note</h2>
     <label>Title</label>
-    <input type="text" name="journal-title" />
+    <input type="text" id="input-journal-title" />
     <label value="@date">Date: <span id="dateLabel" name="dateLabel"> @date </span></label>
     <a data-toggle="modal" data-target="#changeDate">Edit date</a>
     <label>Note</label>
-    <textarea></textarea>
-    <input type="submit" class="btn-create" value="Create" />
+    <textarea id="input-journal-note"></textarea>
+    <button class="btn-create add-journal-note-button">Create</button>
 </form>
 
 <div class="modal fade" id="changeDate" role="dialog">

@@ -82,7 +82,7 @@
 <div class="wholeActionsPage">
     <div class="buttonsStamdataBox">
         @Html.Partial("~/Views/PartialViews/AddButton.cshtml", new ViewDataDictionary { { "add-text", "Tilføj dokument" } })
-        @Html.Partial("~/Views/PartialViews/AddButton.cshtml", new ViewDataDictionary { { "add-text", "Tilføj journalnotat" } })
+        @Html.Partial("~/Views/PartialViews/AddButton.cshtml", new ViewDataDictionary { { "add-text", "Tilføj journalnotat" }, { "onClick", "CreateJournalNoteView()" } })
         <div class="stamdataBox">
             @Html.Partial("~/Views/PartialViews/Stamdata.cshtml")
         </div>

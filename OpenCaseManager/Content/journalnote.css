@@ -10,7 +10,7 @@
     margin-bottom: 0;
 }
 
-input[type="submit"], button.btn-update-date {
+button.btn-create, button.btn-update-date {
     width: 100%;
     max-width: 240px;
     font-weight: 600;
