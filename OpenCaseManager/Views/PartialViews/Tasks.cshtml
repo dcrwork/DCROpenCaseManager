@@ -23,10 +23,46 @@
     #collapse-icon{
         cursor: pointer;
     }
+
+    .hoverInfo {
+        position: relative;
+        display: inline-block;
+    }
+
+    .hoverInfo .hoverInfoText {
+        visibility: hidden;
+        width: 120px;
+        font-size: 14px;
+        background-color: #EFEFEF;
+        color: #4a4a4a;
+        padding: 10px;
+        text-align: start;
+        border-radius: 2px;
+        position: absolute;
+        z-index: 1;
+        top: -5px;
+        left: 140%;
+    }
+
+        .hoverInfo .hoverInfoText::after {
+            content: "";
+            position: absolute;
+            top: 25%;
+            right: 100%;
+            margin-top: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: transparent #EFEFEF transparent transparent;
+        }
+
+    .hoverInfo:hover .hoverInfoText {
+        visibility: visible;
+    }
+
 </style>
 
 <div class="activitiesBox">
-    <h4 class="instancesHeading">Mine aktiviteter<img src='../Content/Images/InfoIconV2.svg' class="info-icon" /></h4>
+    <h4 class="instancesHeading">Mine aktiviteter<span class="hoverInfo"><img src='../Content/Images/InfoIconV2.svg' class="info-icon"/><span class="hoverInfoText">Dine aktiviteter som venter på at blive udført.</span></span></h4>
     <div class="scrollTable1">
         <table class="table tasksTable table-striped" id="tasksTable">
             <thead>
@@ -35,8 +71,9 @@
                     <th width=""><span data-locale data-apply="text" data-key="Title"></span></th>
                     <th width=""><span data-locale data-apply="text" data-key="DueDate"></span></th>
                     <th width="9%"><span data-locale data-apply="text" data-key="Action"></span></th>
-                </tr>
-                <!--<tr class="trStyleClass" id="singleInstanceFilters" style="display:none;">
+                </tr> 
+                <!-- TODO -> Skal måske bruges senere når vi laver filtrering.
+                    <tr class="trStyleClass" id="singleInstanceFilters" style="display:none;">
                     <th width="15%">
                         <select id="taskStatusDropDown">
                             <option data-locale data-apply="text" data-key="Default" selected value="0">Default</option>
@@ -58,7 +95,7 @@
         </table>
     </div>
 
-    <h4 class="instancesHeading fold-down-headline"><span id="collapse-icon" class="glyphicon glyphicon-chevron-right"></span>Afventende<img src='../Content/Images/InfoIconV2.svg' class="info-icon" /></h4>
+    <h4 class="instancesHeading fold-down-headline"><span id="collapse-icon" class="glyphicon glyphicon-chevron-right"></span>Afventende<span class="hoverInfo"><img src='../Content/Images/InfoIconV2.svg' class="info-icon" /><span class="hoverInfoText">Aktiviteter du afventer at andre udfører.</span></span></h4>
     <div class="scrollTable2">
         <table class="table tasksTable table-striped hiddenTaskTable">
             <thead>
@@ -72,7 +109,7 @@
         </table>
     </div>
 
-    <h4 class="instancesHeading fold-down-headline"><span id="collapse-icon" class="glyphicon glyphicon-chevron-right"></span>Afsluttede aktiviteter<img src='../Content/Images/InfoIconV2.svg' class="info-icon" /></h4>
+    <h4 class="instancesHeading fold-down-headline"><span id="collapse-icon" class="glyphicon glyphicon-chevron-right"></span>Afsluttede aktiviteter<span class="hoverInfo"><img src='../Content/Images/InfoIconV2.svg' class="info-icon" /><span class="hoverInfoText">Aktiviteter du har udført.</span></span></h4>
     <div class="scrollTable2">
     <table class="table tasksTable table-striped hiddenTaskTable">
         <thead>
