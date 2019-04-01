@@ -135,8 +135,6 @@
 
 
         $('#executeTask').on('click', function (e) {
-            console.log(elem);
-            
             var eventId = elem.attr('id');
             var eventType = elem.attr('eventType');
             var taskId = elem.attr('taskId');
@@ -158,8 +156,7 @@
 
             if (eventType === "TasksWNote") {
                 App.showTaskWithNotePopup(data, elem, showCaseInfo, uievent);
-            }
-            else {
+            } else {
                 App.executeEvent(data, showCaseInfo, uievent);
             }
             $('#executeTaskModal').modal('toggle');
