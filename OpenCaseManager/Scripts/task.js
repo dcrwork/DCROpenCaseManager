@@ -255,6 +255,7 @@
             item.EventTitle +
             '</a></td>' +
             '<td>' + (item.Due == null ? '&nbsp;' : moment(new Date(item.Due)).format('L LT')) + '</td>' +
+            // TODO -> måske skal dette bruges senere til afventende (hente personen ud der ventes på)
            /* '<td>' + item.ResponsibleName.substr(0, 1).toUpperCase()+item.ResponsibleName.substr(1) + '</td>' +*/
             '<td>';
         if (item.CanExecute && item.Type.toLowerCase() !== "form") {
