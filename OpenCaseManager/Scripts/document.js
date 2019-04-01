@@ -162,7 +162,7 @@ function uploadFile(file, docId) {
             type: 'POST',
             headers: {
                 'filename': file.name,
-                'type': webPortalType,
+                'type': webPortalType+"Document",
                 'instanceId': instanceId,
                 'givenFileName': $('#documentName').val()
             },

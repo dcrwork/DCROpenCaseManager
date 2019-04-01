@@ -10,6 +10,7 @@ namespace OpenCaseManager.Models
         public enum Tables
         {
             AllInstances,
+            Child,
             Event,
             EventHistory,
             Form,
@@ -20,6 +21,7 @@ namespace OpenCaseManager.Models
             InstanceEvents,
             InstancePhases,
             InstanceRole,
+            JournalHistory,
             Log,
             MUS,
             MyInstances,
@@ -87,12 +89,13 @@ namespace OpenCaseManager.Models
 
         public enum EventHistory
         {
-            Instance,
+            InstanceId,
             Sequence,
             EventId,
             Status,
             Description,
-            Details
+            Details,
+            ExecutionDate
         }
 
         public enum Form
@@ -366,9 +369,18 @@ namespace OpenCaseManager.Models
 
         public enum InstanceExtension
         {
+            Id,
             InstanceId,
             Employee,
-            Year
+            Year,
+            ChildId
+        }
+
+        public enum Child
+        {
+            Id,
+            Name,
+            Responsible
         }
 
         public enum AcadreLog
@@ -400,6 +412,19 @@ namespace OpenCaseManager.Models
         {
             GraphId,
             InstanceId
+        }
+
+        public enum JournalHistory
+        {
+            Id,
+            InstanceId,
+            EventId,
+            DocumentId,
+            Type,
+            Title,
+            CreationDate,
+            EventDate,
+            IsLocked
         }
     }
 }
