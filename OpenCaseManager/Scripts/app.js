@@ -208,13 +208,7 @@
             "type": "SELECT",
             "entity": "JournalHistoryForASingleInstance(" + instanceId + ")",
             "resultSet": ["*"],
-            "filters": [{
-                "column": "Responsible",
-                "operator": "equal",
-                "value": '$(loggedInUserId)',
-                "valueType": "string",
-                "logicalOperator": "and"
-            }],
+            "filters": [],
             "order": [{ "column": "EventDate", "descending": true }]
         }
 
