@@ -71,7 +71,9 @@
     <Folder Include="dbo\Functions\" />
     <Folder Include="dbo\Stored Procedures\" />
     <Folder Include="dbo\Data" />
-    <Folder Include="dbo\Schema_Modifications" />
+	<Folder Include="dbo\Schema_Modifications\" />
+	<Folder Include="dbo\Schema_Modifications\Function\" />
+	<Folder Include="dbo\Schema_Modifications\Tables\" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\Tables\User.sql" />
@@ -113,11 +115,16 @@
     <Build Include="dbo\Tables\Document.sql" />
     <Build Include="dbo\Stored Procedures\AddInstanceDescription.sql" />
     <Build Include="dbo\Views\MUSTasks.sql" />
+	<Build Include="dbo\Schema_Modifications\JournalHistoryForASingleInstance_Function (Old).sql" />
+	<Build Include="dbo\Schema_Modifications\Tables\Child.sql" />
+	<Build Include="dbo\Schema_Modifications\Tables\Document.sql" />
+	<Build Include="dbo\Schema_Modifications\Tables\EventHistory.sql" />
+	<Build Include="dbo\Schema_Modifications\Tables\InstanceExtension.sql" />
+	<Build Include="dbo\Schema_Modifications\Tables\JournalHistory.sql" />
+	<Build Include="dbo\Schema_Modifications\Function\InstanceTasks_New.sql" />
+	<Build Include="dbo\Schema_Modifications\Function\JournalHistoryForASingleInstance.sql" />
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="dbo\Data\Script.PreDeployment.sql" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="dbo\Schema_Modifications\EventHistory.sql" />
   </ItemGroup>
 </Project>
