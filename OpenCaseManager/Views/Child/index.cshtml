@@ -1,17 +1,141 @@
-﻿
+﻿<style>
+    .nav-pills > li.active > a, .nav-pills > li.active > a:hover, .nav-pills > li.active > a:focus {
+        color: black;
+        background-color: #fff;
+    }
+
+    .nav-pills {
+        display: flex;
+        justify-content: center;
+    }
+
+        .nav-pills .a {
+            font-size;
+            30px;
+        }
+
+        .nav-pills > li.active > a, .nav-pills > a:hover {
+            text-decoration: underline;
+        }
+
+    .nav > li > a {
+        color: black;
+        font-size: 20px;
+    }
+
+        .nav > li > a:hover, .nav > li > a:focus {
+            text-decoration: underline;
+            background-color: white;
+        }
+
+    .nav li + li:after {
+        content: "";
+        position: absolute;
+        left: 0;
+        border-left: solid 2px black;
+        top: 0;
+        bottom: 0;
+        padding: 0;
+    }
+
+    .nav > li > a {
+        padding: 0px 15px;
+    }
+
+    .nav-pills {
+        padding: 15px 15px;
+    }
+
+    .wholeChildPage {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        margin: 40px 60px 0px 60px;
+    }
+    .childInstancesHeader {
+        background: #9C1A5E;
+        color: #fff;
+    }
+</style>
+
 @{
     ViewBag.Title = "Child";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Here should the skeleton of the page be</h2>
+<div class="wholeChildPage">
 
-<div data-toggle="modal" data-target="#create-process-modal" class="create-process-button">
-    @Html.Partial("~/Views/PartialViews/AddButton.cshtml", new ViewDataDictionary { { "add-text", "Tilføj proces" } })
+    <div>
+        <div class="stamdataBox">
+            @Html.Partial("~/Views/PartialViews/Stamdata.cshtml")
+        </div>
+    </div>
+
+    <div>
+        <div>
+            <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                <li class="nav-item active">
+                    <a class="nav-link" id="pills-activitiesb" data-toggle="tab" href="#pills-activities" role="tab" aria-controls="pills-activities" aria-selected="false">Indsatser</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" id="pills-timeline-tab" data-toggle="tab" href="#pills-timeline" role="tab" aria-controls="pills-timeline" aria-selected="false">Tidslinje</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="pills-document-tab" data-toggle="tab" href="#pills-document" role="tab" aria-controls="pills-document" aria-selected="false">Dokumenter</a>
+                </li>
+            </ul>
+            <div class="tab-content" id="pills-tabContent">
+                <div class="tab-pane fade in active" id="pills-activities" role="tabpanel" aria-labelledby="pills-activities">
+
+
+
+
+                    <div class="childInstancesBox">
+                        <table class="table tasksTable table-striped">
+                            <thead class="childInstancesHeader">
+                                <tr>
+                                    <th width="15%">Status</th>
+                                    <th width="">Titel</th>
+                                    <th width="18%">Process</th>
+                                    <th width="10%">Ansvarlig</th>
+                                    <th width="">Opdateret</th>
+                                </tr>
+                            </thead>
+                            <tbody id="childInstances"></tbody>
+                        </table>
+                    </div>
+
+
+
+
+
+
+
+
+                    </div>
+                    <div class="tab-pane fade in" id="pills-timeline" role="tabpanel" aria-labelledby="pills-timeline">
+                        @Html.Partial("~/Views/PartialViews/Timeline.cshtml")
+                    </div>
+                    <div class="tab-pane fade in" id="pills-document" role="tabpanel" aria-labelledby="pills-document">
+
+                    </div>
+                </div>
+        </div>
+    </div>
+
+    <div>
+        <div class="buttonsBox">
+            <div data-toggle="modal" data-target="#create-process-modal" class="create-process-button">
+                @Html.Partial("~/Views/PartialViews/AddButton.cshtml", new ViewDataDictionary { { "add-text", "Tilføj proces" } })
+            </div>
+
+            @Html.Partial("~/Views/PartialViews/AddButton.cshtml", new ViewDataDictionary { { "add-text", "Tilføj dokument" } })
+            @Html.Partial("~/Views/PartialViews/AddButton.cshtml", new ViewDataDictionary { { "add-text", "Tilføj journalnotat" }, { "onClick", "CreateJournalNoteView()" } })
+        </div>
+    </div>
+
 </div>
-
-@Html.Partial("~/Views/PartialViews/AddButton.cshtml", new ViewDataDictionary { { "add-text", "Tilføj dokument" } })
-@Html.Partial("~/Views/PartialViews/AddButton.cshtml", new ViewDataDictionary { { "add-text", "Tilføj journalnotat" }, {"onClick", "CreateJournalNoteView()" } })
 
 <div class="modal fade" id="create-process-modal" role="dialog">
     <div class="modal-dialog">
