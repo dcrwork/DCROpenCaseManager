@@ -13,7 +13,6 @@ function CreateJournalNoteView() {
 
 $('#input-journal-note').trumbowyg();
 
-
 function formatDate(date) {
     var value = new Date(date);
     console.log(value);
@@ -85,4 +84,8 @@ function uploadFile(file, instanceId, fileName) {
         });
         
     }
+}
+
+function closeJournalNotatWindow() {
+    window.close()
 }
