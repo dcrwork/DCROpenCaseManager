@@ -44,13 +44,16 @@ function showChildInstances(response) {
 function getChildInstanceHtml(item) {
     var open = (item.IsOpen) ? "" : "instanceClosed";
     var instanceLink = "../Instance?id=" + item.Id;
-
     var returnHtml = "<tr class='trStyleClass " + open + "'>";
     returnHtml += (item.IsOpen) ? "<td class='statusColumn'>" + getStatus(item.NextDeadline) + "</td>" : "<td class='statusColumn'>Lukket</td>";
     returnHtml += "<td><a href='" + instanceLink + "' target='_blank'>" + item.Title + "</a></td>";
     returnHtml += "<td>" + item.Process + "</td>";
-    returnHtml += "<td>" + item.Name.substr(0, 1).toUpperCase() + item.Name.substr(1)  + "</td>";
-    returnHtml += "<td> 02/04-2019</td>";
+    returnHtml += "<td>" + item.Name.substr(0, 1).toUpperCase() + item.Name.substr(1) + "</td>";
+    if (item.LastUpdated != null) {
+        returnHtml += "<td>" + item.LastUpdated.toString().substr(0, 10) + "</td>";
+    } else {
+        returnHtml += "<td> intet gjort</td>";
+    }
     return returnHtml;
 }
 
