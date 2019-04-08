@@ -140,8 +140,16 @@
         if (!results[2]) return '';
         return decodeURIComponent(results[2].replace(/\+/g, " "));
     }
-    var tabTitle = "Indsats: " + instanceId
-
-    $('head title', window.parent.document).text(tabTitle);
+    // Checks if InstanceTitle has been set every 100 milliseconds, and sets the title of the tab to the InstanceTitle when it is set.
+    $(window).ready(function () {
+        var i = setInterval(function () {
+            var tabTitle = $('#instanceTitle').text();
+            if (tabTitle.length != 0) {
+                clearInterval(i);
+                // safe to execute your code here
+                $('head title', window.parent.document).text(tabTitle);
+            }
+        }, 100);
+    });
 </script>
 <script src="~/Scripts/task.js"></script>
