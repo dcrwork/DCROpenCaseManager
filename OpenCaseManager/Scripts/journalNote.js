@@ -8,7 +8,7 @@
 
 function CreateJournalNoteView() {
     var id = $.urlParam("id");
-    window.open("/JournalNote/Create" + (id ? "?id=" + id : ""), "", "width=800,height=1200");
+    window.open("/JournalNote/Create" + (id ? "?id=" + id : ""), "", "width=800,height=600");
 }
 
 $('#input-journal-note').trumbowyg();
@@ -23,6 +23,10 @@ function formatDate(date) {
 $(function () {
     $("#datepicker").datepicker();
     $("#datepicker").datepicker("option", "dateFormat", "d/m/yy");
+});
+
+$("#datepicker").on('change', function () {
+    $("#change-date-label").removeClass("hideLabel");
 });
 
 function changedate(inputId, lableId) {

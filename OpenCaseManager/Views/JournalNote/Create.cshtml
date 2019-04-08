@@ -8,60 +8,51 @@
     header {
         display: none;
     }
+
     .footer {
         display: none;
-    }
-    .journalNotatButtons {
-        display: flex;
-        justify-content: space-between;
-    }
-    .journalNotatButtons > button{
-        width: 80px;
-        border: none;
-        padding: 5px;
     }
 </style>
 
 <link rel="stylesheet" href="~/node_modules/trumbowyg/dist/ui/trumbowyg.min.css">
 
 <link type="text/css" rel="stylesheet" href="~/Content/journalnote.css" />
+
 <form class="form-create-journal-note">
-    <label>Titel</label>
-    <input type="text" id="input-journal-title" />
-    <label value="@date">Oprettelses dato: <span id="dateLabel" name="dateLabel"> @date </span></label>
-    <a data-toggle="modal" data-target="#changeDate">Ændr hændelsesdato</a>
-    <label>Note</label>
-    <textarea id="input-journal-note"></textarea>
+    <h3>Opret journalnotat</h3>
+    <input type="text" placeholder=" Titel" id="input-journal-title" />
+    <label value="@date">Oprettelsesdato: <span id="dateLabel" name="dateLabel"> @date </span></label>
+    <!--<a data-toggle="modal" data-target="#changeDate">Ændr hændelsesdato</a>-->
+    <div class="change-date-div"><label id="change-date-label" class="hideLabel">Hændelsesdato: </label><input type="text" class="change-date-link" placeholder="Ændr hændelsesdato" id="datepicker" /></div>
+    <textarea id="input-journal-note" placeholder="Skriv journalnotat her..."></textarea>
     <div class="journalNotatButtons">
         <button class="cancel-journal-note-button">Annuller</button>
         <button class="add-journal-note-button">Opret</button>
     </div>
 </form>
-
+<!--
 <div class="modal fade" id="changeDate" role="dialog">
     <div class="modal-dialog">
-        <!-- Modal content-->
-        <div class="modal-content">
-            <!-- Modal Header -->
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title instanceModalHeading"><span data-locale data-apply="text" data-key="changeDate">Change Date</span></h4>
-            </div>
-            <div class="modal-body">
-                <form>
-                    <div class="form-group">
-                        <label for="instanceTitle"><span data-locale data-apply="text" data-key="Date">Date</span>:</label>
-                        <input type="text" class="form-control" id="datepicker" />
-                    </div>
-                </form>
-            </div>
-            <!-- modal Footer -->
-            <div class="modal-footer">
-                <button type="button" class="btn-update-date" id="updateDate" data-toggle="modal" data-target="#changeDate" onclick="changedate('datepicker','dateLabel')"><span data-locale data-apply="text" data-key="changeDate">Change Date</span></button>
-            </div>
-        </div>
+<div class="modal-content">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title"><span data-locale data-apply="text" data-key="changeDate">Ændr hændelsesdato</span></h4>
     </div>
-</div><!-- Modal End-->
+    <div class="modal-body">
+        <label>Er du sikker på, at du vil ændre datoen?</label>
+        <form>
+            <div class="form-group">
+                <label for="date"><span data-locale data-apply="text" data-key="Date">Dato</span></label>
+                <input type="text" class="form-control" placeholder="Ændr hændelsesdato" id="datepicker" />
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn-update-date" id="updateDate" data-toggle="modal" data-target="#changeDate" onclick="changedate('datepicker','dateLabel')"><span data-locale data-apply="text" data-key="changeDate">Gem</span></button>
+    </div>
+</div>
+    </div>
+</div> -->
 
 <script src="~/node_modules/trumbowyg/dist/trumbowyg.min.js"></script>
 

@@ -5,19 +5,10 @@
     margin: 0 auto;
 }
 
-.form-create-journal-note label{
+.form-create-journal-note label {
     margin-top: 20px;
     margin-bottom: 0;
-}
-
-button.btn-create, button.btn-update-date {
-    width: 100%;
-    max-width: 240px;
-    font-weight: 600;
-    height: 30px;
-    border: none;
-    margin: 10px auto 0 auto;
-    background-color: #63C647;
+    font-weight: normal;
 }
 
 input[type="submit"].btn-save-draft{
@@ -30,6 +21,7 @@ input[type="submit"].btn-save-draft{
     padding: 10px;
     border: 1px solid #9C1A5E;
     border-radius: 5px;
+    z-index: 12 !important;
 }
 
 .ui-datepicker-next{
@@ -37,4 +29,54 @@ input[type="submit"].btn-save-draft{
 }
 #ui-datepicker-div td{
     padding: 5px;
+}
+
+.journalNotatButtons {
+    display: flex;
+    justify-content: space-between;
+}
+
+
+.add-journal-note-button, .btn-update-date {
+    border: 1px solid #9C1A5E;
+    background-color: #fff;
+    color: #9C1A5E;
+    padding: 5px 10px 5px 10px;
+}
+
+.add-journal-note-button:hover, .btn-update-date:hover {
+    background-color: #9C1A5E;
+    color: #fff;
+}
+
+.change-date-link{
+    border: none;
+}
+
+.change-date-link::placeholder{
+    color: #9C1A5E;
+}
+
+.change-date-link::placeholder:hover{
+    text-decoration: underline;
+}
+
+.hideLabel{
+    display: none;
+}
+
+#change-date-label{
+    padding-right: 5px;
+}
+
+
+.cancel-journal-note-button {
+    background-color: #fff;
+    text-decoration: underline;
+    padding: 0;
+    border: none;
+}
+
+.form-create-journal-note h3 {
+    margin: 25px 0 25px 0;
 }
