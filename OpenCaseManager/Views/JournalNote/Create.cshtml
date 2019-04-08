@@ -8,20 +8,34 @@
     header {
         display: none;
     }
+    .footer {
+        display: none;
+    }
+    .journalNotatButtons {
+        display: flex;
+        justify-content: space-between;
+    }
+    .journalNotatButtons > button{
+        width: 80px;
+        border: none;
+        padding: 5px;
+    }
 </style>
 
 <link rel="stylesheet" href="~/node_modules/trumbowyg/dist/ui/trumbowyg.min.css">
 
 <link type="text/css" rel="stylesheet" href="~/Content/journalnote.css" />
 <form class="form-create-journal-note">
-    <h2>Create Journal Note</h2>
-    <label>Title</label>
+    <label>Titel</label>
     <input type="text" id="input-journal-title" />
-    <label value="@date">Date: <span id="dateLabel" name="dateLabel"> @date </span></label>
-    <a data-toggle="modal" data-target="#changeDate">Edit date</a>
+    <label value="@date">Oprettelses dato: <span id="dateLabel" name="dateLabel"> @date </span></label>
+    <a data-toggle="modal" data-target="#changeDate">Ændr hændelsesdato</a>
     <label>Note</label>
     <textarea id="input-journal-note"></textarea>
-    <button class="btn-create add-journal-note-button">Create</button>
+    <div class="journalNotatButtons">
+        <button class="cancel-journal-note-button">Annuller</button>
+        <button class="add-journal-note-button">Opret</button>
+    </div>
 </form>
 
 <div class="modal fade" id="changeDate" role="dialog">
