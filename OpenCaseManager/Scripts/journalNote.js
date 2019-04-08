@@ -6,11 +6,13 @@
 }
 
 
-
 function CreateJournalNoteView() {
     var id = $.urlParam("id");
     window.open("/JournalNote/Create" + (id ? "?id=" + id : ""), "", "width=1200,height=1200");
 }
+
+$('#input-journal-note').trumbowyg();
+
 
 function formatDate(date) {
     var value = new Date(date);
