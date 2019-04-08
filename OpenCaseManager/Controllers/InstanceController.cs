@@ -20,5 +20,10 @@ namespace OpenCaseManager.Controllers
         {
             return View();
         }
+
+        public string Hello()
+        {
+            return "Yo";
+        }
     }
 }

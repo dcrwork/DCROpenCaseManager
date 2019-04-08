@@ -72,7 +72,7 @@
 </style>
 
 @{
-    ViewBag.Title = "Instance";
+    ViewBag.Title = "Indsats";
 }
 
 
@@ -140,5 +140,8 @@
         if (!results[2]) return '';
         return decodeURIComponent(results[2].replace(/\+/g, " "));
     }
+    var tabTitle = "Indsats: " + instanceId
+
+    $('head title', window.parent.document).text(tabTitle);
 </script>
 <script src="~/Scripts/task.js"></script>
