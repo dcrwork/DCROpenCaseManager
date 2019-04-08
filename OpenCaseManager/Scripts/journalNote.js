@@ -6,11 +6,13 @@
 }
 
 
-
 function CreateJournalNoteView() {
     var id = $.urlParam("id");
     window.open("/JournalNote/Create" + (id ? "?id=" + id : ""), "", "width=1200,height=1200");
 }
+
+$('#input-journal-note').trumbowyg();
+
 
 function formatDate(date) {
     var value = new Date(date);
@@ -31,7 +33,7 @@ function changedate(inputId, lableId) {
 }
 
 $(document).on('click', '.add-journal-note-button', function () {
-    var documentName = $('#input-journal-title').val() + '.txt';
+    var documentName = $('#input-journal-title').val() + '.rtf';
     var journalText = $('#input-journal-note').val();
 
     // $('#dateLabel').textContent
@@ -39,7 +41,7 @@ $(document).on('click', '.add-journal-note-button', function () {
 });
 
 function makeTextFile(text) {
-    var data = new Blob([text], { type: 'text/plain' });
+    var data = new Blob([text], { type: 'text/rich' });
     return data;
 };
 
