@@ -98,6 +98,31 @@ function getDocumentDetails(docId) {
         });
 }
 
+function getDocumentById(docId) {
+    var query = {
+        "type": "SELECT",
+        "entity": "Document",
+        "filters": [
+            {
+                "column": "Id",
+                "operator": "equal",
+                "value": docId,
+                "valueType": "int"
+            }
+        ],
+        "resultSet": ["Title", "Link"],
+        "order": [{ "column": "Title", "descending": false }]
+    }
+
+    API.service('records', query)
+        .done(function (response) {
+            console.log(response);
+        })
+        .fail(function (e) {
+            //showExceptionErrorMessage(e);
+        });
+}
+
 function initializeDragnDrop() {
     dropArea.addEventListener('dragenter', preventDefaults, false)
     document.body.addEventListener('dragenter', preventDefaults, false)

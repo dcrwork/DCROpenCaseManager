@@ -59,7 +59,12 @@
 
 			/****************************************SLOT <article>****************************************/
 			var badge = $('<div>').addClass('badge');
-			badge.text(fnDateFormat(element.time, settings.formatDate, idioma));
+            badge.text(fnDateFormat(element.time, settings.formatDate, idioma));
+
+            var responsible = $('<p>').addClass('timelineResponsible');
+            responsible.text(element.responsible);
+
+            badge.append(responsible);
 
 			var ePanel = $('<div>').addClass('timelinePanel').append(badge);
 

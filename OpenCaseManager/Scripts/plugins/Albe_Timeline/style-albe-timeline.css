@@ -18,7 +18,7 @@ h4,
 h5 { margin-top: 5px; margin-bottom: 5px; line-height: 1; }
 
 
-
+#timeline {width: 50vw;}
 ul#timeline-menu { height: 50px; text-align: center; }
     ul#timeline-menu li { position: relative; float: left; list-style: none; margin: 0px; padding: 0px; }
         ul#timeline-menu li a { display: block; text-decoration: none; font-size: 16px; padding: 10px; padding-top: 20px; color: black; font-weight: bold; border-bottom: 5px solid transparent; }
@@ -44,8 +44,11 @@ section#timeline { position: relative; padding-bottom: 24px; overflow: hidden; }
                 color: #333;
             }
                 section#timeline > article > div.timelinePanel div.panel-body h3.group-title { text-transform: uppercase; letter-spacing: 2px; font-size: 20px; margin-bottom: 5px; }
-                section#timeline > article > div.timelinePanel div.panel-body span.group-sub-title { font-weight: 100; text-transform: uppercase; letter-spacing: 3px; }
-                section#timeline > article > div.timelinePanel div.panel-body p { padding-top: 15px; font-weight: 100; }
+                section#timeline > article > div.timelinePanel div.panel-body span.group-sub-title { font-weight: 100; text-transform: uppercase; letter-spacing: 3px;}
+                section#timeline > article > div.timelinePanel div.panel-body p {
+                    font-weight: 100;
+                    padding: 5px 0px 10px 0px;
+                }
 
             section#timeline > article > div.timelinePanel div.badge {
                 float: left;
@@ -55,7 +58,6 @@ section#timeline { position: relative; padding-bottom: 24px; overflow: hidden; }
                 top: 30px;
                 color: #333 !important;
                 position: relative;
-                text-transform: uppercase;
                 background-color: transparent;
                 border-radius: 0;
                 font-weight: normal;
@@ -81,5 +83,5 @@ section#timeline { position: relative; padding-bottom: 24px; overflow: hidden; }
 }
 
 @media (max-width: 991px) {
-    /*section#timeline > article > div.timelinePanel div.badge { right: 31%; }
+    /*section#timeline > article > div.timelinePanel div.badge { right: 31%; }*/
 }

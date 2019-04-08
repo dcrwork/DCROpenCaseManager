@@ -1,100 +1,65 @@
-//Json ObjectS
-
-
-var nogeandet =    [
-	{
-		time: '2015-03-29',
-		body: [{
-			tag: 'h3',
-			content: 'Lorem ipsum',
-			attr: {
-				cssclass: 'group-title'
-			}
-		},
-		{
-			tag: 'span',
-			content: 'Lorem ipsum 2',
-			attr: {
-				cssclass: 'group-sub-title'
-			}
-		},
-		{
-			tag: 'p',
-			content: 'Lorem ipsum dolor sit amet, nisl lorem, wisi egestas orci tempus class massa, suscipit eu elit urna in urna, gravida wisi aenean eros massa, cursus quisque leo quisque dui.'
-		}]
-	},
-	{
-		time: '2015-04-15',
-		body: [{
-			tag: 'h3',
-			content: 'Lorem ipsum',
-			attr: {
-				cssclass: 'group-title'
-			}
-		},
-		{
-			tag: 'span',
-			content: 'Lorem ipsum 2',
-			attr: {
-				cssclass: 'group-sub-title'
-			}
-		},
-		{
-			tag: 'p',
-			content: 'Lorem ipsum dolor sit amet, nisl lorem, wisi egestas orci tempus class massa, suscipit eu elit urna in urna, gravida wisi aenean eros massa, cursus quisque leo quisque dui.'
-		}]
-	},
-	{
-		time: '2016-01-20',
-		body: [{
-			tag: 'h3',
-			content: 'Lorem ipsum',
-			attr: {
-				cssclass: 'group-title'
-			}
-		},
-		{
-			tag: 'span',
-			content: 'Lorem ipsum 2',
-			attr: {
-				cssclass: 'group-sub-title'
-			}
-		},
-		{
-			tag: 'p',
-			content: 'Lorem ipsum dolor sit amet, nisl lorem, wisi egestas orci tempus class massa, suscipit eu elit urna in urna, gravida wisi aenean eros massa, cursus quisque leo quisque dui. See <a href=\"https://github.com/Albejr/jquery-albe-timeline\" target=\"_blank\">more details</a>'
-		}]
-	},
-	{
-		time: '2013-01-20',
-		body: [{
-			tag: 'h3',
-			content: 'Lorem ipsum',
-			attr: {
-				cssclass: 'group-title'
-			}
-		},
-		{
-			tag: 'span',
-			content: 'Lorem ipsum 2',
-			attr: {
-				cssclass: 'group-sub-title'
-			}
-		},
-		{
-			tag: 'p',
-			content: 'Lorem ipsum dolor sit amet, nisl lorem, wisi egestas orci tempus class massa, suscipit eu elit urna in urna, gravida wisi aenean eros massa, cursus quisque leo quisque dui.'
-		}]
-    }];
-
 function formatDateTimeline(date) {
     var value = new Date(date);
     return value.getFullYear() + "-" + value.getMonth() + "-" + value.getDate() ;
 }
 
-function normalize(data) {
+function documentType(data) {
+    var documenttype = data.DocumentType;
+    if (data.DocumentType === 'Instance') documenttype = "Dokument";
     return {
         time: formatDateTimeline(data.EventDate),
+        responsible: data.Responsible,
+        body: [{
+            tag: 'h3',
+            content: data.DocumentTitle,
+            attr: {
+                cssclass: 'group-title'
+            }
+        },
+            {
+                tag: 'span',
+                content: documenttype,
+                attr: {
+                    cssclass: 'group-sub-title'
+                }
+            },
+        {
+            tag: 'p',
+                content: "Indsats: " + data.Title
+            }]
+    }
+}
+// TODO -> Her skal der evt. v�re noget content tekst som er passer til den tekst de rer skrevet.
+function journalNoteType(data) {
+    var journaltype = data.DocumentType;
+    if (data.DocumentType === 'JournalNote') journaltype = "Journalnotat";
+    return {
+        time: formatDateTimeline(data.EventDate),
+        responsible: data.Responsible,
+        body: [{
+            tag: 'h3',
+            content: data.DocumentTitle,
+            attr: {
+                cssclass: 'group-title'
+            }
+        },
+            {
+                tag: 'span',
+                content: journaltype,
+                attr: {
+                    cssclass: 'group-sub-title'
+                }
+            },
+        {
+            tag: 'p',
+            content: "Tilføjet: " + formatDateTimeline(data.CreationDate),
+        }]
+    }
+}
+function activitiesType(data) {
+    return {
+        time: formatDateTimeline(data.EventDate),
+        responsible: data.Responsible,
         body: [{
             tag: 'h3',
             content: data.Title,
@@ -111,9 +76,15 @@ function normalize(data) {
         },
         {
             tag: 'p',
-            content: 'Lorem ipsum dolor sit amet, nisl lorem, wisi egestas orci tempus class massa, suscipit eu elit urna in urna, gravida wisi aenean eros massa, cursus quisque leo quisque dui.'
+            content: 'Lorem ipsum dolor sit amet, nisl lorem, wisi egestas orci tempus massa, suscipit eu elit urna in urna, gravida wisi aenean eros massa, cursus quisque leo quisque dui.'
         }]
     }
+}
+
+function normalize(data) {
+    if (data.DocumentType === 'Instance') return documentType(data);
+    if (data.DocumentType === 'JournalNote') return journalNoteType(data);
+    return activitiesType(data);
 }
 
 $(document).ready(function () {
