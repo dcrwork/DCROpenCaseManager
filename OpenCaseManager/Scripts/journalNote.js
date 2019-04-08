@@ -23,6 +23,11 @@ function formatDate(date) {
 $(function () {
     $("#datepicker").datepicker();
     $("#datepicker").datepicker("option", "dateFormat", "d/m/yy");
+    $("#datepicker").datepicker({ maxDate: "+0d" });
+
+    var maxDate = $("#datepicker").datepicker("option", "maxDate");
+
+    $("#datepicker").datepicker("option", "maxDate", "+0d");
 });
 
 $("#datepicker").on('change', function () {
