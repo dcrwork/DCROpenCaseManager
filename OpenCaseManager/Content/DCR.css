@@ -1,4 +1,9 @@
-﻿body {
+﻿
+html {
+    overflow-y: scroll;
+}
+
+body {
     background: #ebebeb;
     font-family: Arial,'Source Sans Pro',sans-serif;
     font-size: 14px;

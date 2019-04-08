@@ -1,4 +1,7 @@
 ﻿/*Common css fot all opena case manager Apps*/
+html {
+    overflow-y: scroll;
+}
 div.wrapper {
     height: 100vh;
     display: flex;
