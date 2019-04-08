@@ -134,7 +134,7 @@
         });
 
 
-        $('#executeTask').on('click', function (e) {
+        $('.taskExecutionButton').on('click', function (e) {
             var eventId = elem.attr('id');
             var eventType = elem.attr('eventType');
             var taskId = elem.attr('taskId');
@@ -158,8 +158,8 @@
                 App.showTaskWithNotePopup(data, elem, showCaseInfo, uievent);
             } else {
                 App.executeEvent(data, showCaseInfo, uievent);
+                console.log(data);
             }
-            $('#executeTaskModal').modal('toggle');
             e.preventDefault();
         });
 

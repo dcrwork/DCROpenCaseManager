@@ -6,7 +6,6 @@
 }
 
 
-
 function CreateJournalNoteView() {
     var id = $.urlParam("id");
     window.open("/JournalNote/Create" + (id ? "?id=" + id : ""), "", "width=1200,height=1200");
@@ -18,10 +17,6 @@ function formatDate(date) {
     return value.getDate() + "/" + (value.getMonth()+1) + "/" + value.getFullYear();
 }
 
-$(function () {
-    $("#datepicker").datepicker();
-    $("#datepicker").datepicker("option", "dateFormat", "d/m/yy");
-});
 
 function changedate(inputId, lableId) {
     var value = $('#' + inputId).val();

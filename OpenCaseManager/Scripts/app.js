@@ -654,7 +654,6 @@
     }
 
     function getInstanceHtml(item) {
-
         $('#instanceTitle').text(item.Title);
         if (item.CaseNoForeign !== null) {
             $('.caseNum').show();
@@ -664,10 +663,13 @@
             $('.caseLink').show();
             $('#entityLink').attr('href', item.CaseLink);
         }
+        //HACK: I dont think this is actually used anymore (Johnny)
+        /* 
         if (item.Description != null && item.Description != '')
             Instruction.setText(item.Description);
         else
             Instruction.hideWebPart();
+        */
     }
 
     function getProcessHtml(item) {
