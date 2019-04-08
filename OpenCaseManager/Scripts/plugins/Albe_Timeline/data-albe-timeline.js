@@ -1,5 +1,7 @@
-//Json Object
-var data = [
+//Json ObjectS
+
+
+var nogeandet =    [
 	{
 		time: '2015-03-29',
 		body: [{
@@ -83,10 +85,51 @@ var data = [
 			tag: 'p',
 			content: 'Lorem ipsum dolor sit amet, nisl lorem, wisi egestas orci tempus class massa, suscipit eu elit urna in urna, gravida wisi aenean eros massa, cursus quisque leo quisque dui.'
 		}]
-	}];
+    }];
+
+function formatDateTimeline(date) {
+    var value = new Date(date);
+    return value.getFullYear() + "-" + value.getMonth() + "-" + value.getDate() ;
+}
+
+function normalize(data) {
+    return {
+        time: formatDateTimeline(data.EventDate),
+        body: [{
+            tag: 'h3',
+            content: data.Title,
+            attr: {
+                cssclass: 'group-title'
+            }
+        },
+        {
+            tag: 'span',
+            content: data.Type,
+            attr: {
+                cssclass: 'group-sub-title'
+            }
+        },
+        {
+            tag: 'p',
+            content: 'Lorem ipsum dolor sit amet, nisl lorem, wisi egestas orci tempus class massa, suscipit eu elit urna in urna, gravida wisi aenean eros massa, cursus quisque leo quisque dui.'
+        }]
+    }
+}
 
 $(document).ready(function () {
+    async function getData() {
+        var data = await getTimelineData(9);
 
-	$('#myTimeline').albeTimeline(data);
+        console.log(data);
 
+        var normData = data.map(function (value) {
+            return normalize(value);
+        });
+
+        console.log(normData)
+        $('#myTimeline').albeTimeline(normData);
+    }
+
+    getData();
 });
+

@@ -12,12 +12,6 @@ function CreateJournalNoteView() {
     window.open("/JournalNote/Create" + (id ? "?id=" + id : ""), "", "width=1200,height=1200");
 }
 
-function formatDate(date) {
-    var value = new Date(date);
-    console.log(value);
-    return value.getDate() + "/" + (value.getMonth()+1) + "/" + value.getFullYear();
-}
-
 $(function () {
     $("#datepicker").datepicker();
     $("#datepicker").datepicker("option", "dateFormat", "d/m/yy");
