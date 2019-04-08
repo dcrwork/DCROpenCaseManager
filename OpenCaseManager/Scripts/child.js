@@ -38,16 +38,38 @@ function showChildInstances(response) {
         }
     }
     $("#childInstances").html("").append(list);
+    setClosedInstancesToFaded();
 }
 
 function getChildInstanceHtml(item) {
-    var returnHtml = "<tr class='trStyleClass'>";
-    returnHtml += "<td>Grøn</td>";
-    returnHtml += "<td>" + item.Title + "</td>";
-    returnHtml += "<td>" + item.Process + "</td>";
-    returnHtml += "<td>" + item.Name + "</td>";
-    returnHtml += "<td> 02/04-2019</td>";
+    var open = (item.IsOpen) ? "" : "instanceClosed";
+    var instanceLink = "../Instance?id=" + item.Id;
 
+    var returnHtml = "<tr class='trStyleClass " + open + "'>";
+    returnHtml += (item.IsOpen) ? "<td class='statusColumn'>" + getStatus(item.NextDeadline) + "</td>" : "<td class='statusColumn'>Lukket</td>";
+    returnHtml += "<td><a href='" + instanceLink + "' target='_blank'>" + item.Title + "</a></td>";
+    returnHtml += "<td>" + item.Process + "</td>";
+    returnHtml += "<td>" + item.Name.substr(0, 1).toUpperCase() + item.Name.substr(1)  + "</td>";
+    returnHtml += "<td> 02/04-2019</td>";
     return returnHtml;
+}
+
+function getStatus(deadline) {
+    if (deadline != null) {
+        var now = new Date().getTime();
+        deadline = new Date(deadline).getTime();
+        if (now >= deadline) {
+            return "<span class='dot dotRed'></span>";
+        } else if (now + 604800000 >= deadline) {
+            return "<span class='dot dotYellow'></span>";
+        }
+    }
     
+    return "<span class='dot dotGreen'></span>";
+}
+
+function setClosedInstancesToFaded() {
+    $('.instanceClosed').each(function () {
+        $(this).find('td, a').css('color', 'lightgray');
+    });
 }
