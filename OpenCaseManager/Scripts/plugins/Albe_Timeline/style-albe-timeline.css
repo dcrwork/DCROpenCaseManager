@@ -53,7 +53,7 @@ section#timeline { position: relative; padding-bottom: 24px; overflow: hidden; }
                 border-radius: 50%;
             }
 
-            section#timeline.Instance:before {
+            section#timeline .Instance:before {
                 transform: rotate(45deg);
             }
 
@@ -64,7 +64,7 @@ section#timeline { position: relative; padding-bottom: 24px; overflow: hidden; }
                 border-right: none;
                 float: right;
                 color: #151d2a;
-                width: 45%;
+                width: 44%;
                 padding: 10px 25px 10px 25px;
                 position: relative;
                 color: #333;
@@ -77,7 +77,7 @@ section#timeline { position: relative; padding-bottom: 24px; overflow: hidden; }
                 }
 
             .leftWrapper {
-                width: 45%;
+                width: 44%;
                 display: inline-block;
             }
            section#timeline > article > div.timelinePanel div.badge {
