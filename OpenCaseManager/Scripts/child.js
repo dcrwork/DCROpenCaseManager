@@ -28,7 +28,6 @@
 
 function showChildInstances(response) {
     var result = JSON.parse(response);
-    console.log(result);
     var list = "";
     if (result.length === 0) {
         list = "<tr class='trStyleClass'><td colspan='100%'>" + translations.NoRecordFound + " </td></tr>";
