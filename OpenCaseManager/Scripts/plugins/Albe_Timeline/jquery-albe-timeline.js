@@ -57,16 +57,18 @@
 				eMenu.append($('<li>').append(anchor));
 			}
 
-			/****************************************SLOT <article>****************************************/
-			var badge = $('<div>').addClass('badge');
+            /****************************************SLOT <article>****************************************/
+            var leftWrapper = $('<div>').addClass('leftWrapper');
+            var badge = $('<div>').addClass('badge');
             badge.text(fnDateFormat(element.time, settings.formatDate, idioma));
-
+            
             var responsible = $('<p>').addClass('timelineResponsible');
             responsible.text(element.responsible);
 
             badge.append(responsible);
+            leftWrapper.append(badge);
 
-			var ePanel = $('<div>').addClass('timelinePanel').append(badge);
+            var ePanel = $('<div>').addClass('timelinePanel').append(leftWrapper);
 
 			if (element.header) {
 				var ePanelHead = $('<div>').addClass('panel-heading');
