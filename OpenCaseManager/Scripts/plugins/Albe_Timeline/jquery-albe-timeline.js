@@ -44,6 +44,8 @@
 
 		$.each(json, function (index, element) {
 
+            var timelineType = element.type;
+
 			var ano = new Date(element.time).getFullYear();
 			var agrupador = $(eTimeline).find('div.group' + ano);
 
@@ -68,7 +70,7 @@
             badge.append(responsible);
             leftWrapper.append(badge);
 
-            var ePanel = $('<div>').addClass('timelinePanel').append(leftWrapper);
+            var ePanel = $('<div>').addClass('timelinePanel ' + timelineType).append(leftWrapper);
 
 			if (element.header) {
 				var ePanelHead = $('<div>').addClass('panel-heading');

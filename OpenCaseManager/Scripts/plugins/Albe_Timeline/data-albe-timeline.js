@@ -4,9 +4,8 @@ function formatDateTimeline(date) {
 }
 
 function documentType(data) {
-    var documenttype = data.DocumentType;
-    if (data.DocumentType === 'Instance') documenttype = "Dokument";
     return {
+        type: data.DocumentType,
         time: formatDateTimeline(data.EventDate),
         responsible: data.Responsible,
         body: [{
@@ -18,7 +17,7 @@ function documentType(data) {
         },
             {
                 tag: 'span',
-                content: documenttype,
+                content: "Dokument",
                 attr: {
                     cssclass: 'group-sub-title'
                 }
@@ -31,9 +30,8 @@ function documentType(data) {
 }
 // TODO -> Her skal der evt. v�re noget content tekst som er passer til den tekst de rer skrevet.
 function journalNoteType(data) {
-    var journaltype = data.DocumentType;
-    if (data.DocumentType === 'JournalNote') journaltype = "Journalnotat";
     return {
+        type: data.DocumentType,
         time: formatDateTimeline(data.EventDate),
         responsible: data.Responsible,
         body: [{
@@ -45,7 +43,7 @@ function journalNoteType(data) {
         },
             {
                 tag: 'span',
-                content: journaltype,
+                content: "Journalnotat",
                 attr: {
                     cssclass: 'group-sub-title'
                 }
@@ -57,7 +55,10 @@ function journalNoteType(data) {
     }
 }
 function activitiesType(data) {
+    var eventtype = data.Type;
+    if (data.Type === 'Event') eventtype = "Aktivitet";
     return {
+        type: data.Type,
         time: formatDateTimeline(data.EventDate),
         responsible: data.Responsible,
         body: [{
@@ -69,14 +70,10 @@ function activitiesType(data) {
         },
         {
             tag: 'span',
-            content: data.Type,
+            content: eventtype,
             attr: {
                 cssclass: 'group-sub-title'
             }
-        },
-        {
-            tag: 'p',
-            content: 'Lorem ipsum dolor sit amet, nisl lorem, wisi egestas orci tempus massa, suscipit eu elit urna in urna, gravida wisi aenean eros massa, cursus quisque leo quisque dui.'
         }]
     }
 }
