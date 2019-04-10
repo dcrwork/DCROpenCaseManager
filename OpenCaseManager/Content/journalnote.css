@@ -58,6 +58,10 @@ input[type="submit"].btn-save-draft{
     color: #9C1A5E;
 }
 
+.change-date-div {
+    margin-top: 15px;
+}
+/*
 .change-date-link::placeholder{
     color: #9C1A5E;
 }
@@ -69,8 +73,8 @@ input[type="submit"].btn-save-draft{
 .hideLabel{
     display: none;
 }
-
-#change-date-label{
+*/
+#change-date-label {
     padding-right: 5px;
 }
 

@@ -21,14 +21,15 @@
 <form class="form-create-journal-note">
     <h3>Opret journalnotat</h3>
     <input type="text" placeholder=" Titel" id="input-journal-title" autocomplete="off" />
-    <label class="actual-date" value="@date">Oprettelsesdato: <span id="dateLabel" name="dateLabel"> @date </span></label>
-    <div class="change-date-div"><label id="change-date-label" class="hideLabel">Hændelsesdato: </label><input type="text" class="change-date-link" placeholder="Ændr hændelsesdato" id="datepicker" autocomplete="off" /></div>
-    <textarea id="input-journal-note" placeholder="Skriv journalnotat her..."></textarea>
-    <div class="journalNotatButtons">
-        <button class="cancel-journal-note-button" onclick="closeJournalNotatWindow();">Annuller</button>
-        <button class="add-journal-note-button">Opret</button>
-    </div>
-</form>
+    <!--<label class="actual-date" value="@date">Oprettelsesdato: <span id="dateLabel" name="dateLabel"> @date </span></label> -->
+    <div class="change-date-div"> <label id="change-date-label">Hændelsesdato: </label><input type="text" class="change-date-link" value="@date" placeholder="@date" id="datepicker" autocomplete="off" /> </div>
+    <!-- <div class="change-date-div"> <label id="change-date-label" class="hideLabel">Hændelsesdato: </label><input type="text" class="change-date-link" placeholder="Ændr hændelsesdato" id="datepicker" autocomplete="off" /> </div<div class="change-date-div"> <label id="change-date-label" class="hideLabel">Hændelsesdato: </label><input type="text" class="change-date-link" placeholder="Ændr hændelsesdato" id="datepicker" autocomplete="off" /> </div> -->
+        <textarea id="input-journal-note" placeholder="Skriv journalnotat her..."></textarea>
+        <div class="journalNotatButtons">
+            <button class="cancel-journal-note-button" onclick="closeJournalNotatWindow();">Annuller</button>
+            <button class="add-journal-note-button">Opret</button>
+        </div>
+    </form>
 
-<script src="~/node_modules/trumbowyg/dist/trumbowyg.min.js"></script>
+    <script src="~/node_modules/trumbowyg/dist/trumbowyg.min.js"></script>
 
