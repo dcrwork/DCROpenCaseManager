@@ -6,9 +6,12 @@
 }
 
 .form-create-journal-note label {
-    margin-top: 20px;
     margin-bottom: 0;
     font-weight: normal;
+}
+
+.actual-date {
+    margin-top: 20px;
 }
 
 input[type="submit"].btn-save-draft{
@@ -49,8 +52,10 @@ input[type="submit"].btn-save-draft{
     color: #fff;
 }
 
-.change-date-link{
+.change-date-link {
     border: none;
+    outline: none;
+    color: #9C1A5E;
 }
 
 .change-date-link::placeholder{

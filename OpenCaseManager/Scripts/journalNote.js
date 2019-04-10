@@ -21,7 +21,7 @@ function formatDate(date) {
 
 $(function () {
     $("#datepicker").datepicker();
-    $("#datepicker").datepicker("option", "dateFormat", "d/m/yy");
+    $("#datepicker").datepicker("option", "dateFormat", "dd/mm/yy");
     $("#datepicker").datepicker({ maxDate: "+0d" });
 
     var maxDate = $("#datepicker").datepicker("option", "maxDate");
@@ -32,6 +32,8 @@ $(function () {
 $("#datepicker").on('change', function () {
     $("#change-date-label").removeClass("hideLabel");
 });
+
+$("#datepicker").attr('readonly', 'readonly');
 
 function changedate(inputId, lableId) {
     var value = $('#' + inputId).val();
