@@ -53,6 +53,8 @@ function getChildInstanceHtml(item) {
     } else {
         returnHtml += "<td> intet gjort</td>";
     }
+    returnHtml += "</tr>";
+    console.log(returnHtml);
     return returnHtml;
 }
 
