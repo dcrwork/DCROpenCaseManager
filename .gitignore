@@ -263,3 +263,4 @@ __pycache__/
 *.pyc
 /OpenCaseManager/App_Data
 /OpenCaseManager/node_modules
+/OpenCaseManager/tmp
