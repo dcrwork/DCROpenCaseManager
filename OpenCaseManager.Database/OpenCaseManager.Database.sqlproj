@@ -117,7 +117,7 @@
     <Build Include="dbo\Views\MUSTasks.sql" />
     <Build Include="dbo\Schema_Modifications\Tables\Child.sql" />
     <Build Include="dbo\Schema_Modifications\Tables\JournalHistory.sql" />
-    <Build Include="dbo\Schema_Modifications\Function\JournalHistoryForASingleInstance.sql" />
+    <Build Include="dbo\Functions\JournalHistoryForASingleInstance.sql" />
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="dbo\Data\Script.PreDeployment.sql" />
