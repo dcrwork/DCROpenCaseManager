@@ -490,6 +490,11 @@ img.newFormAddIcon {
     width: auto;
 }
 
+.tabsBox {
+    width: 100%;
+    margin: 0px 60px;
+}
+
 .dot {
     height: 20px;
     width: 20px;
