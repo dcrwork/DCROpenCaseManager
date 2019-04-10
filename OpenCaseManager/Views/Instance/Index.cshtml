@@ -69,10 +69,14 @@
     .table > tfoot > tr > td {
         border-top: none;
     }
+
+    .tab-pane {
+        width: 100vh;
+    }
 </style>
 
 @{
-    ViewBag.Title = "Instance";
+    ViewBag.Title = "Indsats"; //This will be overwritten when the page is fully loaded
 }
 
 
@@ -140,5 +144,16 @@
         if (!results[2]) return '';
         return decodeURIComponent(results[2].replace(/\+/g, " "));
     }
+    // Checks if InstanceTitle has been set every 100 milliseconds, and sets the title of the tab to the InstanceTitle when it is set.
+    $(window).ready(function () {
+        var i = setInterval(function () {
+            var tabTitle = $('#instanceTitle').text();
+            if (tabTitle.length != 0) {
+                clearInterval(i);
+                // safe to execute your code here
+                $('head title', window.parent.document).text(tabTitle);
+            }
+        }, 100);
+    });
 </script>
 <script src="~/Scripts/task.js"></script>
