@@ -9,6 +9,7 @@
 function CreateJournalNoteView() {
     var id = $.urlParam("id");
     window.open("/JournalNote/Create" + (id ? "?id=" + id : ""), "", "width=800,height=600");
+    //postwindow,dialog=yes,close=no,location=no,status=no,
 }
 
 $('#input-journal-note').trumbowyg();
@@ -35,6 +36,34 @@ $("#datepicker").on('change', function () {
 
 $("#datepicker").attr('readonly', 'readonly');
 
+/*$.datepicker.setDefaults($.datepicker.regional[""]);*/
+
+$("#datepicker").datepicker({
+    firstDay: 1
+},
+    $.datepicker.regional['dk']
+);
+/*
+$("#datepicker").datepicker({
+    gotoCurrent: true
+});
+
+$("#datepicker").datepicker({
+    dayNames: ["Mandag", "Tirsdag", "Onsdag", "Torsdag", "Fredag", "Lørdag", "Søndag"]
+});
+
+$(".selector").datepicker({
+    dayNamesMin: ["Ma", "Ti", "On", "To", "Fr", "Lø", "Sø"]
+});
+
+$(".selector").datepicker({
+    monthNames: ["Januar", "Februar", "Marts", "April", "Maj", "Juni", "Juli", "August", "September", "Oktober", "November", "December"]
+});
+
+$(".selector").datepicker({
+    monthNamesShort: ["Jan", "Feb", "Mar", "Apr", "Maj", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dec"]
+});
+*/
 function changedate(inputId, lableId) {
     var value = $('#' + inputId).val();
     var applyTo = $('#' + lableId)[0];
