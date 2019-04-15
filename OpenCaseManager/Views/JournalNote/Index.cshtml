@@ -71,3 +71,10 @@
         }
     <a href="javascript:windowClose();"> Luk jounal notat</a>
 </div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var documentTitle = App.getParameterByName("documentTitle", window.location.href);
+        $('head title', window.parent.document).text(documentTitle);
+    });
+</script>
