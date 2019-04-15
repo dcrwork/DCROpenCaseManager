@@ -61,19 +61,14 @@ input[type="submit"].btn-save-draft{
 .change-date-div {
     margin-top: 15px;
 }
-/*
-.change-date-link::placeholder{
+
+.change-date-link::placeholder {
     color: #9C1A5E;
 }
 
-.change-date-link::placeholder:hover{
-    text-decoration: underline;
+.change-date-link:hover {
+    cursor: pointer;
 }
-
-.hideLabel{
-    display: none;
-}
-*/
 #change-date-label {
     padding-right: 5px;
 }
@@ -88,4 +83,30 @@ input[type="submit"].btn-save-draft{
 
 .form-create-journal-note h3 {
     margin: 25px 0 25px 0;
+}
+
+.ui-timepicker-container {
+    z-index: 12 !important;
+    width: 80px !important;
+}
+
+.timepicker {
+    border: 1px solid #d7e0e2;
+    margin: 15px 0 0 5px;
+    color: #9C1A5E;
+    width: 50px;
+    padding: 0 5px 0 5px;
+}
+
+.ui-timepicker-standard a{
+    color: #9C1A5E;
+    font-size: 12px;
+    padding: 5px;
+    width: 50px;
+}
+
+.ui-timepicker-standard a:hover {
+    background-color: #ededed;
+    border:none;
+    color: #9C1A5E;
 }

@@ -5,7 +5,12 @@
 }
 
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-<script src="~/node_modules/trumbowyg/dist/trumbowyg.min.js"></script>
+<link rel="stylesheet" href="~/Scripts/plugins/Trumbowyg/dist/ui/trumbowyg.css" />
+<script src="~/Scripts/plugins/Trumbowyg/dist/trumbowyg.js"></script>
+<link rel="stylesheet" href="~/Scripts/plugins/Timepicker/jquery.timepicker.css" />
+<script src="~/Scripts/plugins/Timepicker/jquery.timepicker.js"></script>
+
+
 <style>
     header {
         display: none;
@@ -16,27 +21,19 @@
     }
 </style>
 
-<link rel="stylesheet" href="~/node_modules/trumbowyg/dist/ui/trumbowyg.min.css">
+
+
 
 <link type="text/css" rel="stylesheet" href="~/Content/journalnote.css" />
 
 <form class="form-create-journal-note">
     <h3>Opret journalnotat</h3>
     <input type="text" placeholder=" Titel" id="input-journal-title" autocomplete="off" />
-    <!--<label class="actual-date" value="@date">Oprettelsesdato: <span id="dateLabel" name="dateLabel"> @date </span></label> -->
     <div class="change-date-div"> <label id="change-date-label">Hændelsesdato: </label><input type="text" class="ui-datepicker change-date-link" value="@date" placeholder="@date" id="datepicker" autocomplete="off" /> </div>
-    <!-- <div class="change-date-div"> <label id="change-date-label" class="hideLabel">Hændelsesdato: </label><input type="text" class="change-date-link" placeholder="Ændr hændelsesdato" id="datepicker" autocomplete="off" /> </div<div class="change-date-div"> <label id="change-date-label" class="hideLabel">Hændelsesdato: </label><input type="text" class="change-date-link" placeholder="Ændr hændelsesdato" id="datepicker" autocomplete="off" /> </div> -->
+    <div class="change-time-div"> <label id="change-time-label">Hændelsestidspunkt: </label><input type="text" class="timepicker" /> </div>
     <textarea id="input-journal-note" placeholder="Skriv journalnotat her..."></textarea>
     <div class="journalNotatButtons">
         <button class="cancel-journal-note-button" onclick="closeJournalNotatWindow();">Annuller</button>
         <button class="add-journal-note-button">Opret</button>
     </div>
 </form>
-
-</div><!-- Modal End-->
-
-<script>
-    $("#datepicker").datepicker();
-    $("#datepicker").datepicker("option", "dateFormat", "d/m/yy");
-
-</script>

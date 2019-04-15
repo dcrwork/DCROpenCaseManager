@@ -1,4 +1,6 @@
-﻿$.urlParam = function (name) {
+﻿
+
+$.urlParam = function (name) {
     var results = new RegExp('[\?&]' + name + '=([^&#]*)')
         .exec(window.location.search);
 
@@ -16,6 +18,7 @@ $('#input-journal-note').trumbowyg();
 $('#input-journal-note').trumbowyg({
     tagsToRemove: ['Redo']
 });
+
 
 function formatDate(date) {
     var value = new Date(date);
@@ -66,10 +69,7 @@ $(function () {
     var prevText = $("#datepicker").datepicker("option", "nextText");
     $("#datepicker").datepicker("option", "prevText", "Forrige");
 });
-/*
-$("#datepicker").on('change', function () {
-    $("#change-date-label").removeClass("hideLabel");
-});*/
+
 
 $("#datepicker").attr('readonly', 'readonly');
 
@@ -132,3 +132,16 @@ function uploadFile(file, instanceId, fileName) {
 function closeJournalNotatWindow() {
     window.close()
 }
+
+$(document).ready(function () {
+    $('input.timepicker').timepicker({
+        timeFormat: 'HH:mm',
+        interval: 30,
+        minTime: '0000',
+        maxTime: '2359',
+        startTime: '06',
+        dynamic: false,
+        dropdown: true,
+        scrollbar: true
+    });
+});
