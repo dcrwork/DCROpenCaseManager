@@ -87,4 +87,27 @@ input[type="submit"].btn-save-draft{
 
 .ui-timepicker-container {
     z-index: 12 !important;
+    width: 80px !important;
+}
+
+.timepicker {
+    border: 1px solid #d7e0e2;
+    outline: none;
+    margin: 15px 0 0 5px;
+    color: #9C1A5E;
+    width: 50px;
+    padding: 0 5px 0 5px;
+}
+
+.ui-timepicker-standard a{
+    color: #9C1A5E;
+    font-size: 12px;
+    padding: 5px;
+    width: 50px;
+}
+
+.ui-timepicker-standard a:hover {
+    background-color: #ededed;
+    border:none;
+    color: #9C1A5E;
 }
