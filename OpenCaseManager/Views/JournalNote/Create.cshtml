@@ -29,29 +29,11 @@
 <form class="form-create-journal-note">
     <h3>Opret journalnotat</h3>
     <input type="text" placeholder=" Titel" id="input-journal-title" autocomplete="off" />
-    <!--<label class="actual-date" value="@date">Oprettelsesdato: <span id="dateLabel" name="dateLabel"> @date </span></label> -->
     <div class="change-date-div"> <label id="change-date-label">Hændelsesdato: </label><input type="text" class="ui-datepicker change-date-link" value="@date" placeholder="@date" id="datepicker" autocomplete="off" /> </div>
     <div class="change-time-div"> <label id="change-time-label">Hændelsestidspunkt: </label><input type="text" class="timepicker" /> </div>
-
-    <!-- <div class="change-date-div"> <label id="change-date-label" class="hideLabel">Hændelsesdato: </label><input type="text" class="change-date-link" placeholder="Ændr hændelsesdato" id="datepicker" autocomplete="off" /> </div<div class="change-date-div"> <label id="change-date-label" class="hideLabel">Hændelsesdato: </label><input type="text" class="change-date-link" placeholder="Ændr hændelsesdato" id="datepicker" autocomplete="off" /> </div> -->
     <textarea id="input-journal-note" placeholder="Skriv journalnotat her..."></textarea>
     <div class="journalNotatButtons">
         <button class="cancel-journal-note-button" onclick="closeJournalNotatWindow();">Annuller</button>
         <button class="add-journal-note-button">Opret</button>
     </div>
 </form>
-
-<script type="text/javascript">
-    $(document).ready(function () {
-        $('input.timepicker').timepicker({
-            timeFormat: 'HH:mm',
-            interval: 30,
-            minTime: '0000',
-            maxTime: '2359',
-            startTime: '06',
-            dynamic: false,
-            dropdown: true,
-            scrollbar: true
-        });
-    });
-</script>
