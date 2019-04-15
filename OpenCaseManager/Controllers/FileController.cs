@@ -10,6 +10,7 @@ using System.Web.Mvc;
 
 namespace OpenCaseManager.Controllers
 {
+    [Authorize]
     public class FileController : Controller
     {
         private IManager _manager;
