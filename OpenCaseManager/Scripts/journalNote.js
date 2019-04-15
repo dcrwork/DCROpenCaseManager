@@ -129,9 +129,6 @@ function uploadFile(file, instanceId, fileName) {
     }
 }
 
-<<<<<<< HEAD
-=======
 function closeJournalNotatWindow() {
     window.close()
 }
->>>>>>> 329e305947c6bec914955bc15921124ab885a068
