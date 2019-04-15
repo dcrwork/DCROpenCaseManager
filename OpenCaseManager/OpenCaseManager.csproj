@@ -620,6 +620,7 @@
     <Content Include="Views\PartialViews\Stamdata.cshtml" />
     <Content Include="Views\Child\index.cshtml" />
     <Content Include="Views\PartialViews\AddButton.cshtml" />
+    <Content Include="Views\PartialViews\AddJournalNote.cshtml" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
