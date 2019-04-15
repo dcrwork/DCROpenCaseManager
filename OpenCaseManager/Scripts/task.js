@@ -158,7 +158,6 @@
                 App.showTaskWithNotePopup(data, elem, showCaseInfo, uievent);
             } else {
                 App.executeEvent(data, showCaseInfo, uievent);
-                console.log(data);
             }
             e.preventDefault();
         });
