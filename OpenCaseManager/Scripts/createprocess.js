@@ -30,6 +30,7 @@
     $('#create-process').on('click', function (e) {
         var title = $('#process-title').val();
         var graphId = $('#processes').find(":selected").val();
+        var childId = (window.location.pathname == "/child") ? App.getParameterByName("id", window.location.href) : null;
 
         var userRoles = new Array()
         $('select[name="multi-select"]').each(function (index, select) {
@@ -43,7 +44,7 @@
         })
         
         if (title !== '' && graphId > 0) {
-            App.addInstance(title, graphId, userRoles);
+            App.addInstance(title, graphId, userRoles, childId);
             $('#create-process-modal').modal('toggle');
         }
         else {

@@ -56,6 +56,7 @@ namespace OpenCaseManager.Controllers.ApiControllers
         {
             // add Instance
             var instanceId = AddInstance(input);
+            if (input.ChildId != null) ConnectInstanceToChild(instanceId, input.ChildId);
             return Ok(Common.ToJson(instanceId));
         }
 
@@ -361,8 +362,15 @@ namespace OpenCaseManager.Controllers.ApiControllers
                 eventId = request.Headers["eventId"];
             }
             catch (Exception) { }
+            var eventTime = DateTime.Now;
+            try
+            {
+                eventTime = Convert.ToDateTime(request.Headers["eventTime"]);
+            }
+            catch (Exception) { }
             var filePath = string.Empty;
-            filePath = _documentManager.AddDocument(instanceId, fileType, givenFileName, fileName, eventId, _manager, _dataModelManager);
+            if (fileType == "JournalNoteBig") filePath = _documentManager.AddDocument(instanceId, fileType, givenFileName, fileName, eventId, eventTime, _manager, _dataModelManager);
+            else filePath = _documentManager.AddDocument(instanceId, fileType, givenFileName, fileName, eventId, _manager, _dataModelManager);
             try
             {
                 using (var fs = new FileStream(filePath, FileMode.Create))
@@ -970,6 +978,20 @@ namespace OpenCaseManager.Controllers.ApiControllers
                 }
             }
             return true;
+        }
+
+        /// <summary>
+        /// Connect an instance to a child
+        /// </summary>
+        /// <param name="instanceId"></param>
+        /// <param name="childId"></param>
+        private void ConnectInstanceToChild(string instanceId, int? childId)
+        {
+            _dataModelManager.GetDefaultDataModel(Enums.SQLOperation.INSERT, DBEntityNames.Tables.InstanceExtension.ToString());
+            _dataModelManager.AddParameter(DBEntityNames.InstanceExtension.InstanceId.ToString(), Enums.ParameterType._int, instanceId);
+            _dataModelManager.AddParameter(DBEntityNames.InstanceExtension.ChildId.ToString(), Enums.ParameterType._int, childId.ToString());
+
+            _manager.InsertData(_dataModelManager.DataModel);
         }
     }
 }

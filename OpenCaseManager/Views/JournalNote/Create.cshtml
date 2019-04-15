@@ -3,9 +3,15 @@
     ViewBag.Title = "CreateJournalNote";
     var date = DateTime.Now.ToString("dd/MM/yyyy");
 }
+
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script src="~/node_modules/trumbowyg/dist/trumbowyg.min.js"></script>
 <style>
     header {
+        display: none;
+    }
+
+    .footer {
         display: none;
     }
 </style>
@@ -13,41 +19,24 @@
 <link rel="stylesheet" href="~/node_modules/trumbowyg/dist/ui/trumbowyg.min.css">
 
 <link type="text/css" rel="stylesheet" href="~/Content/journalnote.css" />
+
 <form class="form-create-journal-note">
-    <h2>Create Journal Note</h2>
-    <label>Title</label>
-    <input type="text" id="input-journal-title" />
-    <label value="@date">Date: <span id="dateLabel" name="dateLabel"> @date </span></label>
-    <a data-toggle="modal" data-target="#changeDate">Edit date</a>
-    <label>Note</label>
-    <textarea id="input-journal-note"></textarea>
-    <button class="btn-create add-journal-note-button">Create</button>
+    <h3>Opret journalnotat</h3>
+    <input type="text" placeholder=" Titel" id="input-journal-title" autocomplete="off" />
+    <!--<label class="actual-date" value="@date">Oprettelsesdato: <span id="dateLabel" name="dateLabel"> @date </span></label> -->
+    <div class="change-date-div"> <label id="change-date-label">Hændelsesdato: </label><input type="text" class="ui-datepicker change-date-link" value="@date" placeholder="@date" id="datepicker" autocomplete="off" /> </div>
+    <!-- <div class="change-date-div"> <label id="change-date-label" class="hideLabel">Hændelsesdato: </label><input type="text" class="change-date-link" placeholder="Ændr hændelsesdato" id="datepicker" autocomplete="off" /> </div<div class="change-date-div"> <label id="change-date-label" class="hideLabel">Hændelsesdato: </label><input type="text" class="change-date-link" placeholder="Ændr hændelsesdato" id="datepicker" autocomplete="off" /> </div> -->
+    <textarea id="input-journal-note" placeholder="Skriv journalnotat her..."></textarea>
+    <div class="journalNotatButtons">
+        <button class="cancel-journal-note-button" onclick="closeJournalNotatWindow();">Annuller</button>
+        <button class="add-journal-note-button">Opret</button>
+    </div>
 </form>
 
-<div class="modal fade" id="changeDate" role="dialog">
-    <div class="modal-dialog">
-        <!-- Modal content-->
-        <div class="modal-content">
-            <!-- Modal Header -->
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title instanceModalHeading"><span data-locale data-apply="text" data-key="changeDate">Change Date</span></h4>
-            </div>
-            <div class="modal-body">
-                <form>
-                    <div class="form-group">
-                        <label for="instanceTitle"><span data-locale data-apply="text" data-key="Date">Date</span>:</label>
-                        <input type="text" class="form-control" id="datepicker" />
-                    </div>
-                </form>
-            </div>
-            <!-- modal Footer -->
-            <div class="modal-footer">
-                <button type="button" class="btn-update-date" id="updateDate" data-toggle="modal" data-target="#changeDate" onclick="changedate('datepicker','dateLabel')"><span data-locale data-apply="text" data-key="changeDate">Change Date</span></button>
-            </div>
-        </div>
-    </div>
 </div><!-- Modal End-->
 
-<script src="~/node_modules/trumbowyg/dist/trumbowyg.min.js"></script>
+<script>
+    $("#datepicker").datepicker();
+    $("#datepicker").datepicker("option", "dateFormat", "d/m/yy");
 
+</script>
