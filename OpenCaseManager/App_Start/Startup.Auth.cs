@@ -54,7 +54,7 @@ namespace OpenCaseManager
                     }
                 }
             );
-            /*
+
             app.UseWindowsAzureActiveDirectoryBearerAuthentication(
                 new WindowsAzureActiveDirectoryBearerAuthenticationOptions
                 {
@@ -64,7 +64,6 @@ namespace OpenCaseManager
                     },
                     Tenant = Configurations.Config.Tenant
                 });
-                */
         }
 
         /// <summary>

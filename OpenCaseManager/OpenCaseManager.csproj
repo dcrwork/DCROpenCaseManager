@@ -623,6 +623,7 @@
     <Content Include="Views\PartialViews\AddButton.cshtml" />
     <Content Include="Views\PartialViews\AddJournalNote.cshtml" />
     <Content Include="Web.config" />
+    <Content Include="Views\JournalNote\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

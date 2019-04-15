@@ -1,0 +1,64 @@
+﻿<script language="javascript" type="text/javascript">
+    function windowClose() {
+        window.close();
+    }
+</script>
+
+@{
+    var result = "";
+    Array userData = null;
+
+    var instanceId = Request.QueryString["instanceId"];
+    var documentLink = Request.QueryString["documentLink"];
+    var documentTitle = Request.QueryString["documentTitle"];
+    var documentAuthor = Request.QueryString["documentAuthor"];
+    var document = Request.QueryString["documentTitle"];
+    var dataFile = Server.MapPath($"~/App_Data/Journal/{instanceId}/{documentLink}.rtf");
+
+    if (File.Exists(dataFile))
+    {
+        userData = File.ReadAllLines(dataFile);
+        if (userData == null)
+        {
+            // Empty file.
+            result = "The file is empty.";
+        }
+    }
+    else
+    {
+        // File does not exist.
+        result = "The file does not exist.";
+    }
+}
+<style>
+    .author {
+        margin-bottom: 20px;
+    }
+
+    .pre-scrollable {
+        max-height: 55vh;
+        margin-bottom: 20px;
+    }
+</style>
+
+
+
+<div class="container">
+    <h1 class="title"> @documentTitle</h1>
+    <h2 class="author"> @documentAuthor</h2>
+    <div class="pre-scrollable">
+        @result
+        @if (result == "")
+        {
+            <div class="content">
+                @foreach (string dataLine in userData)
+                {
+                    <div>
+                       @Html.Raw(@dataLine)
+                    </div>
+                }
+            </div>
+        }
+    </div>
+    <a href="javascript:windowClose();"> Luk jounal notat</a>
+</div>
