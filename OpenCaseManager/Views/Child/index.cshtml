@@ -10,8 +10,7 @@
     }
 
         .nav-pills .a {
-            font-size;
-            30px;
+            font-size: 30px;
         }
 
         .nav-pills > li.active > a, .nav-pills > a:hover {
@@ -57,6 +56,7 @@
         color: #fff;
         font-weight: lighter;
     }
+
 </style>
 
 @{
@@ -78,7 +78,6 @@
                 <li class="nav-item active">
                     <a class="nav-link" id="pills-activitiesb" data-toggle="tab" href="#pills-activities" role="tab" aria-controls="pills-activities" aria-selected="false">Indsatser</a>
                 </li>
-
                 <li class="nav-item">
                     <a class="nav-link" id="pills-timeline-tab" data-toggle="tab" href="#pills-timeline" role="tab" aria-controls="pills-timeline" aria-selected="false">Tidslinje</a>
                 </li>
@@ -88,9 +87,6 @@
             </ul>
             <div class="tab-content" id="pills-tabContent">
                 <div class="tab-pane fade in active" id="pills-activities" role="tabpanel" aria-labelledby="pills-activities">
-
-
-
 
                     <div class="childInstancesBox">
                         <table class="table tasksTable table-striped">
@@ -108,19 +104,11 @@
                         </table>
                     </div>
 
-
-
-
-
-
-
-
                     </div>
                     <div class="tab-pane fade in" id="pills-timeline" role="tabpanel" aria-labelledby="pills-timeline">
                         @Html.Partial("~/Views/PartialViews/Timeline.cshtml")
                     </div>
                     <div class="tab-pane fade in" id="pills-document" role="tabpanel" aria-labelledby="pills-document">
-
                     </div>
                 </div>
         </div>

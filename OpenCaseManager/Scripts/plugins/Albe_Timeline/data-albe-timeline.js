@@ -5,7 +5,7 @@ function formatDateTimeline(date) {
 
 function documentType(data) {
     return {
-        type: data.DocumentType,
+        type: "Dokument",
         time: formatDateTimeline(data.EventDate),
         responsible: data.Responsible,
         body: [{
@@ -15,23 +15,16 @@ function documentType(data) {
                 cssclass: 'group-title'
             }
         },
-            {
-                tag: 'span',
-                content: "Dokument",
-                attr: {
-                    cssclass: 'group-sub-title'
-                }
-            },
         {
             tag: 'p',
-                content: "Indsats: " + data.Title
+            content: "Indsats: " + data.InstanceTitle
             }]
     }
 }
 // TODO -> Her skal der evt. v�re noget content tekst som er passer til den tekst de rer skrevet.
 function journalNoteType(data) {
     return {
-        type: data.DocumentType,
+        type: "Journalnotat",
         time: formatDateTimeline(data.EventDate),
         responsible: data.Responsible,
         body: [{
@@ -41,13 +34,6 @@ function journalNoteType(data) {
                 cssclass: 'group-title'
             }
         },
-            {
-                tag: 'span',
-                content: "Journalnotat",
-                attr: {
-                    cssclass: 'group-sub-title'
-                }
-            },
         {
             tag: 'p',
             content: "Tilføjet: " + formatDateTimeline(data.CreationDate),
@@ -58,7 +44,7 @@ function activitiesType(data) {
     var eventtype = data.Type;
     if (data.Type === 'Event') eventtype = "Aktivitet";
     return {
-        type: data.Type,
+        type: eventtype,
         time: formatDateTimeline(data.EventDate),
         responsible: data.Responsible,
         body: [{
@@ -68,13 +54,10 @@ function activitiesType(data) {
                 cssclass: 'group-title'
             }
         },
-        {
-            tag: 'span',
-            content: eventtype,
-            attr: {
-                cssclass: 'group-sub-title'
-            }
-        }]
+            {
+                tag: 'p',
+                content: "Indsats: " + data.InstanceTitle
+            }]
     }
 }
 
@@ -86,7 +69,8 @@ function normalize(data) {
 
 $(document).ready(function () {
     async function getData() {
-        var data = await getTimelineData(9);
+        var childId = App.getParameterByName("id", window.location.href);
+        var data = await getTimelineData(childId);
 
         console.log(data);
 

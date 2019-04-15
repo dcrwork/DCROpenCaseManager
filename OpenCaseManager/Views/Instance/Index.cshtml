@@ -106,10 +106,6 @@
                 <li class="nav-item active">
                     <a class="nav-link" id="pills-activitiesb" data-toggle="tab" href="#pills-activities" role="tab" aria-controls="pills-activities" aria-selected="false">Aktiviteter</a>
                 </li>
-
-                <li class="nav-item">
-                    <a class="nav-link" id="pills-timeline-tab" data-toggle="tab" href="#pills-timeline" role="tab" aria-controls="pills-timeline" aria-selected="false">Tidslinje</a>
-                </li>
                 <li class="nav-item">
                     <a class="nav-link" id="pills-document-tab" data-toggle="tab" href="#pills-document" role="tab" aria-controls="pills-document" aria-selected="false">Dokumenter</a>
                 </li>
@@ -117,9 +113,6 @@
             <div class="tab-content" id="pills-tabContent">
                 <div class="tab-pane fade in active" id="pills-activities" role="tabpanel" aria-labelledby="pills-activities">
                     @Html.Partial("~/Views/PartialViews/Tasks.cshtml")
-                </div>
-                <div class="tab-pane fade in" id="pills-timeline" role="tabpanel" aria-labelledby="pills-timeline">
-                    @Html.Partial("~/Views/PartialViews/Timeline.cshtml")
                 </div>
                 <div class="tab-pane fade in" id="pills-document" role="tabpanel" aria-labelledby="pills-document">
                     @Html.Partial("~/Views/PartialViews/Document.cshtml")
