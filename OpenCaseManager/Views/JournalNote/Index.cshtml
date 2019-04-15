@@ -4,9 +4,18 @@
     }
 </script>
 
+
 @{
+    /// <summary>
+    /// Return the content of a journalnote.rtf
+    /// </summary>
+    /// <param name="instanceId"></param>
+    /// <param name="documentLink"></param>
+    /// <param name="documentTitle"></param>
+    /// <param name="documentAuthor"></param>
+    /// <returns> </returns>
     var result = "";
-    Array userData = null;
+    Array Data = null;
 
     var instanceId = Request.QueryString["instanceId"];
     var documentLink = Request.QueryString["documentLink"];
@@ -17,8 +26,8 @@
 
     if (File.Exists(dataFile))
     {
-        userData = File.ReadAllLines(dataFile);
-        if (userData == null)
+        Data = File.ReadAllLines(dataFile);
+        if (Data == null) // If the file is empty
         {
             // Empty file.
             result = "The file is empty.";
@@ -51,7 +60,7 @@
         @if (result == "")
         {
             <div class="content">
-                @foreach (string dataLine in userData)
+                @foreach (string dataLine in Data)
                 {
                     <div>
                        @Html.Raw(@dataLine)
