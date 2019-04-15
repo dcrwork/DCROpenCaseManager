@@ -20,10 +20,6 @@ function formatDate(date) {
     return value.getDate() + "/" + (value.getMonth()+1) + "/" + value.getFullYear();
 }
 
-$(function () {
-    $("#datepicker").datepicker();
-    $("#datepicker").datepicker("option", "dateFormat", "d/m/yy");
-});
 
 function changedate(inputId, lableId) {
     var value = $('#' + inputId).val();
@@ -33,7 +29,7 @@ function changedate(inputId, lableId) {
 }
 
 $(document).on('click', '.add-journal-note-button', function () {
-    var documentName = $('#input-journal-title').val() + '.rtf';
+    var documentName = $('#input-journal-title').val();
     var journalText = $('#input-journal-note').val();
 
     // $('#dateLabel').textContent
@@ -59,7 +55,7 @@ function uploadFile(file, instanceId, fileName) {
             url: window.location.origin + "/api/records/AddDocument",
             type: 'POST',
             headers: {
-                'filename': fileName,
+                'filename': fileName + '.rtf',
                 'type': 'JournalNoteBig',
                 'instanceId': instanceId,
                 'givenFileName': fileName
