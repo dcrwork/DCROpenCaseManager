@@ -6,6 +6,7 @@ using System.Web.Mvc;
 
 namespace OpenCaseManager.Controllers
 {
+    [Authorize]
     public class FormController : Controller
     {
         private IManager _manager;
