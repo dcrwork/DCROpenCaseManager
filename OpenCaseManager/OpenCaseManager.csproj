@@ -589,6 +589,7 @@
     <Content Include="Scripts\Translations\node_modules\csvtojson\readme.md" />
     <Content Include="Areas\HelpPage\Views\_ViewStart.cshtml" />
     <Content Include="Content\Site.css" />
+    <Content Include="Specs\ChildJSTests.js" />
     <Content Include="Specs\CreateJournalNoteTest.js" />
     <Content Include="Views\Web.config" />
     <Content Include="Views\_ViewStart.cshtml" />
