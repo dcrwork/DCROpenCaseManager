@@ -58,7 +58,8 @@ function uploadFile(file, instanceId, fileName) {
                 'filename': fileName + '.rtf',
                 'type': 'JournalNoteBig',
                 'instanceId': instanceId,
-                'givenFileName': fileName
+                'givenFileName': fileName,
+                'eventTime': 
             },
             data: file,
             async: false,
