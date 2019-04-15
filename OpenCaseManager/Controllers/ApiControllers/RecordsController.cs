@@ -362,13 +362,11 @@ namespace OpenCaseManager.Controllers.ApiControllers
             }
             catch (Exception) { }
             var eventTime = DateTime.Now;
-            /*
             try
             {
                 eventTime = Convert.ToDateTime(request.Headers["eventTime"]);
             }
             catch (Exception) { }
-            */
             var filePath = string.Empty;
             if (fileType == "JournalNoteBig") filePath = _documentManager.AddDocument(instanceId, fileType, givenFileName, fileName, eventId, eventTime, _manager, _dataModelManager);
             else filePath = _documentManager.AddDocument(instanceId, fileType, givenFileName, fileName, eventId, _manager, _dataModelManager);
