@@ -1171,6 +1171,7 @@
     <Content Include="Scripts\plugins\Timepicker\Makefile" />
     <Content Include="Scripts\plugins\Timepicker\package.json" />
     <Content Include="Scripts\plugins\Timepicker\README.md" />
+    <Content Include="Views\JournalNote\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
