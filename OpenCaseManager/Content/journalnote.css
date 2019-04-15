@@ -84,3 +84,7 @@ input[type="submit"].btn-save-draft{
 .form-create-journal-note h3 {
     margin: 25px 0 25px 0;
 }
+
+.ui-timepicker-container {
+    z-index: 12 !important;
+}

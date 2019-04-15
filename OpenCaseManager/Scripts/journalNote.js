@@ -1,4 +1,6 @@
-﻿$.urlParam = function (name) {
+﻿
+
+$.urlParam = function (name) {
     var results = new RegExp('[\?&]' + name + '=([^&#]*)')
         .exec(window.location.search);
 
@@ -12,10 +14,12 @@ function CreateJournalNoteView() {
     //postwindow,dialog=yes,close=no,location=no,status=no,
 }
 
+
 $('#input-journal-note').trumbowyg();
 $('#input-journal-note').trumbowyg({
     tagsToRemove: ['Redo']
 });
+
 
 function formatDate(date) {
     var value = new Date(date);
