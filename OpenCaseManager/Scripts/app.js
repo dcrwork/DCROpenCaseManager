@@ -97,12 +97,13 @@
             });
     }
 
-    function addInstance(title, graphId, userRoles) {
+    function addInstance(title, graphId, userRoles, childId) {
 
         var data = {
             title: title,
             graphId: graphId,
-            userRoles: userRoles
+            userRoles: userRoles,
+            childId: childId
         }
 
         API.service('records/addInstance', data)

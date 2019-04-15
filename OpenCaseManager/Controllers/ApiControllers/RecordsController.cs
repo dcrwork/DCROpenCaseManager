@@ -56,6 +56,7 @@ namespace OpenCaseManager.Controllers.ApiControllers
         {
             // add Instance
             var instanceId = AddInstance(input);
+            if (input.ChildId != null) ConnectInstanceToChild(instanceId, input.ChildId);
             return Ok(Common.ToJson(instanceId));
         }
 
@@ -977,6 +978,20 @@ namespace OpenCaseManager.Controllers.ApiControllers
                 }
             }
             return true;
+        }
+
+        /// <summary>
+        /// Connect an instance to a child
+        /// </summary>
+        /// <param name="instanceId"></param>
+        /// <param name="childId"></param>
+        private void ConnectInstanceToChild(string instanceId, int? childId)
+        {
+            _dataModelManager.GetDefaultDataModel(Enums.SQLOperation.INSERT, DBEntityNames.Tables.InstanceExtension.ToString());
+            _dataModelManager.AddParameter(DBEntityNames.InstanceExtension.InstanceId.ToString(), Enums.ParameterType._int, instanceId);
+            _dataModelManager.AddParameter(DBEntityNames.InstanceExtension.ChildId.ToString(), Enums.ParameterType._int, childId.ToString());
+
+            _manager.InsertData(_dataModelManager.DataModel);
         }
     }
 }
