@@ -51,7 +51,7 @@ $(document).ready(function () {
 function deleteDocument(docId) {
     var query = {
         "Id": docId,
-        "Type": webPortalType,
+        "Type": webPortalType+"Document",
         "InstanceId": instanceId
     }
     API.service('records/deleteDocument', query)
@@ -170,17 +170,17 @@ function handleFiles(files) {
     }
 }
 
-function submitFiles() {
+function submitFilesDocuments() {
     var docId = $('#documentId').val();
     if (uploadFiles.length > 0) {
-        uploadFile(uploadFiles[0], docId);
+        uploadFileDocuments(uploadFiles[0], docId);
     }
     else if (docId != '') {
-        uploadFile(null, docId);
+        uploadFileDocuments(null, docId);
     }
 }
 
-function uploadFile(file, docId) {
+function uploadFileDocuments(file, docId) {
     if (isAdd && $('#documentName').val() != '') {
         $.ajax({
             url: window.location.origin + "/api/records/AddDocument",
@@ -214,7 +214,7 @@ function uploadFile(file, docId) {
             headers: {
                 'id': docId,
                 'filename': (file == null ? "" : file.name),
-                'type': webPortalType,
+                'type': webPortalType+"Document",
                 'instanceId': instanceId,
                 'givenFileName': $('#documentName').val(),
                 'isNewFileAdded': (file == null ? "false" : "true")
@@ -252,7 +252,7 @@ function getDocuments() {
             {
                 "column": "Type",
                 "operator": "equal",
-                "value": webPortalType,
+                "value": webPortalType+"Document",
                 "valueType": "string",
                 "logicalOperator": "and"
             }
@@ -262,7 +262,7 @@ function getDocuments() {
     }
 
     switch (webPortalType) {
-        case 'Personal':
+        case 'PersonalDocument':
             query.filters.push({
                 "column": "Responsible",
                 "operator": "equal",
@@ -270,7 +270,7 @@ function getDocuments() {
                 "valueType": "string"
             });
             break;
-        case 'Instance':
+        case 'InstanceDocument':
             query.filters.push({
                 "column": "InstanceId",
                 "operator": "equal",
