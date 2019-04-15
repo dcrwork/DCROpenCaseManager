@@ -1,6 +1,32 @@
 ﻿$(document).ready(function () {
     var childId = App.getParameterByName("id", window.location.href);
+
     var query = {
+        "type": "SELECT",
+        "entity": "Child",
+        "resultSet": ["*"],
+        "filters": new Array(),
+        "order": []
+    }
+
+    var whereChildIdMatchesFilter = {
+        "column": "Id",
+        "operator": "equal",
+        "value": childId,
+        "valueType": "int",
+        "logicalOperator": "and"
+    };
+    query.filters.push(whereChildIdMatchesFilter);
+
+    API.service('records', query)
+        .done(function (response) {
+            displayChildName(response);
+        })
+        .fail(function (e) {
+            reject(e);
+        });
+    
+    query = {
         "type": "SELECT",
         "entity": "ChildInstances('$(loggedInUserId)')",
         "resultSet": ["*"],
@@ -26,9 +52,15 @@
         });
 });
 
+function displayChildName(response) {
+    var result = JSON.parse(response);
+    var childName = result[0].Name;
+    $("#childName").html("").append(childName);
+    $('head title', window.parent.document).text(childName);
+}
+
 function showChildInstances(response) {
     var result = JSON.parse(response);
-    console.log(result);
     var list = "";
     if (result.length === 0) {
         list = "<tr class='trStyleClass'><td colspan='100%'>" + translations.NoRecordFound + " </td></tr>";

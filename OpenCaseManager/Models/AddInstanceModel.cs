@@ -11,5 +11,6 @@ namespace OpenCaseManager.Models
         public int GraphId { get; set; }
         public int Responsible { get; set; }
         public List<UserRole> UserRoles { get; set; }
+        public int? ChildId { get; set; }
     }
 }
