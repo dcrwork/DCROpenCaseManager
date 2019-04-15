@@ -9,5 +9,6 @@ namespace OpenCaseManager.Managers
     public interface IDocumnentManager
     {
         string AddDocument(string instanceId, string fileType, string givenFileName, string fileName, string eventId, IManager manager, IDataModelManager dataModelManager);
+        string AddDocument(string instanceId, string fileType, string givenFileName, string fileName, string eventId, DateTime eventDateTime, IManager manager, IDataModelManager dataModelManager);
     }
 }

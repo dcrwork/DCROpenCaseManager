@@ -8,11 +8,14 @@
 
 function CreateJournalNoteView() {
     var id = $.urlParam("id");
-    window.open("/JournalNote/Create" + (id ? "?id=" + id : ""), "", "width=1200,height=1200");
+    window.open("/JournalNote/Create" + (id ? "?id=" + id : ""), "", "width=800,height=600");
+    //postwindow,dialog=yes,close=no,location=no,status=no,
 }
 
 $('#input-journal-note').trumbowyg();
-
+$('#input-journal-note').trumbowyg({
+    tagsToRemove: ['Redo']
+});
 
 function formatDate(date) {
     var value = new Date(date);
@@ -20,6 +23,57 @@ function formatDate(date) {
     return value.getDate() + "/" + (value.getMonth()+1) + "/" + value.getFullYear();
 }
 
+$(function () {
+    $("#datepicker").datepicker();
+    $("#datepicker").datepicker("option", "dateFormat", "dd/mm/yy");
+    $("#datepicker").datepicker({ maxDate: "+0d" });
+    var maxDate = $("#datepicker").datepicker("option", "maxDate");
+    $("#datepicker").datepicker("option", "maxDate", "+0d");
+
+    $("#datepicker").datepicker({ dayNames: ["Søndag", "Mandag", "Tirsdag", "Onsdag", "Torsdag", "Fredag", "Lørdag"] });
+    var dayNames = $("#datepicker").datepicker("option", "dayNames");
+    $("#datepicker").datepicker("option", "dayNames", ["Søndag", "Mandag", "Tirsdag", "Onsdag", "Torsdag", "Fredag", "Lørdag"]);
+
+    $("#datepicker").datepicker({ dayNamesMin: ["Sø", "Ma", "Ti", "On", "To", "Fr", "Lø"] });
+    var dayNamesMin = $("#datepicker").datepicker("option", "dayNamesMin");
+    $("#datepicker").datepicker("option", "dayNamesMin", ["Sø", "Ma", "Ti", "On", "To", "Fr", "Lø"]);
+
+    $("#datepicker").datepicker({ monthNamesShort: ["Jan", "Feb", "Mar", "Apr", "Maj", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dec"] });
+    var monthNamesShort = $("#datepicker").datepicker("option", "dayNamesMin");
+    $("#datepicker").datepicker("option", "monthNamesShort", ["Jan", "Feb", "Mar", "Apr", "Maj", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dec"]);
+
+    $("#datepicker").datepicker({ monthNames: ["Januar", "Februar", "Marts", "April", "Maj", "Juni", "Juli", "August", "September", "Oktober", "November", "December"] });
+    var dayNamesMin = $("#datepicker").datepicker("option", "monthNames");
+    $("#datepicker").datepicker("option", "monthNames", ["Januar", "Februar", "Marts", "April", "Maj", "Juni", "Juli", "August", "September", "Oktober", "November", "December"]);
+
+    $("#datepicker").datepicker({ gotoCurrent: true });
+    var gotoCurrent = $("#datepicker").datepicker("option", "gotoCurrent");
+    $("#datepicker").datepicker("option", "gotoCurrent", true);
+
+    $("#datepicker").datepicker({ firstDay: 1 });
+    var firstDay = $("#datepicker").datepicker("option", "firstDay");
+    $("#datepicker").datepicker("option", "firstDay", 1);
+
+    $("#datepicker").datepicker({ hideIfNoPrevNext: true });
+    var hideIfNoPrevNext = $("#datepicker").datepicker("option", "hideIfNoPrevNext");
+    $("#datepicker").datepicker("option", "hideIfNoPrevNext", true);
+
+    $("#datepicker").datepicker({ nextText: "Næste" });
+    var nextText = $("#datepicker").datepicker("option", "nextText");
+    $("#datepicker").datepicker("option", "nextText", "Næste");
+
+    $("#datepicker").datepicker({ prevText: "Forrige" });
+    var prevText = $("#datepicker").datepicker("option", "nextText");
+    $("#datepicker").datepicker("option", "prevText", "Forrige");
+});
+/*
+$("#datepicker").on('change', function () {
+    $("#change-date-label").removeClass("hideLabel");
+});*/
+
+$("#datepicker").attr('readonly', 'readonly');
+
+/*$.datepicker.setDefaults($.datepicker.regional["da"]);*/
 
 function changedate(inputId, lableId) {
     var value = $('#' + inputId).val();
@@ -58,7 +112,8 @@ function uploadFile(file, instanceId, fileName) {
                 'filename': fileName + '.rtf',
                 'type': 'JournalNoteBig',
                 'instanceId': instanceId,
-                'givenFileName': fileName
+                'givenFileName': fileName,
+                'eventTime': $("#datepicker").val()
             },
             data: file,
             async: false,
@@ -72,4 +127,8 @@ function uploadFile(file, instanceId, fileName) {
         });
         
     }
+}
+
+function closeJournalNotatWindow() {
+    window.close()
 }

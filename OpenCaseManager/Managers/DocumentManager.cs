@@ -6,6 +6,7 @@ namespace OpenCaseManager.Managers
 {
     public class DocumentManager : IDocumnentManager
     {
+        private string fileLink;
         /// <summary>
         /// Add Document
         /// </summary>
@@ -19,8 +20,29 @@ namespace OpenCaseManager.Managers
         /// <returns></returns>
         public string AddDocument(string instanceId, string fileType, string givenFileName, string fileName, string eventId, IManager manager, IDataModelManager dataModelManager)
         {
+            CreateFileLink(fileName);
+            string filePath = AddDocumentChecks(instanceId, fileType, givenFileName, fileName, eventId);
+            Common.AddDocument(givenFileName, fileType, fileLink, instanceId, DateTime.Now, manager, dataModelManager);
+            return filePath;
+        }
+
+        public string AddDocument(string instanceId, string fileType, string givenFileName, string fileName, string eventId, DateTime eventDateTime, IManager manager, IDataModelManager dataModelManager)
+        {
+            CreateFileLink(fileName);
+            string filePath = AddDocumentChecks(instanceId, fileType, givenFileName, fileName, eventId);
+            Common.AddDocument(givenFileName, fileType, fileLink, instanceId, eventDateTime, manager, dataModelManager);
+            return filePath;
+        }
+
+        public void CreateFileLink(string fileName)
+        {
             string ext = Path.GetExtension(fileName);
-            string fileLink = DateTime.Now.ToFileTime() + ext;
+            fileLink = DateTime.Now.ToFileTime() + ext;
+        }
+
+        public string AddDocumentChecks(string instanceId, string fileType, string givenFileName, string fileName, string eventId)
+        {
+            string ext = Path.GetExtension(fileName);
             string filePath = string.Empty;
 
             switch (fileType)
@@ -114,9 +136,8 @@ namespace OpenCaseManager.Managers
             filePath = filePath + "\\" + fileLink;
             if (fileType == "Temp")
                 fileLink = filePath;
-
-            Common.AddDocument(givenFileName, fileType, fileLink, instanceId, DateTime.Now, manager, dataModelManager); //TODO: DateTime.Now should be changed when it is implemented that we can change the date for a journalnote
             return filePath;
         }
     }
+
 }
