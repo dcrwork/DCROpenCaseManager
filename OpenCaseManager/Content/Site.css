@@ -159,6 +159,7 @@ table.entityDetailTable tr th {
     color: #4A4A4A;
     font-size: xx-large;
     padding: 0px;
+    border-top: none;
 }
 
 table.entityDetailTable {
