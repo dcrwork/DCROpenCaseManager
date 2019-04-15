@@ -97,12 +97,13 @@
             });
     }
 
-    function addInstance(title, graphId, userRoles) {
+    function addInstance(title, graphId, userRoles, childId) {
 
         var data = {
             title: title,
             graphId: graphId,
-            userRoles: userRoles
+            userRoles: userRoles,
+            childId: childId
         }
 
         API.service('records/addInstance', data)
@@ -654,7 +655,6 @@
     }
 
     function getInstanceHtml(item) {
-
         $('#instanceTitle').text(item.Title);
         if (item.CaseNoForeign !== null) {
             $('.caseNum').show();
@@ -664,10 +664,6 @@
             $('.caseLink').show();
             $('#entityLink').attr('href', item.CaseLink);
         }
-        if (item.Description != null && item.Description != '')
-            Instruction.setText(item.Description);
-        else
-            Instruction.hideWebPart();
     }
 
     function getProcessHtml(item) {

@@ -489,3 +489,32 @@ img.newFormAddIcon {
     height: 23px;
     width: auto;
 }
+
+.tabsBox {
+    width: 100%;
+    margin: 0px 60px;
+}
+
+.dot {
+    height: 20px;
+    width: 20px;
+    background-color: #bbb;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.dotGreen {
+    background-color: lawngreen;
+}
+
+.dotYellow {
+    background-color: yellow;
+}
+
+.dotRed {
+    background-color: red;
+}
+
+.statusColumn {
+    text-align: center;
+}

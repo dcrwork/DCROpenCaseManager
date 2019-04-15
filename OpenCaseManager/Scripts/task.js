@@ -134,7 +134,7 @@
         });
 
 
-        $('#executeTask').on('click', function (e) {
+        $('.taskExecutionButton').on('click', function (e) {
             var eventId = elem.attr('id');
             var eventType = elem.attr('eventType');
             var taskId = elem.attr('taskId');
@@ -159,7 +159,6 @@
             } else {
                 App.executeEvent(data, showCaseInfo, uievent);
             }
-            $('#executeTaskModal').modal('toggle');
             e.preventDefault();
         });
 

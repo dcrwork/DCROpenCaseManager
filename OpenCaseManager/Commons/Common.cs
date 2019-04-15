@@ -442,7 +442,7 @@ namespace OpenCaseManager.Commons
         /// <param name="documentName"></param>
         /// <param name="type"></param>
         /// <param name="link"></param>
-        public static void AddDocument(string documentName, string type, string link, string instanceId, DateTime eventDate, IManager manager, IDataModelManager dataModelManager)
+        public static void AddDocument(string documentName, string type, string link, string instanceId, DateTime eventDateTime, IManager manager, IDataModelManager dataModelManager)
         {
             dataModelManager.GetDefaultDataModel(Enums.SQLOperation.INSERT, DBEntityNames.Tables.Document.ToString());
             dataModelManager.AddParameter(DBEntityNames.Document.Title.ToString(), Enums.ParameterType._string, documentName);
@@ -457,7 +457,7 @@ namespace OpenCaseManager.Commons
 
             var dataTable = manager.InsertData(dataModelManager.DataModel);
             var documentId = dataTable.Rows[0].ItemArray[0].ToString();
-            AddJournalHistory(instanceId, null, documentId, type, documentName, eventDate, false, manager, dataModelManager);
+            AddJournalHistory(instanceId, null, documentId, type, documentName, eventDateTime, false, manager, dataModelManager);
         }
 
         /// <summary>
@@ -470,7 +470,7 @@ namespace OpenCaseManager.Commons
         /// <param name="title"></param>
         /// <param name="eventDate"></param>
         /// <param name="isLocked"></param>
-        public static void AddJournalHistory(string instanceId, string eventId, string documentId, string type, string title, DateTime eventDate, bool isLocked, IManager manager, IDataModelManager dataModelManager)
+        public static void AddJournalHistory(string instanceId, string eventId, string documentId, string type, string title, DateTime eventDateTime, bool isLocked, IManager manager, IDataModelManager dataModelManager)
         {
             var locked = (isLocked) ? bool.TrueString : bool.FalseString;
 
@@ -480,12 +480,13 @@ namespace OpenCaseManager.Commons
             if (documentId != null) dataModelManager.AddParameter(DBEntityNames.JournalHistory.DocumentId.ToString(), Enums.ParameterType._int, documentId.ToString());
             dataModelManager.AddParameter(DBEntityNames.JournalHistory.Type.ToString(), Enums.ParameterType._string, type);
             dataModelManager.AddParameter(DBEntityNames.JournalHistory.Title.ToString(), Enums.ParameterType._string, title);
-            dataModelManager.AddParameter(DBEntityNames.JournalHistory.EventDate.ToString(), Enums.ParameterType._datetime, eventDate.ToString());
+            dataModelManager.AddParameter(DBEntityNames.JournalHistory.EventDate.ToString(), Enums.ParameterType._datetime, eventDateTime.ToString());
             dataModelManager.AddParameter(DBEntityNames.JournalHistory.CreationDate.ToString(), Enums.ParameterType._datetime, DateTime.Now.ToString());
             dataModelManager.AddParameter(DBEntityNames.JournalHistory.IsLocked.ToString(), Enums.ParameterType._boolean, locked);
 
             manager.InsertData(dataModelManager.DataModel);
         }
+
 
         /// <summary>
         /// Save array bytes to specified location
