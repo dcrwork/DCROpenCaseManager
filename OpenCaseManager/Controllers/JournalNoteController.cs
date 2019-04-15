@@ -6,8 +6,10 @@ using System.Web.Mvc;
 
 namespace OpenCaseManager.Controllers
 {
+    [Authorize]
     public class JournalNoteController : Controller
     {
+
         // GET: JournalNote
         public ActionResult Index()
         {

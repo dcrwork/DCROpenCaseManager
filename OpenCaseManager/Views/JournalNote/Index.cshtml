@@ -1,0 +1,73 @@
+﻿<script language="javascript" type="text/javascript">
+    function windowClose() {
+        window.close();
+    }
+</script>
+
+
+@{
+    /// <summary>
+    /// Return the content of a journalnote.rtf
+    /// </summary>
+    /// <param name="instanceId"></param>
+    /// <param name="documentLink"></param>
+    /// <param name="documentTitle"></param>
+    /// <param name="documentAuthor"></param>
+    /// <returns> </returns>
+    var errorMessage = "";
+    Array Data = null;
+
+    var instanceId = Request.QueryString["instanceId"];
+    var documentLink = Request.QueryString["documentLink"];
+    var documentTitle = Request.QueryString["documentTitle"];
+    var documentAuthor = Request.QueryString["documentAuthor"];
+    var document = Request.QueryString["documentTitle"];
+    var dataFile = Server.MapPath($"~/App_Data/Journal/{instanceId}/{documentLink}.rtf");
+
+    if (File.Exists(dataFile))
+    {
+        Data = File.ReadAllLines(dataFile);
+        if (Data == null) // If the file is empty
+        {
+            // Empty file.
+            errorMessage = "The file is empty.";
+        }
+    }
+    else
+    {
+        // File does not exist.
+        errorMessage = "The file does not exist.";
+    }
+}
+<style>
+    .author {
+        margin-bottom: 20px;
+    }
+
+    .pre-scrollable {
+        max-height: 55vh;
+        margin-bottom: 20px;
+    }
+</style>
+
+
+
+<div class="container">
+        @errorMessage
+        @if (errorMessage == "")
+        {
+            <h1 class="title"> @documentTitle</h1>
+            <h2 class="author"> @documentAuthor</h2>
+            <div class="pre-scrollable">
+                <div class="content">
+                    @foreach (string dataLine in Data)
+                    {
+                        <div>
+                           @Html.Raw(@dataLine)
+                        </div>
+                    }
+                </div>
+        </div>
+        }
+    <a href="javascript:windowClose();"> Luk jounal notat</a>
+</div>
