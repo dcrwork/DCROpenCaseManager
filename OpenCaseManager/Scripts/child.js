@@ -4,7 +4,7 @@
     var query = {
         "type": "SELECT",
         "entity": "Child",
-        "resultSet": ["*"],
+        "resultSet": ["Name"],
         "filters": new Array(),
         "order": []
     }
