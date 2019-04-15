@@ -14,7 +14,7 @@
     /// <param name="documentTitle"></param>
     /// <param name="documentAuthor"></param>
     /// <returns> </returns>
-    var result = "";
+    var errorMessage = "";
     Array Data = null;
 
     var instanceId = Request.QueryString["instanceId"];
@@ -30,13 +30,13 @@
         if (Data == null) // If the file is empty
         {
             // Empty file.
-            result = "The file is empty.";
+            errorMessage = "The file is empty.";
         }
     }
     else
     {
         // File does not exist.
-        result = "The file does not exist.";
+        errorMessage = "The file does not exist.";
     }
 }
 <style>
@@ -53,21 +53,21 @@
 
 
 <div class="container">
-    <h1 class="title"> @documentTitle</h1>
-    <h2 class="author"> @documentAuthor</h2>
-    <div class="pre-scrollable">
-        @result
-        @if (result == "")
+        @errorMessage
+        @if (errorMessage == "")
         {
-            <div class="content">
-                @foreach (string dataLine in Data)
-                {
-                    <div>
-                       @Html.Raw(@dataLine)
-                    </div>
-                }
-            </div>
+            <h1 class="title"> @documentTitle</h1>
+            <h2 class="author"> @documentAuthor</h2>
+            <div class="pre-scrollable">
+                <div class="content">
+                    @foreach (string dataLine in Data)
+                    {
+                        <div>
+                           @Html.Raw(@dataLine)
+                        </div>
+                    }
+                </div>
+        </div>
         }
-    </div>
     <a href="javascript:windowClose();"> Luk jounal notat</a>
 </div>
