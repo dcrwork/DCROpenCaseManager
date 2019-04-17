@@ -52,10 +52,8 @@ $(document).ready(function () {
         "entity": "GetMyChildren('$(loggedInUserId)')",
         "resultSet": ["*"],
         "filters": new Array(),
-        "order": []
+        "order": [{ "column": "ChildName", "descending": false }]
     }
-
-    console.log(query);
 
     API.service('records', query)
         .done(function (response) {
@@ -84,7 +82,7 @@ function getChildInstanceHtml(item) {
     var childLink = "../Child?id=" + item.ChildId;
 
     var returnHtml = "<tr class='trStyleClass'>";
-    returnHtml += (item.NextDeadline != null) ? "<td class='statusColumn'>" + getStatus(item.NextDeadline) + "</td>" : "<td class='statusColumn'>Lukket</td>";
+    returnHtml += (item.NextDeadline != null) ? "<td>" + getStatus(item.NextDeadline) + "</td>" : "<td>Ingen status</td>";
     returnHtml += "<td><a href='" + childLink + "'>" + item.ChildName + "</a></td>";
     returnHtml += "<td>123456-7890</td>";
     returnHtml += "<td>" + item.Responsible + "</td>";

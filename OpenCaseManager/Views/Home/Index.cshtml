@@ -2,8 +2,14 @@
     .containerChildren {
         display: flex;
         flex-direction: column;
-        margin: 40px 60px 0vw 60px;
+        margin: 40px 60px 0px 60px;
     }
+
+    .leftContainer {
+        width: 230px;
+        margin: 10px;
+    }
+
     .childrenPage {
         display: flex;
         flex-direction: row;
@@ -12,7 +18,8 @@
     .children{
         max-width: 100vw;
         flex-grow: 1;
-        margin-right: 10vw;
+        margin-left: 6vw;
+        margin-right: 2%;
     }
 
     .childrenHeader {
@@ -22,7 +29,17 @@
     }
     .buttonView {
         align-items: flex-end;
-        margin-top: -7%
+        margin-top: -7%;
+        margin-bottom: 10px;
+        
+    }
+
+    .headline {
+        color: #4a4a4a;
+        font-size: xx-large;
+        padding: 0px 8px 8px 0px;
+        font-weight: bold;
+        margin-top: 0px;
     }
 
 </style>
@@ -34,26 +51,28 @@
 <script type="text/javascript" src="~/Scripts/home.js"></script>
 
 <div class="containerChildren">
-    <h1 class="headline">Mine Sager</h1>
+
     <div class="childrenPage">
+        <div class="leftContainer">
+            <div class="buttonView">
+                @Html.Partial("~/Views/PartialViews/AddButton.cshtml", new ViewDataDictionary { { "add-text", "Tilføj barn" } })
+            </div>
+            @Html.Partial("~/Views/PartialViews/PendingActivities.cshtml")
+        </div>
         <div class="children">
+            <h1 class="headline">Mine Sager</h1>
             <table class="table tasksTable table-striped">
                 <thead class="childrenHeader">
                     <tr>
-                        <th width="6%">Status</th>
+                        <th width="">Status</th>
                         <th width=""> Navn</th>
                         <th width="">CPR-nr</th>
                         <th width="">Ansvarlig</th>
-                        <th width="20%">Næste Deadline</th>
+                        <th width="">Næste Deadline</th>
                     </tr>
                 </thead>
                 <tbody id="allMyChildren"></tbody>
             </table>
-        </div>
-        <div>
-            <div class="buttonView">
-                @Html.Partial("~/Views/PartialViews/AddButton.cshtml", new ViewDataDictionary { { "add-text", "Tilføj barn" } })
-            </div>
         </div>
     </div>
 </div>
