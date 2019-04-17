@@ -7,7 +7,7 @@ function documentType(data) {
     return {
         type: "Dokument",
         time: formatDateTimeline(data.EventDate),
-        responsible: data.Responsible,
+        responsible: data.DocumentResponsible,
         body: [{
             tag: 'h3',
             content: data.DocumentTitle,
@@ -23,10 +23,11 @@ function documentType(data) {
 }
 // TODO -> Her skal der evt. v�re noget content tekst som er passer til den tekst de rer skrevet.
 function journalNoteType(data) {
+    console.log(data)
     return {
         type: "Journalnotat",
         time: formatDateTimeline(data.EventDate),
-        responsible: data.Responsible,
+        responsible: data.DocumentResponsible,
         body: [{
             tag: 'h3',
             content: data.DocumentTitle,
@@ -41,12 +42,13 @@ function journalNoteType(data) {
     }
 }
 function activitiesType(data) {
+    console.log(data)
     var eventtype = data.Type;
     if (data.Type === 'Event') eventtype = "Aktivitet";
     return {
         type: eventtype,
         time: formatDateTimeline(data.EventDate),
-        responsible: data.Responsible,
+        responsible: data.EventResponsible,
         body: [{
             tag: 'h3',
             content: data.Title,
@@ -63,7 +65,7 @@ function activitiesType(data) {
 
 function normalize(data) {
     if (data.DocumentType === 'Instance') return documentType(data);
-    if (data.DocumentType === 'JournalNote') return journalNoteType(data);
+    if (data.DocumentType === 'JournalNote' || data.Type === "JournalNoteBig" || data.Type === "JournalNoteLittle") return journalNoteType(data);
     return activitiesType(data);
 }
 
