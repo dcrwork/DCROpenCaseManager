@@ -665,9 +665,8 @@
             $('.caseLink').show();
             $('#entityLink').attr('href', item.CaseLink);
         }
-        if (item.NextDeadline !== null) {
-            $('#instanceTitle').append(getStatus(item.NextDeadline))
-        }
+        
+        $('#instanceTitle').append(getStatus(item.NextDeadline))
     }
 
     function getProcessHtml(item) {
