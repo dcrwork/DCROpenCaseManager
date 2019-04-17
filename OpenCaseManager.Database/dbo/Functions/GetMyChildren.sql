@@ -12,7 +12,18 @@ RETURNS TABLE
 AS
 
 	RETURN (
-			   SELECT *
-			   FROM [dbo].[Child]
-			   WHERE [Child].[Responsible] = @userId           
+			   SELECT C.[Name] as [ChildName], 
+					  C.[Id] as [childId],
+					  U.[Name] as [Responsible],
+					  (SELECT MAX(NextDeadline)
+					   FROM [Instance], 
+					        [InstanceExtension]
+					   WHERE Instance.Id = InstanceExtension.InstanceId
+							AND InstanceExtension.ChildId = C.Id
+					  ) AS "NextDeadline"
+					  
+			   FROM [dbo].[Child] AS C INNER JOIN [dbo].[User] AS U ON C.Responsible = U.Id
+
+
+			   WHERE C.[Responsible] = 19           
 	       )
