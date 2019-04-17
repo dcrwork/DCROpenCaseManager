@@ -64,7 +64,7 @@ function updateTimeline() {
             var month = new Date(element.time).getMonth();
             var createGroupYear = $(eTimeline).find('div.group' + year);
 
-            // Se o agrupador não existe, cria.
+            // Create group if it doesnt exist
             if (createGroupYear.length === 0) {
                 createGroupYear = $('<div>').attr('id', ('y' + year)).addClass('group' + year).text(year);
 
