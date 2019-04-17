@@ -57,9 +57,9 @@ $(document).ready(function () {
 
     console.log(query);
 
-    API.services('records', query)
+    API.service('records', query)
         .done(function (response) {
-            displayChildName(response);
+            displayChildren(response);
         })
         .fail(function (e) {
             reject(e);
@@ -81,14 +81,29 @@ function displayChildren(response) {
 }
 
 function getChildInstanceHtml(item) {
-    var childLink = "../Child?id=" + item.Id;
+    var childLink = "../Child?id=" + item.ChildId;
 
     var returnHtml = "<tr class='trStyleClass'>";
-    returnHtml += "<td><a href='" + childLink + "'>" + item.Name + "</a></td>";
+    returnHtml += (item.NextDeadline != null) ? "<td class='statusColumn'>" + getStatus(item.NextDeadline) + "</td>" : "<td class='statusColumn'>Lukket</td>";
+    returnHtml += "<td><a href='" + childLink + "'>" + item.ChildName + "</a></td>";
     returnHtml += "<td>123456-7890</td>";
     returnHtml += "<td>" + item.Responsible + "</td>";
-    returnHtml += (item.NextDeadline != null) ? "<td class='statusColumn'>" + getStatus(item.NextDeadline) + "</td>" : "<td class='statusColumn'>Ingen kommende deadlines</td>";
+    returnHtml += (item.NextDeadline != null) ? "<td >" + item.NextDeadline + "</td>" : "<td>Ingen kommende deadlines</td>";
 
     returnHtml += "</tr>";
     return returnHtml;
+}
+
+function getStatus(deadline) {
+    if (deadline != null) {
+        var now = new Date().getTime();
+        deadline = new Date(deadline).getTime();
+        if (now >= deadline) {
+            return "<span class='dot dotRed'></span>";
+        } else if (now + 604800000 >= deadline) {
+            return "<span class='dot dotYellow'></span>";
+        }
+    }
+    
+    return "<span class='dot dotGreen'></span>";
 }
