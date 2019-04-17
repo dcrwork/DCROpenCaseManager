@@ -357,6 +357,7 @@ namespace OpenCaseManager.Controllers.ApiControllers
             var fileType = request.Headers["type"];
             var instanceId = request.Headers["instanceId"];
             var eventId = string.Empty;
+            var isLocked = false;
             try
             {
                 eventId = request.Headers["eventId"];
@@ -368,8 +369,19 @@ namespace OpenCaseManager.Controllers.ApiControllers
                 eventTime = Convert.ToDateTime(request.Headers["eventTime"]);
             }
             catch (Exception) { }
+            try
+            {
+                isLocked = Convert.ToBoolean(request.Headers["isLocked"]);
+            }
+            catch (Exception) { }
             var filePath = string.Empty;
-            if (fileType == "JournalNoteBig") filePath = _documentManager.AddDocument(instanceId, fileType, givenFileName, fileName, eventId, eventTime, _manager, _dataModelManager);
+            var documentId = string.Empty;
+            if (fileType == "JournalNoteBig")
+            {
+                var addedDocument = _documentManager.AddDocument(instanceId, fileType, givenFileName, fileName, eventId, eventTime, isLocked, _manager, _dataModelManager);
+                filePath = addedDocument.Item1;
+                documentId = addedDocument.Item2;
+            }
             else filePath = _documentManager.AddDocument(instanceId, fileType, givenFileName, fileName, eventId, _manager, _dataModelManager);
             try
             {
@@ -383,7 +395,7 @@ namespace OpenCaseManager.Controllers.ApiControllers
                 throw ex;
             }
 
-            return Ok(Common.ToJson(new { }));
+            return Ok(Common.ToJson(Convert.ToInt32(documentId)));
         }
 
         /// <summary>
@@ -961,6 +973,9 @@ namespace OpenCaseManager.Controllers.ApiControllers
                         break;
                     case "InstanceDocument":
                         path = Configurations.Config.InstanceFileLocation + "\\" + instanceId + "\\" + document.Rows[0]["Link"].ToString();
+                        break;
+                    case "JournalNoteBig":
+                        path = Configurations.Config.JournalNoteFileLocation + "\\" + instanceId + "\\" + document.Rows[0]["Link"].ToString();
                         break;
                 }
 

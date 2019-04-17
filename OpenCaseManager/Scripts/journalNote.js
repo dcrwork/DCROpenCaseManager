@@ -1,4 +1,5 @@
-﻿
+﻿var alreadyDrafted = false;
+var documentId;
 
 $.urlParam = function (name) {
     var results = new RegExp('[\?&]' + name + '=([^&#]*)')
@@ -88,6 +89,7 @@ $(document).on('click', '.add-journal-note-button', function () {
 
     // $('#dateLabel').textContent
     submitFiles(documentName, journalText);
+    window.close();
 });
 
 function makeTextFile(text) {
@@ -113,7 +115,8 @@ function uploadFile(file, instanceId, fileName) {
                 'type': 'JournalNoteBig',
                 'instanceId': instanceId,
                 'givenFileName': fileName,
-                'eventTime': $("#datepicker").val()
+                'eventTime': $("#datepicker").val(),
+                'isLocked': 'False'
             },
             data: file,
             async: false,
@@ -121,11 +124,16 @@ function uploadFile(file, instanceId, fileName) {
             contentType: false,
             enctype: 'multipart/form-data',
             processData: false,
+            success: function (data, textStatus, request) {
+                documentId = request.responseText;
+                var myRegexp = /(\d+)/gm;
+                var match = myRegexp.exec(documentId);
+                documentId = match[1];
+                //console.log(match[1]);
+                //console.log(documentId)
+            },
 
-        }).done(function () {
-            window.close()
         });
-        
     }
 }
 
@@ -145,3 +153,51 @@ $(document).ready(function () {
         scrollbar: true
     });
 });
+
+var alreadyDrafted = false;
+
+$(document).on('click', '.change-journal-note-button', function (event) {
+    event.preventDefault();
+    var documentName = $('#input-journal-title').val();
+    var journalText = $('#input-journal-note').val();
+
+    // $('#dateLabel').textContent
+    if (!alreadyDrafted)
+    {
+        submitFiles(documentName, journalText);
+        alreadyDrafted = true;
+    }
+    else
+    {
+        updateFiles(documentName, journalText);
+    }
+
+});
+
+function updateFiles(fileName, textContents) {
+    var instanceId = $.urlParam("id");
+    var file = makeTextFile(textContents);
+
+    console.log(file, instanceId, fileName)
+    if (fileName != '') {
+        $.ajax({
+            url: window.location.origin + "/api/records/UpdateDocument",
+            type: 'POST',
+            headers: {
+                'id': documentId,
+                'filename': fileName + '.rtf',
+                'type': 'JournalNoteBig',
+                'instanceId': instanceId,
+                'givenFileName': fileName,
+                'isNewFileAdded': 'True',
+            },
+            data: file,
+            async: false,
+            cache: false,
+            contentType: false,
+            enctype: 'multipart/form-data',
+            processData: false,
+
+        });
+    }
+}

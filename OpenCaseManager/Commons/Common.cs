@@ -442,7 +442,7 @@ namespace OpenCaseManager.Commons
         /// <param name="documentName"></param>
         /// <param name="type"></param>
         /// <param name="link"></param>
-        public static void AddDocument(string documentName, string type, string link, string instanceId, DateTime eventDateTime, IManager manager, IDataModelManager dataModelManager)
+        public static string AddDocument(string documentName, string type, string link, string instanceId, DateTime eventDateTime, bool isLocked, IManager manager, IDataModelManager dataModelManager)
         {
             dataModelManager.GetDefaultDataModel(Enums.SQLOperation.INSERT, DBEntityNames.Tables.Document.ToString());
             dataModelManager.AddParameter(DBEntityNames.Document.Title.ToString(), Enums.ParameterType._string, documentName);
@@ -450,6 +450,7 @@ namespace OpenCaseManager.Commons
             dataModelManager.AddParameter(DBEntityNames.Document.Link.ToString(), Enums.ParameterType._string, link);
             dataModelManager.AddParameter(DBEntityNames.Document.Responsible.ToString(), Enums.ParameterType._string, "$(loggedInUser)");
             dataModelManager.AddParameter(DBEntityNames.Document.UploadDate.ToString(), Enums.ParameterType._datetime, DateTime.Now.ToString());
+            dataModelManager.AddParameter(DBEntityNames.Document.IsLocked.ToString(), Enums.ParameterType._boolean, isLocked.ToString());
             if (!string.IsNullOrEmpty(instanceId))
             {
                 dataModelManager.AddParameter(DBEntityNames.Document.InstanceId.ToString(), Enums.ParameterType._int, instanceId);
@@ -457,7 +458,8 @@ namespace OpenCaseManager.Commons
 
             var dataTable = manager.InsertData(dataModelManager.DataModel);
             var documentId = dataTable.Rows[0].ItemArray[0].ToString();
-            AddJournalHistory(instanceId, null, documentId, type, documentName, eventDateTime, false, manager, dataModelManager);
+            AddJournalHistory(instanceId, null, documentId, type, documentName, eventDateTime, isLocked, manager, dataModelManager);
+            return documentId;
         }
 
         /// <summary>

@@ -22,7 +22,7 @@
     var documentTitle = Request.QueryString["documentTitle"];
     var documentAuthor = Request.QueryString["documentAuthor"];
     var document = Request.QueryString["documentTitle"];
-    var dataFile = Server.MapPath($"~/App_Data/Journal/{instanceId}/{documentLink}.rtf");
+    var dataFile = Server.MapPath($"~/App_Data/JournalNotes/{instanceId}/{documentLink}.rtf");
 
     if (File.Exists(dataFile))
     {
@@ -50,26 +50,30 @@
     }
 </style>
 
+<link type="text/css" rel="stylesheet" href="~/Content/journalnote.css" />
 
 
 <div class="container">
-        @errorMessage
-        @if (errorMessage == "")
-        {
-            <h1 class="title"> @documentTitle</h1>
-            <h2 class="author"> @documentAuthor</h2>
-            <div class="pre-scrollable">
-                <div class="content">
-                    @foreach (string dataLine in Data)
-                    {
-                        <div>
-                           @Html.Raw(@dataLine)
-                        </div>
-                    }
-                </div>
+    @errorMessage
+    @if (errorMessage == "")
+    {
+        <h1 class="title"> @documentTitle</h1>
+        <h2 class="author"> @documentAuthor</h2>
+        <div class="pre-scrollable">
+            <div class="content">
+                @foreach (string dataLine in Data)
+                {
+                    <div>
+                        @Html.Raw(@dataLine)
+                    </div>
+                }
+            </div>
         </div>
-        }
-    <a href="javascript:windowClose();"> Luk jounal notat</a>
+    }
+    <div class="journalNotatButtons">
+        <a href="javascript:windowClose();"> Luk jounal notat</a>
+        <button class="change-journal-note-button">Rediger</button>
+    </div>
 </div>
 
 <script type="text/javascript">
