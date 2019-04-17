@@ -1,15 +1,29 @@
 ﻿<style>
+    .pendingActivitiesTable {
+        border: solid 1px #EFEFEF;
+    }
+
     .pendingActivitiesTableHeader {
         background: #9C1A5E;
         color: #fff;
         font-weight: lighter;
     }
+
+    .pendingActivitiesTableBody {
+        display: block;
+        overflow: auto;
+        max-height: 184px;
+    }
+
+        .pendingActivitiesTableBody td:last-child {
+            width: 100%;
+        }
 </style>
 
-<table class="table table-striped">
+<table class="table pendingActivitiesTable table-striped">
     <thead class="pendingActivitiesTableHeader">
         <tr>
-            <th>Aktiviteter der har brug for din opmærksomhed</th>
+            <th colspan="2">Aktiviteter der har brug for din opmærksomhed</th>
         </tr>
     </thead>
     <tbody class="pendingActivitiesTableBody"></tbody>
@@ -61,6 +75,10 @@
     }
 
     function getPendingActivityHtml(item) {
+        var instanceLink = "../Instance?id=" + item.InstanceId;
 
+        var returnHtml = "<tr class='trStyleClass'><td width='16px'><img src='../Content/Images/priorityicon.svg' height='16' width='16'/></td>";
+        returnHtml += "<td><a href='" + instanceLink + "'>" + item.Title + "</a></td>";
+        return returnHtml;
     }
 </script>

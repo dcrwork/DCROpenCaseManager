@@ -1,4 +1,5 @@
-﻿/// <reference path='../Scripts/child.js' />
+﻿/// <reference path='../Scripts/htmlRender.js' />
+/// <reference path='../Scripts/child.js' />
 /// <reference path='../Scripts/jasmine/jasmine.js' />
 
 describe("getStatus", function () {

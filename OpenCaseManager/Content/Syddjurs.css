@@ -504,15 +504,15 @@ img.newFormAddIcon {
 }
 
 .dotGreen {
-    background-color: lawngreen;
+    background-color: #63C647;
 }
 
 .dotYellow {
-    background-color: yellow;
+    background-color: #F4B516;
 }
 
 .dotRed {
-    background-color: red;
+    background-color: #E04141;
 }
 
 .statusColumn {
