@@ -44,3 +44,51 @@ $(document).ready(function () {
         App.getRoles(graphId);
     });
 });
+
+$(document).ready(function () {
+
+    query = {
+        "type": "SELECT",
+        "entity": "GetMyChildren('$(loggedInUserId)')",
+        "resultSet": ["*"],
+        "filters": new Array(),
+        "order": []
+    }
+
+    console.log(query);
+
+    API.services('records', query)
+        .done(function (response) {
+            displayChildName(response);
+        })
+        .fail(function (e) {
+            reject(e);
+        });
+
+});
+
+function displayChildren(response) {
+    var result = JSON.parse(response);
+    var list = "";
+    if (result.length === 0) {
+        list = "<tr class='trStyleClass'><td colspan='100%'>" + translations.NoRecordFound + " </td></tr>";
+    } else {
+        for (i = 0; i < result.length; i++) {
+            list += getChildInstanceHtml(result[i]);
+        }
+    }
+    $("#allMyChildren").html("").append(list);
+}
+
+function getChildInstanceHtml(item) {
+    var childLink = "../Child?id=" + item.Id;
+
+    var returnHtml = "<tr class='trStyleClass'>";
+    returnHtml += "<td><a href='" + childLink + "'>" + item.Name + "</a></td>";
+    returnHtml += "<td>123456-7890</td>";
+    returnHtml += "<td>" + item.Responsible + "</td>";
+    returnHtml += (item.NextDeadline != null) ? "<td class='statusColumn'>" + getStatus(item.NextDeadline) + "</td>" : "<td class='statusColumn'>Ingen kommende deadlines</td>";
+
+    returnHtml += "</tr>";
+    return returnHtml;
+}

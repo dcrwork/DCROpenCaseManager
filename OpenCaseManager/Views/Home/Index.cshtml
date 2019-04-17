@@ -1,44 +1,85 @@
-﻿
+﻿<style>
+    .containerChildren {
+        display: flex;
+        flex-direction: column;
+        margin: 40px 60px 0vw 60px;
+    }
+    .childrenPage {
+        display: flex;
+        flex-direction: row;
+    }
+
+    .children{
+        max-width: 100vw;
+        flex-grow: 1;
+        margin-right: 10vw;
+    }
+
+    .childrenHeader {
+        background: #9C1A5E;
+        color: #fff;
+        font-weight: lighter;
+    }
+    .buttonView {
+        align-items: flex-end;
+        margin-top: -7%
+    }
+
+</style>
 @{
     ViewBag.Title = "Home";
 }
 <link href="~/Content/bootstrap-multiselect.css" rel="stylesheet" />
 <script src="~/Scripts/bootstrap-multiselect.js"></script>
-
-@Html.Partial("~/Views/PartialViews/TasksWithNote.cshtml")
-
-<div class="row tableDataRow">
-    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-        <!-- Trigger the modal with a button -->
-        <h4 class="instancesHeading">
-            <span data-locale data-apply="text" data-key="Instances">Instances</span> <button type="button" class="btn addNewInstance" data-toggle="modal" data-target="#addNewInstance">
-                <span><img src="~/Content/Images/addicon.png"></span>
-            </button>
-        </h4>
-        <div class="table-responsive">
-            <table class="table table-striped">
-                <thead>
-                    <tr class="trStyleClass">
-                        <th><span data-locale data-apply="text" data-key="Title">Title</span> </th>
+<div class="containerChildren">
+    <h1 class="headline">Mine Sager</h1>
+    <div class="childrenPage">
+        <div class="children">
+            <table class="table tasksTable table-striped">
+                <thead class="childrenHeader">
+                    <tr>
+                        <th width="6%">Status</th>
+                        <th width="" Navn</th>
+                        <th width="">CPR-nr</th>
+                        <th width="">Ansvarlig</th>
+                        <th width="20%">Næste Deadline</th>
                     </tr>
                 </thead>
-                <tbody id="myInstances"></tbody>
+                <tbody id="allMyChildren"></tbody>
             </table>
         </div>
-    </div><!-- Cols Div End -->
-    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-        <h4 class="tasksHeading"><span data-locale data-apply="text" data-key="Tasks">Tasks</span></h4>
-        <div class="table-responsive" style="border:none">
-            @Html.Partial("~/Views/PartialViews/Tasks.cshtml")
+        <div>
+            <div class="buttonView">
+                @Html.Partial("~/Views/PartialViews/AddButton.cshtml", new ViewDataDictionary { { "add-text", "Tilføj barn" } })
+            </div>
         </div>
-    </div><!-- Cols Div End -->
-</div><!-- Row End -->
-<!-- Modal -->
+    </div>
+</div>
+<!--
+    <div class="row tableDataRow">
+        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+
+<h4 class="instancesHeading">
+    <span data-locale data-apply="text" data-key="Instances">Instances</span> <button type="button" class="btn addNewInstance" data-toggle="modal" data-target="#addNewInstance">
+        <span><img src="~/Content/Images/addicon.png"></span>
+    </button>
+</h4>
+<div class="table-responsive">
+    <table class="table table-striped">
+        <thead>
+            <tr class="trStyleClass">
+                <th><span data-locale data-apply="text" data-key="Title">Title</span> </th>
+            </tr>
+        </thead>
+        <tbody id="myInstances"></tbody>
+    </table>
+</div>
+        </div>
+    </div>
 <div class="modal fade" id="addNewInstance" role="dialog">
     <div class="modal-dialog">
-        <!-- Modal content-->
+
         <div class="modal-content">
-            <!-- Modal Header -->
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
                 <h4 class="modal-title instanceModalHeading"><span data-locale data-apply="text" data-key="AddInstance">Add Instance</span></h4>
@@ -57,13 +98,13 @@
                     </div>
                 </form>
             </div>
-            <!-- modal Footer -->
             <div class="modal-footer">
                 <button type="button" id="createInstance" class="instanceAdd"><span data-locale data-apply="text" data-key="Add">Add</span></button>
             </div>
         </div>
     </div>
-</div><!-- Modal End-->
+</div>
+-->
 
 <script src="~/Scripts/task.js"></script>
 <script type="text/javascript" src="~/Scripts/home.js"></script>

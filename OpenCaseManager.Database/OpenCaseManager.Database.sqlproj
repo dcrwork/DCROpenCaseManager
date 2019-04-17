@@ -115,6 +115,9 @@
     <Build Include="dbo\Views\ChildInstances.sql" />
     <Build Include="dbo\Tables\Child.sql" />
     <Build Include="dbo\Tables\JournalHistory.sql" />
+    <Build Include="dbo\Functions\GetMyChildren.sql" />
+    <Build Include="dbo\Functions\PendingActivities.sql" />
+    <Build Include="dbo\Functions\ChildInstances.sql" />
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="dbo\Data\Script.PreDeployment.sql" />
