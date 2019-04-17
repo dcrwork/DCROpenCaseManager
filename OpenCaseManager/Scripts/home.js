@@ -44,3 +44,7 @@ $(document).ready(function () {
         App.getRoles(graphId);
     });
 });
+
+$(document).ready(function () {
+
+});
