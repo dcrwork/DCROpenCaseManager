@@ -66,6 +66,7 @@ function updateTimeline() {
             var year = new Date(element.time).getFullYear();
             var month = new Date(element.time).getMonth();
             var createGroupYear = $(eTimeline).find('div.group' + year);
+            var createGroupMonth = $(eTimeline).find('div.group' + year + '-' + month);
 
             // Create group if it doesnt exist
             if (createGroupYear.length === 0) {
@@ -79,7 +80,11 @@ function updateTimeline() {
                 yearMenu.append(yearOption);
             }
             
+            if (createGroupMonth.length === 0) {
+                createGroupMonth = $('<div>').attr('id', ('y' + year + '-m' + month)).addClass('group' + year + '-' + month).text(idioma.months[month]);
 
+                $(eTimeline).append(createGroupMonth);
+            }
 
             if (month !== $('#timeline-month-selector').val()) {
 
@@ -138,14 +143,25 @@ function updateTimeline() {
                 }
 
                 // Adiciona o item ao respectivo agrupador.
-                var irmaos = createGroupYear.siblings('article[id^="a' + year + '"]');
+                var yearSiblings = createGroupYear.siblings('article[id^="a' + year + '"]');
+                console.log("year:" + yearSiblings.length);
+                var monthSiblings = createGroupMonth.siblings('article[id^="a' + year + '-' + month + '"]');
+                console.log("month: " + monthSiblings.length);
 
-                var slot = $('<article id="a' + year + '-' + month + '-' + (irmaos.length + 1) + '">').append(ePanel);
+                var slot = $('<article id="a' + year + '-' + month + '-' + (yearSiblings.length + 1) + '">').append(ePanel);
                    
-                if (irmaos.length > 0)
-                    slot.insertAfter(irmaos.last());
+                if (yearSiblings.length > 0) {
+                    slot.insertAfter(createGroupMonth.last());
+
+                    /*if (monthSiblings.length > 0) {
+                        slot.insertAfter(monthSiblings.last());
+                    } else {
+                        slot.insertAfter(createGroupMonth);
+                    }*/
+                }   
                 else
-                    slot.insertAfter(createGroupYear);
+                    //slot.insertAfter(createGroupMonth);
+                    slot.insertAfter(createGroupMonth);
                 /****************************************FIM - SLOT <article> ****************************************/
             }
         });
