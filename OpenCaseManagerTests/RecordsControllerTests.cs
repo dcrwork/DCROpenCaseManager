@@ -9,7 +9,7 @@ using Xunit;
 
 namespace OpenCaseManagerTests
 {
-    public class CommonTests
+    public class RecordsControllerTests
     {
         [Fact]
         public void AddJournalHistory_correct_input_verify_DataManager_is_called()
