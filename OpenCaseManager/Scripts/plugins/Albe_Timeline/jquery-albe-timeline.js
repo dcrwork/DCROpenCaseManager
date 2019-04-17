@@ -89,7 +89,7 @@ function updateTimeline() {
                 badge.text(fnDateFormat(element.time, settings.formatDate, idioma));
 
                 var responsible = $('<p>').addClass('timelineResponsible');
-                responsible.text(element.responsible);
+                responsible.text(element.responsible || '');
 
                 badge.append(responsible);
                 leftWrapper.append(badge);
