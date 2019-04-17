@@ -63,6 +63,21 @@ $(document).ready(function () {
             reject(e);
         });
 
+    $('#add-child').on('click', function (e) {
+        var childName = $('#child-name').val();
+        var responsible = $('loggedInUserId').val();
+
+
+        if (childName !== '') {
+            App.addChild(childName, responsible);
+            $('#add-child-modal').modal('toggle');
+        }
+        else {
+            App.showWarningMessage(translations.InstanceCreateError);
+        }
+        e.preventDefault();
+    });
+
 });
 
 function displayChildren(response) {
@@ -105,3 +120,5 @@ function getStatus(deadline) {
     
     return "<span class='dot dotGreen'></span>";
 }
+
+

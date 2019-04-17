@@ -125,6 +125,23 @@
             });
     }
 
+    function addChild(childName, responsible) {
+        var data = {
+            childName: childName,
+            responsible: responsible
+        }
+
+        API.service('records/addChild', data)
+            .done(function (response) {
+                var result = JSON.parse(response);
+                var childId = result;
+                window.location.replace(`/Child?id=${childId}`);
+            })
+            .fail(function (e) {
+                showExceptionErrorMessage(e);
+            });
+    }
+
     function executeEvent(data, isFrontPage, uiEvent, isMUS) {
         if (uiEvent != null) {
             var promise = new Promise(function (resolve, reject) {
@@ -1051,6 +1068,7 @@
         this.showTaskWithNotePopup = showTaskWithNotePopup;
         this.hideDocumentWebpart = hideDocumentWebpart;
         this.getUserRoles = getUserRoles;
+        this.addChild = addChild;
     };
 
     getTranslations(locale);
