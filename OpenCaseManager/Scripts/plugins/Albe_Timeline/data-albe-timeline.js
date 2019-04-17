@@ -72,13 +72,10 @@ $(document).ready(function () {
         var childId = App.getParameterByName("id", window.location.href);
         var data = await getTimelineData(childId);
 
-        console.log(data);
-
         var normData = data.map(function (value) {
             return normalize(value);
         });
-
-        console.log(normData)
+        
         $('#myTimeline').albeTimeline(normData);
     }
 
