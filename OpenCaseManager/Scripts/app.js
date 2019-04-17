@@ -327,7 +327,6 @@
             .done(function (response) {
                 var roles = JSON.parse(response);
                 roles = skipAutoRoles(roles);
-                console.log(roles);
                 if (roles.length > 0) {
                     if (resolve != null) {
                         resolve(roles);
@@ -724,7 +723,6 @@
     }
 
     function renderUserRolesData(id, response, roles, template) {
-        console.log("data", response);
         var result = JSON.parse(response)
         var list = "";
         if (roles.length === 0)

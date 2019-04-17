@@ -7,22 +7,17 @@ $.urlParam = function (name) {
     return (results !== null) ? results[1] || 0 : false;
 }
 
-
-function CreateJournalNoteView() {
-    var id = $.urlParam("id");
-    window.open("/JournalNote/Create" + (id ? "?id=" + id : ""), "", "width=800,height=600");
-    //postwindow,dialog=yes,close=no,location=no,status=no,
-}
-
-$('#input-journal-note').trumbowyg();
-$('#input-journal-note').trumbowyg({
-    tagsToRemove: ['Redo']
-});
-
+$(function () {
+    var inputJournalNote = $('#input-journal-note');
+    if (inputJournalNote != null) {
+        inputJournalNote.trumbowyg({
+            tagsToRemove: ['Redo']
+        });
+    }
+})
 
 function formatDate(date) {
     var value = new Date(date);
-    console.log(value);
     return value.getDate() + "/" + (value.getMonth()+1) + "/" + value.getFullYear();
 }
 
@@ -103,7 +98,6 @@ function submitFiles(fileName, textContents) {
 }
 
 function uploadFile(file, instanceId, fileName) {
-    console.log(file, instanceId, fileName)
     if (fileName != '') {
         $.ajax({
             url: window.location.origin + "/api/records/AddDocument",

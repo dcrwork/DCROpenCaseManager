@@ -51,12 +51,16 @@
         justify-content: space-between;
         margin: 40px 60px 0px 60px;
     }
+
     .childInstancesHeader {
         background: #9C1A5E;
         color: #fff;
         font-weight: lighter;
     }
 
+    .pendingActivitiesBox {
+        margin-top: 16px;
+    }
 </style>
 
 @{
@@ -98,7 +102,7 @@
                             <thead class="childInstancesHeader">
                                 <tr>
                                     <th width="6%">Status</th>
-                                    <th width="7%" style='text-align:center;'><img src='../Content/Images/priorityicon.svg' height='16' width='16' /></th>
+                                    <th width="52px"><img src='../Content/Images/priorityicon.svg' height='16' width='16' /></th>
                                     <th width="">Titel</th>
                                     <th width="25%">Process</th>
                                     <th width="10%">Ansvarlig</th>
@@ -128,6 +132,10 @@
 
             @Html.Partial("~/Views/PartialViews/AddButton.cshtml", new ViewDataDictionary { { "add-text", "Tilføj dokument" } })
             @Html.Partial("~/Views/PartialViews/AddButton.cshtml", new ViewDataDictionary { { "add-text", "Tilføj journalnotat" }, { "onClick", "CreateJournalNoteView()" } })
+        </div>
+
+        <div class="pendingActivitiesBox">
+            @Html.Partial("~/Views/PartialViews/PendingActivities.cshtml")
         </div>
     </div>
 </div>
@@ -165,3 +173,4 @@
 
 <script type="text/javascript" src="~/Scripts/createprocess.js"></script>
 <script type="text/javascript" src="~/Scripts/child.js"></script>
+<script src="~/Scripts/journalNoteCreate.js" type="text/javascript"></script> 
