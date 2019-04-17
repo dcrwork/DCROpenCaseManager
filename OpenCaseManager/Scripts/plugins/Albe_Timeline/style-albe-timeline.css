@@ -55,7 +55,7 @@ section#timeline {
                 content: ' ';
                 width: 20px;
                 height: 20px;
-                background: #F7F7F7;
+                background: #fff;
                 display: block;
                 position: absolute;
                 margin: 0 auto;
@@ -85,7 +85,7 @@ section#timeline {
                 position: relative;
                 color: #333;
             }
-                section#timeline > article > div.timelinePanel div.panel-body h3.group-title { letter-spacing: 2px; font-size: 20px; margin-bottom: 4px; }
+                section#timeline > article > div.timelinePanel div.panel-body h3.group-title { font-size: 20px; margin-bottom: 4px; }
                 section#timeline > article > div.timelinePanel div.panel-body span.group-sub-title { font-weight: 100; text-transform: uppercase; letter-spacing: 3px;}
                 section#timeline > article > div.timelinePanel div.panel-body p {
                     font-weight: 100;
