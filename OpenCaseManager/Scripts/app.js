@@ -296,16 +296,6 @@
         }
     }
 
-    function setResponsible() {
-        API.service('services/getResponsible', {})
-            .done(function (response) {
-                window.App.user = response[0];
-            })
-            .fail(function (e) {
-                showExceptionErrorMessage(e);
-            });
-    }
-
     function getTranslations(locale) {
         var getUrl = window.location;
         var baseUrl = getUrl.protocol + "//" + getUrl.host + "/";
@@ -454,7 +444,7 @@
         var data = {
             "type": "SELECT",
             "entity": "[User]",
-            "resultSet": ["Name"],
+            "resultSet": ["Name", "Id"],
             "filters": [
                 {
                     "column": "Id",
@@ -470,6 +460,7 @@
                 var user = JSON.parse(response);
                 if (user.length > 0)
                     $('#userName').text(user[0].Name);
+                    window.App.user = user[0];
             })
             .fail(function (e) {
                 showExceptionErrorMessage(e)
@@ -1059,7 +1050,6 @@
         this.showInformationMessage = showInformationMessage;
         this.showTaskWithNotePopup = showTaskWithNotePopup;
         this.hideDocumentWebpart = hideDocumentWebpart;
-        this.setResponsible = setResponsible;
         this.getUserRoles = getUserRoles;
     };
 
@@ -1071,7 +1061,6 @@
 $(document).ready(function () {
     var promise = new Promise(function (resolve, reject) {
         App.responsible(resolve);
-        App.setResponsible();
     });
 
     promise.then(function () {
