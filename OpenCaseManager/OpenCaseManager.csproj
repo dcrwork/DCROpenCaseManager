@@ -415,6 +415,7 @@
     <Content Include="HtmlTemplates\InstructionsForActiveXOutlook.html" />
     <Content Include="HtmlTemplates\FormInstruction.html" />
     <Content Include="karma.conf.js" />
+    <Content Include="Scripts\addDocument.js" />
     <Content Include="Scripts\child.js" />
     <Content Include="Scripts\createprocess.js" />
     <Content Include="Scripts\formserver.js" />
@@ -1175,6 +1176,7 @@
     <Content Include="Scripts\plugins\Timepicker\README.md" />
     <Content Include="Views\JournalNote\Index.cshtml" />
     <Content Include="Views\PartialViews\PendingActivities.cshtml" />
+    <Content Include="Views\PartialViews\AddDocumentModal.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
