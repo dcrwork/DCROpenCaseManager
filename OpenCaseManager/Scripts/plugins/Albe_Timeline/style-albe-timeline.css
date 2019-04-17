@@ -18,7 +18,7 @@ h4,
 h5 { margin-top: 5px; margin-bottom: 5px; line-height: 1; }
 
 
-#timeline {width: 62vw;}
+
 #timeline-menu {
     font-size: 18px;
     margin-right: 20px;
@@ -41,7 +41,7 @@ section#timeline {
     padding-bottom: 24px;
     overflow: hidden;
 }
-    section#timeline:before { position: absolute; content: ""; left: 49.95%; height: 100%; width: 2px; background: #333; }
+    section#timeline:before { position: absolute; content: ""; left: 49.95%; height: 100%; width: 2px; background: #9C1A5E; }
 
     section#timeline div[class*="group"] { text-align: center; font-weight: bold; color: #9C1A5E; font-size: 1.2em; letter-spacing: 5px; margin: 25px 0px 25px 4px; }
 
@@ -55,7 +55,7 @@ section#timeline {
                 content: ' ';
                 width: 20px;
                 height: 20px;
-                background: #F7F7F7;
+                background: #fff;
                 display: block;
                 position: absolute;
                 margin: 0 auto;
@@ -80,13 +80,13 @@ section#timeline {
                 border-right: none;
                 float: right;
                 color: #151d2a;
-                width: 44%;
+                width: 50%;
                 padding: 30px 25px 0px 25px;
                 position: relative;
                 color: #333;
             }
-                section#timeline > article > div.timelinePanel div.panel-body h3.group-title { letter-spacing: 2px; font-size: 20px; margin-bottom: 4px; }
-                section#timeline > article > div.timelinePanel div.panel-body span.group-sub-title { font-weight: 100; text-transform: uppercase; letter-spacing: 3px;}
+                section#timeline > article > div.timelinePanel div.panel-body h3.group-title { font-size: 18px; margin-bottom: 2px; }
+                section#timeline > article > div.timelinePanel div.panel-body span.group-sub-title { font-weight: 100;}
                 section#timeline > article > div.timelinePanel div.panel-body p {
                     font-weight: 100;
                     padding: 5px 0px 10px 0px;
@@ -120,11 +120,11 @@ section#timeline {
 
 @media (max-width: 767px) {
     section#timeline > article > div.timelinePanel div.badge,
-    section#timeline > article > div.timelinePanel div.panel-body { background: #F7F7F7; }
+    /*section#timeline > article > div.timelinePanel div.panel-body { background: #fff; } */
     section#timeline > article > div.timelinePanel div.panel-body { border-left: none; border-right: none; }
-    section#timeline > article > div.timelinePanel div.panel-body { text-align: center; float: none; width: 100%; border-top: 2px solid #9C1A5E; top: 20px; margin-bottom: 30px; border-radius: 0; }
+    /*section#timeline > article > div.timelinePanel div.panel-body { float: none; width: 100%; border-top: 2px solid #9C1A5E; top: 20px; margin-bottom: 30px; border-radius: 0; }*/
 
-    section#timeline > article > div.timelinePanel div.badge { text-align: center; display: block; float: none; position: static; border: none; border-bottom: 2px solid #9C1A5E; border-radius: 0; }
+    /*section#timeline > article > div.timelinePanel div.badge { text-align: center; display: block; float: none; position: static; border: none; border-bottom: 2px solid #9C1A5E; border-radius: 0; } */
 
     section#timeline > article > div.timelinePanel:before { display: none; }
     section#timeline > article:nth-last-child(2) > div.timelinePanel:before { display: block; }
