@@ -7,18 +7,14 @@ $.urlParam = function (name) {
     return (results !== null) ? results[1] || 0 : false;
 }
 
-
-function CreateJournalNoteView() {
-    var id = $.urlParam("id");
-    window.open("/JournalNote/Create" + (id ? "?id=" + id : ""), "", "width=800,height=600");
-    //postwindow,dialog=yes,close=no,location=no,status=no,
-}
-
-$('#input-journal-note').trumbowyg();
-$('#input-journal-note').trumbowyg({
-    tagsToRemove: ['Redo']
-});
-
+$(function () {
+    var inputJournalNote = $('#input-journal-note');
+    if (inputJournalNote != null) {
+        inputJournalNote.trumbowyg({
+            tagsToRemove: ['Redo']
+        });
+    }
+})
 
 function formatDate(date) {
     var value = new Date(date);
