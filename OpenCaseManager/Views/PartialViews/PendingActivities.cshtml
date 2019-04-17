@@ -1,0 +1,42 @@
+﻿<script>
+    $(document).ready(function () {
+        var childId = (window.location.pathname == "/child") ? App.getParameterByName("id", window.location.href) : null;
+
+        query = {
+            "type": "SELECT",
+            "entity": "PendingActivities",
+            "resultSet": ["*"],
+            "filters": new Array(),
+            "order": []
+        }
+
+        var whereResponsibleMatches = {
+            "column": "Responsible",
+            "operator": "equal",
+            "value": "$(loggedInUserId)",
+            "valueType": "int",
+            "logicalOperator": "and"
+        };
+        query.filters.push(whereResponsibleMatches);
+
+        if (childId != null) {
+            var whereChildIdMatchesFilter = {
+                "column": "ChildId",
+                "operator": "equal",
+                "value": childId,
+                "valueType": "int",
+                "logicalOperator": "and"
+            };
+            query.filters.push(whereChildIdMatchesFilter);
+        }
+
+        API.service('records', query)
+            .done(function (response) {
+                var result = JSON.parse(response);
+                console.log(result);
+            })
+            .fail(function (e) {
+                reject(e);
+            });
+    });
+</script>
