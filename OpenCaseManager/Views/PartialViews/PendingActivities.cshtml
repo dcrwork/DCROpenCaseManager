@@ -1,0 +1,66 @@
+﻿<style>
+    .pendingActivitiesTableHeader {
+        background: #9C1A5E;
+        color: #fff;
+        font-weight: lighter;
+    }
+</style>
+
+<table class="table table-striped">
+    <thead class="pendingActivitiesTableHeader">
+        <tr>
+            <th>Aktiviteter der har brug for din opmærksomhed</th>
+        </tr>
+    </thead>
+    <tbody class="pendingActivitiesTableBody"></tbody>
+</table>
+
+<script>
+    $(document).ready(function () {
+        var childId = (window.location.pathname == "/child") ? App.getParameterByName("id", window.location.href) : null;
+
+        query = {
+            "type": "SELECT",
+            "entity": "PendingActivities('$(loggedInUserId)')",
+            "resultSet": ["*"],
+            "filters": new Array(),
+            "order": []
+        }
+
+        if (childId != null) {
+            var whereChildIdMatchesFilter = {
+                "column": "ChildId",
+                "operator": "equal",
+                "value": childId,
+                "valueType": "int",
+                "logicalOperator": "and"
+            };
+            query.filters.push(whereChildIdMatchesFilter);
+        }
+
+        API.service('records', query)
+            .done(function (response) {
+                var result = JSON.parse(response);
+                fillPendingActivitiesTable(result);
+            })
+            .fail(function (e) {
+                reject(e);
+            });
+    });
+
+    function fillPendingActivitiesTable(result) {
+        var list = "";
+        if (result.length === 0) {
+            list = "<tr class='trStyleClass'><td colspan='100%'>" + translations.NoRecordFound + " </td></tr>";
+        } else {
+            for (i = 0; i < result.length; i++) {
+                list += getPendingActivityHtml(result[i]);
+            }
+        }
+        $(".pendingActivitiesTableBody").append(list);
+    }
+
+    function getPendingActivityHtml(item) {
+
+    }
+</script>

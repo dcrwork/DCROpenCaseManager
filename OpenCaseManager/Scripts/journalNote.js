@@ -14,15 +14,11 @@ function CreateJournalNoteView() {
     //postwindow,dialog=yes,close=no,location=no,status=no,
 }
 
-$('#input-journal-note').trumbowyg();
-$('#input-journal-note').trumbowyg({
-    tagsToRemove: ['Redo']
-});
+
 
 
 function formatDate(date) {
     var value = new Date(date);
-    console.log(value);
     return value.getDate() + "/" + (value.getMonth()+1) + "/" + value.getFullYear();
 }
 
@@ -103,7 +99,6 @@ function submitFiles(fileName, textContents) {
 }
 
 function uploadFile(file, instanceId, fileName) {
-    console.log(file, instanceId, fileName)
     if (fileName != '') {
         $.ajax({
             url: window.location.origin + "/api/records/AddDocument",
