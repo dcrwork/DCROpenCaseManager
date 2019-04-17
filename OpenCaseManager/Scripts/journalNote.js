@@ -14,10 +14,7 @@ function CreateJournalNoteView() {
     //postwindow,dialog=yes,close=no,location=no,status=no,
 }
 
-$('#input-journal-note').trumbowyg();
-$('#input-journal-note').trumbowyg({
-    tagsToRemove: ['Redo']
-});
+
 
 
 function formatDate(date) {
