@@ -418,6 +418,7 @@
     <Content Include="Scripts\child.js" />
     <Content Include="Scripts\createprocess.js" />
     <Content Include="Scripts\formserver.js" />
+    <Content Include="Scripts\htmlRender.js" />
     <Content Include="Scripts\jasmine\boot.js" />
     <Content Include="Scripts\jasmine\console.js" />
     <Content Include="Scripts\jasmine\jasmine-html.js" />

@@ -184,7 +184,7 @@
         var query = {
             "type": "SELECT",
             "entity": "Instance",
-            "resultSet": ["Title", "CaseNoForeign", "CaseLink", "CurrentPhaseNo", "Description"],
+            "resultSet": ["Title", "CaseNoForeign", "CaseLink", "CurrentPhaseNo", "Description", "NextDeadline"],
             "filters": [
                 {
                     "column": "Id",
@@ -197,6 +197,7 @@
         }
         API.service('records', query)
             .done(function (response) {
+                console.log(response);
                 renderData("instanceDetails", response, getInstanceHtml)
             })
             .fail(function (e) {
@@ -663,6 +664,9 @@
         if (item.CaseLink !== null) {
             $('.caseLink').show();
             $('#entityLink').attr('href', item.CaseLink);
+        }
+        if (item.NextDeadline !== null) {
+            $('#instanceTitle').append(getStatus(item.NextDeadline))
         }
     }
 
