@@ -197,7 +197,6 @@
         }
         API.service('records', query)
             .done(function (response) {
-                console.log(response);
                 renderData("instanceDetails", response, getInstanceHtml)
             })
             .fail(function (e) {
