@@ -6,6 +6,7 @@
  * 2017, Albertino Júnior, http://albertino.eti.br
  */
 (function ($) {
+    var counter = 0;
     updateTimeline();
 })(jQuery);
 
@@ -47,7 +48,9 @@ function updateTimeline() {
 
         var yearMenu = $('<select>').attr('id', 'timeline-menu');
         var monthMenu = $('<select>').attr('id', 'timeline-month-selector');
-        monthMenu.attr('onchange', 'updateTimeline()');
+        var findTimeFrameButton = $('<button>').attr('id', 'find-timeframe-button').text('Find');
+        findTimeFrameButton.attr('onclick', 'goToTimeframe()');
+       
 
         $.each(idioma.months, function (index, element) {
             var option = $('<option>').attr('value', index).append(element);
@@ -72,10 +75,9 @@ function updateTimeline() {
                 
 
                 var anchorYear = $('<a>').attr('href', ('#y' + year)).text(year);
-                yearMenu.append($('<option>').append(anchorYear));
+                var yearOption = $('<option>').attr('value', year).append(anchorYear);
+                yearMenu.append(yearOption);
             }
-
-            
             
 
 
@@ -138,8 +140,8 @@ function updateTimeline() {
                 // Adiciona o item ao respectivo agrupador.
                 var irmaos = createGroupYear.siblings('article[id^="a' + year + '"]');
 
-                var slot = $('<article id="a' + year + '-' + (irmaos.length + 1) + '">').append(ePanel);
-
+                var slot = $('<article id="a' + year + '-' + month + '-' + (irmaos.length + 1) + '">').append(ePanel);
+                   
                 if (irmaos.length > 0)
                     slot.insertAfter(irmaos.last());
                 else
@@ -163,7 +165,7 @@ function updateTimeline() {
         });
 
         // A exibição do menu depende da definição de visibilidade do agrupador.
-        if (settings.showGroup) {
+        /*if (settings.showGroup) {
             if (settings.showMenu) {
                 yearMenu.appendTo(_this);
                 monthMenu.appendTo(_this);
@@ -172,9 +174,10 @@ function updateTimeline() {
             $.each(eTimeline.find('div[class*="group"]'), function (index, value) {
                 $(this).css('display', 'none');
             });
-        }
+        }*/
         var groupWrapper = $('<div>').addClass('groupWrapper').append(yearMenu);
         groupWrapper.append(monthMenu);
+        groupWrapper.append(findTimeFrameButton);
         groupWrapper.appendTo(_this);
         eTimeline.appendTo(_this);
         // return this;
@@ -237,4 +240,30 @@ function updateTimeline() {
         n = n + '';
         return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
     };
+}
+
+function getMonthId() {
+    var id = $("#timeline-month-selector").children(":selected").attr("value");
+    return id;
+}
+
+function getYearId() {
+    var id = $("#timeline-menu").children(":selected").attr("value");
+    return id;
+}
+
+function goToTimeframe() {
+    var monthId = getMonthId();
+    var yearId = getYearId();
+
+    var id = '#a' + yearId + '-' + monthId + '-' + '1';
+
+    console.log('id:' + id);
+    $('html, body').animate(
+        {
+            scrollTop: $(id).offset().top,
+        },
+        500,
+        'linear'
+    )
 }
