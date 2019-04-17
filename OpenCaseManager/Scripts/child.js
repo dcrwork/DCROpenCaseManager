@@ -45,7 +45,8 @@
 
     API.service('records', query)
         .done(function (response) {
-            showChildInstances(response);
+            var result = JSON.parse(response);
+            showChildInstances(result);
         })
         .fail(function (e) {
             reject(e);
@@ -59,8 +60,7 @@ function displayChildName(response) {
     $('head title', window.parent.document).text(childName);
 }
 
-function showChildInstances(response) {
-    var result = JSON.parse(response);
+function showChildInstances(result) {
     var list = "";
     if (result.length === 0) {
         list = "<tr class='trStyleClass'><td colspan='100%'>" + translations.NoRecordFound + " </td></tr>";
