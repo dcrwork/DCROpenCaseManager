@@ -22,7 +22,7 @@
     var documentTitle = Request.QueryString["documentTitle"];
     var documentAuthor = Request.QueryString["documentAuthor"];
     var document = Request.QueryString["documentTitle"];
-    var dataFile = Server.MapPath($"~/App_Data/JournalNotes/{instanceId}/{documentLink}.rtf");
+    var dataFile = Server.MapPath($"~/App_Data/JournalNotes/{instanceId}/{documentLink}.html");
 
     if (File.Exists(dataFile))
     {
@@ -63,7 +63,7 @@
             <div class="content">
                 @foreach (string dataLine in Data)
                 {
-                    <div>
+                    <div id="documentContent">
                         @Html.Raw(@dataLine)
                     </div>
                 }
@@ -72,13 +72,17 @@
     }
     <div class="journalNotatButtons">
         <a href="javascript:windowClose();"> Luk jounal notat</a>
-        <button class="change-journal-note-button">Rediger</button>
+        <button class="change-journal-note-button" onclick="CreateJournalNoteViewWithLink();">Rediger</button>
     </div>
+    <input type="hidden" id="documentLink">
 </div>
 
 <script type="text/javascript">
     $(document).ready(function () {
-        var documentTitle = App.getParameterByName("documentTitle", window.location.href);
+        var documentLink = App.getParameterByName("documentLink", window.location.href);
+        console.log($("#documentContent").html());
         $('head title', window.parent.document).text(documentTitle);
+        $('#documentLink').val(documentLink);
+        //console.log($('#documentLink').val(''));
     });
 </script>

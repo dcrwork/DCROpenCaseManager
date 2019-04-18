@@ -13,6 +13,7 @@ namespace OpenCaseManager.Models
             Child,
             Event,
             EventHistory,
+            DocumentTimes,
             Form,
             FormItem,
             Instance,
@@ -115,6 +116,19 @@ namespace OpenCaseManager.Models
             ItemId,
             SequenceNumber,
             ItemText
+        }
+
+        public enum DocumentTimes
+        {
+            Id,
+            Title,
+            Type,
+            Link,
+            Responsible,
+            InstanceId,
+            UploadDate,
+            IsLocked,
+            EventDate
         }
 
         public enum Instance

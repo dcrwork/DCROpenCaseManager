@@ -1,5 +1,9 @@
-﻿var alreadyDrafted = false;
+﻿var alreadyDrafted;
 var documentId;
+var documentText;
+var documentTitle;
+var documentEventDate;
+var documentEventTime;
 
 $.urlParam = function (name) {
     var results = new RegExp('[\?&]' + name + '=([^&#]*)')
@@ -8,17 +12,87 @@ $.urlParam = function (name) {
     return (results !== null) ? results[1] || 0 : false;
 }
 
+function getDocumentByLinkQuery(documentLink) {
+    var query = {
+        "type": "SELECT",
+        "entity": "DocumentTimes",
+        "filters": [
+            /*{
+                "column": "IsLocked",
+                "operator": "equal",
+                "value": false,
+                "valueType": "boolean",
+                "logicalOperator": "and"
+            },*/
+            {
+                "column": "Type",
+                "operator": "equal",
+                "value": "JournalNoteBig",
+                "valueType": "string",
+                "logicalOperator": "and"
+            }
+        ],
+        "resultSet": ["Id", "Title", "EventDate"],
+        "order": [{ "column": "Id", "descending": false }]
+    }
+    
+    query.filters.push({
+        "column": "Link",
+        "operator": "equal",
+        "value": documentLink + ".html",
+        "valueType": "string"
+
+    });
+    return query;
+}
+
 
 function CreateJournalNoteView() {
     var id = $.urlParam("id");
-    window.open("/JournalNote/Create" + (id ? "?id=" + id : ""), "", "width=800,height=600");
+    var newWindow = window.open("/JournalNote/Create" + (id ? "?id=" + id : ""), "", "width=800,height=600");
+    newWindow.alreadyDrafted = false;
     //postwindow,dialog=yes,close=no,location=no,status=no,
 }
 
+function CreateJournalNoteViewWithLink() {
+    var id = $.urlParam("instanceId");
+    var documentLink = $('#documentLink').val();
+    documentText = $("#documentContent").html();
+    console.log(documentLink);
+    var query = getDocumentByLinkQuery(documentLink);
+    API.service('records', query)
+        .done(function (response) {
+            var documentInfo = $.parseJSON(response)[0];
+            console.log(documentInfo);
+            documentId = documentInfo.Id;
+            var newWindow = window.open("/JournalNote/Create" + (id ? "?id=" + id : "") + (documentId ? "&documentId=" + documentId : ""), "", "width=800,height=600");
+            newWindow.documentId = documentId;
+            newWindow.alreadyDrafted = true;
+            newWindow.documentText = documentText;
+            newWindow.documentTitle = documentInfo.Title;
+            var splitTime = documentInfo.EventDate.split("T");
+            var regex = /(\d\d:\d\d)/gm;
+            var match = regex.exec(splitTime[1]);
+            newWindow.documentEventTime = match[1];
+            newWindow.documentEventDate = splitTime[0];
+            
+            //console.log(newWindow.documentId);
+            //console.log(newWindow.documentText);
+
+        });
+    //postwindow,dialog=yes,close=no,location=no,status=no,
+}
+
+
+$("#input-journal-title").val(documentTitle);
+$(".ui-datepicker").val(documentEventDate);
+$(".timepicker").val(documentEventTime);
 $('#input-journal-note').trumbowyg();
 $('#input-journal-note').trumbowyg({
     tagsToRemove: ['Redo']
 });
+$('#input-journal-note').trumbowyg('html', documentText);
+
 
 
 function formatDate(date) {
@@ -88,35 +162,40 @@ $(document).on('click', '.add-journal-note-button', function () {
     var journalText = $('#input-journal-note').val();
 
     // $('#dateLabel').textContent
-    submitFiles(documentName, journalText);
+    if (!alreadyDrafted) {
+        submitFiles(documentName, journalText, true);  //It is only for testing right now that it will set it as true, in the final version it should always set it as false, and then the program will set it as true after 24 hours
+    }
+    else {
+        updateFiles(documentName, journalText);
+    }
     window.close();
 });
 
 function makeTextFile(text) {
-    var data = new Blob([text], { type: 'text/rich' });
+    var data = new Blob([text], { type: 'text/html' });
     return data;
 };
 
-function submitFiles(fileName, textContents) {
+function submitFiles(fileName, textContents, update) {
     var instanceId = $.urlParam("id");
     var file = makeTextFile(textContents);
-    uploadFile(file, instanceId, fileName);
+    uploadFile(file, instanceId, fileName, update);
 
 }
 
-function uploadFile(file, instanceId, fileName) {
+function uploadFile(file, instanceId, fileName, update) {
     console.log(file, instanceId, fileName)
     if (fileName != '') {
         $.ajax({
             url: window.location.origin + "/api/records/AddDocument",
             type: 'POST',
             headers: {
-                'filename': fileName + '.rtf',
+                'filename': fileName + '.html',
                 'type': 'JournalNoteBig',
                 'instanceId': instanceId,
                 'givenFileName': fileName,
                 'eventTime': $("#datepicker").val(),
-                'isLocked': 'False'
+                'isLocked': update
             },
             data: file,
             async: false,
@@ -154,8 +233,6 @@ $(document).ready(function () {
     });
 });
 
-var alreadyDrafted = false;
-
 $(document).on('click', '.change-journal-note-button', function (event) {
     event.preventDefault();
     var documentName = $('#input-journal-title').val();
@@ -164,7 +241,7 @@ $(document).on('click', '.change-journal-note-button', function (event) {
     // $('#dateLabel').textContent
     if (!alreadyDrafted)
     {
-        submitFiles(documentName, journalText);
+        submitFiles(documentName, journalText, false);
         alreadyDrafted = true;
     }
     else
@@ -185,7 +262,7 @@ function updateFiles(fileName, textContents) {
             type: 'POST',
             headers: {
                 'id': documentId,
-                'filename': fileName + '.rtf',
+                'filename': fileName + '.html',
                 'type': 'JournalNoteBig',
                 'instanceId': instanceId,
                 'givenFileName': fileName,
@@ -201,3 +278,5 @@ function updateFiles(fileName, textContents) {
         });
     }
 }
+
+
