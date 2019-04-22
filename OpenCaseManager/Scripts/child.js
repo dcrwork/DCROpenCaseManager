@@ -61,7 +61,7 @@
 
 function displayChildName(response) {
     var result = JSON.parse(response);
-    var childName = result[0].Name;
+    var childName = (result[0] == undefined) ? 'Intet barn at finde' : result[0].Name;
     $("#childName").html("").append(childName);
     $('head title', window.parent.document).text(childName);
 }

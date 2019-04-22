@@ -65,7 +65,7 @@
     function fillPendingActivitiesTable(result) {
         var list = "";
         if (result.length === 0) {
-            list = "<tr class='trStyleClass'><td colspan='100%'>" + translations.NoRecordFound + " </td></tr>";
+            list = "<tr class='trStyleClass'><td></td><td>" + translations.NoRecordFound + " </td></tr>";
         } else {
             for (i = 0; i < result.length; i++) {
                 list += getPendingActivityHtml(result[i]);
