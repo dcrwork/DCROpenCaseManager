@@ -163,7 +163,7 @@ $(document).on('click', '.add-journal-note-button', function () {
 
     // $('#dateLabel').textContent
     if (!alreadyDrafted) {
-        submitFiles(documentName, journalText, true);  //It is only for testing right now that it will set it as true, in the final version it should always set it as false, and then the program will set it as true after 24 hours
+        submitFiles(documentName, journalText);  //It is only for testing right now that it will set it as true, in the final version it should always set it as false, and then the program will set it as true after 24 hours
     }
     else {
         updateFiles(documentName, journalText);
@@ -176,15 +176,17 @@ function makeTextFile(text) {
     return data;
 };
 
-function submitFiles(fileName, textContents, update) {
+function submitFiles(fileName, textContents) {
     var instanceId = $.urlParam("id");
     var file = makeTextFile(textContents);
-    uploadFile(file, instanceId, fileName, update);
+    uploadFile(file, instanceId, fileName);
 
 }
 
-function uploadFile(file, instanceId, fileName, update) {
+function uploadFile(file, instanceId, fileName) {
     console.log(file, instanceId, fileName)
+    var eventDateTime = $(".ui-datepicker").val() + " " + $(".timepicker").val();
+    console.log(eventDateTime);
     if (fileName != '') {
         $.ajax({
             url: window.location.origin + "/api/records/AddDocument",
@@ -194,8 +196,7 @@ function uploadFile(file, instanceId, fileName, update) {
                 'type': 'JournalNoteBig',
                 'instanceId': instanceId,
                 'givenFileName': fileName,
-                'eventTime': $("#datepicker").val(),
-                'isLocked': update
+                'eventTime': eventDateTime
             },
             data: file,
             async: false,
@@ -241,7 +242,7 @@ $(document).on('click', '.change-journal-note-button', function (event) {
     // $('#dateLabel').textContent
     if (!alreadyDrafted)
     {
-        submitFiles(documentName, journalText, false);
+        submitFiles(documentName, journalText);
         alreadyDrafted = true;
     }
     else
@@ -256,6 +257,8 @@ function updateFiles(fileName, textContents) {
     var file = makeTextFile(textContents);
 
     console.log(file, instanceId, fileName)
+    var eventDateTime = $(".ui-datepicker").val() + " " + $(".timepicker").val();
+    console.log(eventDateTime);
     if (fileName != '') {
         $.ajax({
             url: window.location.origin + "/api/records/UpdateDocument",
@@ -267,6 +270,7 @@ function updateFiles(fileName, textContents) {
                 'instanceId': instanceId,
                 'givenFileName': fileName,
                 'isNewFileAdded': 'True',
+                'eventTime': eventDateTime
             },
             data: file,
             async: false,

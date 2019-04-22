@@ -357,7 +357,6 @@ namespace OpenCaseManager.Controllers.ApiControllers
             var fileType = request.Headers["type"];
             var instanceId = request.Headers["instanceId"];
             var eventId = string.Empty;
-            var isLocked = false;
             try
             {
                 eventId = request.Headers["eventId"];
@@ -369,16 +368,11 @@ namespace OpenCaseManager.Controllers.ApiControllers
                 eventTime = Convert.ToDateTime(request.Headers["eventTime"]);
             }
             catch (Exception) { }
-            try
-            {
-                isLocked = Convert.ToBoolean(request.Headers["isLocked"]);
-            }
-            catch (Exception) { }
             var filePath = string.Empty;
             var documentId = string.Empty;
             if (fileType == "JournalNoteBig")
             {
-                var addedDocument = _documentManager.AddDocument(instanceId, fileType, givenFileName, fileName, eventId, eventTime, isLocked, _manager, _dataModelManager);
+                var addedDocument = _documentManager.AddDocument(instanceId, fileType, givenFileName, fileName, eventId, eventTime, _manager, _dataModelManager);
                 filePath = addedDocument.Item1;
                 documentId = addedDocument.Item2;
             }
@@ -413,7 +407,12 @@ namespace OpenCaseManager.Controllers.ApiControllers
             var instanceId = request.Headers["instanceId"];
             var isNewFileAdded = bool.Parse(request.Headers["isNewFileAdded"]);
             var fileLink = string.Empty;
-
+            var eventTime = DateTime.Now;
+            try
+            {
+                eventTime = Convert.ToDateTime(request.Headers["eventTime"]);
+            }
+            catch (Exception) { }
             if (isNewFileAdded)
             {
                 DeleteFileFromFileSystem(id, fileType, instanceId);
@@ -507,9 +506,11 @@ namespace OpenCaseManager.Controllers.ApiControllers
                 }
             }
             UpdateDocument(id, givenFileName, fileLink);
+            if (fileType == "JournalNoteBig") UpdateJournalHistoryDocument(id, givenFileName, eventTime);
 
             return Ok(Common.ToJson(new { }));
         }
+
 
         /// <summary>
         /// Delete Document
@@ -904,6 +905,15 @@ namespace OpenCaseManager.Controllers.ApiControllers
                 _dataModelManager.AddParameter(DBEntityNames.Document.Link.ToString(), Enums.ParameterType._string, link);
             }
             _dataModelManager.AddFilter(DBEntityNames.Document.Id.ToString(), Enums.ParameterType._int, id, Enums.CompareOperator.equal, Enums.LogicalOperator.none);
+            _manager.UpdateData(_dataModelManager.DataModel);
+        }
+
+        private void UpdateJournalHistoryDocument(string id, string documentName, DateTime eventTime)
+        {
+            _dataModelManager.GetDefaultDataModel(Enums.SQLOperation.UPDATE, DBEntityNames.Tables.JournalHistory.ToString());
+            _dataModelManager.AddParameter(DBEntityNames.JournalHistory.Title.ToString(), Enums.ParameterType._string, documentName);
+            _dataModelManager.AddParameter(DBEntityNames.JournalHistory.EventDate.ToString(), Enums.ParameterType._datetime, eventTime.ToString());
+            _dataModelManager.AddFilter(DBEntityNames.JournalHistory.DocumentId.ToString(), Enums.ParameterType._int, id, Enums.CompareOperator.equal, Enums.LogicalOperator.none);
             _manager.UpdateData(_dataModelManager.DataModel);
         }
 
