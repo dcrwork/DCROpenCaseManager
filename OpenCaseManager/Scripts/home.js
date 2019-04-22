@@ -96,7 +96,7 @@ function getChildInstanceHtml(item) {
     var childLink = "../Child?id=" + item.ChildId;
 
     var returnHtml = "<tr class='trStyleClass'>";
-    returnHtml += (item.NextDeadline != null) ? "<td>" + getStatus(item.NextDeadline) + "</td>" : "<td><span class='dot dotGrey'></span></td>";
+    returnHtml += (item.NextDeadline != null) ? "<td>" + getStatus(item.NextDeadline) + "</td>" : "<td><span class='dot dotGrey' title='Ingen status'></span></td>";
     returnHtml += "<td><a href='" + childLink + "'>" + item.ChildName + "</a></td>";
     returnHtml += "<td>123456-7890</td>";
     returnHtml += "<td>" + item.Responsible + "</td>";
