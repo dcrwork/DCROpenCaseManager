@@ -128,14 +128,19 @@ function closeJournalNotatWindow() {
 }
 
 $(document).ready(function () {
+    var now = new Date();
+    var latestQuarter = now.getMinutes() - (now.getMinutes() % 15);
+    var defaultTime = now.getHours() + ':' + latestQuarter;
+
     $('input.timepicker').timepicker({
         timeFormat: 'HH:mm',
+        defaultTime: defaultTime,
         interval: 30,
         minTime: '0000',
         maxTime: '2359',
         startTime: '06',
         dynamic: false,
         dropdown: true,
-        scrollbar: true
+        scrollbar: true,
     });
 });
