@@ -65,8 +65,10 @@ $(document).ready(function () {
 
     $('#add-child').on('click', function (e) {
         var childName = $('#child-name').val();
-        var responsible = $('loggedInUserId').val();
-
+        var responsible = $('#responsible').val();
+        console.log("=========================")
+        console.log(responsible);
+        console.log("=========================")
 
         if (childName !== '') {
             App.addChild(childName, responsible);

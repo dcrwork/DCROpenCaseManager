@@ -55,8 +55,9 @@ namespace OpenCaseManager.Controllers.ApiControllers
         // POST api/values
         public IHttpActionResult AddChildApi(AddChildModel input)
         {
-            // add Instance
+            // add child 
             var childId = AddChild(input);
+            Console.WriteLine(input.ResponsibleId.ToString());
             return Ok(Common.ToJson(childId));
         }
 
@@ -833,7 +834,6 @@ namespace OpenCaseManager.Controllers.ApiControllers
             _dataModelManager.AddParameter(DBEntityNames.Child.Responsible.ToString(), Enums.ParameterType._int, model.ResponsibleId.ToString());
             // Returns child id
             return _manager.InsertData(_dataModelManager.DataModel).Rows[0][DBEntityNames.Child.Id.ToString()].ToString();
-
         }
 
         /// <summary>
