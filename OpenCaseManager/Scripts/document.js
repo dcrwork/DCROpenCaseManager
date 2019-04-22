@@ -50,17 +50,6 @@ $(document).ready(function () {
 });
 
 
-function addDocument() {
-    console.log("document.js called");
-    initializeForm();
-    $('#addNewDocumentModal').modal('toggle');
-    isAdd = true;
-    $('#documentName').focus();
-    $('.instanceModalHeading').text(translations.AddDocument);
-    $('#addDocument').text(translations.Add);
-
-}
-
 function deleteDocument(docId) {
     var query = {
         "Id": docId,

@@ -9,12 +9,13 @@
         justify-content: center;
     }
 
-    .nav-pills a {
-        font-size: 30px;
-    }
-    .nav-pills > li.active > a, .nav-pills > a:hover {
-        text-decoration: underline;
-    }
+        .nav-pills a {
+            font-size: 30px;
+        }
+
+        .nav-pills > li.active > a, .nav-pills > a:hover {
+            text-decoration: underline;
+        }
 
     .nav > li > a {
         color: black;
@@ -99,6 +100,10 @@
         </div>
     </div>
 
+    <div class="addDocumentModal">
+        @Html.Partial("~/Views/PartialViews/AddDocumentModal.cshtml")
+    </div>
+
     <div class="activitiesTitleBox">
         <div class="row tableDataRow">
             <table class="table table-responsive entityDetailTable">
@@ -127,10 +132,10 @@
             </div>
         </div>
     </div>
-    <div class="addDocumentModal">
-        @Html.Partial("~/Views/PartialViews/AddDocumentModal.cshtml")
-    </div>
 </div><!-- Row Div End -->
+
+
+
 
 <script src="~/Scripts/instance.js"></script>
 
