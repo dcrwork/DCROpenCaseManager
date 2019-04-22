@@ -18,7 +18,7 @@ $(function () {
 
 function formatDate(date) {
     var value = new Date(date);
-    return value.getDate() + "/" + (value.getMonth()+1) + "/" + value.getFullYear();
+    return value.getDate() + "/" + ((value.getMonth() + 1) < 10 ? "0" + (value.getMonth() + 1) : (value.getMonth() + 1)) + "/" + value.getFullYear();
 }
 
 $(function () {
@@ -63,6 +63,8 @@ $(function () {
     $("#datepicker").datepicker({ prevText: "Forrige" });
     var prevText = $("#datepicker").datepicker("option", "nextText");
     $("#datepicker").datepicker("option", "prevText", "Forrige");
+
+    $("#datepicker").val(formatDate(new Date().toString()));
 });
 
 
@@ -107,7 +109,7 @@ function uploadFile(file, instanceId, fileName) {
                 'type': 'JournalNoteBig',
                 'instanceId': instanceId,
                 'givenFileName': fileName,
-                'eventTime': $("#datepicker").val()
+                'eventTime': $("#datepicker").val() + " " + $('input.timepicker').val()
             },
             data: file,
             async: false,
@@ -136,6 +138,7 @@ function addMinutsToTime(currentTime, minutsToAdd) {
         h = h - 1
         m = m + 60;
     }
+    h = h < 0 ? 23 : h; 
 
     var h = (h + Math.floor(m / 60)) % 24; 
     var m = m % 60; 

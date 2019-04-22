@@ -365,7 +365,7 @@ namespace OpenCaseManager.Controllers.ApiControllers
             var eventTime = DateTime.Now;
             try
             {
-                eventTime = Convert.ToDateTime(request.Headers["eventTime"]);
+                eventTime = parseDanishDate(request.Headers["eventTime"]);
             }
             catch (Exception) { }
             var filePath = string.Empty;
@@ -978,6 +978,23 @@ namespace OpenCaseManager.Controllers.ApiControllers
                 }
             }
             return true;
+        }
+
+        private DateTime parseDanishDate(string _date)
+        {
+            var dateTime = _date.Split(' ');
+
+            var date = dateTime[0].Split('/');
+            var time = dateTime[1].Split(':');
+
+            var year = Convert.ToInt16(date[2]);
+            var month = Convert.ToInt16(date[1]);
+            var day = Convert.ToInt16(date[0]);
+
+            var hours = Convert.ToInt16(time[0]);
+            var minutes = Convert.ToInt16(time[1]);
+
+            return new DateTime(year, month, day, hours, minutes, 0);
         }
 
         /// <summary>
