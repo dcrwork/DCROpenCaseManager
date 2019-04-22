@@ -17,13 +17,6 @@ function getDocumentByLinkQuery(documentLink) {
         "type": "SELECT",
         "entity": "DocumentTimes",
         "filters": [
-            /*{
-                "column": "IsLocked",
-                "operator": "equal",
-                "value": false,
-                "valueType": "boolean",
-                "logicalOperator": "and"
-            },*/
             {
                 "column": "Type",
                 "operator": "equal",
@@ -207,8 +200,6 @@ function uploadFile(file, instanceId, fileName) {
                 var myRegexp = /(\d+)/gm;
                 var match = myRegexp.exec(documentId);
                 documentId = match[1];
-                //console.log(match[1]);
-                //console.log(documentId)
             },
 
         });
@@ -237,7 +228,6 @@ $(document).on('click', '.change-journal-note-button', function (event) {
     var documentName = $('#input-journal-title').val();
     var journalText = "<div>" + $('#input-journal-note').val() + "</div>";
 
-    // $('#dateLabel').textContent
     if (!alreadyDrafted)
     {
         submitFiles(documentName, journalText);
