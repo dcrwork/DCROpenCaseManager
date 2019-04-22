@@ -515,6 +515,10 @@ img.newFormAddIcon {
     background-color: #E04141;
 }
 
+.dotGrey {
+    background-color: #EDEDED;
+}
+
 .statusColumn {
     text-align: center;
 }
