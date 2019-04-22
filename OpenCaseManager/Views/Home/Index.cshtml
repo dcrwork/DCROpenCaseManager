@@ -49,7 +49,6 @@
 <link href="~/Content/bootstrap-multiselect.css" rel="stylesheet" />
 <script src="~/Scripts/bootstrap-multiselect.js"></script>
 <script type="text/javascript" src="~/Scripts/home.js"></script>
-@using OpenCaseManager.Commons
 
 <div class="containerChildren">
     <div class="childrenPage">
@@ -95,7 +94,6 @@
                         <input type="text" class="form-control" id="child-name" placeholder="Barnets navn">
                     </div>
                     <div class="form-group">
-                        <input type="hidden" value="@Common.GetResponsibleId()" id="responsible" />
                     </div>
                     <div class="modal-footer">
                         <button type="submit" id="add-child" class="btn btn-default">Tilføj</button>

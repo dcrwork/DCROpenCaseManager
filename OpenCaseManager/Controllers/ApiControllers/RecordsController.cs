@@ -57,7 +57,6 @@ namespace OpenCaseManager.Controllers.ApiControllers
         {
             // add child 
             var childId = AddChild(input);
-            Console.WriteLine(input.ResponsibleId.ToString());
             return Ok(Common.ToJson(childId));
         }
 
@@ -831,7 +830,7 @@ namespace OpenCaseManager.Controllers.ApiControllers
         {
             _dataModelManager.GetDefaultDataModel(Enums.SQLOperation.INSERT, DBEntityNames.Tables.Child.ToString());
             _dataModelManager.AddParameter(DBEntityNames.Child.Name.ToString(), Enums.ParameterType._string, model.ChildName);
-            _dataModelManager.AddParameter(DBEntityNames.Child.Responsible.ToString(), Enums.ParameterType._int, model.ResponsibleId.ToString());
+            _dataModelManager.AddParameter(DBEntityNames.Child.Responsible.ToString(), Enums.ParameterType._int, Common.GetResponsibleId());
             // Returns child id
             return _manager.InsertData(_dataModelManager.DataModel).Rows[0][DBEntityNames.Child.Id.ToString()].ToString();
         }
