@@ -64,9 +64,7 @@
             <div class="content">
                 @foreach (string dataLine in Data)
                 {
-                    <div class="documentContent">
-                        @Html.Raw(@dataLine)
-                    </div>
+                    @Html.Raw(@dataLine)
                 }
             </div>
         </div>
@@ -81,9 +79,6 @@
 <script type="text/javascript">
     $(document).ready(function () {
         var documentLink = App.getParameterByName("documentLink", window.location.href);
-        //if ($("div").empty()) {
-        //    $(this).remove();
-        //}
         $(".content").find("div").each(function () {
             if ($.trim($(this).text()) == ""){
                 $(this).remove();
@@ -91,7 +86,5 @@
         });
         $('head title', window.parent.document).text(documentTitle);
         $('#documentLink').val(documentLink);
-        
-        //console.log($('#documentLink').val(''));
-    });
+            });
 </script>
