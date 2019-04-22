@@ -415,14 +415,17 @@
     <Content Include="HtmlTemplates\InstructionsForActiveXOutlook.html" />
     <Content Include="HtmlTemplates\FormInstruction.html" />
     <Content Include="karma.conf.js" />
+    <Content Include="Scripts\addDocument.js" />
     <Content Include="Scripts\child.js" />
     <Content Include="Scripts\createprocess.js" />
     <Content Include="Scripts\formserver.js" />
+    <Content Include="Scripts\htmlRender.js" />
     <Content Include="Scripts\jasmine\boot.js" />
     <Content Include="Scripts\jasmine\console.js" />
     <Content Include="Scripts\jasmine\jasmine-html.js" />
     <Content Include="Scripts\jasmine\jasmine.js" />
     <Content Include="Scripts\journalNote.js" />
+    <Content Include="Scripts\journalNoteCreate.js" />
     <Content Include="Scripts\plugins\Albe_Timeline\data-albe-timeline.js" />
     <Content Include="Scripts\plugins\Albe_Timeline\jquery-albe-timeline.js" />
     <Content Include="Scripts\plugins\Albe_Timeline\jquery-albe-timeline.min.js" />
@@ -1173,6 +1176,8 @@
     <Content Include="Scripts\plugins\Timepicker\package.json" />
     <Content Include="Scripts\plugins\Timepicker\README.md" />
     <Content Include="Views\JournalNote\Index.cshtml" />
+    <Content Include="Views\PartialViews\PendingActivities.cshtml" />
+    <Content Include="Views\PartialViews\AddDocumentModal.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

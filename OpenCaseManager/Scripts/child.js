@@ -1,4 +1,6 @@
 ﻿$(document).ready(function () {
+    App.hideDocumentWebpart();
+
     var childId = App.getParameterByName("id", window.location.href);
 
     var query = {
@@ -45,7 +47,8 @@
 
     API.service('records', query)
         .done(function (response) {
-            showChildInstances(response);
+            var result = JSON.parse(response);
+            showChildInstances(result);
         })
         .fail(function (e) {
             reject(e);
@@ -54,13 +57,12 @@
 
 function displayChildName(response) {
     var result = JSON.parse(response);
-    var childName = result[0].Name;
+    var childName = (result[0] == undefined) ? 'Intet barn at finde' : result[0].Name;
     $("#childName").html("").append(childName);
     $('head title', window.parent.document).text(childName);
 }
 
-function showChildInstances(response) {
-    var result = JSON.parse(response);
+function showChildInstances(result) {
     var list = "";
     if (result.length === 0) {
         list = "<tr class='trStyleClass'><td colspan='100%'>" + translations.NoRecordFound + " </td></tr>";
@@ -80,7 +82,7 @@ function getChildInstanceHtml(item) {
 
     var returnHtml = "<tr class='trStyleClass " + open + "'>";
     returnHtml += (item.IsOpen) ? "<td class='statusColumn'>" + getStatus(item.NextDeadline) + "</td>" : "<td class='statusColumn'>Lukket</td>";
-    returnHtml += (item.Pending == 'true') ? "<td style='text-align:center;'><img src='../Content/Images/priorityicon.svg' height='16' width='16'/> " + numberOfPending + "</td>" : '<td></td>';
+    returnHtml += (item.Pending == 'true') ? "<td><img src='../Content/Images/priorityicon.svg' height='16' width='16'/> " + numberOfPending + "</td>" : '<td></td>';
     returnHtml += "<td><a href='" + instanceLink + "'>" + item.Title + "</a></td>";
     returnHtml += "<td>" + item.Process + "</td>";
     returnHtml += "<td>" + item.Name.substr(0, 1).toUpperCase() + item.Name.substr(1) + "</td>";
@@ -91,20 +93,6 @@ function getChildInstanceHtml(item) {
     }
     returnHtml += "</tr>";
     return returnHtml;
-}
-
-function getStatus(deadline) {
-    if (deadline != null) {
-        var now = new Date().getTime();
-        deadline = new Date(deadline).getTime();
-        if (now >= deadline) {
-            return "<span class='dot dotRed'></span>";
-        } else if (now + 604800000 >= deadline) {
-            return "<span class='dot dotYellow'></span>";
-        }
-    }
-    
-    return "<span class='dot dotGreen'></span>";
 }
 
 function setClosedInstancesToFadedAndMoveDown() {

@@ -1,4 +1,4 @@
-﻿var alreadyDrafted;
+var alreadyDrafted;
 var documentId;
 var documentText;
 var documentTitle;
@@ -100,10 +100,8 @@ $(function () {
 })
 
 
-
 function formatDate(date) {
     var value = new Date(date);
-    console.log(value);
     return value.getDate() + "/" + (value.getMonth()+1) + "/" + value.getFullYear();
 }
 

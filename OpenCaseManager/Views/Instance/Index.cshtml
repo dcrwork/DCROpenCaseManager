@@ -9,22 +9,23 @@
         justify-content: center;
     }
 
-    .nav-pills .a {
-        font-size; 30px;
-    }
-    .nav-pills > li.active > a, .nav-pills > a:hover {
-        text-decoration: underline;
-    }
+        .nav-pills a {
+            font-size: 30px;
+        }
+
+        .nav-pills > li.active > a, .nav-pills > a:hover {
+            text-decoration: underline;
+        }
 
     .nav > li > a {
         color: black;
         font-size: 20px;
     }
 
-    .nav > li > a:hover, .nav > li > a:focus {
-        text-decoration: underline;
-        background-color: white;
-    }
+        .nav > li > a:hover, .nav > li > a:focus {
+            text-decoration: underline;
+            background-color: white;
+        }
 
     .nav li + li:after {
         content: "";
@@ -53,7 +54,7 @@
         margin-left: 100px;
     }
 
-    .stamdataBox {       
+    .stamdataBox {
         margin-top: 20px;
     }
 
@@ -73,6 +74,13 @@
     .tab-pane {
         width: 100vh;
     }
+
+
+    #instanceTitle .dot {
+        margin-left: 20px;
+        height: 25px;
+        width: 25px;
+    }
 </style>
 
 @{
@@ -85,11 +93,15 @@
 
 <div class="wholeActionsPage">
     <div class="buttonsStamdataBox">
-        @Html.Partial("~/Views/PartialViews/AddButton.cshtml", new ViewDataDictionary { { "add-text", "Tilføj dokument" } })
+        @Html.Partial("~/Views/PartialViews/AddButton.cshtml", new ViewDataDictionary { { "add-text", "Tilføj dokument" }, { "onClick", "addDocument()" } })
         @Html.Partial("~/Views/PartialViews/AddButton.cshtml", new ViewDataDictionary { { "add-text", "Tilføj journalnotat" }, { "onClick", "CreateJournalNoteView()" } })
         <div class="stamdataBox">
             @Html.Partial("~/Views/PartialViews/Stamdata.cshtml")
         </div>
+    </div>
+
+    <div class="addDocumentModal">
+        @Html.Partial("~/Views/PartialViews/AddDocumentModal.cshtml")
     </div>
 
     <div class="activitiesTitleBox">
@@ -101,7 +113,7 @@
             </table>
         </div><!-- Row End -->
 
-        <div class="row tableDataRow"> 
+        <div class="row tableDataRow">
             <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
                 <li class="nav-item active">
                     <a class="nav-link" id="pills-activitiesb" data-toggle="tab" href="#pills-activities" role="tab" aria-controls="pills-activities" aria-selected="false">Aktiviteter</a>
@@ -120,7 +132,10 @@
             </div>
         </div>
     </div>
-</div><!-- Row Div End -->   
+</div><!-- Row Div End -->
+
+
+
 
 <script src="~/Scripts/instance.js"></script>
 
@@ -150,3 +165,5 @@
     });
 </script>
 <script src="~/Scripts/task.js"></script>
+<script src="~/Scripts/journalNoteCreate.js" type="text/javascript"></script>
+<script src="~/Scripts/addDocument.js" type="text/javascript"></script>

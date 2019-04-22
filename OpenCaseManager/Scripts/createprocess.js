@@ -5,8 +5,6 @@
         var processData = JSON.parse(await app.getProcessAsync());
         var processesSelector = $("#processes");
 
-        console.log(processData);
-
         processData.forEach(function (p) {
             processesSelector.append(app.getProcessHtml(p));
         });
@@ -15,7 +13,6 @@
 
         processesSelector.change(function () {
             var selectedGraphId = $(this).children("option:selected").val();
-            console.log("id", selectedGraphId);
             setRoles(selectedGraphId);
         });
     }

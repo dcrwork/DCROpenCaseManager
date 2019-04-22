@@ -184,7 +184,7 @@
         var query = {
             "type": "SELECT",
             "entity": "Instance",
-            "resultSet": ["Title", "CaseNoForeign", "CaseLink", "CurrentPhaseNo", "Description"],
+            "resultSet": ["Title", "CaseNoForeign", "CaseLink", "CurrentPhaseNo", "Description", "NextDeadline"],
             "filters": [
                 {
                     "column": "Id",
@@ -296,16 +296,6 @@
         }
     }
 
-    function setResponsible() {
-        API.service('services/getResponsible', {})
-            .done(function (response) {
-                window.App.user = response[0];
-            })
-            .fail(function (e) {
-                showExceptionErrorMessage(e);
-            });
-    }
-
     function getTranslations(locale) {
         var getUrl = window.location;
         var baseUrl = getUrl.protocol + "//" + getUrl.host + "/";
@@ -327,7 +317,6 @@
             .done(function (response) {
                 var roles = JSON.parse(response);
                 roles = skipAutoRoles(roles);
-                console.log(roles);
                 if (roles.length > 0) {
                     if (resolve != null) {
                         resolve(roles);
@@ -455,7 +444,7 @@
         var data = {
             "type": "SELECT",
             "entity": "[User]",
-            "resultSet": ["Name"],
+            "resultSet": ["Name", "Id"],
             "filters": [
                 {
                     "column": "Id",
@@ -471,6 +460,7 @@
                 var user = JSON.parse(response);
                 if (user.length > 0)
                     $('#userName').text(user[0].Name);
+                    window.App.user = user[0];
             })
             .fail(function (e) {
                 showExceptionErrorMessage(e)
@@ -664,6 +654,8 @@
             $('.caseLink').show();
             $('#entityLink').attr('href', item.CaseLink);
         }
+        
+        $('#instanceTitle').append(getStatus(item.NextDeadline))
     }
 
     function getProcessHtml(item) {
@@ -722,7 +714,6 @@
     }
 
     function renderUserRolesData(id, response, roles, template) {
-        console.log("data", response);
         var result = JSON.parse(response)
         var list = "";
         if (roles.length === 0)
@@ -1059,7 +1050,6 @@
         this.showInformationMessage = showInformationMessage;
         this.showTaskWithNotePopup = showTaskWithNotePopup;
         this.hideDocumentWebpart = hideDocumentWebpart;
-        this.setResponsible = setResponsible;
         this.getUserRoles = getUserRoles;
     };
 
@@ -1071,7 +1061,6 @@
 $(document).ready(function () {
     var promise = new Promise(function (resolve, reject) {
         App.responsible(resolve);
-        App.setResponsible();
     });
 
     promise.then(function () {
