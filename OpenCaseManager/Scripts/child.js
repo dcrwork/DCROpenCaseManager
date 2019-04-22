@@ -1,9 +1,5 @@
 ﻿$(document).ready(function () {
-
-    var promise = new Promise(function (resolve, reject) {
-        App.responsible(resolve);
-        App.hideDocumentWebpart();
-    });
+    App.hideDocumentWebpart();
 
     var childId = App.getParameterByName("id", window.location.href);
 
