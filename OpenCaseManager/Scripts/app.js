@@ -184,7 +184,7 @@
         var query = {
             "type": "SELECT",
             "entity": "Instance",
-            "resultSet": ["Title", "CaseNoForeign", "CaseLink", "CurrentPhaseNo", "Description"],
+            "resultSet": ["Title", "CaseNoForeign", "CaseLink", "CurrentPhaseNo", "Description", "NextDeadline"],
             "filters": [
                 {
                     "column": "Id",
@@ -663,6 +663,8 @@
             $('.caseLink').show();
             $('#entityLink').attr('href', item.CaseLink);
         }
+        
+        $('#instanceTitle').append(getStatus(item.NextDeadline))
     }
 
     function getProcessHtml(item) {
