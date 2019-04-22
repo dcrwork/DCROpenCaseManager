@@ -58,12 +58,10 @@ function CreateJournalNoteViewWithLink() {
     var id = $.urlParam("instanceId");
     var documentLink = $('#documentLink').val();
     documentText = $(".content").html();
-    console.log(documentLink);
     var query = getDocumentByLinkQuery(documentLink);
     API.service('records', query)
         .done(function (response) {
             var documentInfo = $.parseJSON(response)[0];
-            console.log(documentInfo);
             documentId = documentInfo.Id;
             var newWindow = window.open("/JournalNote/Create" + (id ? "?id=" + id : "") + (documentId ? "&documentId=" + documentId : ""), "", "width=800,height=600");
             newWindow.documentId = documentId;
@@ -75,10 +73,6 @@ function CreateJournalNoteViewWithLink() {
             var match = regex.exec(splitTime[1]);
             newWindow.documentEventTime = match[1];
             newWindow.documentEventDate = splitTime[0];
-            
-            //console.log(newWindow.documentId);
-            //console.log(newWindow.documentText);
-
         });
     //postwindow,dialog=yes,close=no,location=no,status=no,
 }
