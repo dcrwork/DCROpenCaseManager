@@ -73,6 +73,12 @@ input[type="submit"].btn-save-draft{
     padding-right: 5px;
 }
 
+.change-time-div{
+    display: flex;
+    margin-top: 10px;
+    align-content: center;
+}
+
 
 .cancel-journal-note-button {
     background-color: #fff;
@@ -92,7 +98,7 @@ input[type="submit"].btn-save-draft{
 
 .timepicker {
     border: 1px solid #d7e0e2;
-    margin: 15px 0 0 5px;
+    margin: 0 5px 0 5px;
     color: #9C1A5E;
     width: 50px;
     padding: 0 5px 0 5px;

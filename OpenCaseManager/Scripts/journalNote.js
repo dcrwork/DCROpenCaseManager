@@ -127,6 +127,36 @@ function closeJournalNotatWindow() {
     window.close()
 }
 
+function addMinutsToTime(currentTime, minutsToAdd) {
+    var timeValues = currentTime.split(':');
+    var h = parseInt(timeValues[0]);
+    var m = parseInt(timeValues[1]) + minutsToAdd;
+
+    if (m < 0) {
+        h = h - 1
+        m = m + 60;
+    }
+
+    var h = (h + Math.floor(m / 60)) % 24; 
+    var m = m % 60; 
+
+    var m = m < 10 ? '0' + m : m;
+
+    return h + ':' + m;
+}
+
+function incrementTime() {
+    var currentTime = $('input.timepicker').val()
+    var newTime = addMinutsToTime(currentTime, 15);
+    $('input.timepicker').val(newTime)
+}
+
+function decrementTime() {
+    var currentTime = $('input.timepicker').val()
+    var newTime = addMinutsToTime(currentTime, -15);
+    $('input.timepicker').val(newTime);
+}
+
 $(document).ready(function () {
     var now = new Date();
     var latestQuarter = now.getMinutes() - (now.getMinutes() % 15);
