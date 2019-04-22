@@ -19,7 +19,7 @@
         max-width: 100vw;
         flex-grow: 1;
         margin-left: 6vw;
-        margin-right: 2%;
+        margin-right: 8%;
     }
 
     .childrenHeader {
@@ -39,27 +39,9 @@
         font-size: xx-large;
         padding: 0px 8px 8px 0px;
         font-weight: bold;
-        margin-top: 0px;
-        margin-bottom: 12.5vh;
+        margin-top: 0.3%;
+        margin-bottom: 3.5%;
     }
-    @@media screen and (max-width: 2160px) {
-      .headline {
-        margin-bottom: 4.3vh;
-      }
-    }
-
-    @@media screen and (max-width: 1400px) {
-      .headline {
-        margin-bottom: 3.2vh;
-      }
-    }
-
-    @@media screen and (max-width: 1080px) {
-      .headline {
-        margin-bottom: 12.5vh;
-      }
-    }
-
 </style>
 @{
     ViewBag.Title = "Home";
@@ -83,11 +65,11 @@
             <table class="table tasksTable table-striped">
                 <thead class="childrenHeader">
                     <tr>
-                        <th width="">Status</th>
-                        <th width=""> Navn</th>
-                        <th width="">CPR-nr</th>
-                        <th width="">Ansvarlig</th>
-                        <th width="">Næste Deadline</th>
+                        <th width="6%">Status</th>
+                        <th width="8%">Navn</th>
+                        <th width="8%">CPR-nr</th>
+                        <th width="8%">Ansvarlig</th>
+                        <th width="12%">Næste Deadline</th>
                     </tr>
                 </thead>
                 <tbody id="allMyChildren"></tbody>
@@ -95,7 +77,6 @@
         </div>
     </div>
 </div>
-
 
 <div class="modal fade" id="add-child-modal" role="dialog">
     <div class="modal-dialog">

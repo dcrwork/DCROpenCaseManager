@@ -107,7 +107,7 @@ function getChildInstanceHtml(item) {
     var time = addZero(objDate.getHours()) + ":" + addZero(objDate.getMinutes());
     console.log(date)
     var returnHtml = "<tr class='trStyleClass'>";
-    returnHtml += (item.NextDeadline != null) ? "<td>" + getStatus(item.NextDeadline) + "</td>" : "<td>Ingen status</td>";
+    returnHtml += (item.NextDeadline != null) ? "<td>" + getStatus(item.NextDeadline) + "</td>" : "<td><span class='dot dotGrey' title='Ingen status'></span></td>";
     returnHtml += "<td><a href='" + childLink + "'>" + item.ChildName + "</a></td>";
     returnHtml += "<td>123456-7890</td>";
     returnHtml += "<td>" + item.Responsible + "</td>";
@@ -126,7 +126,7 @@ function getStatus(deadline) {
         } else if (now + 604800000 >= deadline) {
             return "<span class='dot dotYellow'></span>";
         }
-    }
+    } 
     
     return "<span class='dot dotGreen'></span>";
 }
