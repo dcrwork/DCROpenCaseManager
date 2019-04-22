@@ -80,7 +80,6 @@ $(document).ready(function () {
         
         $('#myTimeline').albeTimeline(normData);
     }
-
     getData();
 });
 

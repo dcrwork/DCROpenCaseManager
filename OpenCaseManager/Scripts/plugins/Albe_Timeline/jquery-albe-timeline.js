@@ -6,50 +6,35 @@
  * 2017, Albertino Júnior, http://albertino.eti.br
  */
 
-var monthMenu = $('<select>').attr('id', 'timeline-month-selector');
-updateTimeline(monthMenu);
-
     $(document).ready(function () {
+        var monthMenu = $('<select>').attr('id', 'timeline-month-selector');
 
         var months = ['Januar', 'Februar', 'Marts', 'April', 'Maj', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'December'];
         var defaultOption = $('<option>').attr('value', 12).append('');
         monthMenu.append(defaultOption);
+        updateTimeline(monthMenu);
 
-        $.ajax(updateTimeline(monthMenu)).done(function () {
-            var year = getYearId();
-            updateMonthMenu(year, monthMenu, months);
-        });
-        //creates timeline
-        //updateTimeline(monthMenu);
-        //function () {
-
-        // });
-
-        //var defaultYearid = getYearId();
-        //console.log("default year " + defaultYearid);
-        //updateMonthMenu(2019, monthMenu, months);
-
+        var year = getYearId();
+        updateMonthMenu(year, monthMenu, months);
 
         $(document).on('change', '#timeline-menu', function () {
             monthMenu.empty();
             monthMenu.append(defaultOption);
 
-            var year = $("#timeline-menu").children(":selected").attr("value");
+            var year = getYearId();
             updateMonthMenu(year, monthMenu, months);
         });
     });
 
 function updateMonthMenu(year, monthMenu, months) {
     var monthsElements = $('div[id^="y' + year + '"]');
-    console.log("months number" + (monthsElements.length - 1));
 
     monthsElements.each(function (index) {
-        console.log("hej");
         if (index === 0) { return true; }
         var monthSplit = (monthsElements[index].id).split("m");
         var monthIndex = parseInt(monthSplit[1]);
 
-        var monthOption = $('<option>').attr('value', index).append(months[monthIndex]);
+        var monthOption = $('<option>').attr('value', monthIndex).append(months[monthIndex]);
         monthMenu.append(monthOption);
     });
 }
@@ -62,6 +47,7 @@ function getMonthId() {
 
 function getYearId() {
     var id = $("#timeline-menu").children(":selected").attr("value");
+    console.log(id);
     return id;
 }
 function goToTimeframe() {
@@ -86,7 +72,7 @@ function goToTimeframe() {
 }
 
 
-function updateTimeline(monthMenu, language) {
+function updateTimeline(monthMenu) {
     $.fn.albeTimeline = function (json, options) {
         var _this = this;
         _this.html('');
@@ -312,6 +298,5 @@ function updateTimeline(monthMenu, language) {
         n = n + '';
         return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
     };
-   
 }
 

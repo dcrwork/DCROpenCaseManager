@@ -20,3 +20,7 @@
     var result = await API.service('records', query);
     return JSON.parse( result )
 }
+
+$('#pills-timeline-tab').on('click', function () {
+    $('#timeline-menu').trigger('change');
+})
