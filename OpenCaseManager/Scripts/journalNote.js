@@ -84,14 +84,20 @@ function CreateJournalNoteViewWithLink() {
 }
 
 
-$("#input-journal-title").val(documentTitle);
-$(".ui-datepicker").val(documentEventDate);
-$(".timepicker").val(documentEventTime);
-$('#input-journal-note').trumbowyg();
-$('#input-journal-note').trumbowyg({
-    tagsToRemove: ['Redo']
-});
-$('#input-journal-note').trumbowyg('html', documentText);
+$(function () {
+    $("#input-journal-title").val(documentTitle);
+    $(".ui-datepicker").val(documentEventDate);
+    $(".timepicker").val(documentEventTime);
+    var inputJournalNote = $('#input-journal-note');
+    if (inputJournalNote != null) {
+
+        inputJournalNote.trumbowyg();
+        inputJournalNote.trumbowyg({
+            tagsToRemove: ['Redo']
+        });
+        inputJournalNote.trumbowyg('html', documentText);
+    }
+})
 
 
 
