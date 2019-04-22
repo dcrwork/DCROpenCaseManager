@@ -7,7 +7,17 @@ $(document).ready(function () {
     dropArea = document.getElementById("drop-area");
     uploadFiles = new Array();
     initializeDragnDrop();
-    getDocuments();
+    
+    if (('' + window.location).includes("child")) {
+        var childId = App.getParameterByName("id", window.location.href);
+        var childType = "Instance";
+
+        getDocuments(childType, childId);
+    } else if ((('' + window.location).includes("Instance"))) { 
+        var instanceId = App.getParameterByName("id", window.location.href);
+        var instanceType = "Instance";
+        getDocuments(instanceType, instanceId);
+    }
 
     // To create a template funtion
     $('body').on('click', 'div table.tasksTable tbody td span[name="deleteDoc"]', function () {
@@ -239,7 +249,8 @@ function uploadFileDocuments(file, docId) {
     }
 }
 
-function getDocuments() {
+
+function getDocuments(documentType, documentTypeId) {
     var query = {
         "type": "SELECT",
         "entity": "Document",
@@ -254,12 +265,19 @@ function getDocuments() {
             {
                 "column": "Type",
                 "operator": "equal",
-                "value": webPortalType+"Document",
+                "value": documentType+"Document",
                 "valueType": "string",
+                "logicalOperator": "and"
+            },
+            {
+                "column": "InstanceId",
+                "operator": "equal",
+                "value": documentTypeId,
+                "valueType": "int",
                 "logicalOperator": "and"
             }
         ],
-        "resultSet": ["Id", "Title", "Link", "IsActive"],
+        "resultSet": ["Id", "Title", "Link", "Responsible", "UploadDate", "IsActive", "Type", "InstanceId"],
         "order": [{ "column": "Title", "descending": false }]
     }
 
