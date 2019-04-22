@@ -57,7 +57,7 @@ function CreateJournalNoteView() {
 function CreateJournalNoteViewWithLink() {
     var id = $.urlParam("instanceId");
     var documentLink = $('#documentLink').val();
-    documentText = $("#documentContent").html();
+    documentText = $(".content").html();
     console.log(documentLink);
     var query = getDocumentByLinkQuery(documentLink);
     API.service('records', query)
@@ -159,7 +159,7 @@ function changedate(inputId, lableId) {
 
 $(document).on('click', '.add-journal-note-button', function () {
     var documentName = $('#input-journal-title').val();
-    var journalText = $('#input-journal-note').val();
+    var journalText = "<div>"+$('#input-journal-note').val()+"</div>";
 
     // $('#dateLabel').textContent
     if (!alreadyDrafted) {
@@ -236,7 +236,7 @@ $(document).ready(function () {
 $(document).on('click', '.change-journal-note-button', function (event) {
     event.preventDefault();
     var documentName = $('#input-journal-title').val();
-    var journalText = $('#input-journal-note').val();
+    var journalText = "<div>" + $('#input-journal-note').val() + "</div>";
 
     // $('#dateLabel').textContent
     if (!alreadyDrafted)

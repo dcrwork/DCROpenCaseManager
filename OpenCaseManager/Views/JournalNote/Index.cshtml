@@ -36,7 +36,7 @@
     else
     {
         // File does not exist.
-        errorMessage = "The file does not exist.";
+        errorMessage = "The file does not exist. This might be due to it being recently changed.";
     }
 }
 <style>
@@ -54,6 +54,7 @@
 
 
 <div class="container">
+
     @errorMessage
     @if (errorMessage == "")
     {
@@ -63,7 +64,7 @@
             <div class="content">
                 @foreach (string dataLine in Data)
                 {
-                    <div id="documentContent">
+                    <div class="documentContent">
                         @Html.Raw(@dataLine)
                     </div>
                 }
@@ -80,9 +81,17 @@
 <script type="text/javascript">
     $(document).ready(function () {
         var documentLink = App.getParameterByName("documentLink", window.location.href);
-        console.log($("#documentContent").html());
+        //if ($("div").empty()) {
+        //    $(this).remove();
+        //}
+        $(".content").find("div").each(function () {
+            if ($.trim($(this).text()) == ""){
+                $(this).remove();
+            }
+        });
         $('head title', window.parent.document).text(documentTitle);
         $('#documentLink').val(documentLink);
+        
         //console.log($('#documentLink').val(''));
     });
 </script>
