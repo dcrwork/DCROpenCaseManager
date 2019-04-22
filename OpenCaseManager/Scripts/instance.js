@@ -2,7 +2,6 @@
 $(document).ready(function () {
 
     var promise = new Promise(function (resolve, reject) {
-        App.responsible(resolve);
         App.hideDocumentWebpart();
     });
 
