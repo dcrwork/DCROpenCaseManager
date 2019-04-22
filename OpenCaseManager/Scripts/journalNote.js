@@ -16,9 +16,15 @@ $(function () {
     }
 })
 
-function formatDate(date) {
-    var value = new Date(date);
-    return value.getDate() + "/" + ((value.getMonth() + 1) < 10 ? "0" + (value.getMonth() + 1) : (value.getMonth() + 1)) + "/" + value.getFullYear();
+function formatDate(_date) {
+    var value = new Date(_date);
+
+    var day = value.getDate() < 10 ? '0' + value.getDate() : value.getDate();
+    var month = value.getMonth + 1;
+        month = value.getMonth() < 10 ? "0" + value.getMonth() : value.getMonth();
+    var year = value.getFullYear();
+
+    return day + "/" + month + "/" + year;
 }
 
 $(function () {
