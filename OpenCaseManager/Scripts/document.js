@@ -8,12 +8,12 @@ $(document).ready(function () {
     uploadFiles = new Array();
     initializeDragnDrop();
     
-    if (('' + window.location).includes("child")) {
+    if (window.location.pathname == "/child") {
         var childId = App.getParameterByName("id", window.location.href);
         var childType = "Instance";
 
         getDocuments(childType, childId);
-    } else if ((('' + window.location).includes("Instance"))) { 
+    } else if (window.location.pathname == "/Instance") { 
         var instanceId = App.getParameterByName("id", window.location.href);
         var instanceType = "Instance";
         getDocuments(instanceType, instanceId);
