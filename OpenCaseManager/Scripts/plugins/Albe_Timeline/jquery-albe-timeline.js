@@ -5,15 +5,72 @@
  *
  * 2017, Albertino Júnior, http://albertino.eti.br
  */
-(function ($) {
-    var counter = 0;
-    updateTimeline();
-})(jQuery);
+$(document).ready(function () {
+    var monthMenu = $('<select>').attr('id', 'timeline-month-selector');
+    var language;
+    //creates timeline
+    updateTimeline(monthMenu, language);
+
+    var defaultOption = $('<option>').attr('value', 12).append('');
+    monthMenu.append(defaultOption);
+    console.log("hej1");
+    $(document).on('change', '#timeline-menu', function () {
+        console.log("hej");
+        var option = $('<option>').attr('value', 1).append("hej");
+        monthMenu.append(option);
+        var year = $("#timeline-menu").children(":selected").attr("value");
+        updateMonthMenu(year, monthMenu, language);
+    });
+
+});
+
+function updateMonthMenu(year, monthMenu, language) {
+    var months = $('div[id^="y' + year + '"]');
+    console.log("months number" + (months.length - 1));
+    months.each(function (index) {
+        //console.log(index);
+        if (index === 0) { return true; }
+        console.log(index);
+        console.log("month" + months[index].id);
+        //var monthOption = $('<option>').attr('value', index).append(language.months[month]);
+    });
+     //var monthOption = $('<option>').attr('value', index).append(language.months[month]);
+     //monthMenu.append(monthOption);
+}
+
+function getMonthId() {
+    var id = $("#timeline-month-selector").children(":selected").attr("value");
+    console.log("month selected: " + id);
+    return id;
+}
+
+function getYearId() {
+    var id = $("#timeline-menu").children(":selected").attr("value");
+    return id;
+}
+function goToTimeframe() {
+    var monthId = getMonthId();
+    var yearId = getYearId();
+    var id;
+
+    if (monthId == 12) {
+        id = '#y' + yearId;
+    } else {
+        id = '#a' + yearId + '-' + monthId + '-' + '1';
+    }
+
+    console.log('id:' + id);
+    $('html, body').animate(
+        {
+            scrollTop: $(id).offset().top - 50,
+        },
+        500,
+        'linear'
+    )
+}
 
 
-
-
-function updateTimeline() {
+function updateTimeline(monthMenu, language) {
     $.fn.albeTimeline = function (json, options) {
         var _this = this;
         _this.html('');
@@ -21,10 +78,10 @@ function updateTimeline() {
         // Mescla opções do usuário com o padrão
         var settings = $.extend({}, $.fn.albeTimeline.defaults, options);
 
-        var idioma = ($.fn.albeTimeline.languages.hasOwnProperty(settings.language)) ?
+        language = ($.fn.albeTimeline.languages.hasOwnProperty(settings.language)) ?
             $.fn.albeTimeline.languages[settings.language] : { // da-DK
                 days: ['Mandag', 'Tirsdag', 'Onsdag', 'Torsdag', 'Fredag', 'Lørdag', 'Søndag'],
-                months: ['Januar', 'Februar', 'Marts', 'April', 'Maj', 'Juni', 'Juli', 'August', 'September', 'October', 'November', 'December'],
+                months: ['Januar', 'Februar', 'Marts', 'April', 'Maj', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'December'],
                 shortMonths: ['Jan', 'Feb', 'Mar', 'Apr', 'Maj', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
                 separator: 'den',
                 msgEmptyContent: 'Der var ikke noget.',
@@ -37,7 +94,7 @@ function updateTimeline() {
 
         // Exibe mensagem padão
         if ($.isEmptyObject(json)) {
-            console.warn(idioma.msgEmptyContent);
+            console.warn(language.msgEmptyContent);
             return;
         }
 
@@ -47,15 +104,16 @@ function updateTimeline() {
         });
 
         var yearMenu = $('<select>').attr('id', 'timeline-menu');
-        var monthMenu = $('<select>').attr('id', 'timeline-month-selector');
+
         var findTimeFrameButton = $('<button>').attr('id', 'find-timeframe-button').text('Find');
         findTimeFrameButton.attr('onclick', 'goToTimeframe()');
-       
 
-        $.each(idioma.months, function (index, element) {
+        
+       
+       /* $.each(idioma.months, function (index, element) {
             var option = $('<option>').attr('value', index).append(element);
             monthMenu.append(option);
-        });
+        });*/
 
         var eTimeline = $('<section>').attr('id', 'timeline');
 
@@ -73,16 +131,14 @@ function updateTimeline() {
                 createGroupYear = $('<div>').attr('id', ('y' + year)).addClass('group' + year).text(year);
 
                 $(eTimeline).append(createGroupYear);
-                
 
                 var anchorYear = $('<a>').attr('href', ('#y' + year)).text(year);
                 var yearOption = $('<option>').attr('value', year).append(anchorYear);
                 yearMenu.append(yearOption);
             }
-            
-            if (createGroupMonth.length === 0) {
-                createGroupMonth = $('<div>').attr('id', ('y' + year + '-m' + month)).addClass('group' + year + '-' + month).text(idioma.months[month]);
 
+            if (createGroupMonth.length === 0) {
+                createGroupMonth = $('<div>').attr('id', ('y' + year + '-m' + month)).addClass('group' + year + '-' + month).text(language.months[month]);
                 $(eTimeline).append(createGroupMonth);
             }
 
@@ -91,7 +147,7 @@ function updateTimeline() {
                 /****************************************SLOT <article>****************************************/
                 var leftWrapper = $('<div>').addClass('leftWrapper');
                 var badge = $('<div>').addClass('badge');
-                badge.text(fnDateFormat(element.time, settings.formatDate, idioma));
+                badge.text(fnDateFormat(element.time, settings.formatDate, language));
 
                 var responsible = $('<p>').addClass('timelineResponsible');
                 responsible.text(element.responsible || '');
@@ -144,23 +200,14 @@ function updateTimeline() {
 
                 // Adiciona o item ao respectivo agrupador.
                 var yearSiblings = createGroupYear.siblings('article[id^="a' + year + '"]');
-                console.log("year:" + yearSiblings.length);
                 var monthSiblings = createGroupMonth.siblings('article[id^="a' + year + '-' + month + '"]');
-                console.log("month: " + monthSiblings.length);
 
-                var slot = $('<article id="a' + year + '-' + month + '-' + (yearSiblings.length + 1) + '">').append(ePanel);
-                   
-                if (yearSiblings.length > 0) {
-                    slot.insertAfter(createGroupMonth.last());
+                var slot = $('<article id="a' + year + '-' + month + '-' + (monthSiblings.length + 1) + '">').append(ePanel);
 
-                    /*if (monthSiblings.length > 0) {
-                        slot.insertAfter(monthSiblings.last());
-                    } else {
-                        slot.insertAfter(createGroupMonth);
-                    }*/
-                }   
+                if (monthSiblings.length > 0) {
+                    slot.insertAfter(monthSiblings.last());
+                }
                 else
-                    //slot.insertAfter(createGroupMonth);
                     slot.insertAfter(createGroupMonth);
                 /****************************************FIM - SLOT <article> ****************************************/
             }
@@ -258,28 +305,3 @@ function updateTimeline() {
     };
 }
 
-function getMonthId() {
-    var id = $("#timeline-month-selector").children(":selected").attr("value");
-    return id;
-}
-
-function getYearId() {
-    var id = $("#timeline-menu").children(":selected").attr("value");
-    return id;
-}
-
-function goToTimeframe() {
-    var monthId = getMonthId();
-    var yearId = getYearId();
-
-    var id = '#a' + yearId + '-' + monthId + '-' + '1';
-
-    console.log('id:' + id);
-    $('html, body').animate(
-        {
-            scrollTop: $(id).offset().top,
-        },
-        500,
-        'linear'
-    )
-}
