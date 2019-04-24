@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>@ViewBag.Title</title>
     @Styles.Render("~/Content/css")
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
     <script src="~/Scripts/htmlRender.js"></script>
     <link href="~/Content/FontAwsome/css/all.min.css" rel="stylesheet" />
 </head>
@@ -28,16 +27,16 @@
                         <li><a href="~/"><span data-locale data-apply="text" data-key="">Mine Børn</span></a></li>
                     </ul>
                 </div>
-            <div class="page-header clearfix">
-                <div class="pull-left">
-                    <a href="../">
-                    </a>
-                </div>
-                <div id="search" class="search-field col-md-6 pull-right collapse">
-                    <input  type="text" placeholder="Search.." data-locale data-apply="attribute" data-attribute="placeholder" data-key="Search" id="searchCase">
+                <div class="page-header clearfix">
+                    <div class="pull-left">
+                        <a href="../">
+                        </a>
+                    </div>
+                    <div id="search" class="search-field col-md-6 pull-right collapse">
+                        <input type="text" placeholder="Search.." data-locale data-apply="attribute" data-attribute="placeholder" data-key="Search" id="searchCase">
+                    </div>
                 </div>
             </div>
-</div>
         </header>
         <main>
             <div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" id="confirmModal">
@@ -58,41 +57,41 @@
                         </div>
                     </div>
                 </div>
-                </div>
-                <div style="position: fixed;top: 0;z-index: 10000000;width: 40%;text-align: center;left: 27%;" class="custom-container">
-                </div>
-                <!-- Modal -->
-                <div class="modal fade" id="addDocumentDialog" role="dialog">
-                    <div class="modal-dialog">
-                        <!-- Modal content-->
-                        <div class="modal-content">
-                            <!-- Modal Header -->
-                            <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                <h4 class="modal-title instanceModalHeading"><span data-locale data-apply="text" data-key="AddDocument">Add Document</span></h4>
-                            </div>
-                            <div class="modal-body">
-                                <div class="form-group">
-                                    <label><span data-locale data-apply="text" data-key="Document">Document</span></label>
-                                    <div id="drop-area-front-page" class="drop-area">
-                                        <form class="my-form">
-                                            <input class="fileElem" type="file" id="fileElemTemp">
-                                            <label class="button" for="fileElemTemp" data-locale data-apply="text" data-key="DragorSelect">Drag a file or Select</label><br />
-                                            <label class="button" for="" id="selectedFileNameTemp" style="font-weight: normal !important;font-style: italic;color: brown;"></label>
-                                        </form>
-                                    </div>
+            </div>
+            <div style="position: fixed;top: 0;z-index: 10000000;width: 40%;text-align: center;left: 27%;" class="custom-container">
+            </div>
+            <!-- Modal -->
+            <div class="modal fade" id="addDocumentDialog" role="dialog">
+                <div class="modal-dialog">
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <!-- Modal Header -->
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title instanceModalHeading"><span data-locale data-apply="text" data-key="AddDocument">Add Document</span></h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label><span data-locale data-apply="text" data-key="Document">Document</span></label>
+                                <div id="drop-area-front-page" class="drop-area">
+                                    <form class="my-form">
+                                        <input class="fileElem" type="file" id="fileElemTemp">
+                                        <label class="button" for="fileElemTemp" data-locale data-apply="text" data-key="DragorSelect">Drag a file or Select</label><br />
+                                        <label class="button" for="" id="selectedFileNameTemp" style="font-weight: normal !important;font-style: italic;color: brown;"></label>
+                                    </form>
                                 </div>
                             </div>
-                            <!-- modal Footer -->
-                            <div class="modal-footer">
-                                <button type="button" id="addDocumentTemp" class="instanceAdd"><span data-locale data-apply="text" data-key="Add">Add</span></button>
-                            </div>
+                        </div>
+                        <!-- modal Footer -->
+                        <div class="modal-footer">
+                            <button type="button" id="addDocumentTemp" class="instanceAdd"><span data-locale data-apply="text" data-key="Add">Add</span></button>
                         </div>
                     </div>
                 </div>
-                <!-- Modal End-->
+            </div>
+            <!-- Modal End-->
 
-                @RenderBody()
+            @RenderBody()
         </main>
         <footer>
             <div class="footer">
