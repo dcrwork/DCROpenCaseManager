@@ -4,6 +4,8 @@ var documentText;
 var documentTitle;
 var documentEventDate;
 var documentEventTime;
+var timer = $.now()-1000;
+var numberOfChanges = 0;
 
 $.urlParam = function (name) {
     var results = new RegExp('[\?&]' + name + '=([^&#]*)')
@@ -51,7 +53,6 @@ function CreateJournalNoteView() {
     var id = $.urlParam("id");
     var newWindow = window.open("/JournalNote/Create" + (id ? "?id=" + id : ""), "", "width=800,height=600");
     newWindow.alreadyDrafted = false;
-    //postwindow,dialog=yes,close=no,location=no,status=no,
 }
 
 function CreateJournalNoteViewWithLink() {
@@ -76,11 +77,8 @@ function CreateJournalNoteViewWithLink() {
             newWindow.documentEventTime = match[1];
             newWindow.documentEventDate = splitTime[0];
             
-            //console.log(newWindow.documentId);
-            //console.log(newWindow.documentText);
 
         });
-    //postwindow,dialog=yes,close=no,location=no,status=no,
 }
 
 
@@ -88,6 +86,10 @@ $(function () {
     $("#input-journal-title").val(documentTitle);
     $(".ui-datepicker").val(documentEventDate);
     $(".timepicker").val(documentEventTime);
+
+    $('#input-journal-title').on('input', function () {
+        console.log(numberOfChanges++);
+    });
     var inputJournalNote = $('#input-journal-note');
     if (inputJournalNote != null) {
 
@@ -96,9 +98,24 @@ $(function () {
             tagsToRemove: ['Redo']
         });
         inputJournalNote.trumbowyg('html', documentText);
+        inputJournalNote.trumbowyg().on('tbwchange', function () {
+            numberOfChanges++;
+        });
     }
 })
 
+function automaticSaveDraft() {
+    if ($.now() - timer > 2000 && numberOfChanges >= 10) {
+        saveFile();
+        timer = $.now();
+        numberOfChanges = 0;
+    }
+    else if ($.now() - timer > 10000 && numberOfChanges > 0) {
+        saveFile();
+        timer = $.now();
+        numberOfChanges = 0;
+    }
+}
 
 
 function formatDate(date) {
@@ -163,17 +180,8 @@ function changedate(inputId, lableId) {
     applyTo.textContent = value;
 }
 
-$(document).on('click', '.add-journal-note-button', function () {
-    var documentName = $('#input-journal-title').val();
-    var journalText = "<div>"+$('#input-journal-note').val()+"</div>";
-
-    // $('#dateLabel').textContent
-    if (!alreadyDrafted) {
-        submitFiles(documentName, journalText);  //It is only for testing right now that it will set it as true, in the final version it should always set it as false, and then the program will set it as true after 24 hours
-    }
-    else {
-        updateFiles(documentName, journalText);
-    }
+$(document).on('click', '.add-journal-note-button', function (event) {
+    saveFile();
     window.close();
 });
 
@@ -190,6 +198,7 @@ function submitFiles(fileName, textContents) {
 }
 
 function uploadFile(file, instanceId, fileName) {
+    if (fileName == "") { fileName = "NA" };
     console.log(file, instanceId, fileName)
     var eventDateTime = $(".ui-datepicker").val() + " " + $(".timepicker").val();
     console.log(eventDateTime);
@@ -242,23 +251,25 @@ $(document).ready(function () {
 
 $(document).on('click', '.change-journal-note-button', function (event) {
     event.preventDefault();
+    saveFile(event);
+});
+
+function saveFile() {
     var documentName = $('#input-journal-title').val();
     var journalText = "<div>" + $('#input-journal-note').val() + "</div>";
-
+    console.log($('#input-journal-note').val());
     // $('#dateLabel').textContent
-    if (!alreadyDrafted)
-    {
+    if (!alreadyDrafted) {
         submitFiles(documentName, journalText);
         alreadyDrafted = true;
     }
-    else
-    {
+    else {
         updateFiles(documentName, journalText);
     }
-
-});
+}
 
 function updateFiles(fileName, textContents) {
+    if (fileName == "") { fileName = "NA" };
     var instanceId = $.urlParam("id");
     var file = makeTextFile(textContents);
 
@@ -289,4 +300,7 @@ function updateFiles(fileName, textContents) {
     }
 }
 
+window.setInterval(function () {
+    automaticSaveDraft();
+}, 1000);
 
