@@ -26,12 +26,13 @@ namespace OpenCaseManager.Managers
             return filePath;
         }
 
-        public string AddDocument(string instanceId, string fileType, string givenFileName, string fileName, string eventId, DateTime eventDateTime, IManager manager, IDataModelManager dataModelManager)
+        public Tuple<string, string> AddDocument(string instanceId, string fileType, string givenFileName, string fileName, string eventId, DateTime eventDateTime, IManager manager, IDataModelManager dataModelManager)
         {
             CreateFileLink(fileName);
             string filePath = AddDocumentChecks(instanceId, fileType, givenFileName, fileName, eventId);
-            Common.AddDocument(givenFileName, fileType, fileLink, instanceId, eventDateTime, manager, dataModelManager);
-            return filePath;
+            string documentId = Common.AddDocument(givenFileName, fileType, fileLink, instanceId, eventDateTime, manager, dataModelManager);
+            Tuple<string, string> returnTuple = new Tuple<string, string>(filePath, documentId);
+            return returnTuple;
         }
 
         public void CreateFileLink(string fileName)
