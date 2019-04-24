@@ -12,31 +12,7 @@
         var year = getYearId();
         updateMonthMenu(year, monthMenu, months);
 
-        // creating checkboxes for filtering
-        var activityLabel = $('<label>').text('Aktivitet');
-        var activityCheckbox = $('<input type="checkbox">').attr('id', 'activityCheckbox').attr('value', 'activity');
-        var activitySpan = $('<span>').attr('id', 'activitySpan');
-        activityLabel.append(activityCheckbox);
-        activityLabel.append(activitySpan);
-
-        var journalnoteLabel = $('<label>').text('Journalnotat');
-        var journalnoteCheckbox = $('<input type="checkbox">').attr('id', 'journalnoteCheckbox').attr('value', 'journalnote');
-        var journalnoteSpan = $('<span>').attr('id', 'journalnoteSpan');
-        journalnoteLabel.append(journalnoteCheckbox);
-        journalnoteLabel.append(journalnoteSpan);
-
-        var documentLabel = $('<label>').text('Dokument');
-        var documentCheckbox = $('<input type="checkbox">').attr('id', 'documentCheckbox').attr('value', 'document');
-        var documentSpan = $('<span>').attr('id', 'documentSpan');
-        documentLabel.append(documentCheckbox);
-        documentLabel.append(documentSpan);
-
-        var filterTypeWrapper = $('<div>').addClass('filterTypeWrapper');
-        filterTypeWrapper.append(activityLabel);
-        filterTypeWrapper.append(journalnoteLabel);
-        filterTypeWrapper.append(documentLabel);
-
-        updateTimeline(monthMenu, filterTypeWrapper);
+        updateTimeline(monthMenu);
 
         // updates the month dropdown menu according to the year selected
         $(document).on('change', '#timeline-menu', function () {
@@ -99,7 +75,7 @@ function goToTimeframe() {
 }
 
 // creates the timeline
-function updateTimeline(monthMenu, filterTypeWrapper) {
+function updateTimeline(monthMenu) {
 
     $.fn.albeTimeline = function (json, options) {
         var _this = this;
@@ -237,19 +213,9 @@ function updateTimeline(monthMenu, filterTypeWrapper) {
                 $(this).addClass('animated ' + settings.effect);
         }); 
 
-        // creates and appends the filter button and time filtering
-        var filterButton = $('<div>').attr('id', "filterButton");
-        var plusIcon = $('<span>').addClass('glyphicon').addClass('glyphicon-plus');
-        var filterExpand = $('<span>').text('Filtrer');
-
         var filterTimeWrapper = $('<div>').addClass('filterTimeWrapper').append(yearMenu);
         filterTimeWrapper.append(monthMenu);
         filterTimeWrapper.append(findTimeFrameButton);        
-
-        filterButton.append(plusIcon);
-        filterButton.append(filterExpand);
-        filterButton.appendTo(_this);
-        filterTypeWrapper.appendTo(_this);
 
         filterTimeWrapper.appendTo(_this);
 

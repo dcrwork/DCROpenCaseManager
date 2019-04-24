@@ -11,6 +11,21 @@
 <div class="timeline">
 
     <!--timeline-->
+    <div id="filterButton"><span class="glyphicon glyphicon-plus"></span><span>Filtrer</span></div>
+    <div class="filterTypeWrapper" style="display: none;">
+        <label>Aktivitet
+            <input type="checkbox" id="activityCheckbox" value="activity">
+            <span id="activitySpan"></span>
+        </label>
+        <label>Journalnotat
+            <input type="checkbox" id="journalnoteCheckbox" value="journalnote">
+            <span id="journalnoteSpan"></span>
+        </label>
+        <label>Dokument
+            <input type="checkbox" id="documentCheckbox" value="document">
+            <span id="documentSpan"></span>
+        </label>
+    </div>
     <div id="myTimeline" class="timeline-container">
     </div>
 
