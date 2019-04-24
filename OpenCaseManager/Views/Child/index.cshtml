@@ -49,13 +49,17 @@
         display: flex;
         flex-direction: row;
         justify-content: space-between;
-        margin: 0px 60px;
+        margin: 40px 60px 0px 60px;
     }
 
     .childInstancesHeader {
         background: #9C1A5E;
         color: #fff;
         font-weight: lighter;
+    }
+
+    .childInstancesBox {
+        padding-top: 10px;
     }
 
     .pendingActivitiesBox {
@@ -73,10 +77,18 @@
 </div>
 
 <div class="wholeChildPage">
-
     <div>
-        <div class="stamdataBox">
-            @Html.Partial("~/Views/PartialViews/Stamdata.cshtml")
+        <div class="buttonsBox">
+            <div data-toggle="modal" data-target="#create-process-modal" class="create-process-button">
+                @Html.Partial("~/Views/PartialViews/AddButton.cshtml", new ViewDataDictionary { { "add-text", "Tilføj indsats" } })
+            </div>
+
+            @Html.Partial("~/Views/PartialViews/AddButton.cshtml", new ViewDataDictionary { { "add-text", "Tilføj dokument" }, { "onClick", "addDocument()" } })
+            @Html.Partial("~/Views/PartialViews/AddButton.cshtml", new ViewDataDictionary { { "add-text", "Tilføj journalnotat" }, { "onClick", "CreateJournalNoteView()" } })
+        </div>
+
+        <div class="pendingActivitiesBox">
+            @Html.Partial("~/Views/PartialViews/PendingActivities.cshtml")
         </div>
     </div>
 
@@ -128,19 +140,9 @@
         </div>
     </div>
 
-
     <div>
-        <div class="buttonsBox">
-            <div data-toggle="modal" data-target="#create-process-modal" class="create-process-button">
-                @Html.Partial("~/Views/PartialViews/AddButton.cshtml", new ViewDataDictionary { { "add-text", "Tilføj indsats" } })
-            </div>
-
-            @Html.Partial("~/Views/PartialViews/AddButton.cshtml", new ViewDataDictionary { { "add-text", "Tilføj dokument" }, { "onClick", "addDocument()" } })
-            @Html.Partial("~/Views/PartialViews/AddButton.cshtml", new ViewDataDictionary { { "add-text", "Tilføj journalnotat" }, { "onClick", "CreateJournalNoteView()" } })
-        </div>
-
-        <div class="pendingActivitiesBox">
-            @Html.Partial("~/Views/PartialViews/PendingActivities.cshtml")
+        <div class="stamdataBox">
+            @Html.Partial("~/Views/PartialViews/Stamdata.cshtml")
         </div>
     </div>
 </div>

@@ -11,13 +11,6 @@
     .oldest             =   article:nth-last-child(2) > div.timelinePanel:before
 */
 
-body { font-family: "Helvetica Neue",Helvetica,Arial,sans-serif; font-size: 14px; line-height: 1em; color: #333; margin: 0; }
-h2,
-h3,
-h4,
-h5 { margin-top: 5px; margin-bottom: 5px; line-height: 1; }
-
-
 #timeline {width: 62vw;}
 #timeline-menu {
     font-size: 18px;
