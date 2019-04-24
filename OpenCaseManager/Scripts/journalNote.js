@@ -180,7 +180,7 @@ function changedate(inputId, lableId) {
     applyTo.textContent = value;
 }
 
-$(document).on('click', '.add-journal-note-button', function (event) {
+$(document).on('click', '.add-journal-note-button', function () {
     saveFile();
     window.close();
 });
