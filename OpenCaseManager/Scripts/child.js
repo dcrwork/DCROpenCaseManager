@@ -1,4 +1,6 @@
 ﻿$(document).ready(function () {
+    App.hideDocumentWebpart();
+
     var childId = App.getParameterByName("id", window.location.href);
 
     var query = {

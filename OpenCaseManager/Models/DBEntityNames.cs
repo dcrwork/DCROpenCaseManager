@@ -48,7 +48,8 @@ namespace OpenCaseManager.Models
             SetFormItemSequence,
             DeleteFormItem,
             CopyFormFromTemplate,
-            AddInstanceDescription
+            AddInstanceDescription,
+            LockDocuments
         }
 
         public enum Functions
