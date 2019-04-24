@@ -8,17 +8,38 @@ namespace OpenCaseManagerTests
 {
     public class ExtentionsTest
     {
-        [Theory]
-        [InlineData("22/4/2019", "4/22/2019")]
-        [InlineData("22/4/2019 20:30", "4/22/2019 20:30")]
-        [InlineData("10/12/2019 10:15", "12/10/2019 10:15")]
-        public void Test_parsing_daish_date_makes_the_right_date(string _danishDate, string _usDate)
+        [Fact]
+        public void Test_parsing_daish_date_makes_the_right_date_without_time()
         {
-            var danishDate = _danishDate;
+            var danishDate = "22/4/2019";
 
             var dateTime = danishDate.parseDanishDateToDate();
 
-            var expectedDate = Convert.ToDateTime(_usDate);
+            var expectedDate = new DateTime(2019,4,22,0,0,0);
+
+            Assert.Equal(expectedDate, dateTime);
+        }
+
+        [Fact]
+        public void Test_parsing_daish_date_makes_the_right_date_date_higher_than_12()
+        {
+            var danishDate = "22/4/2019 20:30";
+
+            var dateTime = danishDate.parseDanishDateToDate();
+
+            var expectedDate = new DateTime(2019, 4, 22, 20, 30,0);
+
+            Assert.Equal(expectedDate, dateTime);
+        }
+
+        [Fact]
+        public void Test_parsing_daish_date_makes_the_right_date_month_is_12()
+        {
+            var danishDate = "10/12/2019 10:15";
+
+            var dateTime = danishDate.parseDanishDateToDate();
+
+            var expectedDate = new DateTime(2019, 12, 10, 10, 15, 0);
 
             Assert.Equal(expectedDate, dateTime);
         }
