@@ -343,6 +343,7 @@
     <Compile Include="Models\Condition.cs" />
     <Compile Include="Models\DataModel.cs" />
     <Compile Include="Models\Enums.cs" />
+    <Compile Include="Commons\Extentions.cs" />
     <Compile Include="Models\Filter.cs" />
     <Compile Include="Models\Model.cs" />
     <Compile Include="Models\Order.cs" />

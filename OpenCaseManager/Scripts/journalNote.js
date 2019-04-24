@@ -140,7 +140,7 @@ function addMinutsToTime(currentTime, minutsToAdd) {
     var h = parseInt(timeValues[0]);
     var m = parseInt(timeValues[1]) + minutsToAdd;
 
-    if (m < 0) {
+    while (m < 0) {
         h = h - 1
         m = m + 60;
     }
