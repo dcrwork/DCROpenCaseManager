@@ -312,7 +312,7 @@
         if (item.IsPending) {
             taskStatus = "<img src='../Content/Images/priorityicon.svg' height='16' width='16'/>";
         } else if (item.IsExecuted) {
-            taskStatus = 'b';
+            taskStatus = "<img src='../Content/Images/check.png' />";;
             taskStatusCssClass = 'executedTask';
         }
         var caseTitle = item.CaseTitle;

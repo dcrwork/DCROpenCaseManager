@@ -132,7 +132,7 @@
     <div>
         <div class="buttonsBox">
             <div data-toggle="modal" data-target="#create-process-modal" class="create-process-button">
-                @Html.Partial("~/Views/PartialViews/AddButton.cshtml", new ViewDataDictionary { { "add-text", "Tilføj proces" } })
+                @Html.Partial("~/Views/PartialViews/AddButton.cshtml", new ViewDataDictionary { { "add-text", "Tilføj indsats" } })
             </div>
 
             @Html.Partial("~/Views/PartialViews/AddButton.cshtml", new ViewDataDictionary { { "add-text", "Tilføj dokument" }, { "onClick", "addDocument()" } })
@@ -147,7 +147,6 @@
 
 <div class="modal fade" id="create-process-modal" role="dialog">
     <div class="modal-dialog">
-
         <!-- Modal content-->
         <div class="modal-content">
             <div class="modal-header">

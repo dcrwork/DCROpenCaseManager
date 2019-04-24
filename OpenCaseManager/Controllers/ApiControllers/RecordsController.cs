@@ -45,6 +45,22 @@ namespace OpenCaseManager.Controllers.ApiControllers
         }
 
         /// <summary>
+        /// Add child 
+        /// </summary>
+        /// <param name="childName"></param>
+        /// <param name="responsible"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("addChild")]
+        // POST api/values
+        public IHttpActionResult AddChildApi(AddChildModel input)
+        {
+            // add child 
+            var childId = AddChild(input);
+            return Ok(Common.ToJson(childId));
+        }
+
+        /// <summary>
         /// Add Instance
         /// </summary>
         /// <param name="input"></param>
@@ -803,6 +819,20 @@ namespace OpenCaseManager.Controllers.ApiControllers
                 return instanceId;
             }
             return string.Empty;
+        }
+
+        /// <summary>
+        /// Add Child 
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        private string AddChild(AddChildModel model)
+        {
+            _dataModelManager.GetDefaultDataModel(Enums.SQLOperation.INSERT, DBEntityNames.Tables.Child.ToString());
+            _dataModelManager.AddParameter(DBEntityNames.Child.Name.ToString(), Enums.ParameterType._string, model.ChildName);
+            _dataModelManager.AddParameter(DBEntityNames.Child.Responsible.ToString(), Enums.ParameterType._int, Common.GetResponsibleId());
+            // Returns child id
+            return _manager.InsertData(_dataModelManager.DataModel).Rows[0][DBEntityNames.Child.Id.ToString()].ToString();
         }
 
         /// <summary>

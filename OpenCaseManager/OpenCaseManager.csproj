@@ -314,6 +314,7 @@
     <Compile Include="Controllers\JournalNoteController.cs" />
     <Compile Include="Managers\DocumentManager.cs" />
     <Compile Include="Managers\IDocumnentManager.cs" />
+    <Compile Include="Models\AddChildModel.cs" />
     <Compile Include="Models\DBEntityNames.cs" />
     <Compile Include="Configurations\Config.cs" />
     <Compile Include="Controllers\AdminController.cs" />
