@@ -96,11 +96,29 @@ $(function () {
 function automaticSaveDraft() {
     if ($.now() - timer > 2000 && numberOfChanges >= 10) {
         saveFile();
+        new Noty({
+            type: 'alert',
+            theme: 'mint',
+            layout: 'topRight',
+            text: "Kladde gemt",
+            timeout: 2000,
+            progressBar: false,
+            container: '.custom-container2'
+        }).show()
         timer = $.now();
         numberOfChanges = 0;
     }
     else if ($.now() - timer > 10000 && numberOfChanges > 0) {
         saveFile();
+        new Noty({
+            type: 'alert',
+            theme: 'mint',
+            layout: 'topRight',
+            text: "Kladde gemt",
+            timeout: 2000,
+            progressBar: false,
+            container: '.custom-container2'
+        }).show()
         timer = $.now();
         numberOfChanges = 0;
     }
@@ -237,6 +255,15 @@ $(document).ready(function () {
 $(document).on('click', '.change-journal-note-button', function (event) {
     event.preventDefault();
     saveFile();
+    new Noty({
+        type: 'success',
+        theme: 'mint',
+        layout: 'topRight',
+        text: "Kladde gemt",
+        timeout: 2000,
+        progressBar: false,
+        container: '.custom-container'
+    }).show()
 });
 
 function saveFile() {
@@ -249,27 +276,9 @@ function saveFile() {
     {
         submitFiles(documentName, journalText);
         alreadyDrafted = true;
-        new Noty({
-            type: 'success',
-            theme: 'mint',
-            layout: 'topRight',
-            text: "Kladde gemt",
-            timeout: 2000,
-            progressBar: false,
-            container: '.custom-container'
-        }).show()
     }
     else {
         updateFiles(documentName, journalText);
-        new Noty({
-            type: 'success',
-            theme: 'mint',
-            layout: 'topRight',
-            text: "Kladde opdateret",
-            timeout: 2000,
-            progressBar: false,
-            container: '.custom-container'
-        }).show()
     }
 }
 
