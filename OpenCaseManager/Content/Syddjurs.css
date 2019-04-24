@@ -17,7 +17,6 @@ header div.page-header {
 .page-header > div.pull-left {
     width: 200px;
     height: 85px;
-    background: url(../content/images/logo.png);
     background-repeat: no-repeat;
 }
 

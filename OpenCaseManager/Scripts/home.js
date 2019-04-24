@@ -101,11 +101,9 @@ function addZero(i) {
 
 function getChildInstanceHtml(item) {
     var childLink = "../Child?id=" + item.ChildId;
-    console.log(item.NextDeadline)
     var objDate = new Date(item.NextDeadline);
     var date = objDate.getFullYear() + "-" + addZero((objDate.getMonth() + 1)) + "-" + addZero(objDate.getDay());
     var time = addZero(objDate.getHours()) + ":" + addZero(objDate.getMinutes());
-    console.log(date)
     var returnHtml = "<tr class='trStyleClass'>";
     returnHtml += (item.NextDeadline != null) ? "<td>" + getStatus(item.NextDeadline) + "</td>" : "<td><span class='dot dotGrey' title='Ingen status'></span></td>";
     returnHtml += "<td><a href='" + childLink + "'>" + item.ChildName + "</a></td>";
