@@ -40,17 +40,17 @@ input[type="submit"].btn-save-draft{
 }
 
 
-.add-journal-note-button, .btn-update-date {
+.add-journal-note-button, .btn-update-date, .change-journal-note-button {
     border: 1px solid #9C1A5E;
     background-color: #fff;
     color: #9C1A5E;
     padding: 5px 10px 5px 10px;
 }
 
-.add-journal-note-button:hover, .btn-update-date:hover {
-    background-color: #9C1A5E;
-    color: #fff;
-}
+    .add-journal-note-button:hover, .btn-update-date:hover, .change-journal-note-button:hover {
+        background-color: #9C1A5E;
+        color: #fff;
+    }
 
 .change-date-link {
     border: none;
@@ -73,6 +73,12 @@ input[type="submit"].btn-save-draft{
     padding-right: 5px;
 }
 
+.change-time-div{
+    display: flex;
+    margin-top: 10px;
+    align-content: center;
+}
+
 
 .cancel-journal-note-button {
     background-color: #fff;
@@ -92,7 +98,7 @@ input[type="submit"].btn-save-draft{
 
 .timepicker {
     border: 1px solid #d7e0e2;
-    margin: 15px 0 0 5px;
+    margin: 0 5px 0 5px;
     color: #9C1A5E;
     width: 50px;
     padding: 0 5px 0 5px;

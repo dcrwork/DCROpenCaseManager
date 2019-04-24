@@ -36,8 +36,8 @@ $(document).ready(function () {
         var win = window.open(window.location.origin + "/File/DownloadFile?link=" + link, '_blank');
         win.focus();
     })
-
-    // To create a template funtion
+    
+    
     $('body').on('click', '#addNewDocumentBtn', function () {
         initializeForm();
         $('#addNewDocumentModal').modal('toggle');
@@ -46,7 +46,9 @@ $(document).ready(function () {
         $('.instanceModalHeading').text(translations.AddDocument);
         $('#addDocument').text(translations.Add);
     })
+    
 });
+
 
 function deleteDocument(docId) {
     var query = {
@@ -283,8 +285,7 @@ function getDocuments() {
 
     API.service('records', query)
         .done(function (response) {
-
-            console.log("data", response);
+            
             var result = JSON.parse(response)
             var list = "";
             if (result.length === 0)

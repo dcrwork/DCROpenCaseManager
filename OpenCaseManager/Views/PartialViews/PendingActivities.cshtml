@@ -1,23 +1,83 @@
 ﻿<style>
+    .pendingActivitiesTable {
+        border: solid 1px #EFEFEF;
+    }
+
     .pendingActivitiesTableHeader {
         background: #9C1A5E;
         color: #fff;
         font-weight: lighter;
     }
+
+    .pendingActivitiesTableBody {
+        display: block;
+        overflow: auto;
+        max-height: 184px;
+    }
+
+        .pendingActivitiesTableBody td:last-child {
+            width: 100%;
+        }
+
+        .pendingActivitiesTableBody td {
+            overflow: hidden;
+        }
+
+    /* Tooltip container */
+    .tooltipTip {
+        display: inline;
+    }
+
+    .tooltipTip-wrapper {
+        width: 25%;
+        position: absolute;
+        visibility: hidden;
+        margin: 40px 20px;
+    }
+
+    .tooltipTip:hover .tooltipTip-wrapper {
+        visibility: visible;
+        opacity: 1;
+    }
+
+    .tooltipTiptext {
+        display: block;
+        position: absolute;
+        bottom: 125%;
+        padding: 10px;
+        color: #4a4a4a;
+        text-align: center;
+        border: none;
+        border-radius: 5px;
+        background: #EFEFEF;
+    }
+
+        .tooltipTiptext::after {
+            content: "";
+            position: absolute;
+            top: 43%;
+            left: 0%;
+            margin-left: -10px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: transparent #EFEFEF transparent transparent;
+        }
 </style>
 
-<table class="table table-striped">
+<table class="table pendingActivitiesTable table-striped">
     <thead class="pendingActivitiesTableHeader">
         <tr>
-            <th>Aktiviteter der har brug for din opmærksomhed</th>
+            <th colspan="2">Aktiviteter der har brug for din opmærksomhed</th>
         </tr>
     </thead>
     <tbody class="pendingActivitiesTableBody"></tbody>
 </table>
 
 <script>
+    var childId;
+
     $(document).ready(function () {
-        var childId = (window.location.pathname == "/child") ? App.getParameterByName("id", window.location.href) : null;
+        childId = (window.location.pathname == "/child") ? App.getParameterByName("id", window.location.href) : null;
 
         query = {
             "type": "SELECT",
@@ -51,7 +111,7 @@
     function fillPendingActivitiesTable(result) {
         var list = "";
         if (result.length === 0) {
-            list = "<tr class='trStyleClass'><td colspan='100%'>" + translations.NoRecordFound + " </td></tr>";
+            list = "<tr class='trStyleClass'><td></td><td>" + translations.NoRecordFound + " </td></tr>";
         } else {
             for (i = 0; i < result.length; i++) {
                 list += getPendingActivityHtml(result[i]);
@@ -61,6 +121,15 @@
     }
 
     function getPendingActivityHtml(item) {
+        var instanceLink = "../Instance?id=" + item.InstanceId;
 
+        var returnHtml = "<tr class='trStyleClass'><td width='16px'><img src='../Content/Images/priorityicon.svg' height='16' width='16'/></td>";
+
+        if (childId == null) {
+            returnHtml += "<td><a class='tooltipTip' href='" + instanceLink + "'>" + item.EventTitle + "<span class='tooltipTip-wrapper'><span class='tooltipTiptext'>" + item.Name + "<br> " + item.InstanceTitle + "</span></span></a></td>";
+        } else {
+            returnHtml += "<td><a class='tooltipTip' href='" + instanceLink + "'>" + item.EventTitle + "<span class='tooltipTip-wrapper'><span class='tooltipTiptext'>" + item.InstanceTitle + "</span></span></a></td>";
+        }
+        return returnHtml;
     }
 </script>

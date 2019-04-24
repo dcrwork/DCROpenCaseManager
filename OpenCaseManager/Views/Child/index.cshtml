@@ -49,7 +49,7 @@
         display: flex;
         flex-direction: row;
         justify-content: space-between;
-        margin: 40px 60px 0px 60px;
+        margin: 0px 60px;
     }
 
     .childInstancesHeader {
@@ -67,6 +67,10 @@
     ViewBag.Title = "Child";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+
+<div class="addDocumentModal">
+    @Html.Partial("~/Views/PartialViews/AddDocumentModal.cshtml")
+</div>
 
 <div class="wholeChildPage">
 
@@ -102,7 +106,7 @@
                             <thead class="childInstancesHeader">
                                 <tr>
                                     <th width="6%">Status</th>
-                                    <th width="7%" style='text-align:center;'><img src='../Content/Images/priorityicon.svg' height='16' width='16' /></th>
+                                    <th width="52px"><img src='../Content/Images/priorityicon.svg' height='16' width='16' /></th>
                                     <th width="">Titel</th>
                                     <th width="25%">Process</th>
                                     <th width="10%">Ansvarlig</th>
@@ -118,6 +122,7 @@
                     @Html.Partial("~/Views/PartialViews/Timeline.cshtml")
                 </div>
                 <div class="tab-pane fade in" id="pills-document" role="tabpanel" aria-labelledby="pills-document">
+                    @Html.Partial("~/Views/PartialViews/Document.cshtml")
                 </div>
             </div>
         </div>
@@ -127,10 +132,10 @@
     <div>
         <div class="buttonsBox">
             <div data-toggle="modal" data-target="#create-process-modal" class="create-process-button">
-                @Html.Partial("~/Views/PartialViews/AddButton.cshtml", new ViewDataDictionary { { "add-text", "Tilføj proces" } })
+                @Html.Partial("~/Views/PartialViews/AddButton.cshtml", new ViewDataDictionary { { "add-text", "Tilføj indsats" } })
             </div>
 
-            @Html.Partial("~/Views/PartialViews/AddButton.cshtml", new ViewDataDictionary { { "add-text", "Tilføj dokument" } })
+            @Html.Partial("~/Views/PartialViews/AddButton.cshtml", new ViewDataDictionary { { "add-text", "Tilføj dokument" }, { "onClick", "addDocument()" } })
             @Html.Partial("~/Views/PartialViews/AddButton.cshtml", new ViewDataDictionary { { "add-text", "Tilføj journalnotat" }, { "onClick", "CreateJournalNoteView()" } })
         </div>
 
@@ -142,7 +147,6 @@
 
 <div class="modal fade" id="create-process-modal" role="dialog">
     <div class="modal-dialog">
-
         <!-- Modal content-->
         <div class="modal-content">
             <div class="modal-header">
@@ -171,6 +175,12 @@
     </div>
 </div>
 
+
+<script type="text/javascript">
+    var webPortalType = "Instance";
+</script>
+
 <script type="text/javascript" src="~/Scripts/createprocess.js"></script>
 <script type="text/javascript" src="~/Scripts/child.js"></script>
-<script src="~/Scripts/journalNoteCreate.js" type="text/javascript"></script> 
+<script type="text/javascript" src="~/Scripts/journalNoteCreate.js"></script>
+<script type="text/javascript" src="~/Scripts/addDocument.js"></script>

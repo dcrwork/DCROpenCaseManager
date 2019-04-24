@@ -87,7 +87,7 @@ namespace OpenCaseManager.Controllers.ApiControllers
             // get pending or enabled from active repository
             eventsXml = _dcrService.GetPendingOrEnabled(graphId, simulationId);
 
-            Common.AddJournalHistory(instanceId, trueEventId, null, "Event", title, DateTime.Now, true, _manager, _dataModelManager);
+            Common.AddJournalHistory(instanceId, trueEventId, null, "Event", title, DateTime.Now, _manager, _dataModelManager);
             Common.SyncEvents(instanceId, eventsXml, responsibleId, _manager, _dataModelManager);
             Common.UpdateEventTypeData(instanceId, _manager, _dataModelManager);
             AutomaticEvents(instanceId, graphId, simulationId, responsibleId);

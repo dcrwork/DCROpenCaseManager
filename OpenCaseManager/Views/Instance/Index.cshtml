@@ -9,9 +9,8 @@
         justify-content: center;
     }
 
-        .nav-pills .a {
-            font-size;
-            30px;
+        .nav-pills a {
+            font-size: 30px;
         }
 
         .nav-pills > li.active > a, .nav-pills > a:hover {
@@ -72,7 +71,12 @@
         border-top: none;
     }
 
-    
+    #instanceTitle .dot {
+        margin-left: 20px;
+        height: 25px;
+        width: 25px;
+    }
+
 </style>
 
 @{
@@ -85,11 +89,15 @@
 
 <div class="wholeActionsPage">
     <div class="buttonsStamdataBox">
-        @Html.Partial("~/Views/PartialViews/AddButton.cshtml", new ViewDataDictionary { { "add-text", "Tilføj dokument" } })
+        @Html.Partial("~/Views/PartialViews/AddButton.cshtml", new ViewDataDictionary { { "add-text", "Tilføj dokument" }, { "onClick", "addDocument()" } })
         @Html.Partial("~/Views/PartialViews/AddButton.cshtml", new ViewDataDictionary { { "add-text", "Tilføj journalnotat" }, { "onClick", "CreateJournalNoteView()" } })
         <div class="stamdataBox">
             @Html.Partial("~/Views/PartialViews/Stamdata.cshtml")
         </div>
+    </div>
+
+    <div class="addDocumentModal">
+        @Html.Partial("~/Views/PartialViews/AddDocumentModal.cshtml")
     </div>
 
     <div class="activitiesTitleBox">
@@ -122,6 +130,9 @@
     </div>
 </div><!-- Row Div End -->
 
+
+
+
 <script src="~/Scripts/instance.js"></script>
 
 <script type="text/javascript">
@@ -150,4 +161,5 @@
     });
 </script>
 <script src="~/Scripts/task.js"></script>
-<script src="~/Scripts/journalNoteCreate.js" type="text/javascript"></script> 
+<script src="~/Scripts/journalNoteCreate.js" type="text/javascript"></script>
+<script src="~/Scripts/addDocument.js" type="text/javascript"></script>
