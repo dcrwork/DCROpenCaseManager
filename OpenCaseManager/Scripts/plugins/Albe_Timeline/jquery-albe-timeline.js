@@ -13,48 +13,31 @@
         var defaultOption = $('<option>').attr('value', 12).append('');
         monthMenu.append(defaultOption);
 
-        
-
         var year = getYearId();
         updateMonthMenu(year, monthMenu, months);
 
-
-      /*  $(document).on('click', '#filterTypeButton', function () {
-            console.log("filter clicked!");
-            var activityChecked = $('#activityCheckbox').prop('checked');
-            var journalnoteChecked = $('#journalnoteCheckbox').prop('checked');
-            var documentChecked = $('#documentCheckbox').prop('checked');
-            var checkedBoxes = [activityChecked, journalnoteChecked, documentChecked];
-
-            console.log("activity: " + activityChecked);
-            console.log("journalnote: " + journalnoteChecked);
-            console.log("document: " + documentChecked);
-
-            updateTimeline(monthMenu, checkedBoxes);
-            console.log("update timeline kaldt fra click metode");
-
-        });*/
-
         var activityLabel = $('<label>').text('Aktivitet');
-        var activityCheckbox = $('<input type="checkbox">').attr('id', 'activityCheckbox').attr('value', 'activity').prop('checked', true);
+        var activityCheckbox = $('<input type="checkbox">').attr('id', 'activityCheckbox').attr('value', 'activity');
+        var activitySpan = $('<span>').attr('id', 'activitySpan');
         activityLabel.append(activityCheckbox);
+        activityLabel.append(activitySpan);
 
         var journalnoteLabel = $('<label>').text('Journalnotat');
-        var journalnoteCheckbox = $('<input type="checkbox">').attr('id', 'journalnoteCheckbox').attr('value', 'journalnote').prop('checked', true);
+        var journalnoteCheckbox = $('<input type="checkbox">').attr('id', 'journalnoteCheckbox').attr('value', 'journalnote');
+        var journalnoteSpan = $('<span>').attr('id', 'journalnoteSpan');
         journalnoteLabel.append(journalnoteCheckbox);
+        journalnoteLabel.append(journalnoteSpan);
 
         var documentLabel = $('<label>').text('Dokument');
-        var documentCheckbox = $('<input type="checkbox">').attr('id', 'documentCheckbox').attr('value', 'document').prop('checked', true);
+        var documentCheckbox = $('<input type="checkbox">').attr('id', 'documentCheckbox').attr('value', 'document');
+        var documentSpan = $('<span>').attr('id', 'documentSpan');
         documentLabel.append(documentCheckbox);
-
-
-        var filterTypeButton = $('<button>').attr('id', 'filterTypeButton').text('Filtrer');
+        documentLabel.append(documentSpan);
 
         var filterTypeWrapper = $('<div>').addClass('filterTypeWrapper');
         filterTypeWrapper.append(activityLabel);
         filterTypeWrapper.append(journalnoteLabel);
         filterTypeWrapper.append(documentLabel);
-        filterTypeWrapper.append(filterTypeButton);
 
         updateTimeline(monthMenu, filterTypeWrapper);
 
@@ -65,17 +48,22 @@
             var year = getYearId();
             updateMonthMenu(year, monthMenu, months);
         });
-        
+
+        $(document).on('click', '#filterButton', function () {
+            $('.filterTypeWrapper').toggle("slide");
+        });
 });
 
 function updateMonthMenu(year, monthMenu, months) {
     var monthsElements = $('div[id^="y' + year + '"]');
-
+    console.log(monthsElements);
+    console.log("hej");
     monthsElements.each(function (index) {
+        
         if (index === 0) { return true; }
         var monthSplit = (monthsElements[index].id).split("m");
         var monthIndex = parseInt(monthSplit[1]);
-
+        
         var monthOption = $('<option>').attr('value', monthIndex).append(months[monthIndex]);
         monthMenu.append(monthOption);
     });
@@ -83,13 +71,11 @@ function updateMonthMenu(year, monthMenu, months) {
 
 function getMonthId() {
     var id = $("#timeline-month-selector").children(":selected").attr("value");
-    console.log("month selected: " + id);
     return id;
 }
 
 function getYearId() {
     var id = $("#timeline-menu").children(":selected").attr("value");
-    console.log(id);
     return id;
 }
 function goToTimeframe() {
@@ -103,7 +89,6 @@ function goToTimeframe() {
         id = '#a' + yearId + '-' + monthId + '-' + '1';
     }
 
-    console.log('id:' + id);
     $('html, body').animate(
         {
             scrollTop: $(id).offset().top - 50,
@@ -114,10 +99,8 @@ function goToTimeframe() {
 }
 
 function updateTimeline(monthMenu, filterTypeWrapper) {
-    console.log("timeline kaldt 1");
 
     $.fn.albeTimeline = function (json, options) {
-        console.log("timeline kaldt med data");
         var _this = this;
         _this.html('');
 
@@ -248,8 +231,7 @@ function updateTimeline(monthMenu, filterTypeWrapper) {
                     slot.insertAfter(createGroupMonth);
                 /****************************************FIM - SLOT <article> ****************************************/
             }
-
-            
+           
         });
 
         // Marcador inicial da Timeline 
@@ -264,40 +246,23 @@ function updateTimeline(monthMenu, filterTypeWrapper) {
             // Adiciona classe de animação.
             if (settings.effect && settings.effect != 'none')
                 $(this).addClass('animated ' + settings.effect);
-        });        
+        }); 
+
+        var filterButton = $('<div>').attr('id', "filterButton");
+        var plusIcon = $('<span>').addClass('glyphicon').addClass('glyphicon-plus');
+        var filterExpand = $('<span>').text('Filtrer');
 
         var filterTimeWrapper = $('<div>').addClass('filterTimeWrapper').append(yearMenu);
         filterTimeWrapper.append(monthMenu);
-        filterTimeWrapper.append(findTimeFrameButton);
+        filterTimeWrapper.append(findTimeFrameButton);        
+
         filterTimeWrapper.appendTo(_this);
-        //eTimeline.appendTo(_this);
-
-       /* var activityLabel = $('<label>').text('Aktivitet');
-        var activityCheckbox = $('<input type="checkbox">').attr('id', 'activityCheckbox').attr('value', 'activity');
-        activityLabel.append(activityCheckbox);
-
-        var journalnoteLabel = $('<label>').text('Journalnotat');
-        var journalnoteCheckbox = $('<input type="checkbox">').attr('id', 'journalnoteCheckbox').attr('value', 'journalnote');
-        journalnoteLabel.append(journalnoteCheckbox);
-
-        var documentLabel = $('<label>').text('Dokument');
-        var documentCheckbox = $('<input type="checkbox">').attr('id', 'documentCheckbox').attr('value', 'document');
-        documentLabel.append(documentCheckbox);
-
-        var activityChecked = $('#activityCheckbox').prop('checked', true);
-        var journalnoteChecked = $('#journalnoteCheckbox').prop('checked', true);
-        var documentChecked = $('#documentCheckbox').prop('checked', true);
-
-        var filterTypeButton = $('<button>').attr('id', 'filterTypeButton').text('Filtrer');
-
-        var filterTypeWrapper = $('<div>').addClass('filterTypeWrapper');
-        filterTypeWrapper.append(activityLabel);
-        filterTypeWrapper.append(journalnoteLabel);
-        filterTypeWrapper.append(documentLabel);
-        filterTypeWrapper.append(filterTypeButton);*/
+ 
+        filterButton.append(plusIcon);
+        filterButton.append(filterExpand);
+        filterButton.appendTo(_this);
         filterTypeWrapper.appendTo(_this);
         eTimeline.appendTo(_this);
-        // return this;
     };
 
     $.fn.albeTimeline.languages = {};

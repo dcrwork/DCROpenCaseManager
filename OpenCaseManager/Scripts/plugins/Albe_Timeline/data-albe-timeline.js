@@ -77,6 +77,7 @@ $(document).ready(function () {
         });
 
         $('#myTimeline').albeTimeline(normData);
+        $('#timeline-menu').trigger('change');
     }
 
     var activityChecked = true;
@@ -85,13 +86,13 @@ $(document).ready(function () {
 
     getData(activityChecked, journalnoteChecked, documentChecked);
 
-    $(document).on('click', '#filterTypeButton', function () {
-        console.log("filter clicked!");
+    $(document).on('change', '.filterTypeWrapper', function () {
         activityChecked = $('#activityCheckbox').prop('checked');
         journalnoteChecked = $('#journalnoteCheckbox').prop('checked');
         documentChecked = $('#documentCheckbox').prop('checked');
 
-        getData(activityChecked, journalnoteChecked, documentChecked);
+        if (!activityChecked && !journalnoteChecked && !documentChecked) getData(true, true, true);
+        else getData(activityChecked, journalnoteChecked, documentChecked);
     });
     
 });
