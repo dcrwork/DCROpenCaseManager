@@ -23,7 +23,6 @@ function documentType(data) {
 }
 // TODO -> Her skal der evt. v�re noget content tekst som er passer til den tekst de rer skrevet.
 function journalNoteType(data) {
-    console.log(data)
     return {
         type: "Journalnotat",
         time: formatDateTimeline(data.EventDate),
@@ -42,7 +41,6 @@ function journalNoteType(data) {
     }
 }
 function activitiesType(data) {
-    console.log(data)
     var eventtype = data.Type;
     if (data.Type === 'Event') eventtype = "Aktivitet";
     return {
@@ -65,7 +63,6 @@ function activitiesType(data) {
 
 $(document).ready(function () {
     async function getData(activity, journalnote, document) {
-        console.log("aktivitet " + activity);
         var childId = App.getParameterByName("id", window.location.href);
         var data = await getTimelineData(childId);
 
