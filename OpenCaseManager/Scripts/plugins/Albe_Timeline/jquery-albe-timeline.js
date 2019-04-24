@@ -246,12 +246,13 @@ function updateTimeline(monthMenu, filterTypeWrapper) {
         filterTimeWrapper.append(monthMenu);
         filterTimeWrapper.append(findTimeFrameButton);        
 
-        filterTimeWrapper.appendTo(_this);
- 
         filterButton.append(plusIcon);
         filterButton.append(filterExpand);
         filterButton.appendTo(_this);
         filterTypeWrapper.appendTo(_this);
+
+        filterTimeWrapper.appendTo(_this);
+
         eTimeline.appendTo(_this);
     };
 
