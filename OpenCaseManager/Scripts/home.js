@@ -105,7 +105,8 @@ function getChildInstanceHtml(item) {
     var date = objDate.getFullYear() + "-" + addZero((objDate.getMonth() + 1)) + "-" + addZero(objDate.getDay());
     var time = addZero(objDate.getHours()) + ":" + addZero(objDate.getMinutes());
     var returnHtml = "<tr class='trStyleClass'>";
-    returnHtml += (item.NextDeadline != null) ? "<td>" + getStatus(item.NextDeadline) + "</td>" : "<td><span class='dot dotGrey' title='Ingen status'></span></td>";
+    returnHtml += (item.NextDeadline != null || item.SumOfEvents > 0) ? "<td>" + getStatus(item) + "</td>" : "<td><span class='dot dotGrey' title='Ingen status'></span></td>";
+    returnHtml += "<td>" + item.SumOfEvents + "</td>";
     returnHtml += "<td><a href='" + childLink + "'>" + item.ChildName + "</a></td>";
     returnHtml += "<td>123456-7890</td>";
     returnHtml += "<td>" + item.Responsible + "</td>";
@@ -115,7 +116,9 @@ function getChildInstanceHtml(item) {
     return returnHtml;
 }
 
-function getStatus(deadline) {
+function getStatus(item) {
+    var deadline = item.NextDeadline;
+    var sumOfEvents = item.SumOfEvents;
     if (deadline != null) {
         var now = new Date().getTime();
         deadline = new Date(deadline).getTime();
@@ -123,6 +126,10 @@ function getStatus(deadline) {
             return "<span class='dot dotRed'></span>";
         } else if (now + 604800000 >= deadline) {
             return "<span class='dot dotYellow'></span>";
+        }
+
+        if (deadline == null && sumOfEvents > 0) {
+            return "<span class='dot dotGreen'></span>";
         }
     } 
     
