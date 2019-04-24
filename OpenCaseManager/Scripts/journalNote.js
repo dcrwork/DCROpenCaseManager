@@ -227,15 +227,35 @@ $(document).on('click', '.change-journal-note-button', function (event) {
     event.preventDefault();
     var documentName = $('#input-journal-title').val();
     var journalText = "<div>" + $('#input-journal-note').val() + "</div>";
+    
+    
 
     if (!alreadyDrafted)
     {
         submitFiles(documentName, journalText);
         alreadyDrafted = true;
+        new Noty({
+            type: 'success',
+            theme: 'mint',
+            layout: 'topRight',
+            text: "Kladde gemt",
+            timeout: 2000,
+            progressBar: false,
+            container: '.custom-container'
+        }).show()
     }
     else
     {
         updateFiles(documentName, journalText);
+        new Noty({
+            type: 'success',
+            theme: 'mint',
+            layout: 'topRight',
+            text: "Kladde opdateret",
+            timeout: 2000,
+            progressBar: false,
+            container: '.custom-container'
+        }).show()
     }
 
 });
