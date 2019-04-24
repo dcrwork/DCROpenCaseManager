@@ -90,14 +90,14 @@ ul.welcome {
     }
 
 div.search-field input {
-    min-width: 527px;
-    max-width: 527px;
+    min-width: 529px;
+    max-width: 529px;
     margin-top: 10px;
     padding: 10px 40px 10px 10px;
     font-size: 16px;
     border: 2px solid #9C1A5E;
     border-radius: 5px;
-    display: inline-block;
+    display: block;
 }
 
     div.search-field input:focus {
