@@ -254,3 +254,22 @@ a > span.sort-arrow-head {
     font-size: 16px;
     color: #9C1A5E;
 }
+
+.arrow {
+    border: solid #9C1A5E;
+    border-width: 0 3px 3px 0;
+    display: block;
+    height 50%;
+    padding: 3px;
+    cursor: pointer;
+}
+
+.arrow.up {
+    transform: rotate(-135deg);
+    -webkit-transform: rotate(-135deg);
+}
+
+.arrow.down {
+    transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
+}

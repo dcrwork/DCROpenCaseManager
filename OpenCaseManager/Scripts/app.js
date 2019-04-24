@@ -201,7 +201,7 @@
         var query = {
             "type": "SELECT",
             "entity": "Instance",
-            "resultSet": ["Title", "CaseNoForeign", "CaseLink", "CurrentPhaseNo", "Description", "NextDeadline"],
+            "resultSet": ["Title", "CaseNoForeign", "CaseLink", "CurrentPhaseNo", "Description", "NextDeadline", "IsOpen"],
             "filters": [
                 {
                     "column": "Id",
@@ -671,8 +671,9 @@
             $('.caseLink').show();
             $('#entityLink').attr('href', item.CaseLink);
         }
-        
-        $('#instanceTitle').append(getStatus(item.NextDeadline))
+
+        if (item.IsOpen) $('#instanceTitle').append(getStatus(item.NextDeadline));
+        else $('#instanceTitle').append("<span class='dot dotGrey'></span>");
     }
 
     function getProcessHtml(item) {
@@ -751,11 +752,20 @@
         var returnHtml = '';
         returnHtml = '<div class="form-group clearfix" style="width:100%"><label class="labelStyling">' + role.title + '</label>' +
             '<select name="multi-select" class="form-control formFieldStyling" userId="' + role.title + '" id="multi-select-' + role.title + '">';
-        returnHtml += '<option value="0">' + translations.SelectResponsible + '</option>';
-        if (users.length > 0) {
-            $.each(users, function (index, user) {
-                returnHtml += '<option value="' + user.Id + '">' + user.Name + '</option>';
-            });
+        if (role.title == "Socialrådgiver") {
+            if (users.length > 0) {
+                $.each(users, function (index, user) {
+                    if (window.App.user.Id == user.Id) returnHtml += '<option selected="selected" value="' + user.Id + '">' + user.Name + '</option>';
+                    else returnHtml += '<option value="' + user.Id + '">' + user.Name + '</option>';
+                });
+            }
+        } else {
+            returnHtml += '<option value="0">' + translations.SelectResponsible + '</option>';
+            if (users.length > 0) {
+                $.each(users, function (index, user) {
+                    returnHtml += '<option value="' + user.Id + '">' + user.Name + '</option>';
+                });
+            }
         }
         returnHtml += '</select></div>';
         return returnHtml;

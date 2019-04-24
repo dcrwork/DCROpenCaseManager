@@ -49,7 +49,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
+    <Optimize>false</Optimize>
     <OutputPath>bin\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
@@ -344,6 +344,7 @@
     <Compile Include="Models\Condition.cs" />
     <Compile Include="Models\DataModel.cs" />
     <Compile Include="Models\Enums.cs" />
+    <Compile Include="Commons\Extentions.cs" />
     <Compile Include="Models\Filter.cs" />
     <Compile Include="Models\Model.cs" />
     <Compile Include="Models\Order.cs" />
@@ -416,6 +417,7 @@
     <Content Include="HtmlTemplates\InstructionsForActiveXOutlook.html" />
     <Content Include="HtmlTemplates\FormInstruction.html" />
     <Content Include="karma.conf.js" />
+    <Content Include="Scripts\addDocument.js" />
     <Content Include="Scripts\child.js" />
     <Content Include="Scripts\createprocess.js" />
     <Content Include="Scripts\formserver.js" />
@@ -1177,6 +1179,7 @@
     <Content Include="Scripts\plugins\Timepicker\README.md" />
     <Content Include="Views\JournalNote\Index.cshtml" />
     <Content Include="Views\PartialViews\PendingActivities.cshtml" />
+    <Content Include="Views\PartialViews\AddDocumentModal.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

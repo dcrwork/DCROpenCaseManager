@@ -13,6 +13,7 @@ namespace OpenCaseManager.Models
             Child,
             Event,
             EventHistory,
+            DocumentTimes,
             Form,
             FormItem,
             Instance,
@@ -48,7 +49,8 @@ namespace OpenCaseManager.Models
             SetFormItemSequence,
             DeleteFormItem,
             CopyFormFromTemplate,
-            AddInstanceDescription
+            AddInstanceDescription,
+            LockDocuments
         }
 
         public enum Functions
@@ -115,6 +117,19 @@ namespace OpenCaseManager.Models
             ItemId,
             SequenceNumber,
             ItemText
+        }
+
+        public enum DocumentTimes
+        {
+            Id,
+            Title,
+            Type,
+            Link,
+            Responsible,
+            InstanceId,
+            UploadDate,
+            IsLocked,
+            EventDate
         }
 
         public enum Instance
@@ -405,7 +420,8 @@ namespace OpenCaseManager.Models
             Responsible,
             InstanceId,
             IsActive,
-            UploadDate
+            UploadDate,
+            IsLocked
         }
 
         public enum AddInstanceDescription
