@@ -49,7 +49,7 @@ $(document).ready(function () {
 
     query = {
         "type": "SELECT",
-        "entity": "GetMyChildren('$(loggedInUserId)')",
+        "entity": "GetDataForAllMyChildren('$(loggedInUserId)')",
         "resultSet": ["*"],
         "filters": new Array(),
         "order": [{ "column": "ChildName", "descending": false }]
