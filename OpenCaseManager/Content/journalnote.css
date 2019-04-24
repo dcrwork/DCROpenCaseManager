@@ -40,17 +40,17 @@ input[type="submit"].btn-save-draft{
 }
 
 
-.add-journal-note-button, .btn-update-date {
+.add-journal-note-button, .btn-update-date, .change-journal-note-button {
     border: 1px solid #9C1A5E;
     background-color: #fff;
     color: #9C1A5E;
     padding: 5px 10px 5px 10px;
 }
 
-.add-journal-note-button:hover, .btn-update-date:hover {
-    background-color: #9C1A5E;
-    color: #fff;
-}
+    .add-journal-note-button:hover, .btn-update-date:hover, .change-journal-note-button:hover {
+        background-color: #9C1A5E;
+        color: #fff;
+    }
 
 .change-date-link {
     border: none;
