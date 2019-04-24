@@ -11,3 +11,8 @@
 
     return "<span class='dot dotGreen'></span>";
 }
+
+function toggleSearch() {
+    $("#search").toggleClass('show');
+    $("#search").toggleClass('hide');
+}

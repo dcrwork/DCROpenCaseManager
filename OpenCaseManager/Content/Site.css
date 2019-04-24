@@ -44,6 +44,10 @@ label.labelStyling {
     display: inline;
 }
 
+.headerContainer {
+    margin: 1vh 9vw 0vw 4vw;
+}
+
 .formFieldStyling {
     float: right;
     width: 70%;
