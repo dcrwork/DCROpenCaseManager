@@ -12,7 +12,14 @@
     return "<span class='dot dotGreen'></span>";
 }
 
+
 function toggleSearch() {
     $("#search").toggleClass('show');
     $("#search").toggleClass('hide');
+
+    if ($("#search.show") !== null) {
+        console.log(document.getElementById('searchCase'))
+        document.getElementById('searchCase').focus(true);
+    }
+
 }
