@@ -12,10 +12,51 @@
         var months = ['Januar', 'Februar', 'Marts', 'April', 'Maj', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'December'];
         var defaultOption = $('<option>').attr('value', 12).append('');
         monthMenu.append(defaultOption);
-        updateTimeline(monthMenu);
+
+        
 
         var year = getYearId();
         updateMonthMenu(year, monthMenu, months);
+
+
+      /*  $(document).on('click', '#filterTypeButton', function () {
+            console.log("filter clicked!");
+            var activityChecked = $('#activityCheckbox').prop('checked');
+            var journalnoteChecked = $('#journalnoteCheckbox').prop('checked');
+            var documentChecked = $('#documentCheckbox').prop('checked');
+            var checkedBoxes = [activityChecked, journalnoteChecked, documentChecked];
+
+            console.log("activity: " + activityChecked);
+            console.log("journalnote: " + journalnoteChecked);
+            console.log("document: " + documentChecked);
+
+            updateTimeline(monthMenu, checkedBoxes);
+            console.log("update timeline kaldt fra click metode");
+
+        });*/
+
+        var activityLabel = $('<label>').text('Aktivitet');
+        var activityCheckbox = $('<input type="checkbox">').attr('id', 'activityCheckbox').attr('value', 'activity').prop('checked', true);
+        activityLabel.append(activityCheckbox);
+
+        var journalnoteLabel = $('<label>').text('Journalnotat');
+        var journalnoteCheckbox = $('<input type="checkbox">').attr('id', 'journalnoteCheckbox').attr('value', 'journalnote').prop('checked', true);
+        journalnoteLabel.append(journalnoteCheckbox);
+
+        var documentLabel = $('<label>').text('Dokument');
+        var documentCheckbox = $('<input type="checkbox">').attr('id', 'documentCheckbox').attr('value', 'document').prop('checked', true);
+        documentLabel.append(documentCheckbox);
+
+
+        var filterTypeButton = $('<button>').attr('id', 'filterTypeButton').text('Filtrer');
+
+        var filterTypeWrapper = $('<div>').addClass('filterTypeWrapper');
+        filterTypeWrapper.append(activityLabel);
+        filterTypeWrapper.append(journalnoteLabel);
+        filterTypeWrapper.append(documentLabel);
+        filterTypeWrapper.append(filterTypeButton);
+
+        updateTimeline(monthMenu, filterTypeWrapper);
 
         $(document).on('change', '#timeline-menu', function () {
             monthMenu.empty();
@@ -24,7 +65,8 @@
             var year = getYearId();
             updateMonthMenu(year, monthMenu, months);
         });
-    });
+        
+});
 
 function updateMonthMenu(year, monthMenu, months) {
     var monthsElements = $('div[id^="y' + year + '"]');
@@ -71,9 +113,11 @@ function goToTimeframe() {
     )
 }
 
+function updateTimeline(monthMenu, filterTypeWrapper) {
+    console.log("timeline kaldt 1");
 
-function updateTimeline(monthMenu) {
     $.fn.albeTimeline = function (json, options) {
+        console.log("timeline kaldt med data");
         var _this = this;
         _this.html('');
 
@@ -110,13 +154,6 @@ function updateTimeline(monthMenu) {
         var findTimeFrameButton = $('<button>').attr('id', 'find-timeframe-button').text('Find');
         findTimeFrameButton.attr('onclick', 'goToTimeframe()');
 
-        
-       
-       /* $.each(idioma.months, function (index, element) {
-            var option = $('<option>').attr('value', index).append(element);
-            monthMenu.append(option);
-        });*/
-
         var eTimeline = $('<section>').attr('id', 'timeline');
 
         $.each(json, function (index, element) {
@@ -139,14 +176,12 @@ function updateTimeline(monthMenu) {
                 yearMenu.append(yearOption);
             }
 
-
             if (createGroupMonth.length === 0) {
                 createGroupMonth = $('<div>').attr('id', ('y' + year + '-m' + month)).addClass('group' + year + '-' + month).text(language.months[month]);
                 $(eTimeline).append(createGroupMonth);
             }
 
             if (month !== $('#timeline-month-selector').val()) {
-
                 /****************************************SLOT <article>****************************************/
                 var leftWrapper = $('<div>').addClass('leftWrapper');
                 var badge = $('<div>').addClass('badge');
@@ -163,7 +198,6 @@ function updateTimeline(monthMenu) {
 
                 symbol.attr('title', timelineType);
                 ePanel.append(symbol);
-
 
                 if (element.header) {
                     var ePanelHead = $('<div>').addClass('panel-heading');
@@ -202,7 +236,7 @@ function updateTimeline(monthMenu) {
                 }
 
                 // Adiciona o item ao respectivo agrupador.
-                var yearSiblings = createGroupYear.siblings('article[id^="a' + year + '"]');
+                //var yearSiblings = createGroupYear.siblings('article[id^="a' + year + '"]');
                 var monthSiblings = createGroupMonth.siblings('article[id^="a' + year + '-' + month + '"]');
 
                 var slot = $('<article id="a' + year + '-' + month + '-' + (monthSiblings.length + 1) + '">').append(ePanel);
@@ -230,12 +264,38 @@ function updateTimeline(monthMenu) {
             // Adiciona classe de animação.
             if (settings.effect && settings.effect != 'none')
                 $(this).addClass('animated ' + settings.effect);
-        });
+        });        
 
-        var groupWrapper = $('<div>').addClass('groupWrapper').append(yearMenu);
-        groupWrapper.append(monthMenu);
-        groupWrapper.append(findTimeFrameButton);
-        groupWrapper.appendTo(_this);
+        var filterTimeWrapper = $('<div>').addClass('filterTimeWrapper').append(yearMenu);
+        filterTimeWrapper.append(monthMenu);
+        filterTimeWrapper.append(findTimeFrameButton);
+        filterTimeWrapper.appendTo(_this);
+        //eTimeline.appendTo(_this);
+
+       /* var activityLabel = $('<label>').text('Aktivitet');
+        var activityCheckbox = $('<input type="checkbox">').attr('id', 'activityCheckbox').attr('value', 'activity');
+        activityLabel.append(activityCheckbox);
+
+        var journalnoteLabel = $('<label>').text('Journalnotat');
+        var journalnoteCheckbox = $('<input type="checkbox">').attr('id', 'journalnoteCheckbox').attr('value', 'journalnote');
+        journalnoteLabel.append(journalnoteCheckbox);
+
+        var documentLabel = $('<label>').text('Dokument');
+        var documentCheckbox = $('<input type="checkbox">').attr('id', 'documentCheckbox').attr('value', 'document');
+        documentLabel.append(documentCheckbox);
+
+        var activityChecked = $('#activityCheckbox').prop('checked', true);
+        var journalnoteChecked = $('#journalnoteCheckbox').prop('checked', true);
+        var documentChecked = $('#documentCheckbox').prop('checked', true);
+
+        var filterTypeButton = $('<button>').attr('id', 'filterTypeButton').text('Filtrer');
+
+        var filterTypeWrapper = $('<div>').addClass('filterTypeWrapper');
+        filterTypeWrapper.append(activityLabel);
+        filterTypeWrapper.append(journalnoteLabel);
+        filterTypeWrapper.append(documentLabel);
+        filterTypeWrapper.append(filterTypeButton);*/
+        filterTypeWrapper.appendTo(_this);
         eTimeline.appendTo(_this);
         // return this;
     };

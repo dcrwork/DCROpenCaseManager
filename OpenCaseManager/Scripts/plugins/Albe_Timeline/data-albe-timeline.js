@@ -63,23 +63,36 @@ function activitiesType(data) {
     }
 }
 
-function normalize(data) {
-    if (data.DocumentType === 'Instance') return documentType(data);
-    if (data.DocumentType === 'JournalNote' || data.Type === "JournalNoteBig" || data.Type === "JournalNoteLittle") return journalNoteType(data);
-    return activitiesType(data);
-}
-
 $(document).ready(function () {
-    async function getData() {
+    async function getData(activity, journalnote, document) {
+        console.log("aktivitet " + activity);
         var childId = App.getParameterByName("id", window.location.href);
         var data = await getTimelineData(childId);
 
-        var normData = data.map(function (value) {
-            return normalize(value);
+        var normData = [];
+        $.each(data, function (index, value) {   
+            if (journalnote && (value.DocumentType === 'JournalNote' || value.Type === 'JournalNoteBig' || value.Type === 'JournalNoteLittle')) normData.push(journalNoteType(value));
+            if (document && value.DocumentType === 'Instance') normData.push(documentType(value));
+            if (activity && value.Type === 'Event') normData.push(activitiesType(value)); 
         });
-        
+
         $('#myTimeline').albeTimeline(normData);
     }
-    getData();
+
+    var activityChecked = true;
+    var journalnoteChecked = true;
+    var documentChecked = true;
+
+    getData(activityChecked, journalnoteChecked, documentChecked);
+
+    $(document).on('click', '#filterTypeButton', function () {
+        console.log("filter clicked!");
+        activityChecked = $('#activityCheckbox').prop('checked');
+        journalnoteChecked = $('#journalnoteCheckbox').prop('checked');
+        documentChecked = $('#documentCheckbox').prop('checked');
+
+        getData(activityChecked, journalnoteChecked, documentChecked);
+    });
+    
 });
 
