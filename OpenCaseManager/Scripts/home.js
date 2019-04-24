@@ -76,8 +76,8 @@ $(document).ready(function () {
         }
         e.preventDefault();
     });
-
 });
+ 
 
 function displayChildren(response) {
     var result = JSON.parse(response);
