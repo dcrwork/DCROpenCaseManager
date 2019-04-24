@@ -124,9 +124,15 @@ function automaticSaveDraft() {
     }
 }
 
-function formatDate(date) {
-    var value = new Date(date);
-    return value.getDate() + "/" + (value.getMonth()+1) + "/" + value.getFullYear();
+function formatDate(_date) {
+    var value = new Date(_date);
+
+    var day = value.getDate() < 10 ? '0' + value.getDate() : value.getDate();
+    var month = value.getMonth + 1;
+        month = value.getMonth() < 10 ? "0" + value.getMonth() : value.getMonth();
+    var year = value.getFullYear();
+
+    return day + "/" + month + "/" + year;
 }
 
 $(function () {
@@ -171,6 +177,8 @@ $(function () {
     $("#datepicker").datepicker({ prevText: "Forrige" });
     var prevText = $("#datepicker").datepicker("option", "nextText");
     $("#datepicker").datepicker("option", "prevText", "Forrige");
+
+    $("#datepicker").val(formatDate(new Date().toString()));
 });
 
 
@@ -204,9 +212,8 @@ function submitFiles(fileName, textContents) {
 
 function uploadFile(file, instanceId, fileName) {
     if (fileName == "") { fileName = "NA" };
-    console.log(file, instanceId, fileName)
     var eventDateTime = $(".ui-datepicker").val() + " " + $(".timepicker").val();
-    console.log(eventDateTime);
+  
     if (fileName != '') {
         $.ajax({
             url: window.location.origin + "/api/records/AddDocument",
@@ -239,16 +246,52 @@ function closeJournalNotatWindow() {
     window.close()
 }
 
+function addMinutsToTime(currentTime, minutsToAdd) {
+    var timeValues = currentTime.split(':');
+    var h = parseInt(timeValues[0]);
+    var m = parseInt(timeValues[1]) + minutsToAdd;
+
+    while (m < 0) {
+        h = h - 1
+        m = m + 60;
+    }
+    h = h < 0 ? 23 : h; 
+
+    var h = (h + Math.floor(m / 60)) % 24; 
+    var m = m % 60; 
+
+    var m = m < 10 ? '0' + m : m;
+
+    return h + ':' + m;
+}
+
+function incrementTime() {
+    var currentTime = $('input.timepicker').val()
+    var newTime = addMinutsToTime(currentTime, 15);
+    $('input.timepicker').val(newTime)
+}
+
+function decrementTime() {
+    var currentTime = $('input.timepicker').val()
+    var newTime = addMinutsToTime(currentTime, -15);
+    $('input.timepicker').val(newTime);
+}
+
 $(document).ready(function () {
+    var now = new Date();
+    var latestQuarter = now.getMinutes() - (now.getMinutes() % 15);
+    var defaultTime = now.getHours() + ':' + latestQuarter;
+
     $('input.timepicker').timepicker({
         timeFormat: 'HH:mm',
+        defaultTime: defaultTime,
         interval: 30,
         minTime: '0000',
         maxTime: '2359',
         startTime: '06',
         dynamic: false,
         dropdown: true,
-        scrollbar: true
+        scrollbar: true,
     });
 });
 
@@ -287,9 +330,8 @@ function updateFiles(fileName, textContents) {
     var instanceId = $.urlParam("id");
     var file = makeTextFile(textContents);
 
-    console.log(file, instanceId, fileName)
     var eventDateTime = $(".ui-datepicker").val() + " " + $(".timepicker").val();
-    console.log(eventDateTime);
+
     if (fileName != '') {
         $.ajax({
             url: window.location.origin + "/api/records/UpdateDocument",

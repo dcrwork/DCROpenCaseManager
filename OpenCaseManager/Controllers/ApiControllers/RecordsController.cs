@@ -365,7 +365,7 @@ namespace OpenCaseManager.Controllers.ApiControllers
             var eventTime = DateTime.Now;
             try
             {
-                eventTime = Convert.ToDateTime(request.Headers["eventTime"]);
+                eventTime = request.Headers["eventTime"].parseDanishDateToDate();
             }
             catch (Exception) { }
             var filePath = string.Empty;

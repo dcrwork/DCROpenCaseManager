@@ -30,7 +30,13 @@
     <h3>Opret journalnotat</h3>
     <input type="text" placeholder=" Titel" id="input-journal-title" autocomplete="off" />
     <div class="change-date-div"> <label id="change-date-label">Hændelsesdato: </label><input type="text" class="ui-datepicker change-date-link" value="@date" placeholder="@date" id="datepicker" autocomplete="off" /> </div>
-    <div class="change-time-div"> <label id="change-time-label">Hændelsestidspunkt: </label><input type="text" class="timepicker" /> </div>
+    <div class="change-time-div">
+        <label id="change-time-label">Hændelsestidspunkt: </label><input type="text" class="timepicker" />
+        <div class="timeAdjustButtons">
+            <a><i class="arrow up" onclick="incrementTime()"> </i> </a>
+            <a><i class="arrow down" onclick="decrementTime()"></i> </a>
+        </div>
+    </div>
     <div id="input-journal-note" placeholder="Skriv journalnotat her..."></div>
     <div class="journalNotatButtons">
         <button class="cancel-journal-note-button" onclick="closeJournalNotatWindow();">Annuller</button>
