@@ -15,4 +15,10 @@
 function toggleSearch() {
     $("#search").toggleClass('show');
     $("#search").toggleClass('hide');
+
+    if ($("#search").hasClass('show')) {
+        $('main').css('margin-top', -40);
+    } else {
+        $('main').css('margin-top', 0);
+    }
 }

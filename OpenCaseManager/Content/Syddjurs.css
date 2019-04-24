@@ -93,12 +93,11 @@ div.search-field input {
     min-width: 527px;
     max-width: 527px;
     margin-top: 10px;
-    position: relative;
     padding: 10px 40px 10px 10px;
     font-size: 16px;
     border: 2px solid #9C1A5E;
     border-radius: 5px;
-    position: absolute;
+    display: inline-block;
 }
 
     div.search-field input:focus {
