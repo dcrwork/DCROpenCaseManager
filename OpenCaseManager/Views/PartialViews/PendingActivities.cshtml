@@ -19,50 +19,49 @@
             width: 100%;
         }
 
+        .pendingActivitiesTableBody td {
+            overflow: hidden;
+        }
+
     /* Tooltip container */
     .tooltipTip {
-        position: relative;
-        display: inline-block;
-        border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
+        display: inline;
     }
 
-        /* Tooltip text */
-        .tooltipTip .tooltipTiptext {
-            visibility: hidden;
-            width: 120px;
-            background-color: #555;
-            color: #fff;
-            text-align: center;
-            padding: 5px 0;
-            border-radius: 6px;
-            /* Position the tooltip text */
-            position: absolute;
-            z-index: 999;
-            bottom: 125%;
-            left: 50%;
-            margin-left: -60px;
-            /* Fade in tooltip */
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
+    .tooltipTip-wrapper {
+        width: 25%;
+        position: absolute;
+        visibility: hidden;
+        margin: 40px 20px;
+    }
 
-            /* Tooltip arrow */
-        .tooltipTip .tooltipTiptext::after {
+    .tooltipTip:hover .tooltipTip-wrapper {
+        visibility: visible;
+        opacity: 1;
+    }
+
+    .tooltipTiptext {
+        display: block;
+        position: absolute;
+        bottom: 125%;
+        padding: 10px;
+        color: #4a4a4a;
+        text-align: center;
+        border: none;
+        border-radius: 5px;
+        background: #EFEFEF;
+    }
+
+        .tooltipTiptext::after {
             content: "";
             position: absolute;
-            top: 100%;
-            left: 50%;
-            margin-left: -5px;
+            top: 43%;
+            left: 0%;
+            margin-left: -10px;
             border-width: 5px;
             border-style: solid;
-            border-color: #555 transparent transparent transparent;
+            border-color: transparent #EFEFEF transparent transparent;
         }
-
-        /* Show the tooltip text when you mouse over the tooltip container */
-        .tooltipTip:hover .tooltipTiptext {
-            visibility: visible;
-            opacity: 1;
-        } 
 </style>
 
 <table class="table pendingActivitiesTable table-striped">
@@ -75,8 +74,10 @@
 </table>
 
 <script>
+    var childId;
+
     $(document).ready(function () {
-        var childId = (window.location.pathname == "/child") ? App.getParameterByName("id", window.location.href) : null;
+        childId = (window.location.pathname == "/child") ? App.getParameterByName("id", window.location.href) : null;
 
         query = {
             "type": "SELECT",
@@ -123,9 +124,12 @@
         var instanceLink = "../Instance?id=" + item.InstanceId;
 
         var returnHtml = "<tr class='trStyleClass'><td width='16px'><img src='../Content/Images/priorityicon.svg' height='16' width='16'/></td>";
-        returnHtml += "<td><div class='tooltipTip'>Hover over me<span class='tooltipTiptext'> Tooltip text</span></div></td>";
+
+        if (childId == null) {
+            returnHtml += "<td><a class='tooltipTip' href='" + instanceLink + "'>" + item.EventTitle + "<span class='tooltipTip-wrapper'><span class='tooltipTiptext'>" + item.Name + "<br> " + item.InstanceTitle + "</span></span></a></td>";
+        } else {
+            returnHtml += "<td><a class='tooltipTip' href='" + instanceLink + "'>" + item.EventTitle + "<span class='tooltipTip-wrapper'><span class='tooltipTiptext'>" + item.InstanceTitle + "</span></span></a></td>";
+        }
         return returnHtml;
     }
 </script>
-
-<!-- <a href='" + instanceLink + "'>" + item.EventTitle + "</a>-->

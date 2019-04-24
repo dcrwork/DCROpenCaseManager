@@ -201,7 +201,7 @@
         var query = {
             "type": "SELECT",
             "entity": "Instance",
-            "resultSet": ["Title", "CaseNoForeign", "CaseLink", "CurrentPhaseNo", "Description", "NextDeadline"],
+            "resultSet": ["Title", "CaseNoForeign", "CaseLink", "CurrentPhaseNo", "Description", "NextDeadline", "IsOpen"],
             "filters": [
                 {
                     "column": "Id",
@@ -671,8 +671,9 @@
             $('.caseLink').show();
             $('#entityLink').attr('href', item.CaseLink);
         }
-        
-        $('#instanceTitle').append(getStatus(item.NextDeadline))
+
+        if (item.IsOpen) $('#instanceTitle').append(getStatus(item.NextDeadline));
+        else $('#instanceTitle').append("<span class='dot dotGrey'></span>");
     }
 
     function getProcessHtml(item) {
