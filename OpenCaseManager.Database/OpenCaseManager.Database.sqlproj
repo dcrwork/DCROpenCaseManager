@@ -122,4 +122,7 @@
   <ItemGroup>
     <PostDeploy Include="dbo\Data\Script.PreDeployment.sql" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="dbo\Functions\GetAllEnabledEvents.sql" />
+  </ItemGroup>
 </Project>
