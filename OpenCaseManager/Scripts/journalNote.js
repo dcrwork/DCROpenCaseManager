@@ -316,9 +316,7 @@ $(document).on('click', '.change-journal-note-button', function (event) {
 
 function saveFile() {
     var documentName = $('#input-journal-title').val();
-    var journalText = "<div>" + $('#input-journal-note').val() + "</div>";
-    
-    
+    var journalText = "<div>" + $('#input-journal-note').html() + "</div>";
 
     if (!alreadyDrafted)
     {
