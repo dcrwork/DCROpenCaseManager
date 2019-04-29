@@ -9,13 +9,13 @@ namespace OpenCaseManager.Controllers
     [Authorize]
     public class ChildInstanceController : Controller
     {
-        // GET: Instance
+        // GET: ChildInstance
         public ActionResult Index()
         {
             return View();
         }
 
-        // GET: Instance
+        // GET: ChildInstance
         public ActionResult Search(string query)
         {
             return View();
