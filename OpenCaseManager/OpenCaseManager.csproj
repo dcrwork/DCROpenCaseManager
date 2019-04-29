@@ -311,6 +311,7 @@
     <Compile Include="Commons\MyFontResolverPdfSharp.cs" />
     <Compile Include="Controllers\ChildController.cs" />
     <Compile Include="Controllers\FileController.cs" />
+    <Compile Include="Controllers\MyChildrenController.cs" />
     <Compile Include="Controllers\JournalNoteController.cs" />
     <Compile Include="Managers\DocumentManager.cs" />
     <Compile Include="Managers\IDocumnentManager.cs" />
@@ -421,6 +422,7 @@
     <Content Include="Scripts\child.js" />
     <Content Include="Scripts\createprocess.js" />
     <Content Include="Scripts\formserver.js" />
+    <Content Include="Scripts\myChildren.js" />
     <Content Include="Scripts\htmlRender.js" />
     <Content Include="Scripts\jasmine\boot.js" />
     <Content Include="Scripts\jasmine\console.js" />
@@ -1180,6 +1182,8 @@
     <Content Include="Views\JournalNote\Index.cshtml" />
     <Content Include="Views\PartialViews\PendingActivities.cshtml" />
     <Content Include="Views\PartialViews\AddDocumentModal.cshtml" />
+    <Content Include="Views\MyChildren\Index.cshtml" />
+    <Content Include="Views\MyChildren\UnAuthorized.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
