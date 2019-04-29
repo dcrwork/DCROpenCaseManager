@@ -98,6 +98,7 @@ div.search-field input {
     border: 2px solid #9C1A5E;
     border-radius: 5px;
     display: block;
+    outline: none;
 }
 
     div.search-field input:focus {
