@@ -168,6 +168,7 @@ table.entityDetailTable tr th {
 
 table.entityDetailTable {
     margin: 0px;
+    border: none;
 }
 
 .drop-area {
