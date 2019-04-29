@@ -7,5 +7,3 @@ CREATE TABLE [dbo].[StamdataDummyData] (
     [Postcode]			int				NULL,
     CONSTRAINT [PK_StamdataDummyData] PRIMARY KEY CLUSTERED ([Id] ASC)
 );
-
-drop table StamdataDummyData;
