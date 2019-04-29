@@ -77,7 +77,7 @@ function showChildInstances(result) {
 
 function getChildInstanceHtml(item) {
     var open = (item.IsOpen) ? "" : "instanceClosed";
-    var instanceLink = "../Instance?id=" + item.Id;
+    var instanceLink = "../ChildInstance?id=" + item.Id;
     var numberOfPending = (item.PendingAndEnabled == 0) ? "" : item.PendingAndEnabled;
 
     var returnHtml = "<tr class='trStyleClass " + open + "'>";

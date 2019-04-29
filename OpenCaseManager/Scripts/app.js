@@ -658,7 +658,7 @@
     }
 
     function getMyInstanceHtml(item) {
-        return '<tr class="trStyleClass"><td><a href="/Instance?id=' + item.Id + '"> ' + item.Title + '</a></td ></tr>';
+        return '<tr class="trStyleClass"><td><a href="/ChildInstance?id=' + item.Id + '"> ' + item.Title + '</a></td ></tr>';
     }
 
     function getInstanceHtml(item) {
@@ -812,7 +812,7 @@
         else
             item.IsOpen = translations.Close;
         var returnHtml = '';
-        returnHtml = '<tr class="trStyleClass"><td> <a href="../Instance?id=' + item.Id + '">' + item.Title + '</a></td><td>' + item.CaseNoForeign + '</td><td>' + item.Responsible + '</td><td>' + item.IsOpen + '</td></tr>';
+        returnHtml = '<tr class="trStyleClass"><td> <a href="../ChildInstance?id=' + item.Id + '">' + item.Title + '</a></td><td>' + item.CaseNoForeign + '</td><td>' + item.Responsible + '</td><td>' + item.IsOpen + '</td></tr>';
         return returnHtml;
     }
 

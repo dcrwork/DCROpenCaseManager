@@ -1,119 +1,38 @@
-﻿<style>
-    .nav-pills > li.active > a, .nav-pills > li.active > a:hover, .nav-pills > li.active > a:focus {
-        color: black;
-        background-color: #fff;
-    }
-
-    .nav-pills {
-        display: flex;
-        justify-content: center;
-    }
-
-        .nav-pills .a {
-            font-size: 30px;
-        }
-
-        .nav-pills > li.active > a, .nav-pills > a:hover {
-            text-decoration: underline;
-        }
-
-    .nav > li > a {
-        color: black;
-        font-size: 20px;
-    }
-
-        .nav > li > a:hover, .nav > li > a:focus {
-            text-decoration: underline;
-            background-color: white;
-        }
-
-    .nav li + li:after {
-        content: "";
-        position: absolute;
-        left: 0;
-        border-left: solid 2px black;
-        top: 0;
-        bottom: 0;
-        padding: 0;
-    }
-
-    .nav > li > a {
-        padding: 0px 15px;
-    }
-
-    .nav-pills {
-        padding: 15px 15px;
-    }
-
-    .wholeActionsPage {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        margin: 40px 60px 0px 60px;
-    }
-
-    .table > thead > tr > th,
-    .table > tbody > tr > th,
-    .table > tfoot > tr > th,
-    .table > thead > tr > td,
-    .table > tbody > tr > td,
-    .table > tfoot > tr > td {
-        border-top: none;
-    }
-
-    #instanceTitle .dot {
-        margin-left: 20px;
-        height: 25px;
-        width: 25px;
-    }
-
-</style>
-
+﻿
 @{
-    ViewBag.Title = "Indsats"; //This will be overwritten when the page is fully loaded
+    ViewBag.Title = "Instance";
 }
 
+@Html.Partial("~/Views/PartialViews/Instruction.cshtml")
+@Html.Partial("~/Views/PartialViews/TasksWithNote.cshtml")
 
-<div class="wholeActionsPage">
-    <div class="buttonsBox">
-        @Html.Partial("~/Views/PartialViews/AddButton.cshtml", new ViewDataDictionary { { "add-text", "Tilføj dokument" }, { "onClick", "addDocument()" } })
-        @Html.Partial("~/Views/PartialViews/AddButton.cshtml", new ViewDataDictionary { { "add-text", "Tilføj journalnotat" }, { "onClick", "CreateJournalNoteView()" } })
+<div class="row tableDataRow">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="phaseBlock">
+            <ul class="phaseUl" id="processPhase"></ul>
+        </div>
     </div>
+</div>
 
-    <div class="tabsBox">
+<div class="row tableDataRow">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
         <table class="table table-responsive entityDetailTable">
             <tr>
                 <th class="caseTitle"><span id="instanceTitle"></span></th>
+                <td><span style="float:right;display:none;" class="caseLink"><a target="_blank" id="entityLink" href="#"><img width="12px" src="../content/images/caseLink.png"></a></span><span style="float:right;display:none;padding-right:10px;" class="caseNum"><span id="instanceCaseNo"></span></span></td>
             </tr>
         </table>
-        <div>
-            <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
-                <li class="nav-item active">
-                    <a class="nav-link" id="pills-activitiesb" data-toggle="tab" href="#pills-activities" role="tab" aria-controls="pills-activities" aria-selected="false">Aktiviteter</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" id="pills-document-tab" data-toggle="tab" href="#pills-document" role="tab" aria-controls="pills-document" aria-selected="false">Dokumenter</a>
-                </li>
-            </ul>
-            <div class="tab-content" id="pills-tabContent">
-                <div class="tab-pane fade in active" id="pills-activities" role="tabpanel" aria-labelledby="pills-activities">
-                    @Html.Partial("~/Views/PartialViews/Tasks.cshtml")
-                </div>
-                <div class="tab-pane fade in" id="pills-document" role="tabpanel" aria-labelledby="pills-document">
-                    @Html.Partial("~/Views/PartialViews/Document.cshtml")
-                </div>
-            </div>
+    </div>
+</div><!-- Row End -->
+
+<div class="row tableDataRow">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <h4 class="tasksHeading"><span data-locale data-apply="text" data-key="InstanceTasks">Instance Tasks</span></h4>
+        <div class="table-responsive" style="border:none">
+            @Html.Partial("~/Views/PartialViews/Tasks.cshtml")
         </div>
-    </div>
-
-    <div class="stamdataBox">
-        @Html.Partial("~/Views/PartialViews/Stamdata.cshtml")
-    </div>
+    </div><!-- Cols Div End -->
 </div><!-- Row Div End -->
-
-<div class="addDocumentModal">
-    @Html.Partial("~/Views/PartialViews/AddDocumentModal.cshtml")
-</div>
 
 <script src="~/Scripts/instance.js"></script>
 
@@ -130,18 +49,7 @@
         if (!results[2]) return '';
         return decodeURIComponent(results[2].replace(/\+/g, " "));
     }
-    // Checks if InstanceTitle has been set every 100 milliseconds, and sets the title of the tab to the InstanceTitle when it is set.
-    $(window).ready(function () {
-        var i = setInterval(function () {
-            var tabTitle = $('#instanceTitle').text();
-            if (tabTitle.length != 0) {
-                clearInterval(i);
-                // safe to execute your code here
-                $('head title', window.parent.document).text(tabTitle);
-            }
-        }, 100);
-    });
 </script>
 <script src="~/Scripts/task.js"></script>
-<script src="~/Scripts/journalNoteCreate.js" type="text/javascript"></script>
-<script src="~/Scripts/addDocument.js" type="text/javascript"></script>
+
+@Html.Partial("~/Views/PartialViews/Document.cshtml")
