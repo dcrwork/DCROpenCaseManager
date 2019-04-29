@@ -384,11 +384,17 @@ namespace OpenCaseManager.Controllers.ApiControllers
                 eventTime = request.Headers["eventTime"].parseDanishDateToDate();
             }
             catch (Exception) { }
+            var isDraft = false;
+            try
+            {
+                isDraft = Convert.ToBoolean(request.Headers["isDraft"]);
+            }
+            catch (Exception) { }
             var filePath = string.Empty;
             var documentId = string.Empty;
             if (fileType == "JournalNoteBig")
             {
-                var addedDocument = _documentManager.AddDocument(instanceId, fileType, givenFileName, fileName, eventId, eventTime, _manager, _dataModelManager);
+                var addedDocument = _documentManager.AddDocument(instanceId, fileType, givenFileName, fileName, eventId, isDraft, eventTime, _manager, _dataModelManager);
                 filePath = addedDocument.Item1;
                 documentId = addedDocument.Item2;
             }
@@ -427,6 +433,12 @@ namespace OpenCaseManager.Controllers.ApiControllers
             try
             {
                 eventTime = Convert.ToDateTime(request.Headers["eventTime"]);
+            }
+            catch (Exception) { }
+            var isDraft = false;
+            try
+            {
+                isDraft = Convert.ToBoolean(request.Headers["isDraft"]);
             }
             catch (Exception) { }
             if (isNewFileAdded)
@@ -521,7 +533,7 @@ namespace OpenCaseManager.Controllers.ApiControllers
                     throw ex;
                 }
             }
-            UpdateDocument(id, givenFileName, fileLink);
+            UpdateDocument(id, givenFileName, fileLink, isDraft.ToString());
             if (fileType == "JournalNoteBig") UpdateJournalHistoryDocument(id, givenFileName, eventTime);
 
             return Ok(Common.ToJson(new { }));
@@ -926,13 +938,17 @@ namespace OpenCaseManager.Controllers.ApiControllers
         /// <param name="documentName"></param>
         /// <param name="type"></param>
         /// <param name="link"></param>
-        private void UpdateDocument(string id, string documentName, string link)
+        private void UpdateDocument(string id, string documentName, string link, string isDraft)
         {
             _dataModelManager.GetDefaultDataModel(Enums.SQLOperation.UPDATE, DBEntityNames.Tables.Document.ToString());
             _dataModelManager.AddParameter(DBEntityNames.Document.Title.ToString(), Enums.ParameterType._string, documentName);
             if (!string.IsNullOrEmpty(link))
             {
                 _dataModelManager.AddParameter(DBEntityNames.Document.Link.ToString(), Enums.ParameterType._string, link);
+            }
+            if (!string.IsNullOrEmpty(isDraft))
+            {
+                _dataModelManager.AddParameter(DBEntityNames.Document.IsDraft.ToString(), Enums.ParameterType._boolean, isDraft);
             }
             _dataModelManager.AddFilter(DBEntityNames.Document.Id.ToString(), Enums.ParameterType._int, id, Enums.CompareOperator.equal, Enums.LogicalOperator.none);
             _manager.UpdateData(_dataModelManager.DataModel);
