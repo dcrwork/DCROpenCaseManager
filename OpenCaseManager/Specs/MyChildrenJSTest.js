@@ -59,7 +59,7 @@ describe("addZero", function () {
         }
     });
 
-    it('does not append 0 to I, if I only has one digit', function () {
+    it('does not append 0 to I, if I has more than one digit', function () {
             // Arrange
             var i = '10'
             var expected = i.toString() ;
