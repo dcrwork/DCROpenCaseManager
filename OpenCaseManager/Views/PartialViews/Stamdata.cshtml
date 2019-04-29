@@ -14,9 +14,10 @@
         height: auto;
         padding: 20px;
         width: 230px;
+        margin-top: 15px;
     }
 
-    .glyphicon {
+    .glyphiconStamdata {
         margin-right: 5px;
     }
 
@@ -36,41 +37,55 @@
     .glyphicon-plus, .glyphicon-minus {
         color: #9C1A5E;
     }
-   
-    
-
 </style>
 
 
 <div class="stamdata">
     <h3 class="headline-stamdata">Stamdata</h3>
     <div>
+        <h5><b>Sagsnummer</b></h5> <!-- AcadreSagsnummer -->
+        <p>#73283</p>
         <h5><b>Navn</b></h5>
         <p>Louise Nielsen</p>
-        <h5><b>CPR</b></h5>
-        <p>123456-7890</p>
-        <h5><b>Køn</b></h5>
-        <p>Kvinde</p>
         <h5><b>Adresse</b></h5>
         <p>Gade 2, 2740 Skovlunde</p>
-        <h5><b>Sagsnummer</b></h5>
-        <p>#73283</p>
+        <h5><b>Forældremyndighed</b></h5>
+        <p>Fælles</p>
+        <h5><b>Skole</b></h5>
+        <p>Holmegårdskolen</p>
+        <h5><b>Alder</b></h5>
+        <p>13</p>
     </div>
     <div class="udvidet-stamdata">
         <div class="table-responsive information">
             <h3 class="headline-stamdata">Udvidet stamdata</h3>
             <div>
-                <h5><b>Forælder</b></h5>
-                <p>Helle Nielsen</p>
-                <h5><b>CPR</b></h5>
+                <h5><b>Mor</b></h5>
                 <p>987654-3210</p>
-                <h5><b>Køn</b></h5>
-                <p>Kvinde</p>
-                <h5><b>Adresse</b></h5>
-                <p>Gade 2, 2740 Skovlunde</p>
+                <p>Helle Nielsen</p>
+                <p>Gade 2</p>
+                <p>2740 Skovlunde</p>
             </div>
+            <div>
+                <h5><b>Far</b></h5>
+                <p>070867-4231</p>
+                <p>Lars Nielsen</p>
+                <p>Gade 2</p>
+                <p>2740 Skovlunde</p>
+            </div>
+            <div>
+                <h5><b>Søskende 1</b></h5>
+                <p>070807-4222</p>
+                <p>Gertrud Nielsen</p>
+            </div>
+            <div>
+                <h5><b>Søskende 2</b></h5>
+                <p>070299-4263</p>
+                <p>Per Nielsen</p>
+            </div>
+
         </div>
-        <h4 class="expander"><span class="glyphicon glyphicon-plus"></span><span class="expand-text" data-locale data-apply="text">Se udvidet stamdata</span></h4>
+        <h4 class="expander"><span class="glyphicon glyphiconStamdata glyphicon-plus"></span><span class="expand-text" data-locale data-apply="text">Se udvidet stamdata</span></h4>
     </div>
 </div>
 

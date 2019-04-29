@@ -83,18 +83,21 @@ ul.welcome {
     ul.welcome li a {
         display: block;
         color: #4a4a4a;
-        font-size: 10px;
+        font-size: 14px;
         text-align: end;
         text-decoration: none;
+        cursor: default;
     }
 
 div.search-field input {
-    width: 100%;
-    position: relative;
+    min-width: 529px;
+    max-width: 529px;
+    margin-top: 10px;
     padding: 10px 40px 10px 10px;
     font-size: 16px;
     border: 2px solid #9C1A5E;
     border-radius: 5px;
+    display: block;
 }
 
     div.search-field input:focus {
@@ -111,6 +114,8 @@ div.search-field i {
     font-size: 21px;
     cursor: pointer;
 }
+
+
 
 form.searchPageForm div.search-field input {
     border: 2px solid #208fcc;

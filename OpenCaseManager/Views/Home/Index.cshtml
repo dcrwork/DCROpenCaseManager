@@ -1,25 +1,17 @@
 ﻿<style>
     .containerChildren {
         display: flex;
-        flex-direction: column;
+        flex-direction: row;
+        justify-content: space-between;
         margin: 40px 60px 0px 60px;
     }
 
+    .pendingActivitiesBox {
+        margin-top: 16px;
+    }
+
     .leftContainer {
-        width: 230px;
-        margin: 10px;
-    }
-
-    .childrenPage {
-        display: flex;
-        flex-direction: row;
-    }
-
-    .children{
-        max-width: 100vw;
-        flex-grow: 1;
-        margin-left: 6vw;
-        margin-right: 8%;
+        max-width: 230px;
     }
 
     .childrenHeader {
@@ -28,19 +20,9 @@
         font-weight: lighter;
         margin-bottom: 20px;
     }
-    .buttonView {
-        align-items: flex-end;
-        margin-top: -7%;
-        margin-bottom: 25px;
-    }
 
     .headline {
-        color: #4a4a4a;
-        font-size: xx-large;
-        padding: 0px 8px 8px 0px;
-        font-weight: bold;
-        margin-top: 0.3%;
-        margin-bottom: 3%;
+        margin-bottom: 67px !important;
     }
 </style>
 @{
@@ -51,31 +33,36 @@
 <script type="text/javascript" src="~/Scripts/home.js"></script>
 
 <div class="containerChildren">
-    <div class="childrenPage">
-        <div class="leftContainer">
-            <div class="buttonView">
-                <div data-toggle="modal" data-target="#add-child-modal" class="add-child-button">
-                    @Html.Partial("~/Views/PartialViews/AddButton.cshtml", new ViewDataDictionary { { "add-text", "Tilføj barn" } })
-                    </div>
-                </div>
-                @Html.Partial("~/Views/PartialViews/PendingActivities.cshtml")
+    <div class="leftContainer">
+        <div class="buttonView">
+            <div data-toggle="modal" data-target="#add-child-modal" class="add-child-button">
+                @Html.Partial("~/Views/PartialViews/AddButton.cshtml", new ViewDataDictionary { { "add-text", "Tilføj barn" } })
             </div>
-        <div class="children">
-            <h1 class="headline">Mine Børn</h1>
-            <table class="table tasksTable table-striped">
-                <thead class="childrenHeader">
-                    <tr>
-                        <th width="2%">Status</th>
-                        <th width="6%">Antal aktiviteter</th>
-                        <th width="8%">Navn</th>
-                        <th width="8%">CPR-nr</th>
-                        <th width="8%">Ansvarlig</th>
-                        <th width="12%">Næste Deadline</th>
-                    </tr>
-                </thead>
-                <tbody id="allMyChildren"></tbody>
-            </table>
         </div>
+        <div class="pendingActivitiesBox">
+            @Html.Partial("~/Views/PartialViews/PendingActivities.cshtml")
+        </div>
+    </div>
+
+    <div class="tabsBox">
+        <table class="table headline table-responsive entityDetailTable">
+            <tr>
+                <th><span>Mine Børn</span></th>
+            </tr>
+        </table>
+        <table class="table tasksTable table-striped">
+            <thead class="childrenHeader">
+                <tr>
+                    <th width="6%">Status</th>
+                    <th width="140px">Antal aktiviteter</th>
+                    <th width="">Navn</th>
+                    <th width="170px">CPR-nr</th>
+                    <th width="">Ansvarlig</th>
+                    <th width="200px">Næste Deadline</th>
+                </tr>
+            </thead>
+            <tbody id="allMyChildren"></tbody>
+        </table>
     </div>
 </div>
 

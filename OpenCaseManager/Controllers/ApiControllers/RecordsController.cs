@@ -381,11 +381,17 @@ namespace OpenCaseManager.Controllers.ApiControllers
             var eventTime = DateTime.Now;
             try
             {
-                eventTime = Convert.ToDateTime(request.Headers["eventTime"]);
+                eventTime = request.Headers["eventTime"].parseDanishDateToDate();
             }
             catch (Exception) { }
             var filePath = string.Empty;
-            if (fileType == "JournalNoteBig") filePath = _documentManager.AddDocument(instanceId, fileType, givenFileName, fileName, eventId, eventTime, _manager, _dataModelManager);
+            var documentId = string.Empty;
+            if (fileType == "JournalNoteBig")
+            {
+                var addedDocument = _documentManager.AddDocument(instanceId, fileType, givenFileName, fileName, eventId, eventTime, _manager, _dataModelManager);
+                filePath = addedDocument.Item1;
+                documentId = addedDocument.Item2;
+            }
             else filePath = _documentManager.AddDocument(instanceId, fileType, givenFileName, fileName, eventId, _manager, _dataModelManager);
             try
             {
@@ -399,7 +405,7 @@ namespace OpenCaseManager.Controllers.ApiControllers
                 throw ex;
             }
 
-            return Ok(Common.ToJson(new { }));
+            return Ok(Common.ToJson(Convert.ToInt32(documentId)));
         }
 
         /// <summary>
@@ -417,7 +423,12 @@ namespace OpenCaseManager.Controllers.ApiControllers
             var instanceId = request.Headers["instanceId"];
             var isNewFileAdded = bool.Parse(request.Headers["isNewFileAdded"]);
             var fileLink = string.Empty;
-
+            var eventTime = DateTime.Now;
+            try
+            {
+                eventTime = Convert.ToDateTime(request.Headers["eventTime"]);
+            }
+            catch (Exception) { }
             if (isNewFileAdded)
             {
                 DeleteFileFromFileSystem(id, fileType, instanceId);
@@ -511,9 +522,11 @@ namespace OpenCaseManager.Controllers.ApiControllers
                 }
             }
             UpdateDocument(id, givenFileName, fileLink);
+            if (fileType == "JournalNoteBig") UpdateJournalHistoryDocument(id, givenFileName, eventTime);
 
             return Ok(Common.ToJson(new { }));
         }
+
 
         /// <summary>
         /// Delete Document
@@ -925,6 +938,15 @@ namespace OpenCaseManager.Controllers.ApiControllers
             _manager.UpdateData(_dataModelManager.DataModel);
         }
 
+        private void UpdateJournalHistoryDocument(string id, string documentName, DateTime eventTime)
+        {
+            _dataModelManager.GetDefaultDataModel(Enums.SQLOperation.UPDATE, DBEntityNames.Tables.JournalHistory.ToString());
+            _dataModelManager.AddParameter(DBEntityNames.JournalHistory.Title.ToString(), Enums.ParameterType._string, documentName);
+            _dataModelManager.AddParameter(DBEntityNames.JournalHistory.EventDate.ToString(), Enums.ParameterType._datetime, eventTime.ToString());
+            _dataModelManager.AddFilter(DBEntityNames.JournalHistory.DocumentId.ToString(), Enums.ParameterType._int, id, Enums.CompareOperator.equal, Enums.LogicalOperator.none);
+            _manager.UpdateData(_dataModelManager.DataModel);
+        }
+
         /// <summary>
         /// Select a document using Id
         /// </summary>
@@ -991,6 +1013,9 @@ namespace OpenCaseManager.Controllers.ApiControllers
                         break;
                     case "InstanceDocument":
                         path = Configurations.Config.InstanceFileLocation + "\\" + instanceId + "\\" + document.Rows[0]["Link"].ToString();
+                        break;
+                    case "JournalNoteBig":
+                        path = Configurations.Config.JournalNoteFileLocation + "\\" + instanceId + "\\" + document.Rows[0]["Link"].ToString();
                         break;
                 }
 
