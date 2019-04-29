@@ -117,6 +117,9 @@
     <Build Include="dbo\Functions\PendingActivities.sql" />
     <Build Include="dbo\Functions\ChildInstances.sql" />
     <Build Include="dbo\Functions\GetDataForAllMyChildren.sql" />
+    <Build Include="dbo\Tables\StamdataDummyData.sql" />
+    <Build Include="dbo\Tables\StamdataDummyDataExtension.sql" />
+    <Build Include="dbo\Views\StamdataView.sql" />
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="dbo\Data\Script.PreDeployment.sql" />
