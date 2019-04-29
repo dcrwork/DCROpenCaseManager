@@ -8,7 +8,7 @@
     font-style: normal;
 }
 
-table.tasksTable tbody tr td:nth-child(1) {
+table.tasksTable tbody tr td:nth-child(11) {
     font-family: "instanceStatus" !important;
     content: attr(data-icon);
     font-style: normal !important;

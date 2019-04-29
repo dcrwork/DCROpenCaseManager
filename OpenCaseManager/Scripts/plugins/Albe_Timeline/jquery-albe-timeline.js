@@ -5,57 +5,114 @@
  *
  * 2017, Albertino Júnior, http://albertino.eti.br
  */
-(function ($) {
-    updateTimeline();
-})(jQuery);
 
+    $(document).ready(function () {
+        var monthMenu = $('<select>').attr('id', 'timeline-month-selector');
+        var months = ['Januar', 'Februar', 'Marts', 'April', 'Maj', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'December'];
+        var year = getYearId();
+        updateMonthMenu(year, monthMenu, months);
 
+        updateTimeline(monthMenu);
 
+        // updates the month dropdown menu according to the year selected
+        $(document).on('change', '#timeline-menu', function () {
+            var year = getYearId();
+            updateMonthMenu(year, monthMenu, months);
+        });
 
-function updateTimeline() {
+        // toggles the filter checkboxes when the filter button is clicked
+        $(document).on('click', '#filterButton', function () {
+            $('.filterTypeWrapper').toggle("slide");
+        });
+});
+
+function updateMonthMenu(year, monthMenu, months) {
+    var defaultOption = $('<option>').attr('value', 12).append('');
+    monthMenu.empty();
+    monthMenu.append(defaultOption);
+    var monthsElements = $('div[id^="y' + year + '"]');
+
+    // adds months to dropdown menu
+    monthsElements.each(function (index) {       
+        if (index === 0) { return true; }
+        var monthSplit = (monthsElements[index].id).split("m");
+        var monthIndex = parseInt(monthSplit[1]);
+        
+        var monthOption = $('<option>').attr('value', monthIndex).append(months[monthIndex]);
+        monthMenu.append(monthOption);
+    });
+}
+
+function getMonthId() {
+    var id = $("#timeline-month-selector").children(":selected").attr("value");
+    return id;
+}
+
+function getYearId() {
+    var id = $("#timeline-menu").children(":selected").attr("value");
+    return id;
+}
+
+// go to the year and month selected 
+function goToTimeframe() {
+    var monthId = getMonthId();
+    var yearId = getYearId();
+    var id;
+
+    if (monthId == 12) {
+        id = '#y' + yearId;
+    } else {
+        id = '#a' + yearId + '-' + monthId + '-' + '1';
+    }
+
+    $('html, body').animate(
+        {
+            scrollTop: $(id).offset().top - 50,
+        },
+        500,
+        'linear'
+    )
+}
+
+// creates the timeline
+function updateTimeline(monthMenu) {
+
     $.fn.albeTimeline = function (json, options) {
         var _this = this;
         _this.html('');
 
-        // Mescla opções do usuário com o padrão
         var settings = $.extend({}, $.fn.albeTimeline.defaults, options);
 
-        var idioma = ($.fn.albeTimeline.languages.hasOwnProperty(settings.language)) ?
+        var language = ($.fn.albeTimeline.languages.hasOwnProperty(settings.language)) ?
             $.fn.albeTimeline.languages[settings.language] : { // da-DK
                 days: ['Mandag', 'Tirsdag', 'Onsdag', 'Torsdag', 'Fredag', 'Lørdag', 'Søndag'],
-                months: ['Januar', 'Februar', 'Marts', 'April', 'Maj', 'Juni', 'Juli', 'August', 'September', 'October', 'November', 'December'],
+                months: ['Januar', 'Februar', 'Marts', 'April', 'Maj', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'December'],
                 shortMonths: ['Jan', 'Feb', 'Mar', 'Apr', 'Maj', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
                 separator: 'den',
                 msgEmptyContent: 'Der var ikke noget.',
             };
 
-        // Se for passado 'string', convert para 'object'.
         if (typeof (json) == 'string') {
             json = $.parseJSON(json);
         }
 
-        // Exibe mensagem padão
         if ($.isEmptyObject(json)) {
-            console.warn(idioma.msgEmptyContent);
+            console.warn(language.msgEmptyContent);
             return;
         }
 
-        // Ordena pela data
         json = json.sort(function (a, b) {
             return (settings.sortDesc) ? (Date.parse(b['time']) - Date.parse(a['time'])) : (Date.parse(a['time']) - Date.parse(b['time']));
         });
 
         var yearMenu = $('<select>').attr('id', 'timeline-menu');
-        var monthMenu = $('<select>').attr('id', 'timeline-month-selector');
-        monthMenu.attr('onchange', 'updateTimeline()');
 
-        $.each(idioma.months, function (index, element) {
-            var option = $('<option>').attr('value', index).append(element);
-            monthMenu.append(option);
-        });
+        var findTimeFrameButton = $('<button>').attr('id', 'find-timeframe-button').text('Find');
+        findTimeFrameButton.attr('onclick', 'goToTimeframe()');
 
         var eTimeline = $('<section>').attr('id', 'timeline');
 
+        // appends the data to the timeline
         $.each(json, function (index, element) {
 
             var timelineType = element.type;
@@ -63,31 +120,32 @@ function updateTimeline() {
             var year = new Date(element.time).getFullYear();
             var month = new Date(element.time).getMonth();
             var createGroupYear = $(eTimeline).find('div.group' + year);
+            var createGroupMonth = $(eTimeline).find('div.group' + year + '-' + month);
 
-            // Se o agrupador não existe, cria.
+            // Create group if it doesnt exist
             if (createGroupYear.length === 0) {
                 createGroupYear = $('<div>').attr('id', ('y' + year)).addClass('group' + year).text(year);
 
                 $(eTimeline).append(createGroupYear);
-                
 
                 var anchorYear = $('<a>').attr('href', ('#y' + year)).text(year);
-                yearMenu.append($('<option>').append(anchorYear));
+                var yearOption = $('<option>').attr('value', year).append(anchorYear);
+                yearMenu.append(yearOption);
             }
 
-            
-            
-
+            if (createGroupMonth.length === 0) {
+                createGroupMonth = $('<div>').attr('id', ('y' + year + '-m' + month)).addClass('group' + year + '-' + month).text(language.months[month]);
+                $(eTimeline).append(createGroupMonth);
+            }
 
             if (month !== $('#timeline-month-selector').val()) {
-
                 /****************************************SLOT <article>****************************************/
                 var leftWrapper = $('<div>').addClass('leftWrapper');
                 var badge = $('<div>').addClass('badge');
-                badge.text(fnDateFormat(element.time, settings.formatDate, idioma));
+                badge.text(fnDateFormat(element.time, settings.formatDate, language));
 
                 var responsible = $('<p>').addClass('timelineResponsible');
-                responsible.text(element.responsible);
+                responsible.text(element.responsible || '');
 
                 badge.append(responsible);
                 leftWrapper.append(badge);
@@ -97,7 +155,6 @@ function updateTimeline() {
 
                 symbol.attr('title', timelineType);
                 ePanel.append(symbol);
-
 
                 if (element.header) {
                     var ePanelHead = $('<div>').addClass('panel-heading');
@@ -110,18 +167,14 @@ function updateTimeline() {
                 var ePanelBody = $('<div>').addClass('panel-body');
                 $.each(element.body, function (index2, value2) {
 
-                    // Elemento HTML
                     var e = $('<' + value2.tag + '>');
 
-                    // Atributos do elemento
                     $(value2.attr).each(function () {
                         $.each(this, function (index3, value3) {
-                            // Atributo especial, defido o 'class' ser palavra reservada no javascript.
                             (index3.toLowerCase() === 'cssclass') ? e.addClass(value3) : e.attr(index3, value3);
                         });
                     });
 
-                    // Conteúdo do elemento
                     if (value2.content)
                         e.html(value2.content);
 
@@ -135,20 +188,19 @@ function updateTimeline() {
                     ePanel.append(ePanelFooter);
                 }
 
-                // Adiciona o item ao respectivo agrupador.
-                var irmaos = createGroupYear.siblings('article[id^="a' + year + '"]');
+                var monthSiblings = createGroupMonth.siblings('article[id^="a' + year + '-' + month + '"]');
 
-                var slot = $('<article id="a' + year + '-' + (irmaos.length + 1) + '">').append(ePanel);
+                var slot = $('<article id="a' + year + '-' + month + '-' + (monthSiblings.length + 1) + '">').append(ePanel);
 
-                if (irmaos.length > 0)
-                    slot.insertAfter(irmaos.last());
+                if (monthSiblings.length > 0) {
+                    slot.insertAfter(monthSiblings.last());
+                }
                 else
-                    slot.insertAfter(createGroupYear);
+                    slot.insertAfter(createGroupMonth);
                 /****************************************FIM - SLOT <article> ****************************************/
-            }
+            }          
         });
 
-        // Marcador inicial da Timeline 
         var badge = $('<div>').addClass('badge').html('&nbsp;');
         var ePanel = $('<div>').addClass('timelinePanel').append(badge);
         eTimeline.append($('<article>').append(ePanel));
@@ -157,27 +209,17 @@ function updateTimeline() {
         }));
 
         $.each(eTimeline.find('article'), function (index, value) {
-            // Adiciona classe de animação.
             if (settings.effect && settings.effect != 'none')
                 $(this).addClass('animated ' + settings.effect);
-        });
+        }); 
 
-        // A exibição do menu depende da definição de visibilidade do agrupador.
-        if (settings.showGroup) {
-            if (settings.showMenu) {
-                yearMenu.appendTo(_this);
-                monthMenu.appendTo(_this);
-            }
-        } else {
-            $.each(eTimeline.find('div[class*="group"]'), function (index, value) {
-                $(this).css('display', 'none');
-            });
-        }
-        var groupWrapper = $('<div>').addClass('groupWrapper').append(yearMenu);
-        groupWrapper.append(monthMenu);
-        groupWrapper.appendTo(_this);
+        var filterTimeWrapper = $('<div>').addClass('filterTimeWrapper').append(yearMenu);
+        filterTimeWrapper.append(monthMenu);
+        filterTimeWrapper.append(findTimeFrameButton);        
+
+        filterTimeWrapper.appendTo(_this);
+
         eTimeline.appendTo(_this);
-        // return this;
     };
 
     $.fn.albeTimeline.languages = {};
@@ -189,15 +231,6 @@ function updateTimeline() {
         showMenu: true,
         sortDesc: true,
     };
-
-    // value = "YYYY-MM-DD" (ISO 8601)
-    // format =
-    // .:"dd MMMM"
-    // .:"dd/MM/yyyy"
-    // .:"dd de MMMM de yyyy"
-    // .:"DD, dd de MMMM de yyyy"
-    // .:"MM/dd/yyyy"
-    // .:"DD dd MMMM yyyy HH:mm:ss"
 
     var fnDateFormat = function (value, format, language) {
 
@@ -238,3 +271,4 @@ function updateTimeline() {
         return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
     };
 }
+
