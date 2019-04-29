@@ -77,7 +77,7 @@ $(function () {
     $(".timepicker").val(documentEventTime);
 
     $('#input-journal-title').on('input', function () {
-        console.log(numberOfChanges++);
+        numberOfChanges++;
     });
     var inputJournalNote = $('#input-journal-note');
     if (inputJournalNote != null) {
