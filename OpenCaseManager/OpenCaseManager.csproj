@@ -414,6 +414,7 @@
     <Content Include="Content\jquery.treegrid.css" />
     <Content Include="Content\noty\noty.css" />
     <Content Include="Content\noty\themes\mint.css" />
+    <Content Include="Content\myChildren.css" />
     <Content Include="HtmlTemplates\FormTemplate.html" />
     <Content Include="HtmlTemplates\InstructionsForActiveXOutlook.html" />
     <Content Include="HtmlTemplates\FormInstruction.html" />
