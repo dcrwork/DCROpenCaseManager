@@ -4,6 +4,9 @@ var documentText;
 var documentTitle;
 var documentEventDate;
 var documentEventTime;
+var timer = $.now()-1000;
+var numberOfChanges = 0;
+var intervalPause = false;
 
 $.urlParam = function (name) {
     var results = new RegExp('[\?&]' + name + '=([^&#]*)')
@@ -44,7 +47,6 @@ function CreateJournalNoteView() {
     var id = $.urlParam("id");
     var newWindow = window.open("/JournalNote/Create" + (id ? "?id=" + id : ""), "", "width=800,height=600");
     newWindow.alreadyDrafted = false;
-    //postwindow,dialog=yes,close=no,location=no,status=no,
 }
 
 function CreateJournalNoteViewWithLink() {
@@ -67,7 +69,6 @@ function CreateJournalNoteViewWithLink() {
             newWindow.documentEventTime = match[1];
             newWindow.documentEventDate = splitTime[0];
         });
-    //postwindow,dialog=yes,close=no,location=no,status=no,
 }
 
 
@@ -75,6 +76,10 @@ $(function () {
     $("#input-journal-title").val(documentTitle);
     $(".ui-datepicker").val(documentEventDate);
     $(".timepicker").val(documentEventTime);
+
+    $('#input-journal-title').on('input', function () {
+        numberOfChanges++;
+    });
     var inputJournalNote = $('#input-journal-note');
     if (inputJournalNote != null) {
 
@@ -83,8 +88,42 @@ $(function () {
             tagsToRemove: ['Redo']
         });
         inputJournalNote.trumbowyg('html', documentText);
+        inputJournalNote.trumbowyg().on('tbwchange', function () {
+            numberOfChanges++;
+        });
     }
 })
+
+function automaticSaveDraft() {
+    if ($.now() - timer > 2000 && numberOfChanges >= 10) {
+        saveFile();
+        new Noty({
+            type: 'alert',
+            theme: 'mint',
+            layout: 'topRight',
+            text: "Kladde gemt",
+            timeout: 2000,
+            progressBar: false,
+            container: '.custom-container2'
+        }).show()
+        timer = $.now();
+        numberOfChanges = 0;
+    }
+    else if ($.now() - timer > 10000 && numberOfChanges > 0) {
+        saveFile();
+        new Noty({
+            type: 'alert',
+            theme: 'mint',
+            layout: 'topRight',
+            text: "Kladde gemt",
+            timeout: 2000,
+            progressBar: false,
+            container: '.custom-container2'
+        }).show()
+        timer = $.now();
+        numberOfChanges = 0;
+    }
+}
 
 function formatDate(_date) {
     var value = new Date(_date);
@@ -156,16 +195,7 @@ function changedate(inputId, lableId) {
 }
 
 $(document).on('click', '.add-journal-note-button', function () {
-    var documentName = $('#input-journal-title').val();
-    var journalText = "<div>"+$('#input-journal-note').val()+"</div>";
-
-    // $('#dateLabel').textContent
-    if (!alreadyDrafted) {
-        submitFiles(documentName, journalText);  //It is only for testing right now that it will set it as true, in the final version it should always set it as false, and then the program will set it as true after 24 hours
-    }
-    else {
-        updateFiles(documentName, journalText);
-    }
+    saveFile();
     window.close();
 });
 
@@ -182,10 +212,11 @@ function submitFiles(fileName, textContents) {
 }
 
 function uploadFile(file, instanceId, fileName) {
-  
+    if (fileName == "") { fileName = "NA" };
     var eventDateTime = $(".ui-datepicker").val() + " " + $(".timepicker").val();
   
     if (fileName != '') {
+        intervalPause = true;
         $.ajax({
             url: window.location.origin + "/api/records/AddDocument",
             type: 'POST',
@@ -197,7 +228,7 @@ function uploadFile(file, instanceId, fileName) {
                 'eventTime': eventDateTime
             },
             data: file,
-            async: false,
+            async: true,
             cache: false,
             contentType: false,
             enctype: 'multipart/form-data',
@@ -207,6 +238,9 @@ function uploadFile(file, instanceId, fileName) {
                 var myRegexp = /(\d+)/gm;
                 var match = myRegexp.exec(documentId);
                 documentId = match[1];
+            },
+            complete: function () {
+                intervalPause = false;
             },
 
         });
@@ -268,6 +302,19 @@ $(document).ready(function () {
 
 $(document).on('click', '.change-journal-note-button', function (event) {
     event.preventDefault();
+    saveFile();
+    new Noty({
+        type: 'success',
+        theme: 'mint',
+        layout: 'topRight',
+        text: "Kladde gemt",
+        timeout: 2000,
+        progressBar: false,
+        container: '.custom-container'
+    }).show()
+});
+
+function saveFile() {
     var documentName = $('#input-journal-title').val();
     var journalText = "<div>" + $('#input-journal-note').val() + "</div>";
     
@@ -277,39 +324,21 @@ $(document).on('click', '.change-journal-note-button', function (event) {
     {
         submitFiles(documentName, journalText);
         alreadyDrafted = true;
-        new Noty({
-            type: 'success',
-            theme: 'mint',
-            layout: 'topRight',
-            text: "Kladde gemt",
-            timeout: 2000,
-            progressBar: false,
-            container: '.custom-container'
-        }).show()
     }
-    else
-    {
+    else {
         updateFiles(documentName, journalText);
-        new Noty({
-            type: 'success',
-            theme: 'mint',
-            layout: 'topRight',
-            text: "Kladde opdateret",
-            timeout: 2000,
-            progressBar: false,
-            container: '.custom-container'
-        }).show()
     }
-
-});
+}
 
 function updateFiles(fileName, textContents) {
+    if (fileName == "") { fileName = "NA" };
     var instanceId = $.urlParam("id");
     var file = makeTextFile(textContents);
 
     var eventDateTime = $(".ui-datepicker").val() + " " + $(".timepicker").val();
 
     if (fileName != '') {
+        intervalPause = true;
         $.ajax({
             url: window.location.origin + "/api/records/UpdateDocument",
             type: 'POST',
@@ -323,14 +352,22 @@ function updateFiles(fileName, textContents) {
                 'eventTime': eventDateTime
             },
             data: file,
-            async: false,
+            async: true,
             cache: false,
             contentType: false,
             enctype: 'multipart/form-data',
             processData: false,
+            complete: function () {
+                intervalPause = false;
+            },
 
         });
     }
 }
 
+window.setInterval(function () {
+    if (!intervalPause) {
+        automaticSaveDraft();
+    }
+}, 1000);
 
