@@ -229,7 +229,7 @@ section #timeline {
         }
 
 .leftWrapper {
-    width: 42%;
+    width: 46%;
     display: inline-block;
 }
 
@@ -237,7 +237,7 @@ section#timeline > article > div.timelinePanel div.badge {
     float: right;
     border-left: none;
     display: inline-block;
-    padding: 8px 16px !important;
+    padding: 8px 0px !important;
     top: 30px;
     color: #333 !important;
     position: relative;
