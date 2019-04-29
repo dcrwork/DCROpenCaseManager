@@ -17,7 +17,6 @@ header div.page-header {
 .page-header > div.pull-left {
     width: 200px;
     height: 85px;
-    background: url(../content/images/logo.png);
     background-repeat: no-repeat;
 }
 
@@ -65,15 +64,28 @@ div.page-header div.search-field {
 
 ul.menu-header-ul li a {
     display: block;
-    color: #9C1A5E;
-    text-align: center;
-    padding-top: 16px;
-    padding-right: 20px;
+    color: #4a4a4a;
+    font-size: 20px;
+    text-align: end;
+    padding-top: 4px;
+    padding-left: 20px;
     text-decoration: none;
 }
 
     ul.menu-header-ul li a:hover {
         text-decoration: underline;
+    }
+
+ul.welcome {
+    padding-top: 10px;
+    list-style-type: none;
+}
+    ul.welcome li a {
+        display: block;
+        color: #4a4a4a;
+        font-size: 10px;
+        text-align: end;
+        text-decoration: none;
     }
 
 div.search-field input {
@@ -513,6 +525,10 @@ img.newFormAddIcon {
 
 .dotRed {
     background-color: #E04141;
+}
+
+.dotGrey {
+    background-color: #EDEDED;
 }
 
 .statusColumn {

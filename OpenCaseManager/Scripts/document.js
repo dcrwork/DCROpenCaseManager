@@ -285,8 +285,7 @@ function getDocuments() {
 
     API.service('records', query)
         .done(function (response) {
-
-            console.log("data", response);
+            
             var result = JSON.parse(response)
             var list = "";
             if (result.length === 0)
