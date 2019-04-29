@@ -6,6 +6,7 @@ var documentEventDate;
 var documentEventTime;
 var timer = $.now()-1000;
 var numberOfChanges = 0;
+var intervalPause = false;
 
 $.urlParam = function (name) {
     var results = new RegExp('[\?&]' + name + '=([^&#]*)')
@@ -215,6 +216,7 @@ function uploadFile(file, instanceId, fileName) {
     var eventDateTime = $(".ui-datepicker").val() + " " + $(".timepicker").val();
   
     if (fileName != '') {
+        intervalPause = true;
         $.ajax({
             url: window.location.origin + "/api/records/AddDocument",
             type: 'POST',
@@ -226,7 +228,7 @@ function uploadFile(file, instanceId, fileName) {
                 'eventTime': eventDateTime
             },
             data: file,
-            async: false,
+            async: true,
             cache: false,
             contentType: false,
             enctype: 'multipart/form-data',
@@ -236,6 +238,9 @@ function uploadFile(file, instanceId, fileName) {
                 var myRegexp = /(\d+)/gm;
                 var match = myRegexp.exec(documentId);
                 documentId = match[1];
+            },
+            complete: function () {
+                intervalPause = false;
             },
 
         });
@@ -333,6 +338,7 @@ function updateFiles(fileName, textContents) {
     var eventDateTime = $(".ui-datepicker").val() + " " + $(".timepicker").val();
 
     if (fileName != '') {
+        intervalPause = true;
         $.ajax({
             url: window.location.origin + "/api/records/UpdateDocument",
             type: 'POST',
@@ -346,17 +352,22 @@ function updateFiles(fileName, textContents) {
                 'eventTime': eventDateTime
             },
             data: file,
-            async: false,
+            async: true,
             cache: false,
             contentType: false,
             enctype: 'multipart/form-data',
             processData: false,
+            complete: function () {
+                intervalPause = false;
+            },
 
         });
     }
 }
 
 window.setInterval(function () {
-    automaticSaveDraft();
+    if (!intervalPause) {
+        automaticSaveDraft();
+    }
 }, 1000);
 
