@@ -252,7 +252,7 @@
         
         var instanceLink = "#";
         if (isFrontPage) {
-            instanceLink = "../Instance?id=" + item.InstanceId;
+            instanceLink = "../ChildInstance?id=" + item.InstanceId;
         }
 
         returnHtml = '<tr isfrontPage="' + isFrontPage + '" name="description" class="trStyleClass">' +
@@ -286,7 +286,7 @@
         }
         var instanceLink = "#";
         if (isFrontPage) {
-            instanceLink = "../Instance?id=" + item.InstanceId;
+            instanceLink = "../ChildInstance?id=" + item.InstanceId;
         }
 
         returnHtml = '<tr isfrontPage="' + isFrontPage + '" name="description" class="trStyleClass">' +
@@ -326,7 +326,7 @@
         }
         var instanceLink = "#";
         if (isFrontPage) {
-            instanceLink = "../Instance?id=" + item.InstanceId;
+            instanceLink = "../ChildInstance?id=" + item.InstanceId;
         }
 
         returnHtml = '<tr isfrontPage="' + isFrontPage + '" name="description" class="trStyleClass">' +
