@@ -4,8 +4,7 @@ $(function () {
 
     async function setStamDataContent(childId) {
 
-        var result = await getStamData(childId)
-        console.log(result);
+        var result = await getStamData(childId);
         var firstElement = result[0];
         
         var sagsnrp = $("<p>").text(firstElement.Sagsnummer);
@@ -57,29 +56,7 @@ $(function () {
     var childId = getParameterByName("id", window.location.href);
 
     setStamDataContent(childId);
-
-   /*
-    <h5><b>Sagsnummer</b></h5> <!--AcadreSagsnummer -->
-        <p>#73283</p>
-        <h5><b>Navn</b></h5>
-        <p>Louise Nielsen</p>
-        <h5><b>Adresse</b></h5>
-        <p>Gade 2, 2740 Skovlunde</p>
-        <h5><b>Forældremyndighed</b></h5>
-        <p>Fælles</p>
-        <h5><b>Skole</b></h5>
-        <p>Holmegårdskolen</p>
-        <h5><b>Alder</b></h5>
-        <p>13</p>
-*/
-
-
 })
-
-
-
-
-
 
 
 
