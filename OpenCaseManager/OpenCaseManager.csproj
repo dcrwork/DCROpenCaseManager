@@ -413,6 +413,7 @@
     <Content Include="Content\journalnote.css" />
     <Content Include="Content\jquery.treegrid.css" />
     <Content Include="Content\noty\noty.css" />
+    <Content Include="Content\tabs.css" />
     <Content Include="Content\noty\themes\mint.css" />
     <Content Include="HtmlTemplates\FormTemplate.html" />
     <Content Include="HtmlTemplates\InstructionsForActiveXOutlook.html" />
