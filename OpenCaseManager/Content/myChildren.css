@@ -1,0 +1,25 @@
+﻿.containerChildren {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin: 40px 60px 0px 60px;
+}
+
+.pendingActivitiesBox {
+    margin-top: 16px;
+}
+
+.leftContainer {
+    max-width: 230px;
+}
+
+.childrenHeader {
+    background: #9C1A5E;
+    color: #fff;
+    font-weight: lighter;
+    margin-bottom: 20px;
+}
+
+.headline {
+    margin-bottom: 67px !important;
+}

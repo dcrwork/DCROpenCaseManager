@@ -44,6 +44,10 @@ label.labelStyling {
     display: inline;
 }
 
+.headerContainer {
+    margin: 1vh 9vw 0vw 4vw;
+}
+
 .formFieldStyling {
     float: right;
     width: 70%;
@@ -164,6 +168,7 @@ table.entityDetailTable tr th {
 
 table.entityDetailTable {
     margin: 0px;
+    border: none;
 }
 
 .drop-area {

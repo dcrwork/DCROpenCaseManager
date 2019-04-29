@@ -14,30 +14,29 @@
     <div class="wrapper">
         <header>
             <div class="main-menu-top">
-                <div class="container">
+                <div class="headerContainer">
+                    <div class="pull-left">
+                        <a href="../">
+                            <img src="../content/images/logo.png" />
+                        </a>
+                    </div>
+
                     <ul class="welcome">
                         <li><a href="#search" style="text-decoration: none;"><span data-locale data-apply="text" data-key="Welcome">Welcome</span> <span id="userName"></span></a></li>
                     </ul>
                     <ul class="menu-header-ul">
-                        <li><a href="#search" data-toggle="collapse"><span><i class="glyphicon glyphicon-search"></i></span></a></li>
+                        <li><span><a><i class="glyphicon glyphicon-search" onclick="toggleSearch(this)"></i></a></span></li>
                         <li><a href="~/mus"><span data-locale data-apply="text" data-key="MUS">MUS</span></a></li>
                         <li><a href="~/Admin/Processes/"><span data-locale data-apply="text" data-key="Processes">Processes</span></a></li>
                         <li><a href="~/Admin/SearchProcess/"><span data-locale data-apply="text" data-key="SearchProcess">Search Process</span></a></li>
                         <li><a href="~/Form/"><span data-locale data-apply="text" data-key="Form">Form</span></a></li>
                         <li><a href="~/"><span data-locale data-apply="text" data-key="">Mine Børn</span></a></li>
                     </ul>
-                </div>
-            <div class="page-header clearfix">
-                <div class="pull-left">
-                    <a href="../">
-                       <img src="../content/images/logo.png"/> 
-                    </a>
-                </div>
-                <div id="search" class="search-field col-md-6 pull-right collapse">
-                    <input  type="text" placeholder="Search.." data-locale data-apply="attribute" data-attribute="placeholder" data-key="Search" id="searchCase">
-                </div>
+                    <div id="search" class="search-field pull-right hide">
+                        <input type="text" placeholder="Search.." data-locale data-apply="attribute" data-attribute="placeholder" data-key="Search" id="searchCase">
+                    </div>
+                </div>  
             </div>
-</div>
         </header>
         <main>
             <div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" id="confirmModal">
@@ -153,6 +152,7 @@
         var locale = (localeDefs[browserLocale] === undefined) ? defaultLocale : localeDefs[browserLocale];
 
         moment.locale(locale);
+
     </script>
 
     @Scripts.Render("~/bundles/noty")
