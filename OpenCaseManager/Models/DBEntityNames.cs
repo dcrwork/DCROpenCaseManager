@@ -129,6 +129,7 @@ namespace OpenCaseManager.Models
             InstanceId,
             UploadDate,
             IsLocked,
+            IsDraft,
             EventDate
         }
 
@@ -421,7 +422,8 @@ namespace OpenCaseManager.Models
             InstanceId,
             IsActive,
             UploadDate,
-            IsLocked
+            IsLocked,
+            IsDraft
         }
 
         public enum AddInstanceDescription

@@ -22,15 +22,15 @@ namespace OpenCaseManager.Managers
         {
             CreateFileLink(fileName);
             string filePath = AddDocumentChecks(instanceId, fileType, givenFileName, fileName, eventId);
-            Common.AddDocument(givenFileName, fileType, fileLink, instanceId, DateTime.Now, manager, dataModelManager);
+            Common.AddDocument(givenFileName, fileType, fileLink, instanceId, false, DateTime.Now, manager, dataModelManager);
             return filePath;
         }
 
-        public Tuple<string, string> AddDocument(string instanceId, string fileType, string givenFileName, string fileName, string eventId, DateTime eventDateTime, IManager manager, IDataModelManager dataModelManager)
+        public Tuple<string, string> AddDocument(string instanceId, string fileType, string givenFileName, string fileName, string eventId, bool isDraft, DateTime eventDateTime, IManager manager, IDataModelManager dataModelManager)
         {
             CreateFileLink(fileName);
             string filePath = AddDocumentChecks(instanceId, fileType, givenFileName, fileName, eventId);
-            string documentId = Common.AddDocument(givenFileName, fileType, fileLink, instanceId, eventDateTime, manager, dataModelManager);
+            string documentId = Common.AddDocument(givenFileName, fileType, fileLink, instanceId, isDraft, eventDateTime, manager, dataModelManager);
             Tuple<string, string> returnTuple = new Tuple<string, string>(filePath, documentId);
             return returnTuple;
         }
