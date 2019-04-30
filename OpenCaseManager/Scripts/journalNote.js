@@ -7,7 +7,7 @@ var documentEventTime;
 var timer = $.now()-1000;
 var numberOfChanges = 0;
 var intervalPause = false;
-var isAlreadyDraftWhenOpened;
+var isAlreadyDraftWhenOpened = true;
 
 $.urlParam = function (name) {
     var results = new RegExp('[\?&]' + name + '=([^&#]*)')
@@ -43,12 +43,10 @@ function getDocumentByLinkQuery(documentLink) {
     return query;
 }
 
-
 function CreateJournalNoteView() {
     var id = $.urlParam("id");
     var newWindow = window.open("/JournalNote/Create" + (id ? "?id=" + id : ""), "", "width=800,height=600");
     newWindow.alreadyDrafted = false;
-    newWindow.isAlreadyDraftWhenOpened = true;
 }
 
 function CreateJournalNoteViewWithLink() {
