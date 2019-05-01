@@ -1,10 +1,5 @@
 function formatDateTimeline(date) {
     var value = new Date(date);
-    return value.getFullYear() + "-" + addZero(value.getMonth() + 1) + "-" + addZero(value.getDate());
-}
-
-function formatRightDateTimeline(date) {
-    var value = new Date(date);
     return addZero(value.getDate()) + "/" + addZero(value.getMonth() + 1) + "-" + value.getFullYear();
 }
 
@@ -15,7 +10,7 @@ function addZero(i) {
 function documentType(data) {
     return {
         type: "Dokument",
-        time: formatDateTimeline(data.EventDate),
+        time: data.EventDate,
         responsible: data.DocumentResponsible,
         body: [{
             tag: 'a',
@@ -37,7 +32,7 @@ function documentType(data) {
 function journalNoteType(data) {
     return {
         type: "Journalnotat",
-        time: formatDateTimeline(data.EventDate),
+        time: data.EventDate,
         responsible: data.DocumentResponsible,
         body: [{
             tag: 'a',
@@ -49,7 +44,7 @@ function journalNoteType(data) {
         },
         {
             tag: 'p',
-            content: "Tilføjet: " + formatRightDateTimeline(data.CreationDate),
+            content: "Tilføjet: " + formatDateTimeline(data.CreationDate),
         }]
     }
 }
@@ -58,7 +53,7 @@ function activitiesType(data) {
     if (data.Type === 'Event') eventtype = "Aktivitet";
     return {
         type: eventtype,
-        time: formatDateTimeline(data.EventDate),
+        time: data.EventDate,
         responsible: data.EventResponsible,
         body: [{
             tag: 'h3',

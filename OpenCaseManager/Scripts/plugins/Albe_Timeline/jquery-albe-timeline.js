@@ -142,7 +142,7 @@ function updateTimeline(monthMenu) {
                 /****************************************SLOT <article>****************************************/
                 var leftWrapper = $('<div>').addClass('leftWrapper');
                 var badge = $('<div>').addClass('badge');
-                badge.text(fnDateFormat(element.time, settings.formatDate, language));
+                badge.text(formatDateTimeline(element.time));
 
                 var responsible = $('<p>').addClass('timelineResponsible');
                 responsible.text(element.responsible || '');
