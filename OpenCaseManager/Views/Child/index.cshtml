@@ -31,6 +31,8 @@
 </div>
 
 <div class="wholeChildPage">
+    <input type="hidden" id="childIdHidden">
+
     <div>
         <div class="buttonsBox">
             <div data-toggle="modal" data-target="#create-process-modal" class="create-process-button">
@@ -134,6 +136,10 @@
 
 <script type="text/javascript">
     var webPortalType = "Instance";
+    $(document).ready(function () {
+        var childId = App.getParameterByName("id".toLowerCase(), window.location.href);
+        $('#childIdHidden').val(childId);
+});
 </script>
 
 <script type="text/javascript" src="~/Scripts/createprocess.js"></script>
