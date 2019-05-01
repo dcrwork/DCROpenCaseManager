@@ -1,4 +1,4 @@
-﻿function CreateJournalNoteView() {
+﻿function CreateJournalNoteViewOhNo() {
     var id = $.urlParam("id");
     window.open("/JournalNote/Create" + (id ? "?id=" + id : ""), "", "width=800,height=600");
     //postwindow,dialog=yes,close=no,location=no,status=no,
