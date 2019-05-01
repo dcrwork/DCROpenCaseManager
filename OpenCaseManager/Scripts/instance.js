@@ -36,4 +36,5 @@ $(document).ready(function () {
     if (window.localStorage.getItem('taskStatusDD') != null) {
         $('#taskStatusDropDown').val(window.localStorage.getItem('taskStatusDD'));
     }
+
 });

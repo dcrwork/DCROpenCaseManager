@@ -26,6 +26,48 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<!--
+
+async function getChildId(instanceId) {
+    var query = {
+        "type": "SELECT",
+        "entity": "InstanceExtension",
+        "resultSet": ["ChildId"],
+        "filters": new Array(),
+        "order": []
+    }
+
+    var whereChildIdMatchesFilter = {
+        "column": "InstanceId",
+        "operator": "equal",
+        "value": instanceId,
+        "valueType": "int",
+        "logicalOperator": "and"
+    };
+    query.filters.push(whereChildIdMatchesFilter);
+
+    var result = await API.service('records', query);
+    return JSON.parse(result)
+}
+
+var instanceId = App.getParameterByName("id", window.location.href);
+var path = "/Child?id=" + getChildId(instanceId);
+console.log(path);
+$('a#childLink').attr("href", path);
+-->
+
+<nav aria-label="breadcrumb ">
+
+    <ol class="breadcrumb arr-right bg-dark ">
+
+        <li class="breadcrumb-item text-light "><a href="#" class="text-light">Mine Børn</a></li>
+
+        <li class="breadcrumb-item text-light active" aria-current="page">Child</li>
+
+    </ol>
+
+</nav>
+
 <div class="addDocumentModal">
     @Html.Partial("~/Views/PartialViews/AddDocumentModal.cshtml")
 </div>
