@@ -65,8 +65,6 @@ function CreateJournalNoteViewWithLink() {
             newWindow.documentText = documentText;
             newWindow.documentTitle = documentInfo.Title;
             newWindow.isAlreadyDraftWhenOpened = documentInfo.IsDraft;
-            console.log(documentInfo.IsDraft);
-            console.log(newWindow.isAlreadyDraftWhenOpened);
 
             var splitTime = documentInfo.EventDate.split("T");
             var regex = /(\d\d:\d\d)/gm;
