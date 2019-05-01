@@ -26,6 +26,8 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+
+
 <div class="addDocumentModal">
     @Html.Partial("~/Views/PartialViews/AddDocumentModal.cshtml")
 </div>
@@ -47,6 +49,12 @@
     </div>
 
     <div class="tabsBox">
+        <nav aria-label="breadcrumb" class="breadcrumbsNavigation">
+            <ol class="breadcrumb arr-right bg-dark ">
+                <li class="breadcrumb-item "><a href="~/">Mine Børn</a></li>
+                <li class="breadcrumb-item active child" aria-current="page"></li>
+            </ol>
+        </nav>
         <table class="table table-responsive entityDetailTable">
             <tr>
                 <th class="childName"><span id="childName"></span></th>
@@ -135,7 +143,7 @@
 <script type="text/javascript">
     var webPortalType = "Instance";
 </script>
-
+<script type="text/javascript" src="~/Scripts/breadcrumbs.js"></script>
 <script type="text/javascript" src="~/Scripts/createprocess.js"></script>
 <script type="text/javascript" src="~/Scripts/child.js"></script>
 <script type="text/javascript" src="~/Scripts/journalNoteCreate.js"></script>
