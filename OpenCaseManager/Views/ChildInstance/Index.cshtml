@@ -10,21 +10,6 @@
 }
 
 
-
-<nav aria-label="breadcrumb ">
-
-    <ol class="breadcrumb arr-right bg-dark ">
-
-        <li class="breadcrumb-item text-light "><a href="~/" class="text-light">Mine Børn</a></li>
-
-        <li class="breadcrumb-item "><a href="" class="text-light" id="childLink"></a></li>
-
-        <li class="breadcrumb-item text-light active instance" aria-current="page"></li>
-
-    </ol>
-
-</nav>
-
 <div class="wholeActionsPage">
     <div class="buttonsBox">
         @Html.Partial("~/Views/PartialViews/AddButton.cshtml", new ViewDataDictionary { { "add-text", "Tilføj dokument" }, { "onClick", "addDocument()" } })
@@ -32,6 +17,13 @@
     </div>
 
     <div class="tabsBox">
+        <nav aria-label="breadcrumb" class="breadcrumbsNavigation">
+            <ol class="breadcrumb arr-right bg-dark ">
+                <li class="breadcrumb-item  "><a href="~/">Mine Børn</a></li>
+                <li class="breadcrumb-item "><a href="" id="childLink"></a></li>
+                <li class="breadcrumb-item active instance" aria-current="page"></li>
+            </ol>
+        </nav>
         <table class="table table-responsive entityDetailTable">
             <tr>
                 <th class="caseTitle"><span id="instanceTitle"></span></th>

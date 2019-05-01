@@ -72,7 +72,6 @@ async function getInstanceName(instanceId) {
 
 async function setInstancePageBreadcrumb() {
     var instanceId = App.getParameterByName("id", window.location.href);
-    console.log(instanceId);
 
     var childIds = await getChildId(instanceId)
     var childId = childIds[0].ChildId;
@@ -83,7 +82,6 @@ async function setInstancePageBreadcrumb() {
 
     var instanceNames = await getInstanceName(instanceId);
     var instanceName = instanceNames[0].Title;
-    console.log(instanceName);
     $("li.instance").text(instanceName);
 }
 
