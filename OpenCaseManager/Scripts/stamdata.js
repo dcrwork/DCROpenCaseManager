@@ -28,14 +28,13 @@ $(function () {
         var forældremyndighedp = $("<p>").text(forældremyndighedt);
         var skolep = $("<p>").text(skolet);
         var alderp = $("<p>").text(aldert);
-     
 
-        $(".sagsnr").append(sagsnrp);
-        $(".name").append(navnp);
-        $(".address").append(addressep);
-        $(".parentalrights").append(forældremyndighedp);
-        $(".school").append(skolep);
-        $(".age").append(alderp);
+        $(".sagsnr").after(sagsnrp);
+        $(".name").after(navnp);
+        $(".address").after(addressep);
+        $(".parentalrights").after(forældremyndighedp);
+        $(".school").after(skolep);
+        $(".age").after(alderp);
 
         var i;
         for (i = 0; i < result.length; i++) {
@@ -79,10 +78,10 @@ $(function () {
     var id;
     var isInstance = false;
     var windowLocation = window.location;
-    var pname = windowLocation.pathname;
-    if (pname == "/Child") {
+    var pname = windowLocation.pathname.toLowerCase();
+    if (pname == "/child") {
         id = getParameterByName("id", window.location.href);
-    } else if (pname == "/ChildInstance") {
+    } else if (pname == "/childinstance") {
         id = getParameterByName("id", window.location.href);
         isInstance = true;
     }
