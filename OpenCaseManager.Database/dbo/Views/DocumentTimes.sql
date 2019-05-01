@@ -9,6 +9,7 @@ dbo.Document.Responsible,
 dbo.Document.InstanceId,
 dbo.Document.UploadDate,  
 dbo.Document.IsLocked,  
+dbo.Document.IsDraft,
 dbo.JournalHistory.EventDate 
 FROM dbo.Document, dbo.JournalHistory 
 WHERE dbo.Document.Id = dbo.JournalHistory.DocumentId
