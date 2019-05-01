@@ -433,6 +433,7 @@
     <Content Include="Scripts\jasmine\jasmine.js" />
     <Content Include="Scripts\journalNote.js" />
     <Content Include="Scripts\journalNoteCreate.js" />
+    <Content Include="Scripts\obsBox.js" />
     <Content Include="Scripts\plugins\Albe_Timeline\data-albe-timeline.js" />
     <Content Include="Scripts\plugins\Albe_Timeline\jquery-albe-timeline.js" />
     <Content Include="Scripts\plugins\Albe_Timeline\jquery-albe-timeline.min.js" />

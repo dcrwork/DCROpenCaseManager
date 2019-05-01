@@ -136,6 +136,23 @@ namespace OpenCaseManager.Controllers.ApiControllers
         }
 
         /// <summary>
+        /// Update Child
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("UpdateChild")]
+        //POST api/values
+        public IHttpActionResult UpdateChild(dynamic input)
+        {
+            var childObsBox = input["obsText"].ToString();
+            var childId = input["childId"].ToString();
+
+            UpdateChildObsBox(childId, childObsBox);
+            return Ok(Common.ToJson(new { }));
+        }
+
+        /// <summary>
         /// Update Process
         /// </summary>
         /// <param name="input"></param>
@@ -858,6 +875,19 @@ namespace OpenCaseManager.Controllers.ApiControllers
             _dataModelManager.AddParameter(DBEntityNames.Child.Responsible.ToString(), Enums.ParameterType._int, Common.GetResponsibleId());
             // Returns child id
             return _manager.InsertData(_dataModelManager.DataModel).Rows[0][DBEntityNames.Child.Id.ToString()].ToString();
+        }
+
+        /// <summary>
+        /// Update ObsBox to Child
+        /// </summary>
+        /// <param name="input"></param>
+        private void UpdateChildObsBox(string id, string input)
+        {
+            _dataModelManager.GetDefaultDataModel(Enums.SQLOperation.UPDATE, DBEntityNames.Tables.Child.ToString());
+            _dataModelManager.AddParameter(DBEntityNames.Child.ObsBoxText.ToString(), Enums.ParameterType._string, input);
+            _dataModelManager.AddFilter(DBEntityNames.Child.Id.ToString(), Enums.ParameterType._int, id, Enums.CompareOperator.equal, Enums.LogicalOperator.none);
+
+            _manager.UpdateData(_dataModelManager.DataModel);
         }
 
         /// <summary>

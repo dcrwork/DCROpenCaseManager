@@ -396,7 +396,8 @@ namespace OpenCaseManager.Models
         {
             Id,
             Name,
-            Responsible
+            Responsible,
+            ObsBoxText
         }
 
         public enum AcadreLog

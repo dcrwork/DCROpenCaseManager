@@ -36,29 +36,4 @@
     <button class="obsSaveButton hide" onclick="saveObs()">Save</button>
 </div>
 
-
-
-<script>
-    function toggleEdit() {
-        if ($("#obsTextArea").attr("disabled")) {
-            $("#obsTextArea").attr("disabled", false);
-        }
-        else {
-            $("#obsTextArea").attr("disabled", true);
-        }
-
-        $(".obsSaveButton").toggleClass('hide');
-    }
-
-    function saveObs() {
-        var obsTekst = $("#obsTextArea").val();
-
-        //api call goes here
-        console.log(obsTekst);
-
-
-        $("#obsTextArea").attr("disabled", true);
-        $(".obsSaveButton").toggleClass('hide');
-    }
-
-</script>
+<script type="text/javascript" src="~/Scripts/obsBox.js"></script>
