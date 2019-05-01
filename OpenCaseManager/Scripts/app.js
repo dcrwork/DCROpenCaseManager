@@ -113,7 +113,7 @@
 
                 API.service('services/InitializeGraph', { instanceId: instanceId, graphId: graphId })
                     .done(function (response) {
-                        window.location.replace(`/childInstance?id=${instanceId}`);
+                        window.location.replace(`/ChildInstance?id=${instanceId}`);
                     })
                     .fail(function (e) {
                         showExceptionErrorMessage(e);
