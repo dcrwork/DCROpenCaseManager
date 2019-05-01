@@ -2,25 +2,39 @@
 
 $(function () {
 
-    async function setStamDataContent(childId) {
+    async function setStamDataContent(id, isInstance) {
 
-        var result = await getStamData(childId);
+        var x = id;
+
+        if (isInstance) {
+            var result2 = await getChildId(id);
+            var y = result2[0];
+            x = y.ChildId;
+        }
+
+        var result = await getStamData(x);
         var firstElement = result[0];
-        
-        var sagsnrp = $("<p>").text(firstElement.Sagsnummer);
-        var navnp = $("<p>").text(firstElement.Name);
-        var addressep = $("<p>").text(firstElement.Addresse);
-        var forældremyndighedp = $("<p>").text(firstElement.Forældremyndighed);
-        var skolep = $("<p>").text(firstElement.Skole);
-        var alderp = $("<p>").text(firstElement.Alder);
-     
 
-        $(".sagsnr").append(sagsnrp);
-        $(".name").append(navnp);
-        $(".address").append(addressep);
-        $(".parentalrights").append(forældremyndighedp);
-        $(".school").append(skolep);
-        $(".age").append(alderp);
+        var sagsnrt = firstElement.Sagsnummer == null ? "" : firstElement.Sagsnummer;
+        var navnt = firstElement.Name == null ? "" : firstElement.Name;
+        var addresset = firstElement.Addresse == null ? "" : firstElement.Addresse;
+        var forældremyndighedt = firstElement.Forældremyndighed == null ? "" : firstElement.Forældremyndighed;
+        var skolet = firstElement.Skole == null ? "" : firstElement.Skole;
+        var aldert = firstElement.Alder == null ? "" : firstElement.Alder;
+        
+        var sagsnrp = $("<p>").text(sagsnrt);
+        var navnp = $("<p>").text(navnt);
+        var addressep = $("<p>").text(addresset);
+        var forældremyndighedp = $("<p>").text(forældremyndighedt);
+        var skolep = $("<p>").text(skolet);
+        var alderp = $("<p>").text(aldert);
+
+        $(".sagsnr").after(sagsnrp);
+        $(".name").after(navnp);
+        $(".address").after(addressep);
+        $(".parentalrights").after(forældremyndighedp);
+        $(".school").after(skolep);
+        $(".age").after(alderp);
 
         var i;
         for (i = 0; i < result.length; i++) {
@@ -29,23 +43,31 @@ $(function () {
 
             var div = $("<div></div>");
 
-            var role = $("<h5></h5>");
+            if (current.Relation == null) {
+                var nothingFound = $("<h5></h5>");
+                nothingFound.append($("<b></b>").text("Nothing found"));
+                div.append(nothingFound);
+                $(".expandedStamdata").append(div);
+                continue;
+            }
+
+            var role = $("<h5 class='h5stamdata'></h5>");
             role.append($("<b></b>").text(current.Relation));
             div.append(role);
 
-            var cpr = $("<p></p>");
+            var cpr = $("<p class='pstamdata'></p>");
             cpr.text(current.CPR);
             div.append(cpr);
 
-            var name = $("<p></p>");
+            var name = $("<p class='pstamdata'></p>");
             name.text(current.StamdataName);
             div.append(name);
 
-            var address = $("<p></p>");
+            var address = $("<p class='pstamdata'></p>");
             address.text(current.Address);
             div.append(address);
 
-            var city = $("<p></p>");
+            var city = $("<p class='pstamdata'></p>");
             city.text(current.Postcode + " " + current.City);
             div.append(city);
             $(".expandedStamdata").append(div);
@@ -53,9 +75,14 @@ $(function () {
 
     }
 
-    var childId = getParameterByName("id", window.location.href);
-
-    setStamDataContent(childId);
+    var id = getParameterByName("id", window.location.href);
+    var isInstance = false;
+    var windowLocation = window.location;
+    var pname = windowLocation.pathname.toLowerCase();
+    if (pname == "/childinstance") {
+        isInstance = true;
+    }
+    setStamDataContent(id, isInstance);
 })
 
 
@@ -81,6 +108,28 @@ async function getStamData(childId) {
     var result = await API.service('records', query);
     return JSON.parse(result)
 }
+
+async function getChildId(instanceId) {
+    var query = {
+        "type": "SELECT",
+        "entity": "InstanceExtension",
+        "resultSet": ["ChildId"],
+        "filters": new Array(),
+        "order": []
+    }
+
+    var whereChildIdMatchesFilter = {
+        "column": "InstanceId",
+        "operator": "equal",
+        "value": instanceId,
+        "valueType": "int",
+        "logicalOperator": "and"
+    };
+    query.filters.push(whereChildIdMatchesFilter);
+
+    var result = await API.service('records', query);
+    return JSON.parse(result)}
+
 
 function getParameterByName(name, url) {
     if (!url) url = window.location.href;
