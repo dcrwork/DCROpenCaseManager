@@ -75,14 +75,11 @@ $(function () {
 
     }
 
-    var id;
+    var id = getParameterByName("id", window.location.href);
     var isInstance = false;
     var windowLocation = window.location;
     var pname = windowLocation.pathname.toLowerCase();
-    if (pname == "/child") {
-        id = getParameterByName("id", window.location.href);
-    } else if (pname == "/childinstance") {
-        id = getParameterByName("id", window.location.href);
+    if (pname == "/childinstance") {
         isInstance = true;
     }
     setStamDataContent(id, isInstance);
