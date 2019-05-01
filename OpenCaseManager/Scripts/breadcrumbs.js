@@ -1,8 +1,7 @@
 ﻿
 $(document).ready(function () {
-    var pageUrl = window.location.href;
-    console.log(pageUrl);
-    if (pageUrl.includes("Instance")) setInstancePageBreadcrumb();
+    var pageUrl = window.location.href.toLowerCase();
+    if (pageUrl.includes("instance")) setInstancePageBreadcrumb();
     else setChildPageBreadcrumb();
 });
 
