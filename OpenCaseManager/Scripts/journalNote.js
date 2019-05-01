@@ -136,7 +136,7 @@ function formatDate(_date) {
 
     var day = value.getDate() < 10 ? '0' + value.getDate() : value.getDate();
     var month = value.getMonth + 1;
-        month = value.getMonth() < 10 ? "0" + value.getMonth() : value.getMonth();
+        month = (value.getMonth()+1) < 10 ? "0" + (value.getMonth()+1) : (value.getMonth()+1);
     var year = value.getFullYear();
 
     return day + "/" + month + "/" + year;
@@ -184,6 +184,8 @@ $(function () {
     $("#datepicker").datepicker({ prevText: "Forrige" });
     var prevText = $("#datepicker").datepicker("option", "nextText");
     $("#datepicker").datepicker("option", "prevText", "Forrige");
+
+    $("#datepicker").val(formatDate(new Date().toString()));
 });
 
 

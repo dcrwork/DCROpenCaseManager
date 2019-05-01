@@ -1,8 +1,17 @@
 function formatDateTimeline(date) {
     var value = new Date(date);
-    return value.getFullYear() + "-" + value.getMonth() + "-" + value.getDate() ;
+    return value.getFullYear() + "-" + addZero(value.getMonth() + 1) + "-" + addZero(value.getDate());
 }
 
+function formatRightDateTimeline(date) {
+    var value = new Date(date);
+    return addZero(value.getDate()) + "/" + addZero(value.getMonth() + 1) + "-" + value.getFullYear();
+}
+
+function addZero(i) {
+    if (i < 10) i = "0" + i;
+    return i;
+}
 function documentType(data) {
     return {
         type: "Dokument",
@@ -40,7 +49,7 @@ function journalNoteType(data) {
         },
         {
             tag: 'p',
-            content: "Tilføjet: " + formatDateTimeline(data.CreationDate),
+            content: "Tilføjet: " + formatRightDateTimeline(data.CreationDate),
         }]
     }
 }
