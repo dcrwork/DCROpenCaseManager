@@ -32,7 +32,10 @@ namespace OpenCaseManager
                       "~/Content/noty/noty.css",
                       "~/Content/noty/themes/mint.css",
                       "~/Content/site.css",
-                      "~/Content/syddjurs.css"));
+                      "~/Content/myChildren.css",
+                      "~/Content/syddjurs.css",
+                      "~/Content/tabs.css",
+                      "~/Content/journalnote.css"));
 
             // CopenhagenCountry css
             //bundles.Add(new StyleBundle("~/Content/css").Include(

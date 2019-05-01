@@ -278,7 +278,7 @@
                 '<td width="15%">' + item.FullName + '</td >' +
                 '<td width="20%" instanceId=' + item.InstanceId + ' id="phases' + item.InstanceId + '"></td> ' +
                 '<td width="15%">&nbsp;</td> ' +
-                '<td width="12%"><a href="../Instance?id=' + item.InstanceId + '">' +
+                '<td width="12%"><a href="../ChildInstance?id=' + item.InstanceId + '">' +
                 item.InstanceTitle +
                 '</a></td>';
             returnHtml += '</tr>';

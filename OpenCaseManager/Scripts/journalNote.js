@@ -4,6 +4,10 @@ var documentText;
 var documentTitle;
 var documentEventDate;
 var documentEventTime;
+var timer = $.now()-1000;
+var numberOfChanges = 0;
+var intervalPause = false;
+var isAlreadyDraftWhenOpened = true;
 
 $.urlParam = function (name) {
     var results = new RegExp('[\?&]' + name + '=([^&#]*)')
@@ -25,7 +29,7 @@ function getDocumentByLinkQuery(documentLink) {
                 "logicalOperator": "and"
             }
         ],
-        "resultSet": ["Id", "Title", "EventDate"],
+        "resultSet": ["Id", "Title", "EventDate", "IsDraft"],
         "order": [{ "column": "Id", "descending": false }]
     }
     
@@ -39,12 +43,10 @@ function getDocumentByLinkQuery(documentLink) {
     return query;
 }
 
-
 function CreateJournalNoteView() {
     var id = $.urlParam("id");
     var newWindow = window.open("/JournalNote/Create" + (id ? "?id=" + id : ""), "", "width=800,height=600");
     newWindow.alreadyDrafted = false;
-    //postwindow,dialog=yes,close=no,location=no,status=no,
 }
 
 function CreateJournalNoteViewWithLink() {
@@ -61,20 +63,25 @@ function CreateJournalNoteViewWithLink() {
             newWindow.alreadyDrafted = true;
             newWindow.documentText = documentText;
             newWindow.documentTitle = documentInfo.Title;
+            newWindow.isAlreadyDraftWhenOpened = documentInfo.IsDraft;
             var splitTime = documentInfo.EventDate.split("T");
             var regex = /(\d\d:\d\d)/gm;
             var match = regex.exec(splitTime[1]);
             newWindow.documentEventTime = match[1];
             newWindow.documentEventDate = splitTime[0];
         });
-    //postwindow,dialog=yes,close=no,location=no,status=no,
 }
 
 
 $(function () {
+    if (!isAlreadyDraftWhenOpened) $('.change-journal-note-button').html('Opdater');
     $("#input-journal-title").val(documentTitle);
     $(".ui-datepicker").val(documentEventDate);
     $(".timepicker").val(documentEventTime);
+
+    $('#input-journal-title').on('input', function () {
+        numberOfChanges++;
+    });
     var inputJournalNote = $('#input-journal-note');
     if (inputJournalNote != null) {
 
@@ -83,8 +90,42 @@ $(function () {
             tagsToRemove: ['Redo']
         });
         inputJournalNote.trumbowyg('html', documentText);
+        inputJournalNote.trumbowyg().on('tbwchange', function () {
+            numberOfChanges++;
+        });
     }
 })
+
+function automaticSaveDraft() {
+    if ($.now() - timer > 2000 && numberOfChanges >= 10) {
+        saveFile(isAlreadyDraftWhenOpened, false, null);
+        new Noty({
+            type: 'alert',
+            theme: 'mint',
+            layout: 'topRight',
+            text: "Kladde gemt",
+            timeout: 2000,
+            progressBar: false,
+            container: '.custom-container2'
+        }).show()
+        timer = $.now();
+        numberOfChanges = 0;
+    }
+    else if ($.now() - timer > 10000 && numberOfChanges > 0) {
+        saveFile();
+        new Noty({
+            type: 'alert',
+            theme: 'mint',
+            layout: 'topRight',
+            text: "Kladde gemt",
+            timeout: 2000,
+            progressBar: false,
+            container: '.custom-container2'
+        }).show()
+        timer = $.now();
+        numberOfChanges = 0;
+    }
+}
 
 function formatDate(_date) {
     var value = new Date(_date);
@@ -155,18 +196,8 @@ function changedate(inputId, lableId) {
     applyTo.textContent = value;
 }
 
-$(document).on('click', '.add-journal-note-button', function () {
-    var documentName = $('#input-journal-title').val();
-    var journalText = "<div>"+$('#input-journal-note').val()+"</div>";
-
-    // $('#dateLabel').textContent
-    if (!alreadyDrafted) {
-        submitFiles(documentName, journalText);  //It is only for testing right now that it will set it as true, in the final version it should always set it as false, and then the program will set it as true after 24 hours
-    }
-    else {
-        updateFiles(documentName, journalText);
-    }
-    window.close();
+$(document).on('click', '.add-journal-note-button', function (event) {
+    saveFile(false, true, event);
 });
 
 function makeTextFile(text) {
@@ -174,18 +205,19 @@ function makeTextFile(text) {
     return data;
 };
 
-function submitFiles(fileName, textContents) {
+function submitFiles(fileName, textContents, isDraft, closeWindow) {
     var instanceId = $.urlParam("id");
     var file = makeTextFile(textContents);
-    uploadFile(file, instanceId, fileName);
+    uploadFile(file, instanceId, fileName, isDraft, closeWindow);
 
 }
 
-function uploadFile(file, instanceId, fileName) {
-  
+function uploadFile(file, instanceId, fileName, isDraft, closeWindow) {
+    if (fileName == "") { fileName = "NA" };
     var eventDateTime = $(".ui-datepicker").val() + " " + $(".timepicker").val();
   
     if (fileName != '') {
+        intervalPause = true;
         $.ajax({
             url: window.location.origin + "/api/records/AddDocument",
             type: 'POST',
@@ -194,10 +226,11 @@ function uploadFile(file, instanceId, fileName) {
                 'type': 'JournalNoteBig',
                 'instanceId': instanceId,
                 'givenFileName': fileName,
-                'eventTime': eventDateTime
+                'eventTime': eventDateTime,
+                'isDraft': isDraft
             },
             data: file,
-            async: false,
+            async: true,
             cache: false,
             contentType: false,
             enctype: 'multipart/form-data',
@@ -207,6 +240,12 @@ function uploadFile(file, instanceId, fileName) {
                 var myRegexp = /(\d+)/gm;
                 var match = myRegexp.exec(documentId);
                 documentId = match[1];
+            },
+            complete: function () {
+                intervalPause = false;
+                if (closeWindow) {
+                    window.close();
+                }
             },
 
         });
@@ -267,49 +306,44 @@ $(document).ready(function () {
 });
 
 $(document).on('click', '.change-journal-note-button', function (event) {
-    event.preventDefault();
+    saveFile(isAlreadyDraftWhenOpened, false, event);
+    var notyText = "Journalnotat opdateret";
+    if (isAlreadyDraftWhenOpened) notyText = "Kladde gemt";
+    new Noty({
+        type: 'success',
+        theme: 'mint',
+        layout: 'topRight',
+        text: notyText,
+        timeout: 2000,
+        progressBar: false,
+        container: '.custom-container'
+    }).show()
+});
+
+function saveFile(isDraft, closeWindow, event) {
+    if (event != null) event.preventDefault();
     var documentName = $('#input-journal-title').val();
-    var journalText = "<div>" + $('#input-journal-note').val() + "</div>";
-    
-    
+    var journalText = "<div>" + $('#input-journal-note').html() + "</div>";
 
     if (!alreadyDrafted)
     {
-        submitFiles(documentName, journalText);
+        submitFiles(documentName, journalText, isDraft, closeWindow);
         alreadyDrafted = true;
-        new Noty({
-            type: 'success',
-            theme: 'mint',
-            layout: 'topRight',
-            text: "Kladde gemt",
-            timeout: 2000,
-            progressBar: false,
-            container: '.custom-container'
-        }).show()
     }
-    else
-    {
-        updateFiles(documentName, journalText);
-        new Noty({
-            type: 'success',
-            theme: 'mint',
-            layout: 'topRight',
-            text: "Kladde opdateret",
-            timeout: 2000,
-            progressBar: false,
-            container: '.custom-container'
-        }).show()
+    else {
+        updateFiles(documentName, journalText, isDraft, closeWindow);
     }
+}
 
-});
-
-function updateFiles(fileName, textContents) {
+function updateFiles(fileName, textContents, isDraft, closeWindow) {
+    if (fileName == "") { fileName = "NA" };
     var instanceId = $.urlParam("id");
     var file = makeTextFile(textContents);
 
     var eventDateTime = $(".ui-datepicker").val() + " " + $(".timepicker").val();
 
     if (fileName != '') {
+        intervalPause = true;
         $.ajax({
             url: window.location.origin + "/api/records/UpdateDocument",
             type: 'POST',
@@ -320,17 +354,29 @@ function updateFiles(fileName, textContents) {
                 'instanceId': instanceId,
                 'givenFileName': fileName,
                 'isNewFileAdded': 'True',
-                'eventTime': eventDateTime
+                'eventTime': eventDateTime,
+                'isDraft': isDraft
             },
             data: file,
-            async: false,
+            async: true,
             cache: false,
             contentType: false,
             enctype: 'multipart/form-data',
             processData: false,
+            complete: function () {
+                intervalPause = false;
+                if (closeWindow) {
+                    window.close();
+                }
+            },
 
         });
     }
 }
 
+window.setInterval(function () {
+    if (!intervalPause && isAlreadyDraftWhenOpened) {
+        automaticSaveDraft();
+    }
+}, 1000);
 
