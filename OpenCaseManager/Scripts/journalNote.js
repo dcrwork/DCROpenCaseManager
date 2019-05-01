@@ -78,7 +78,6 @@ function CreateJournalNoteViewWithLink() {
 
 
 $(function () {
-    console.log(isAlreadyDraftWhenOpened);
     if (!isAlreadyDraftWhenOpened) $('.change-journal-note-button').html('Opdater');
     $("#input-journal-title").val(documentTitle);
     $(".ui-datepicker").val(documentEventDate);
