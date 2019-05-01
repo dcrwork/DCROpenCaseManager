@@ -1,61 +1,19 @@
 ﻿<style>
-    .nav-pills > li.active > a, .nav-pills > li.active > a:hover, .nav-pills > li.active > a:focus {
-        color: black;
-        background-color: #fff;
-    }
-
-    .nav-pills {
-        display: flex;
-        justify-content: center;
-    }
-
-        .nav-pills .a {
-            font-size: 30px;
-        }
-
-        .nav-pills > li.active > a, .nav-pills > a:hover {
-            text-decoration: underline;
-        }
-
-    .nav > li > a {
-        color: black;
-        font-size: 20px;
-    }
-
-        .nav > li > a:hover, .nav > li > a:focus {
-            text-decoration: underline;
-            background-color: white;
-        }
-
-    .nav li + li:after {
-        content: "";
-        position: absolute;
-        left: 0;
-        border-left: solid 2px black;
-        top: 0;
-        bottom: 0;
-        padding: 0;
-    }
-
-    .nav > li > a {
-        padding: 0px 15px;
-    }
-
-    .nav-pills {
-        padding: 15px 15px;
-    }
-
     .wholeChildPage {
         display: flex;
         flex-direction: row;
         justify-content: space-between;
-        margin: 0px 60px;
+        margin: 40px 60px 0px 60px;
     }
 
     .childInstancesHeader {
         background: #9C1A5E;
         color: #fff;
         font-weight: lighter;
+    }
+
+    .childInstancesBox {
+        padding-top: 10px;
     }
 
     .pendingActivitiesBox {
@@ -73,10 +31,18 @@
 </div>
 
 <div class="wholeChildPage">
-
     <div>
-        <div class="stamdataBox">
-            @Html.Partial("~/Views/PartialViews/Stamdata.cshtml")
+        <div class="buttonsBox">
+            <div data-toggle="modal" data-target="#create-process-modal" class="create-process-button">
+                @Html.Partial("~/Views/PartialViews/AddButton.cshtml", new ViewDataDictionary { { "add-text", "Tilføj indsats" } })
+            </div>
+
+            @Html.Partial("~/Views/PartialViews/AddButton.cshtml", new ViewDataDictionary { { "add-text", "Tilføj dokument" }, { "onClick", "addDocument()" } })
+            @Html.Partial("~/Views/PartialViews/AddButton.cshtml", new ViewDataDictionary { { "add-text", "Tilføj journalnotat" }, { "onClick", "CreateJournalNoteView()" } })
+        </div>
+
+        <div class="pendingActivitiesBox">
+            @Html.Partial("~/Views/PartialViews/PendingActivities.cshtml")
         </div>
     </div>
 
@@ -128,19 +94,9 @@
         </div>
     </div>
 
-
     <div>
-        <div class="buttonsBox">
-            <div data-toggle="modal" data-target="#create-process-modal" class="create-process-button">
-                @Html.Partial("~/Views/PartialViews/AddButton.cshtml", new ViewDataDictionary { { "add-text", "Tilføj indsats" } })
-            </div>
-
-            @Html.Partial("~/Views/PartialViews/AddButton.cshtml", new ViewDataDictionary { { "add-text", "Tilføj dokument" }, { "onClick", "addDocument()" } })
-            @Html.Partial("~/Views/PartialViews/AddButton.cshtml", new ViewDataDictionary { { "add-text", "Tilføj journalnotat" }, { "onClick", "CreateJournalNoteView()" } })
-        </div>
-
-        <div class="pendingActivitiesBox">
-            @Html.Partial("~/Views/PartialViews/PendingActivities.cshtml")
+        <div class="stamdataBox">
+            @Html.Partial("~/Views/PartialViews/Stamdata.cshtml")
         </div>
     </div>
 </div>
