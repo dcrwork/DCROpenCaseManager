@@ -7,6 +7,7 @@ var documentEventTime;
 var timer = $.now()-1000;
 var numberOfChanges = 0;
 var intervalPause = false;
+var isAlreadyDraftWhenOpened = true;
 
 $.urlParam = function (name) {
     var results = new RegExp('[\?&]' + name + '=([^&#]*)')
@@ -28,7 +29,7 @@ function getDocumentByLinkQuery(documentLink) {
                 "logicalOperator": "and"
             }
         ],
-        "resultSet": ["Id", "Title", "EventDate"],
+        "resultSet": ["Id", "Title", "EventDate", "IsDraft"],
         "order": [{ "column": "Id", "descending": false }]
     }
     
@@ -41,7 +42,6 @@ function getDocumentByLinkQuery(documentLink) {
     });
     return query;
 }
-
 
 function CreateJournalNoteView() {
     var id = $.urlParam("id");
@@ -63,6 +63,7 @@ function CreateJournalNoteViewWithLink() {
             newWindow.alreadyDrafted = true;
             newWindow.documentText = documentText;
             newWindow.documentTitle = documentInfo.Title;
+            newWindow.isAlreadyDraftWhenOpened = documentInfo.IsDraft;
             var splitTime = documentInfo.EventDate.split("T");
             var regex = /(\d\d:\d\d)/gm;
             var match = regex.exec(splitTime[1]);
@@ -73,6 +74,7 @@ function CreateJournalNoteViewWithLink() {
 
 
 $(function () {
+    if (!isAlreadyDraftWhenOpened) $('.change-journal-note-button').html('Opdater');
     $("#input-journal-title").val(documentTitle);
     $(".ui-datepicker").val(documentEventDate);
     $(".timepicker").val(documentEventTime);
@@ -96,7 +98,7 @@ $(function () {
 
 function automaticSaveDraft() {
     if ($.now() - timer > 2000 && numberOfChanges >= 10) {
-        saveFile();
+        saveFile(isAlreadyDraftWhenOpened, false, null);
         new Noty({
             type: 'alert',
             theme: 'mint',
@@ -194,9 +196,8 @@ function changedate(inputId, lableId) {
     applyTo.textContent = value;
 }
 
-$(document).on('click', '.add-journal-note-button', function () {
-    saveFile();
-    window.close();
+$(document).on('click', '.add-journal-note-button', function (event) {
+    saveFile(false, true, event);
 });
 
 function makeTextFile(text) {
@@ -204,14 +205,14 @@ function makeTextFile(text) {
     return data;
 };
 
-function submitFiles(fileName, textContents) {
+function submitFiles(fileName, textContents, isDraft, closeWindow) {
     var instanceId = $.urlParam("id");
     var file = makeTextFile(textContents);
-    uploadFile(file, instanceId, fileName);
+    uploadFile(file, instanceId, fileName, isDraft, closeWindow);
 
 }
 
-function uploadFile(file, instanceId, fileName) {
+function uploadFile(file, instanceId, fileName, isDraft, closeWindow) {
     if (fileName == "") { fileName = "NA" };
     var eventDateTime = $(".ui-datepicker").val() + " " + $(".timepicker").val();
   
@@ -225,7 +226,8 @@ function uploadFile(file, instanceId, fileName) {
                 'type': 'JournalNoteBig',
                 'instanceId': instanceId,
                 'givenFileName': fileName,
-                'eventTime': eventDateTime
+                'eventTime': eventDateTime,
+                'isDraft': isDraft
             },
             data: file,
             async: true,
@@ -241,6 +243,9 @@ function uploadFile(file, instanceId, fileName) {
             },
             complete: function () {
                 intervalPause = false;
+                if (closeWindow) {
+                    window.close();
+                }
             },
 
         });
@@ -301,36 +306,36 @@ $(document).ready(function () {
 });
 
 $(document).on('click', '.change-journal-note-button', function (event) {
-    event.preventDefault();
-    saveFile();
+    saveFile(isAlreadyDraftWhenOpened, false, event);
+    var notyText = "Journalnotat opdateret";
+    if (isAlreadyDraftWhenOpened) notyText = "Kladde gemt";
     new Noty({
         type: 'success',
         theme: 'mint',
         layout: 'topRight',
-        text: "Kladde gemt",
+        text: notyText,
         timeout: 2000,
         progressBar: false,
         container: '.custom-container'
     }).show()
 });
 
-function saveFile() {
+function saveFile(isDraft, closeWindow, event) {
+    if (event != null) event.preventDefault();
     var documentName = $('#input-journal-title').val();
-    var journalText = "<div>" + $('#input-journal-note').val() + "</div>";
-    
-    
+    var journalText = "<div>" + $('#input-journal-note').html() + "</div>";
 
     if (!alreadyDrafted)
     {
-        submitFiles(documentName, journalText);
+        submitFiles(documentName, journalText, isDraft, closeWindow);
         alreadyDrafted = true;
     }
     else {
-        updateFiles(documentName, journalText);
+        updateFiles(documentName, journalText, isDraft, closeWindow);
     }
 }
 
-function updateFiles(fileName, textContents) {
+function updateFiles(fileName, textContents, isDraft, closeWindow) {
     if (fileName == "") { fileName = "NA" };
     var instanceId = $.urlParam("id");
     var file = makeTextFile(textContents);
@@ -349,7 +354,8 @@ function updateFiles(fileName, textContents) {
                 'instanceId': instanceId,
                 'givenFileName': fileName,
                 'isNewFileAdded': 'True',
-                'eventTime': eventDateTime
+                'eventTime': eventDateTime,
+                'isDraft': isDraft
             },
             data: file,
             async: true,
@@ -359,6 +365,9 @@ function updateFiles(fileName, textContents) {
             processData: false,
             complete: function () {
                 intervalPause = false;
+                if (closeWindow) {
+                    window.close();
+                }
             },
 
         });
@@ -366,7 +375,7 @@ function updateFiles(fileName, textContents) {
 }
 
 window.setInterval(function () {
-    if (!intervalPause) {
+    if (!intervalPause && isAlreadyDraftWhenOpened) {
         automaticSaveDraft();
     }
 }, 1000);

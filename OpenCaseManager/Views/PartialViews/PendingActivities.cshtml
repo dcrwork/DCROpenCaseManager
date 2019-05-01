@@ -78,7 +78,7 @@
     var childId;
 
     $(document).ready(function () {
-        childId = (window.location.pathname == "/child") ? App.getParameterByName("id", window.location.href) : null;
+        childId = (window.location.pathname.toLowerCase() == "/child") ? App.getParameterByName("id", window.location.href) : null;
 
         query = {
             "type": "SELECT",
