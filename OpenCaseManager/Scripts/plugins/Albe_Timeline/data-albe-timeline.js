@@ -9,10 +9,13 @@ function documentType(data) {
         time: formatDateTimeline(data.EventDate),
         responsible: data.DocumentResponsible,
         body: [{
-            tag: 'h3',
-            content: data.DocumentTitle,
+            tag: 'a',
+            content: '<h3>' + data.DocumentTitle + '</h3>',
             attr: {
-                cssclass: 'group-title'
+                href: '#',
+                documentlink: data.Link,
+                documentid: data.DocumentId,
+                name: "downloadDoc"
             }
         },
         {
@@ -28,10 +31,11 @@ function journalNoteType(data) {
         time: formatDateTimeline(data.EventDate),
         responsible: data.DocumentResponsible,
         body: [{
-            tag: 'h3',
-            content: data.DocumentTitle,
+            tag: 'a',
+            content: '<h3>' + data.DocumentTitle + '</h3>',
             attr: {
-                cssclass: 'group-title'
+                href: '/JournalNote?instanceId=' + data.InstanceId + '&documentLink=' + data.Link + '&documentTitle=' + data.DocumentTitle + '&documentAuthor=' + data.DocumentResponsible,
+                target: '_blank'
             }
         },
         {

@@ -32,7 +32,7 @@ function getDocumentByLinkQuery(documentLink) {
     query.filters.push({
         "column": "Link",
         "operator": "equal",
-        "value": documentLink + ".html",
+        "value": documentLink,
         "valueType": "string"
 
     });

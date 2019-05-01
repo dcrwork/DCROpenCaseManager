@@ -166,9 +166,9 @@ function updateTimeline(monthMenu) {
 
                 var ePanelBody = $('<div>').addClass('panel-body');
                 $.each(element.body, function (index2, value2) {
-
                     var e = $('<' + value2.tag + '>');
 
+                    
                     $(value2.attr).each(function () {
                         $.each(this, function (index3, value3) {
                             (index3.toLowerCase() === 'cssclass') ? e.addClass(value3) : e.attr(index3, value3);

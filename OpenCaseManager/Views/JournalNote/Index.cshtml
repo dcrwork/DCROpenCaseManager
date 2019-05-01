@@ -4,6 +4,7 @@
     }
 </script>
 
+<script src="~/Scripts/journalNote.js" type="text/javascript"></script>
 
 @{
     /// <summary>
@@ -22,7 +23,7 @@
     var documentTitle = Request.QueryString["documentTitle"];
     var documentAuthor = Request.QueryString["documentAuthor"];
     var document = Request.QueryString["documentTitle"];
-    var dataFile = Server.MapPath($"~/App_Data/JournalNotes/{instanceId}/{documentLink}.html");
+    var dataFile = Server.MapPath($"~/App_Data/JournalNotes/{instanceId}/{documentLink}");
 
     if (File.Exists(dataFile))
     {
