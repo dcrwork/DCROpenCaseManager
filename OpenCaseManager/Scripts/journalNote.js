@@ -180,8 +180,6 @@ $(function () {
     $("#datepicker").datepicker({ prevText: "Forrige" });
     var prevText = $("#datepicker").datepicker("option", "nextText");
     $("#datepicker").datepicker("option", "prevText", "Forrige");
-
-    $("#datepicker").val(formatDate(new Date().toString()));
 });
 
 
