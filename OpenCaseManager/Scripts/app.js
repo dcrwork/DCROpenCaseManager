@@ -115,7 +115,7 @@
                     .done(function (response) {
                         window.location.replace(`/ChildInstance?id=${instanceId}`);
                     })
-                    .fail(function (e) {
+                    .fail(function (e) { 
                         showExceptionErrorMessage(e);
                     });
 
