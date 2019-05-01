@@ -7,7 +7,7 @@ var documentEventTime;
 var timer = $.now()-1000;
 var numberOfChanges = 0;
 var intervalPause = false;
-var isAlreadyDraftWhenOpened = true;
+var isAlreadyDraftWhenOpened;
 
 $.urlParam = function (name) {
     var results = new RegExp('[\?&]' + name + '=([^&#]*)')
@@ -47,6 +47,7 @@ function CreateJournalNoteView() {
     var id = $.urlParam("id");
     var newWindow = window.open("/JournalNote/Create" + (id ? "?id=" + id : ""), "", "width=800,height=600");
     newWindow.alreadyDrafted = false;
+    newWindow.isAlreadyDraftWhenOpened = true;
 }
 
 function CreateJournalNoteViewWithLink() {
@@ -64,6 +65,9 @@ function CreateJournalNoteViewWithLink() {
             newWindow.documentText = documentText;
             newWindow.documentTitle = documentInfo.Title;
             newWindow.isAlreadyDraftWhenOpened = documentInfo.IsDraft;
+            console.log(documentInfo.IsDraft);
+            console.log(newWindow.isAlreadyDraftWhenOpened);
+
             var splitTime = documentInfo.EventDate.split("T");
             var regex = /(\d\d:\d\d)/gm;
             var match = regex.exec(splitTime[1]);
@@ -74,6 +78,7 @@ function CreateJournalNoteViewWithLink() {
 
 
 $(function () {
+    console.log(isAlreadyDraftWhenOpened);
     if (!isAlreadyDraftWhenOpened) $('.change-journal-note-button').html('Opdater');
     $("#input-journal-title").val(documentTitle);
     $(".ui-datepicker").val(documentEventDate);
