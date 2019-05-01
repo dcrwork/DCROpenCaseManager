@@ -52,23 +52,23 @@ $(function () {
                 continue;
             }
 
-            var role = $("<h5></h5>");
+            var role = $("<h5 class='h5stamdata'></h5>");
             role.append($("<b></b>").text(current.Relation));
             div.append(role);
 
-            var cpr = $("<p></p>");
+            var cpr = $("<p class='pstamdata'></p>");
             cpr.text(current.CPR);
             div.append(cpr);
 
-            var name = $("<p></p>");
+            var name = $("<p class='pstamdata'></p>");
             name.text(current.StamdataName);
             div.append(name);
 
-            var address = $("<p></p>");
+            var address = $("<p class='pstamdata'></p>");
             address.text(current.Address);
             div.append(address);
 
-            var city = $("<p></p>");
+            var city = $("<p class='pstamdata'></p>");
             city.text(current.Postcode + " " + current.City);
             div.append(city);
             $(".expandedStamdata").append(div);
