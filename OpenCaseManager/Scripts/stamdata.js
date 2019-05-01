@@ -2,17 +2,32 @@
 
 $(function () {
 
-    async function setStamDataContent(childId) {
+    async function setStamDataContent(id, isInstance) {
 
-        var result = await getStamData(childId);
+        var x = id;
+
+        if (isInstance) {
+            var result2 = await getChildId(id);
+            var y = result2[0];
+            x = y.ChildId;
+        }
+
+        var result = await getStamData(x);
         var firstElement = result[0];
+
+        var sagsnrt = firstElement.Sagsnummer == null ? "" : firstElement.Sagsnummer;
+        var navnt = firstElement.Name == null ? "" : firstElement.Name;
+        var addresset = firstElement.Addresse == null ? "" : firstElement.Addresse;
+        var forældremyndighedt = firstElement.Forældremyndighed == null ? "" : firstElement.Forældremyndighed;
+        var skolet = firstElement.Skole == null ? "" : firstElement.Skole;
+        var aldert = firstElement.Alder == null ? "" : firstElement.Alder;
         
-        var sagsnrp = $("<p>").text(firstElement.Sagsnummer);
-        var navnp = $("<p>").text(firstElement.Name);
-        var addressep = $("<p>").text(firstElement.Addresse);
-        var forældremyndighedp = $("<p>").text(firstElement.Forældremyndighed);
-        var skolep = $("<p>").text(firstElement.Skole);
-        var alderp = $("<p>").text(firstElement.Alder);
+        var sagsnrp = $("<p>").text(sagsnrt);
+        var navnp = $("<p>").text(navnt);
+        var addressep = $("<p>").text(addresset);
+        var forældremyndighedp = $("<p>").text(forældremyndighedt);
+        var skolep = $("<p>").text(skolet);
+        var alderp = $("<p>").text(aldert);
      
 
         $(".sagsnr").append(sagsnrp);
@@ -28,6 +43,14 @@ $(function () {
             var current = result[i];
 
             var div = $("<div></div>");
+
+            if (current.Relation == null) {
+                var nothingFound = $("<h5></h5>");
+                nothingFound.append($("<b></b>").text("Nothing found"));
+                div.append(nothingFound);
+                $(".expandedStamdata").append(div);
+                continue;
+            }
 
             var role = $("<h5></h5>");
             role.append($("<b></b>").text(current.Relation));
@@ -53,9 +76,17 @@ $(function () {
 
     }
 
-    var childId = getParameterByName("id", window.location.href);
-
-    setStamDataContent(childId);
+    var id;
+    var isInstance = false;
+    var windowLocation = window.location;
+    var pname = windowLocation.pathname;
+    if (pname == "/Child") {
+        id = getParameterByName("id", window.location.href);
+    } else if (pname == "/ChildInstance") {
+        id = getParameterByName("id", window.location.href);
+        isInstance = true;
+    }
+    setStamDataContent(id, isInstance);
 })
 
 
@@ -81,6 +112,28 @@ async function getStamData(childId) {
     var result = await API.service('records', query);
     return JSON.parse(result)
 }
+
+async function getChildId(instanceId) {
+    var query = {
+        "type": "SELECT",
+        "entity": "InstanceExtension",
+        "resultSet": ["ChildId"],
+        "filters": new Array(),
+        "order": []
+    }
+
+    var whereChildIdMatchesFilter = {
+        "column": "InstanceId",
+        "operator": "equal",
+        "value": instanceId,
+        "valueType": "int",
+        "logicalOperator": "and"
+    };
+    query.filters.push(whereChildIdMatchesFilter);
+
+    var result = await API.service('records', query);
+    return JSON.parse(result)}
+
 
 function getParameterByName(name, url) {
     if (!url) url = window.location.href;
