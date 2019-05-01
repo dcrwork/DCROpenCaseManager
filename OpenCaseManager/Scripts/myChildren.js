@@ -63,7 +63,7 @@ function getChildInstanceHtml(item) {
     returnHtml += "<td><a href='" + childLink + "'>" + item.ChildName + "</a></td>";
     returnHtml += "<td>123456-7890</td>";
     returnHtml += "<td>" + item.Responsible + "</td>";
-    returnHtml += (item.NextDeadline != null) ? "<td >" + date + " " + time + "</td>" : "<td>Ingen kommende deadlines</td>";
+    returnHtml += (item.NextDeadline != null) ? "<td >" + date + " " + time + "</td>" : "<td>" + translations.NoDeadline + "</td>";
 
     returnHtml += "</tr>";
     return returnHtml;
