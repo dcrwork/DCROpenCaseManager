@@ -1,0 +1,64 @@
+﻿<style>
+    .obsbox {
+        background-color: #EFEFEF;
+        height: auto;
+        padding: 20px;
+        width: 230px;
+        margin-top: 15px;
+    }
+    .obsHeader {
+        margin: -15px -20px 0 -15px;
+        border-bottom: 1px solid #b3b3b3;
+        padding-left: 5px;
+        display: flex;
+        justify-content: space-between;
+    }
+
+        .obsHeader p{
+            margin-bottom: 2px;
+        }
+
+    .obsTextArea{
+        margin: 10px -10px -10px -10px;
+        width: calc(100% + 20px);
+        height: auto;
+        min-height: 50px;
+        resize: none;
+    }
+
+</style>
+
+<div class="obsbox">
+    <div class="obsHeader">
+        <p >OBS! </p> <p onclick="toggleEdit()" id="EditOBS" class="fa fa-edit"></p>
+    </div>
+    <textarea id="obsTextArea" class="obsTextArea" placeholder="importen info..." disabled="true" ></textarea>
+    <button class="obsSaveButton hide" onclick="saveObs()">Save</button>
+</div>
+
+
+
+<script>
+    function toggleEdit() {
+        if ($("#obsTextArea").attr("disabled")) {
+            $("#obsTextArea").attr("disabled", false);
+        }
+        else {
+            $("#obsTextArea").attr("disabled", true);
+        }
+
+        $(".obsSaveButton").toggleClass('hide');
+    }
+
+    function saveObs() {
+        var obsTekst = $("#obsTextArea").val();
+
+        //api call goes here
+        console.log(obsTekst);
+
+
+        $("#obsTextArea").attr("disabled", true);
+        $(".obsSaveButton").toggleClass('hide');
+    }
+
+</script>
