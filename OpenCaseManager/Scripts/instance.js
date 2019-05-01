@@ -1,5 +1,4 @@
-﻿
-$(document).ready(function () {
+﻿$(document).ready(function () {
 
     var promise = new Promise(function (resolve, reject) {
         App.responsible(resolve);
@@ -36,5 +35,4 @@ $(document).ready(function () {
     if (window.localStorage.getItem('taskStatusDD') != null) {
         $('#taskStatusDropDown').val(window.localStorage.getItem('taskStatusDD'));
     }
-
 });

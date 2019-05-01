@@ -422,6 +422,7 @@
     <Content Include="HtmlTemplates\FormInstruction.html" />
     <Content Include="karma.conf.js" />
     <Content Include="Scripts\addDocument.js" />
+    <Content Include="Scripts\breadcrumbs.js" />
     <Content Include="Scripts\child.js" />
     <Content Include="Scripts\createprocess.js" />
     <Content Include="Scripts\formserver.js" />
