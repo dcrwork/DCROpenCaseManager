@@ -5,34 +5,61 @@
         padding: 20px;
         width: 230px;
         margin-top: 15px;
+        text-align: right;
     }
     .obsHeader {
-        margin: -15px -20px 0 -15px;
-        border-bottom: 1px solid #b3b3b3;
+        margin: -10px -10px 0 -15px;
         padding-left: 5px;
         display: flex;
         justify-content: space-between;
+        align-items: center;
     }
+        .obsHeader h3 {
+            font-size: large;
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
 
-        .obsHeader p{
+        .obsHeader a{
             margin-bottom: 2px;
+            cursor: pointer;
+        }
+        .obsHeader a:hover {
+            margin-bottom: 2px;
+            text-decoration: none;
         }
 
     .obsTextArea{
-        margin: 10px -10px -10px -10px;
+        margin: 10px -10px 5px -10px;
         width: calc(100% + 20px);
-        height: auto;
+        overflow:hidden;
         min-height: 50px;
         resize: none;
+        text-align: left;
+        display: block;
+        padding: 10px;
+    }
+
+    .obsSaveButton {
+        border: 1px solid #9C1A5E;
+        background-color: transparent;
+        color: #9C1A5E;
+        padding: 5px 10px 5px 10px;
+        margin: 0px -10px -10px 0;
+    }
+
+    .obsSaveButton:hover {
+        color: #fff;
+        background: #9C1A5E;
     }
 
 </style>
 
 <div class="obsbox">
     <div class="obsHeader">
-        <p >OBS! </p> <p onclick="toggleEdit()" id="EditOBS" class="fa fa-edit"></p>
+        <h3 >OBS! </h3> <a onclick="toggleEdit()" id="EditOBS" class="fa fa-edit"></a>
     </div>
-    <textarea id="obsTextArea" class="obsTextArea" placeholder="importen info..." disabled="true" ></textarea>
+    <textarea id="obsTextArea" class="obsTextArea" onkeyup="auto_grow(this)" onchange="auto_grow(this)" placeholder="importen info..." disabled="true" ></textarea>
     <button class="obsSaveButton hide" onclick="saveObs()">Save</button>
 </div>
 

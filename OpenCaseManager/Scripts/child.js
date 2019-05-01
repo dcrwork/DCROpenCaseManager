@@ -109,4 +109,5 @@ function displayChildObsBox(response) {
     var obsBox = (result[0] == undefined) ? 'Intet data at være opmærksom på' : result[0].ObsBoxText;
 
     $("#obsTextArea").html("").append(obsBox);
+    auto_grow($("#obsTextArea")[0]);
 }
