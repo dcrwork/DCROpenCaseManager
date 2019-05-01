@@ -78,28 +78,32 @@ function CreateJournalNoteViewWithLink() {
 
 
 $(function () {
-    console.log(isAlreadyDraftWhenOpened);
-    if (!isAlreadyDraftWhenOpened) $('.change-journal-note-button').html('Opdater');
-    $("#input-journal-title").val(documentTitle);
-    $(".ui-datepicker").val(documentEventDate);
-    $(".timepicker").val(documentEventTime);
+    try {
+        if (!isAlreadyDraftWhenOpened) $('.change-journal-note-button').html('Opdater');
+        $("#input-journal-title").val(documentTitle);
+        $(".ui-datepicker").val(documentEventDate);
+        $(".timepicker").val(documentEventTime);
 
-    $('#input-journal-title').on('input', function () {
-        numberOfChanges++;
-    });
-    var inputJournalNote = $('#input-journal-note');
-    if (inputJournalNote != null) {
-
-        inputJournalNote.trumbowyg();
-        inputJournalNote.trumbowyg({
-            tagsToRemove: ['Redo']
-        });
-        inputJournalNote.trumbowyg('html', documentText);
-        inputJournalNote.trumbowyg().on('tbwchange', function () {
+        $('#input-journal-title').on('input', function () {
             numberOfChanges++;
         });
+
+        var inputJournalNote = $('#input-journal-note');
+        if (inputJournalNote != null) {
+
+            inputJournalNote.trumbowyg();
+            inputJournalNote.trumbowyg({
+                tagsToRemove: ['Redo']
+            });
+            inputJournalNote.trumbowyg('html', documentText);
+            inputJournalNote.trumbowyg().on('tbwchange', function () {
+                numberOfChanges++;
+            });
+        }
     }
-})
+    catch (err) { }
+
+});
 
 function automaticSaveDraft() {
     if ($.now() - timer > 2000 && numberOfChanges >= 10) {
@@ -144,53 +148,59 @@ function formatDate(_date) {
 }
 
 $(function () {
-    $("#datepicker").datepicker();
-    $("#datepicker").datepicker("option", "dateFormat", "dd/mm/yy");
-    $("#datepicker").datepicker({ maxDate: "+0d" });
-    var maxDate = $("#datepicker").datepicker("option", "maxDate");
-    $("#datepicker").datepicker("option", "maxDate", "+0d");
+    try {
+        $("#datepicker").datepicker();
+        $("#datepicker").datepicker("option", "dateFormat", "dd/mm/yy");
+        $("#datepicker").datepicker({ maxDate: "+0d" });
+        var maxDate = $("#datepicker").datepicker("option", "maxDate");
+        $("#datepicker").datepicker("option", "maxDate", "+0d");
 
-    $("#datepicker").datepicker({ dayNames: ["Søndag", "Mandag", "Tirsdag", "Onsdag", "Torsdag", "Fredag", "Lørdag"] });
-    var dayNames = $("#datepicker").datepicker("option", "dayNames");
-    $("#datepicker").datepicker("option", "dayNames", ["Søndag", "Mandag", "Tirsdag", "Onsdag", "Torsdag", "Fredag", "Lørdag"]);
+        $("#datepicker").datepicker({ dayNames: ["Søndag", "Mandag", "Tirsdag", "Onsdag", "Torsdag", "Fredag", "Lørdag"] });
+        var dayNames = $("#datepicker").datepicker("option", "dayNames");
+        $("#datepicker").datepicker("option", "dayNames", ["Søndag", "Mandag", "Tirsdag", "Onsdag", "Torsdag", "Fredag", "Lørdag"]);
 
-    $("#datepicker").datepicker({ dayNamesMin: ["Sø", "Ma", "Ti", "On", "To", "Fr", "Lø"] });
-    var dayNamesMin = $("#datepicker").datepicker("option", "dayNamesMin");
-    $("#datepicker").datepicker("option", "dayNamesMin", ["Sø", "Ma", "Ti", "On", "To", "Fr", "Lø"]);
+        $("#datepicker").datepicker({ dayNamesMin: ["Sø", "Ma", "Ti", "On", "To", "Fr", "Lø"] });
+        var dayNamesMin = $("#datepicker").datepicker("option", "dayNamesMin");
+        $("#datepicker").datepicker("option", "dayNamesMin", ["Sø", "Ma", "Ti", "On", "To", "Fr", "Lø"]);
 
-    $("#datepicker").datepicker({ monthNamesShort: ["Jan", "Feb", "Mar", "Apr", "Maj", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dec"] });
-    var monthNamesShort = $("#datepicker").datepicker("option", "dayNamesMin");
-    $("#datepicker").datepicker("option", "monthNamesShort", ["Jan", "Feb", "Mar", "Apr", "Maj", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dec"]);
+        $("#datepicker").datepicker({ monthNamesShort: ["Jan", "Feb", "Mar", "Apr", "Maj", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dec"] });
+        var monthNamesShort = $("#datepicker").datepicker("option", "dayNamesMin");
+        $("#datepicker").datepicker("option", "monthNamesShort", ["Jan", "Feb", "Mar", "Apr", "Maj", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dec"]);
 
-    $("#datepicker").datepicker({ monthNames: ["Januar", "Februar", "Marts", "April", "Maj", "Juni", "Juli", "August", "September", "Oktober", "November", "December"] });
-    var dayNamesMin = $("#datepicker").datepicker("option", "monthNames");
-    $("#datepicker").datepicker("option", "monthNames", ["Januar", "Februar", "Marts", "April", "Maj", "Juni", "Juli", "August", "September", "Oktober", "November", "December"]);
+        $("#datepicker").datepicker({ monthNames: ["Januar", "Februar", "Marts", "April", "Maj", "Juni", "Juli", "August", "September", "Oktober", "November", "December"] });
+        var dayNamesMin = $("#datepicker").datepicker("option", "monthNames");
+        $("#datepicker").datepicker("option", "monthNames", ["Januar", "Februar", "Marts", "April", "Maj", "Juni", "Juli", "August", "September", "Oktober", "November", "December"]);
 
-    $("#datepicker").datepicker({ gotoCurrent: true });
-    var gotoCurrent = $("#datepicker").datepicker("option", "gotoCurrent");
-    $("#datepicker").datepicker("option", "gotoCurrent", true);
+        $("#datepicker").datepicker({ gotoCurrent: true });
+        var gotoCurrent = $("#datepicker").datepicker("option", "gotoCurrent");
+        $("#datepicker").datepicker("option", "gotoCurrent", true);
 
-    $("#datepicker").datepicker({ firstDay: 1 });
-    var firstDay = $("#datepicker").datepicker("option", "firstDay");
-    $("#datepicker").datepicker("option", "firstDay", 1);
+        $("#datepicker").datepicker({ firstDay: 1 });
+        var firstDay = $("#datepicker").datepicker("option", "firstDay");
+        $("#datepicker").datepicker("option", "firstDay", 1);
 
-    $("#datepicker").datepicker({ hideIfNoPrevNext: true });
-    var hideIfNoPrevNext = $("#datepicker").datepicker("option", "hideIfNoPrevNext");
-    $("#datepicker").datepicker("option", "hideIfNoPrevNext", true);
+        $("#datepicker").datepicker({ hideIfNoPrevNext: true });
+        var hideIfNoPrevNext = $("#datepicker").datepicker("option", "hideIfNoPrevNext");
+        $("#datepicker").datepicker("option", "hideIfNoPrevNext", true);
 
-    $("#datepicker").datepicker({ nextText: "Næste" });
-    var nextText = $("#datepicker").datepicker("option", "nextText");
-    $("#datepicker").datepicker("option", "nextText", "Næste");
+        $("#datepicker").datepicker({ nextText: "Næste" });
+        var nextText = $("#datepicker").datepicker("option", "nextText");
+        $("#datepicker").datepicker("option", "nextText", "Næste");
 
-    $("#datepicker").datepicker({ prevText: "Forrige" });
-    var prevText = $("#datepicker").datepicker("option", "nextText");
-    $("#datepicker").datepicker("option", "prevText", "Forrige");
+        $("#datepicker").datepicker({ prevText: "Forrige" });
+        var prevText = $("#datepicker").datepicker("option", "nextText");
+        $("#datepicker").datepicker("option", "prevText", "Forrige");
 
-    $("#datepicker").val(formatDate(new Date().toString()));
+        $("#datepicker").val(formatDate(new Date().toString()));
+        $("#datepicker").attr('readonly', 'readonly');
+    }
+    catch (err) { }
+
+    
 });
 
 
-$("#datepicker").attr('readonly', 'readonly');
+
 
 /*$.datepicker.setDefaults($.datepicker.regional["da"]);*/
 
@@ -296,18 +306,20 @@ $(document).ready(function () {
     var now = new Date();
     var latestQuarter = now.getMinutes() - (now.getMinutes() % 15);
     var defaultTime = now.getHours() + ':' + latestQuarter;
-
-    $('input.timepicker').timepicker({
-        timeFormat: 'HH:mm',
-        defaultTime: defaultTime,
-        interval: 30,
-        minTime: '0000',
-        maxTime: '2359',
-        startTime: '06',
-        dynamic: false,
-        dropdown: true,
-        scrollbar: true,
-    });
+    try {
+        $('input.timepicker').timepicker({
+            timeFormat: 'HH:mm',
+            defaultTime: defaultTime,
+            interval: 30,
+            minTime: '0000',
+            maxTime: '2359',
+            startTime: '06',
+            dynamic: false,
+            dropdown: true,
+            scrollbar: true,
+        });
+    }
+    catch (err) { }
 });
 
 $(document).on('click', '.change-journal-note-button', function (event) {
