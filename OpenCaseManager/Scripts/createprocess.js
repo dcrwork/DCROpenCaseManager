@@ -27,7 +27,7 @@
     $('#create-process').on('click', function (e) {
         var title = $('#process-title').val();
         var graphId = $('#processes').find(":selected").val();
-        var childId = (window.location.pathname == "/child") ? App.getParameterByName("id", window.location.href) : null;
+        var childId = (window.location.pathname.toLowerCase() == "/child") ? App.getParameterByName("id", window.location.href) : null;
 
         var userRoles = new Array()
         $('select[name="multi-select"]').each(function (index, select) {
