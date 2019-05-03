@@ -13,7 +13,7 @@ RETURNS TABLE
 AS
 
 	RETURN (
-			SELECT C.[Name] as "ChildName", 
+			SELECT S.[Navn] as "ChildName", 
 				   C.[Id] as "ChildId",
 				   U.[Name] as "Responsible",
 
@@ -33,9 +33,10 @@ AS
 					   ) AS SumOfEvents
 					  
 			   FROM [dbo].[Child] AS C 
-					INNER JOIN [dbo].[User] AS U ON C.Responsible = U.Id
+					INNER JOIN [dbo].[User] AS U ON C.Responsible = U.Id, [dbo].[StamdataChild] AS S
 
-
+                    
 
 			   WHERE C.[Responsible] = @userId
+			   AND C.Id = S.ChildId
 	       )
