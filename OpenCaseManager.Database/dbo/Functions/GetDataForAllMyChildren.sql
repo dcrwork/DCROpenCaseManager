@@ -1,3 +1,10 @@
+/****** Object:  UserDefinedFunction [dbo].[GetDataForAllMyChildren]    Script Date: 06-05-2019 10:48:01 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
 -- =============================================
 -- =============================================
 -- Author: Daniel Guldberg Aaes, Louise Kahl Skafte
@@ -33,10 +40,13 @@ AS
 					   ) AS SumOfEvents
 					  
 			   FROM [dbo].[Child] AS C 
-					INNER JOIN [dbo].[User] AS U ON C.Responsible = U.Id, [dbo].[StamdataChild] AS S
+					LEFT JOIN [dbo].[User] AS U ON C.Responsible = U.Id
+					LEFT JOIN [dbo].[StamdataChild] AS S ON S.ChildId = C.Id
 
                     
 
 			   WHERE C.[Responsible] = @userId
-			   AND C.Id = S.ChildId
 	       )
+GO
+
+

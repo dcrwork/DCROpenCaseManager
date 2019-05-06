@@ -57,6 +57,7 @@ namespace OpenCaseManager.Controllers.ApiControllers
         {
             // add child 
             var childId = AddChild(input);
+            AddChildName(input.ChildName, input.CaseNumber, childId);
             return Ok(Common.ToJson(childId));
         }
 
@@ -854,10 +855,24 @@ namespace OpenCaseManager.Controllers.ApiControllers
         private string AddChild(AddChildModel model)
         {
             _dataModelManager.GetDefaultDataModel(Enums.SQLOperation.INSERT, DBEntityNames.Tables.Child.ToString());
-            _dataModelManager.AddParameter(DBEntityNames.Child.Name.ToString(), Enums.ParameterType._string, model.ChildName);
             _dataModelManager.AddParameter(DBEntityNames.Child.Responsible.ToString(), Enums.ParameterType._int, Common.GetResponsibleId());
             // Returns child id
             return _manager.InsertData(_dataModelManager.DataModel).Rows[0][DBEntityNames.Child.Id.ToString()].ToString();
+        }
+
+        /// <summary>
+        /// Add Child Name
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        private void AddChildName(string name, string caseNumber, string id)
+        {
+            _dataModelManager.GetDefaultDataModel(Enums.SQLOperation.INSERT, DBEntityNames.Tables.StamdataChild.ToString());
+            _dataModelManager.AddParameter(DBEntityNames.StamdataChild.ChildId.ToString(), Enums.ParameterType._string, id);
+            _dataModelManager.AddParameter(DBEntityNames.StamdataChild.Navn.ToString(), Enums.ParameterType._string, name);
+            _dataModelManager.AddParameter(DBEntityNames.StamdataChild.Sagsnummer.ToString(), Enums.ParameterType._string, caseNumber);
+            _manager.InsertData(_dataModelManager.DataModel).Rows[0][DBEntityNames.Child.Id.ToString()].ToString();
         }
 
         /// <summary>
