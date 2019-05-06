@@ -2,6 +2,7 @@ var alreadyDrafted;
 var documentId;
 var documentText;
 var documentTitle;
+var childId;
 var documentEventDate;
 var documentEventTime;
 var timer = $.now()-1000;
@@ -48,6 +49,7 @@ function CreateJournalNoteView() {
     var newWindow = window.open("/JournalNote/Create" + (id ? "?id=" + id : ""), "", "width=800,height=600");
     newWindow.alreadyDrafted = false;
     newWindow.isAlreadyDraftWhenOpened = true;
+    newWindow.childId = $('#childIdHidden').val();
 }
 
 function CreateJournalNoteViewWithLink() {
@@ -65,6 +67,7 @@ function CreateJournalNoteViewWithLink() {
             newWindow.documentText = documentText;
             newWindow.documentTitle = documentInfo.Title;
             newWindow.isAlreadyDraftWhenOpened = documentInfo.IsDraft;
+            newWindow.childId = $('#childIdHidden').val();
             console.log(documentInfo.IsDraft);
             console.log(newWindow.isAlreadyDraftWhenOpened);
 
@@ -241,6 +244,7 @@ function uploadFile(file, instanceId, fileName, isDraft, closeWindow) {
                 'type': 'JournalNoteBig',
                 'instanceId': instanceId,
                 'givenFileName': fileName,
+                'childId': childId,
                 'eventTime': eventDateTime,
                 'isDraft': isDraft
             },

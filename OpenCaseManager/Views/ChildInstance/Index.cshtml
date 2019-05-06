@@ -12,6 +12,7 @@
 
 <div class="wholeActionsPage">
     <input type="hidden" id="childIdHidden">
+    <input type="hidden" id="instanceIdHidden">
     <div class="buttonsBox">
         @Html.Partial("~/Views/PartialViews/AddButton.cshtml", new ViewDataDictionary { { "add-text", "Tilføj dokument" }, { "onClick", "addDocument()" } })
         @Html.Partial("~/Views/PartialViews/AddButton.cshtml", new ViewDataDictionary { { "add-text", "Tilføj journalnotat" }, { "onClick", "CreateJournalNoteView()" } })
@@ -57,6 +58,7 @@
 <script type="text/javascript">
     var webPortalType = "Instance";
     var instanceId = getParameterByName("id", window.location.href);
+    $('#instanceIdHidden').val(instanceId);
 
     function getParameterByName(name, url) {
         if (!url) url = window.location.href;

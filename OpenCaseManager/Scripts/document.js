@@ -183,15 +183,20 @@ function submitFilesDocuments() {
 }
 
 function uploadFileDocuments(file, docId) {
+    var instanceId = '';
+    if (typeof $('#instanceIdHidden').val() != 'undefined') instanceId = $('#instanceIdHidden').val();
+    console.log(instanceId);
+    console.log($('#childIdHidden').val());
     if (isAdd && $('#documentName').val() != '') {
         $.ajax({
             url: window.location.origin + "/api/records/AddDocument",
             type: 'POST',
             headers: {
                 'filename': file.name,
-                'type': webPortalType+"Document",
+                'type': webPortalType + "Document",
                 'instanceId': instanceId,
-                'givenFileName': $('#documentName').val()
+                'givenFileName': $('#documentName').val(),
+                'childId': $('#childIdHidden').val()
             },
             data: file,
             async: false,
@@ -219,6 +224,7 @@ function uploadFileDocuments(file, docId) {
                 'type': webPortalType+"Document",
                 'instanceId': instanceId,
                 'givenFileName': $('#documentName').val(),
+                'childId': $('#childIdHidden').val(),
                 'isNewFileAdded': (file == null ? "false" : "true")
             },
             data: file,

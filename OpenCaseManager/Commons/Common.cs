@@ -442,7 +442,7 @@ namespace OpenCaseManager.Commons
         /// <param name="documentName"></param>
         /// <param name="type"></param>
         /// <param name="link"></param>
-        public static string AddDocument(string documentName, string type, string link, string instanceId, bool isDraft, DateTime eventDateTime, IManager manager, IDataModelManager dataModelManager)
+        public static string AddDocument(string documentName, string type, string link, string instanceId, bool isDraft, DateTime eventDateTime, string childId, IManager manager, IDataModelManager dataModelManager)
         {
             dataModelManager.GetDefaultDataModel(Enums.SQLOperation.INSERT, DBEntityNames.Tables.Document.ToString());
             dataModelManager.AddParameter(DBEntityNames.Document.Title.ToString(), Enums.ParameterType._string, documentName);
@@ -452,6 +452,10 @@ namespace OpenCaseManager.Commons
             dataModelManager.AddParameter(DBEntityNames.Document.UploadDate.ToString(), Enums.ParameterType._datetime, DateTime.Now.ToString());
             dataModelManager.AddParameter(DBEntityNames.Document.IsLocked.ToString(), Enums.ParameterType._boolean, "false");
             dataModelManager.AddParameter(DBEntityNames.Document.IsDraft.ToString(), Enums.ParameterType._boolean, isDraft.ToString());
+            if (!string.IsNullOrEmpty(childId))
+            {
+                dataModelManager.AddParameter(DBEntityNames.Document.ChildId.ToString(), Enums.ParameterType._string, childId);
+            }
 
             if (!string.IsNullOrEmpty(instanceId))
             {
@@ -460,7 +464,7 @@ namespace OpenCaseManager.Commons
 
             var dataTable = manager.InsertData(dataModelManager.DataModel);
             var documentId = dataTable.Rows[0].ItemArray[0].ToString();
-            AddJournalHistory(instanceId, null, documentId, type, documentName, eventDateTime, manager, dataModelManager);
+            AddJournalHistory(instanceId, null, documentId, type, documentName, eventDateTime, childId, manager, dataModelManager);
             return documentId;
         }
 
@@ -474,11 +478,18 @@ namespace OpenCaseManager.Commons
         /// <param name="title"></param>
         /// <param name="eventDate"></param>
         /// <param name="isLocked"></param>
-        public static void AddJournalHistory(string instanceId, string eventId, string documentId, string type, string title, DateTime eventDateTime, IManager manager, IDataModelManager dataModelManager)
+        public static void AddJournalHistory(string instanceId, string eventId, string documentId, string type, string title, DateTime eventDateTime, string childId, IManager manager, IDataModelManager dataModelManager)
         {
 
             dataModelManager.GetDefaultDataModel(Enums.SQLOperation.INSERT, DBEntityNames.Tables.JournalHistory.ToString());
-            dataModelManager.AddParameter(DBEntityNames.JournalHistory.InstanceId.ToString(), Enums.ParameterType._int, instanceId.ToString());
+            if (!string.IsNullOrEmpty(instanceId))
+            {
+                dataModelManager.AddParameter(DBEntityNames.JournalHistory.InstanceId.ToString(), Enums.ParameterType._int, instanceId.ToString());
+            }
+            if (!string.IsNullOrEmpty(childId))
+            {
+                dataModelManager.AddParameter(DBEntityNames.JournalHistory.ChildId.ToString(), Enums.ParameterType._int, childId.ToString());
+            }
             if (eventId != null) dataModelManager.AddParameter(DBEntityNames.JournalHistory.EventId.ToString(), Enums.ParameterType._int, eventId.ToString());
             if (documentId != null) dataModelManager.AddParameter(DBEntityNames.JournalHistory.DocumentId.ToString(), Enums.ParameterType._int, documentId.ToString());
             dataModelManager.AddParameter(DBEntityNames.JournalHistory.Type.ToString(), Enums.ParameterType._string, type);
