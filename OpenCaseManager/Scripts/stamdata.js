@@ -7,11 +7,13 @@
         if (isInstance) {
             var result2 = await getChildId(id);
             var y = result2[0];
+            if (y == null) return;
             x = y.ChildId;
         }
 
         var result = await getStamData(x);
         var firstElement = result[0];
+        if (firstElement == null) return;
 
         var sagsnrt = firstElement.Sagsnummer == null ? "" : firstElement.Sagsnummer;
         var navnt = firstElement.Name == null ? "" : firstElement.Name;
@@ -95,7 +97,7 @@ async function getStamData(childId) {
     }
 
     var whereChildIdMatchesFilter = {
-        "column": "Id",
+        "column": "ChildId",
         "operator": "equal",
         "value": childId,
         "valueType": "int",

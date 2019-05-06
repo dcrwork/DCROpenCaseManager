@@ -19,10 +19,11 @@
 
     $('#add-child').on('click', function (e) {
         var childName = $('#child-name').val();
+        var caseNumber = $('#case-number').val();
         var responsible = $('#responsible').val();
 
         if (childName !== '') {
-            App.addChild(childName, responsible);
+            App.addChild(childName, caseNumber, responsible);
             $('#add-child-modal').modal('toggle');
         }
         else {

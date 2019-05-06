@@ -1,18 +1,25 @@
 function formatDateTimeline(date) {
     var value = new Date(date);
-    return value.getFullYear() + "-" + value.getMonth() + "-" + value.getDate() ;
+    return addZero(value.getDate()) + "/" + addZero(value.getMonth() + 1) + "-" + value.getFullYear();
 }
 
+function addZero(i) {
+    if (i < 10) i = "0" + i;
+    return i;
+}
 function documentType(data) {
     return {
         type: "Dokument",
-        time: formatDateTimeline(data.EventDate),
+        time: data.EventDate,
         responsible: data.DocumentResponsible,
         body: [{
-            tag: 'h3',
-            content: data.DocumentTitle,
+            tag: 'a',
+            content: '<h3>' + data.DocumentTitle + '</h3>',
             attr: {
-                cssclass: 'group-title'
+                href: '#',
+                documentlink: data.Link,
+                documentid: data.DocumentId,
+                name: "downloadDoc"
             }
         },
         {
@@ -25,13 +32,14 @@ function documentType(data) {
 function journalNoteType(data) {
     return {
         type: "Journalnotat",
-        time: formatDateTimeline(data.EventDate),
+        time: data.EventDate,
         responsible: data.DocumentResponsible,
         body: [{
-            tag: 'h3',
-            content: data.DocumentTitle,
+            tag: 'a',
+            content: '<h3>' + data.DocumentTitle + '</h3>',
             attr: {
-                cssclass: 'group-title'
+                href: '/JournalNote?instanceId=' + data.InstanceId + '&documentLink=' + data.Link + '&documentTitle=' + data.DocumentTitle + '&documentAuthor=' + data.DocumentResponsible,
+                target: '_blank'
             }
         },
         {
@@ -45,7 +53,7 @@ function activitiesType(data) {
     if (data.Type === 'Event') eventtype = "Aktivitet";
     return {
         type: eventtype,
-        time: formatDateTimeline(data.EventDate),
+        time: data.EventDate,
         responsible: data.EventResponsible,
         body: [{
             tag: 'h3',

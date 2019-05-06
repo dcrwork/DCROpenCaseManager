@@ -143,7 +143,7 @@ function updateTimeline(monthMenu) {
                 /****************************************SLOT <article>****************************************/
                 var leftWrapper = $('<div>').addClass('leftWrapper');
                 var badge = $('<div>').addClass('badge');
-                badge.text(fnDateFormat(element.time, settings.formatDate, language));
+                badge.text(formatDateTimeline(element.time));
 
                 var responsible = $('<p>').addClass('timelineResponsible');
                 responsible.text(element.responsible || '');
@@ -167,9 +167,9 @@ function updateTimeline(monthMenu) {
 
                 var ePanelBody = $('<div>').addClass('panel-body');
                 $.each(element.body, function (index2, value2) {
-
                     var e = $('<' + value2.tag + '>');
 
+                    
                     $(value2.attr).each(function () {
                         $.each(this, function (index3, value3) {
                             (index3.toLowerCase() === 'cssclass') ? e.addClass(value3) : e.attr(index3, value3);

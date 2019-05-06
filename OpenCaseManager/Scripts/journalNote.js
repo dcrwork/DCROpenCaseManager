@@ -7,7 +7,7 @@ var documentEventTime;
 var timer = $.now()-1000;
 var numberOfChanges = 0;
 var intervalPause = false;
-var isAlreadyDraftWhenOpened = true;
+var isAlreadyDraftWhenOpened;
 
 $.urlParam = function (name) {
     var results = new RegExp('[\?&]' + name + '=([^&#]*)')
@@ -36,7 +36,7 @@ function getDocumentByLinkQuery(documentLink) {
     query.filters.push({
         "column": "Link",
         "operator": "equal",
-        "value": documentLink + ".html",
+        "value": documentLink,
         "valueType": "string"
 
     });
@@ -47,6 +47,7 @@ function CreateJournalNoteView() {
     var id = $.urlParam("id");
     var newWindow = window.open("/JournalNote/Create" + (id ? "?id=" + id : ""), "", "width=800,height=600");
     newWindow.alreadyDrafted = false;
+    newWindow.isAlreadyDraftWhenOpened = true;
 }
 
 function CreateJournalNoteViewWithLink() {
@@ -64,6 +65,7 @@ function CreateJournalNoteViewWithLink() {
             newWindow.documentText = documentText;
             newWindow.documentTitle = documentInfo.Title;
             newWindow.isAlreadyDraftWhenOpened = documentInfo.IsDraft;
+
             var splitTime = documentInfo.EventDate.split("T");
             var regex = /(\d\d:\d\d)/gm;
             var match = regex.exec(splitTime[1]);
@@ -132,7 +134,7 @@ function formatDate(_date) {
 
     var day = value.getDate() < 10 ? '0' + value.getDate() : value.getDate();
     var month = value.getMonth + 1;
-        month = value.getMonth() < 10 ? "0" + value.getMonth() : value.getMonth();
+        month = (value.getMonth()+1) < 10 ? "0" + (value.getMonth()+1) : (value.getMonth()+1);
     var year = value.getFullYear();
 
     return day + "/" + month + "/" + year;

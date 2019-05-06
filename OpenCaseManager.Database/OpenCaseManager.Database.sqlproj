@@ -120,6 +120,9 @@
     <Build Include="dbo\Tables\StamdataDummyData.sql" />
     <Build Include="dbo\Tables\StamdataDummyDataExtension.sql" />
     <Build Include="dbo\Views\StamdataView.sql" />
+    <Build Include="dbo\Tables\StamdataChild.sql" />
+    <Build Include="dbo\Views\Timeline.sql" />
+    <Build Include="dbo\Functions\JournalHistoryForASingleInstance.sql" />
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="dbo\Data\Script.PreDeployment.sql" />
