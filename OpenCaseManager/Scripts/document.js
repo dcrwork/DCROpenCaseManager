@@ -254,7 +254,7 @@ function getDocuments() {
             {
                 "column": "Type",
                 "operator": "equal",
-                "value": webPortalType+"Document",
+                "value": webPortalType + "Document",
                 "valueType": "string",
                 "logicalOperator": "and"
             }

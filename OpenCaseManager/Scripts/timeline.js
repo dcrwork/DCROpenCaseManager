@@ -26,8 +26,8 @@ $(document).ready(function () {
 
     $('body').on('click', 'a[name="downloadDoc"]', function () {
         elem = $(this);
-        var link = elem.attr('documentlink');
-        var win = window.open(window.location.origin + "/file/downloadfile?link=" + link, '_blank');
+        var link = elem.attr('documentLink');
+        var win = window.open(window.location.origin + "/File/DownloadFile?link=" + link, '_blank');
         win.focus();
     })
 })
