@@ -3,6 +3,7 @@ var documentId;
 var documentText;
 var documentTitle;
 var childId;
+var instanceId;
 var documentEventDate;
 var documentEventTime;
 var timer = $.now()-1000;
@@ -44,12 +45,22 @@ function getDocumentByLinkQuery(documentLink) {
     return query;
 }
 
-function CreateJournalNoteView() {
+function CreateJournalNoteViewInstance() {
     var id = $.urlParam("id");
     var newWindow = window.open("/JournalNote/Create" + (id ? "?id=" + id : ""), "", "width=800,height=600");
     newWindow.alreadyDrafted = false;
     newWindow.isAlreadyDraftWhenOpened = true;
     newWindow.childId = $('#childIdHidden').val();
+    newWindow.instanceId = $('#instanceIdHidden').val();
+}
+
+function CreateJournalNoteViewChild() {
+    var id = $.urlParam("id");
+    var newWindow = window.open("/JournalNote/Create" + (id ? "?childId=" + id : ""), "", "width=800,height=600");
+    newWindow.alreadyDrafted = false;
+    newWindow.isAlreadyDraftWhenOpened = true;
+    newWindow.childId = $('#childIdHidden').val();
+    newWindow.instanceId = "";
 }
 
 function CreateJournalNoteViewWithLink() {
@@ -68,7 +79,7 @@ function CreateJournalNoteViewWithLink() {
             newWindow.documentTitle = documentInfo.Title;
             newWindow.isAlreadyDraftWhenOpened = documentInfo.IsDraft;
             newWindow.childId = $('#childIdHidden').val();
-
+            newWindow.instanceId = id;
 
             var splitTime = documentInfo.EventDate.split("T");
             var regex = /(\d\d:\d\d)/gm;
@@ -224,13 +235,12 @@ function makeTextFile(text) {
 };
 
 function submitFiles(fileName, textContents, isDraft, closeWindow) {
-    var instanceId = $.urlParam("id");
     var file = makeTextFile(textContents);
-    uploadFile(file, instanceId, fileName, isDraft, closeWindow);
+    uploadFile(file, fileName, isDraft, closeWindow);
 
 }
 
-function uploadFile(file, instanceId, fileName, isDraft, closeWindow) {
+function uploadFile(file, fileName, isDraft, closeWindow) {
     if (fileName == "") { fileName = "NA" };
     var eventDateTime = $(".ui-datepicker").val() + " " + $(".timepicker").val();
   
@@ -358,7 +368,6 @@ function saveFile(isDraft, closeWindow, event) {
 
 function updateFiles(fileName, textContents, isDraft, closeWindow) {
     if (fileName == "") { fileName = "NA" };
-    var instanceId = $.urlParam("id");
     var file = makeTextFile(textContents);
 
     var eventDateTime = $(".ui-datepicker").val() + " " + $(".timepicker").val();
