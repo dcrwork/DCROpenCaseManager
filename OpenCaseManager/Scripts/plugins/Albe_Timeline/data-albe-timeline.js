@@ -24,7 +24,7 @@ function documentType(data) {
         },
         {
             tag: 'p',
-            content: "Indsats: " + data.InstanceTitle
+            content: translations.Instance + ": " + data.InstanceTitle
             }]
     }
 }
@@ -44,7 +44,7 @@ function journalNoteType(data) {
         },
         {
             tag: 'p',
-            content: "Tilføjet: " + formatDateTimeline(data.CreationDate),
+            content: translations.Added + ": " + formatDateTimeline(data.CreationDate),
         }]
     }
 }
@@ -64,7 +64,7 @@ function activitiesType(data) {
         },
             {
                 tag: 'p',
-                content: "Indsats: " + data.InstanceTitle
+                content: translations.Instance + ": " + data.InstanceTitle
             }]
     }
 }

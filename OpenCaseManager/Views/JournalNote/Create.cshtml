@@ -27,11 +27,11 @@
 <link type="text/css" rel="stylesheet" href="~/Content/journalnote.css" />
 
 <form class="form-create-journal-note">
-    <h3>Opret journalnotat</h3>
+    <h3><span data-locale data-apply="text" data-key="CreateJournalNote"></span></h3>
     <input type="text" placeholder=" Titel" id="input-journal-title" autocomplete="off" />
-    <div class="change-date-div"> <label id="change-date-label">Hændelsesdato: </label><input type="text" class="ui-datepicker change-date-link" value="@date" placeholder="@date" id="datepicker" autocomplete="off" /> </div>
+    <div class="change-date-div"> <label id="change-date-label"><span data-locale data-apply="text" data-key="OccurrenceDate"></span>: </label><input type="text" class="ui-datepicker change-date-link" value="@date" placeholder="@date" id="datepicker" autocomplete="off" /> </div>
     <div class="change-time-div">
-        <label id="change-time-label">Hændelsestidspunkt: </label><input type="text" class="timepicker" />
+        <label id="change-time-label"><span data-locale data-apply="text" data-key="OccurrenceTime"></span>: </label><input type="text" class="timepicker" />
         <div class="timeAdjustButtons">
             <a><i class="arrow up" onclick="incrementTime()"> </i> </a>
             <a><i class="arrow down" onclick="decrementTime()"></i> </a>
@@ -39,9 +39,9 @@
     </div>
     <div id="input-journal-note" placeholder="Skriv journalnotat her..."></div>
     <div class="journalNotatButtons">
-        <button class="cancel-journal-note-button" onclick="closeJournalNotatWindow();">Annuller</button>
-        <button class="change-journal-note-button">Gem som kladde</button>
-        <button class="add-journal-note-button">Gem og luk</button>
+        <button class="cancel-journal-note-button" onclick="closeJournalNotatWindow();"><span data-locale data-apply="text" data-key="Cancel"></span></button>
+        <button class="change-journal-note-button"><span data-locale data-apply="text" data-key="SaveAsDraft"></span></button>
+        <button class="add-journal-note-button"><span data-locale data-apply="text" data-key="SaveAndClose"></span></button>
     </div>
 </form>
 
