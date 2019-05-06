@@ -1,0 +1,18 @@
+﻿.breadcrumbsNavigation > ol {
+    background-color: #fff;
+    padding: 0;
+}
+
+.breadcrumbsNavigation{
+    font-size: 16px;
+}
+
+.breadcrumb > li + li:before, .breadcrumbsNavigation > li.active {
+    color: #4a4a4a;
+    opacity: 0.5;
+}
+
+.breadcrumb-item + .breadcrumb-item::before{
+    content: ">";
+}
+
