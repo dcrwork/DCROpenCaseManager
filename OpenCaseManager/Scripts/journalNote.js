@@ -385,7 +385,8 @@ function updateFiles(fileName, textContents, isDraft, closeWindow) {
                 'givenFileName': fileName,
                 'isNewFileAdded': 'True',
                 'eventTime': eventDateTime,
-                'isDraft': isDraft
+                'isDraft': isDraft,
+                'childId': childId
             },
             data: file,
             async: true,

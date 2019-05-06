@@ -115,17 +115,35 @@ namespace OpenCaseManager.Managers
                     filePath = directoryInfo.FullName;
                     break;
                 case "JournalNoteBig":
-                    directoryInfo = new DirectoryInfo(Configurations.Config.JournalNoteFileLocation);
-                    if (!directoryInfo.Exists)
+                   if (string.IsNullOrEmpty(instanceId) || instanceId == "null")
                     {
-                        directoryInfo.Create();
+                        directoryInfo = new DirectoryInfo(Configurations.Config.ChildFileLocation);
+                        if (!directoryInfo.Exists)
+                        {
+                            directoryInfo.Create();
+                        }
+                        directoryInfo = new DirectoryInfo(Configurations.Config.ChildFileLocation + "\\" + childId);
+                        if (!directoryInfo.Exists)
+                        {
+                            directoryInfo.Create();
+                        }
+                        filePath = directoryInfo.FullName;
                     }
-                    directoryInfo = new DirectoryInfo(Configurations.Config.JournalNoteFileLocation + "\\" + instanceId);
-                    if (!directoryInfo.Exists)
+                    else
                     {
-                        directoryInfo.Create();
+                        directoryInfo = new DirectoryInfo(Configurations.Config.JournalNoteFileLocation);
+                        if (!directoryInfo.Exists)
+                        {
+                            directoryInfo.Create();
+                        }
+                        directoryInfo = new DirectoryInfo(Configurations.Config.JournalNoteFileLocation + "\\" + instanceId);
+                        if (!directoryInfo.Exists)
+                        {
+                            directoryInfo.Create();
+                        }
+                        filePath = directoryInfo.FullName;
                     }
-                    filePath = directoryInfo.FullName;
+                    
                     break;
                 case "Temp":
                 default:

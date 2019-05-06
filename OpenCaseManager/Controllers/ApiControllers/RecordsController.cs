@@ -451,6 +451,12 @@ namespace OpenCaseManager.Controllers.ApiControllers
                 isDraft = Convert.ToBoolean(request.Headers["isDraft"]);
             }
             catch (Exception) { }
+            var childId = string.Empty;
+            try
+            {
+                childId = request.Headers["childId"];
+            }
+            catch (Exception) { }
             if (isNewFileAdded)
             {
                 DeleteFileFromFileSystem(id, fileType, instanceId);
@@ -516,17 +522,34 @@ namespace OpenCaseManager.Controllers.ApiControllers
                         filePath = directoryInfo.FullName;
                         break;
                     case "JournalNoteBig": //Should only temporarily be allowed to be edited
-                        directoryInfo = new DirectoryInfo(Configurations.Config.JournalNoteFileLocation);
-                        if (!directoryInfo.Exists)
+                        if (string.IsNullOrEmpty(instanceId) || instanceId == "null")
                         {
-                            directoryInfo.Create();
+                            directoryInfo = new DirectoryInfo(Configurations.Config.ChildFileLocation);
+                            if (!directoryInfo.Exists)
+                            {
+                                directoryInfo.Create();
+                            }
+                            directoryInfo = new DirectoryInfo(Configurations.Config.ChildFileLocation + "\\" + childId);
+                            if (!directoryInfo.Exists)
+                            {
+                                directoryInfo.Create();
+                            }
+                            filePath = directoryInfo.FullName;
                         }
-                        directoryInfo = new DirectoryInfo(Configurations.Config.JournalNoteFileLocation + "\\" + instanceId);
-                        if (!directoryInfo.Exists)
+                        else
                         {
-                            directoryInfo.Create();
+                            directoryInfo = new DirectoryInfo(Configurations.Config.JournalNoteFileLocation);
+                            if (!directoryInfo.Exists)
+                            {
+                                directoryInfo.Create();
+                            }
+                            directoryInfo = new DirectoryInfo(Configurations.Config.JournalNoteFileLocation + "\\" + instanceId);
+                            if (!directoryInfo.Exists)
+                            {
+                                directoryInfo.Create();
+                            }
+                            filePath = directoryInfo.FullName;
                         }
-                        filePath = directoryInfo.FullName;
                         break;
                 }
                 filePath = filePath + "\\" + fileLink;

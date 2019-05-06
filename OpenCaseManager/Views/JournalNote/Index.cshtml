@@ -4,7 +4,6 @@
     }
 </script>
 
-
 @{
     /// <summary>
     /// Return the content of a journalnote.rtf
@@ -18,11 +17,22 @@
     Array Data = null;
 
     var instanceId = Request.QueryString["instanceId"];
+    var childId = Request.QueryString["childId"];
     var documentLink = Request.QueryString["documentLink"];
     var documentTitle = Request.QueryString["documentTitle"];
     var documentAuthor = Request.QueryString["documentAuthor"];
     var document = Request.QueryString["documentTitle"];
-    var dataFile = Server.MapPath($"~/App_Data/JournalNotes/{instanceId}/{documentLink}");
+    var dataFile = string.Empty;
+    if (String.IsNullOrEmpty(instanceId) || instanceId == "null")
+    {
+        //TODO: Use the configuration file to specify the path of the document
+        dataFile = Server.MapPath($"~/App_Data/Children/{childId}/{documentLink}");
+    }
+    else
+    {
+        //TODO: Use the configuration file to specify the path of the document
+        dataFile = Server.MapPath($"~/App_Data/JournalNotes/{instanceId}/{documentLink}");
+    }
 
     if (File.Exists(dataFile))
     {
@@ -77,7 +87,7 @@
     $(document).ready(function () {
         var documentLink = App.getParameterByName("documentLink", window.location.href);
         $(".content").find("div").each(function () {
-            if ($.trim($(this).text()) == ""){
+            if ($.trim($(this).text()) == "") {
                 $(this).remove();
             }
         });
