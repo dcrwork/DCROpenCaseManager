@@ -12,19 +12,22 @@
 <div class="timeline">
 
     <!--timeline-->
-    <div id="filterButton"><span class="glyphicon glyphicon-plus"></span><span data-locale data-apply="text" data-key="Filter"></span></div>
-    <div class="filterTypeWrapper" style="display: none;">
-        <label>Aktivitet
+    <div id="filterHeadline"><span data-locale data-apply="text" data-key="Filter"></span></div>
+    <div class="filterTypeWrapper">
+        <label>
             <input type="checkbox" id="activityCheckbox" value="activity">
-            <span id="activitySpan"></span>
+            <span class="customizedCheckbox" id="activitySpan"></span>
+            <span data-locale data-apply="text" data-key="Activity"></span>
         </label>
-        <label>Journalnotat
+        <label>
             <input type="checkbox" id="journalnoteCheckbox" value="journalnote">
-            <span id="journalnoteSpan"></span>
+            <span  class="customizedCheckbox" id="journalnoteSpan"></span>
+            <span data-locale data-apply="text" data-key="Journal note"></span>
         </label>
-        <label>Dokument
+        <label>
             <input type="checkbox" id="documentCheckbox" value="document">
-            <span id="documentSpan"></span>
+            <span  class="customizedCheckbox" id="documentSpan"></span>
+            <span data-locale data-apply="text" data-key="Document"></span>
         </label>
     </div>
     <div id="myTimeline" class="timeline-container"></div>
