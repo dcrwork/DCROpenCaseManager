@@ -185,8 +185,6 @@ function submitFilesDocuments() {
 function uploadFileDocuments(file, docId) {
     var instanceId = '';
     if (typeof $('#instanceIdHidden').val() != 'undefined') instanceId = $('#instanceIdHidden').val();
-    console.log(instanceId);
-    console.log($('#childIdHidden').val());
     if (isAdd && $('#documentName').val() != '') {
         $.ajax({
             url: window.location.origin + "/api/records/AddDocument",
