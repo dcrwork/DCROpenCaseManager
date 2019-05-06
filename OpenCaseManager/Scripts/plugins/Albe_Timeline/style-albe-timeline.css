@@ -78,13 +78,13 @@ ul#timeline-menu li a:hover {
     width: 0;
 }
 
-.filterTypeWrapper span {
+.filterTypeWrapper .customizedCheckbox {
     cursor: pointer;
     width: 20px;
     height: 20px;
     background: #fff;
-    float:left;
-    margin-right:5px;
+    float: left;
+    margin-right: 5px;
     border: 2px solid #9C1A5E;
 }
 
