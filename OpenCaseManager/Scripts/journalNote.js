@@ -147,21 +147,21 @@ $(function () {
     var maxDate = $("#datepicker").datepicker("option", "maxDate");
     $("#datepicker").datepicker("option", "maxDate", "+0d");
 
-    $("#datepicker").datepicker({ dayNames: [translations.Sunday, translations.Monday, translations.Tuesday, translations.Wednesday, translations.Thursday, translations.Friday, translations.Saturday] });
+    $("#datepicker").datepicker({ dayNames: ["Søndag", "Mandag", "Tirsdag", "Onsdag", "Torsdag", "Fredag", "Lørdag"] });
     var dayNames = $("#datepicker").datepicker("option", "dayNames");
-    $("#datepicker").datepicker("option", "dayNames", [translations.Sunday, translations.Monday, translations.Tuesday, translations.Wednesday, translations.Thursday, translations.Friday, translations.Saturday]);
+    $("#datepicker").datepicker("option", "dayNames", ["Søndag", "Mandag", "Tirsdag", "Onsdag", "Torsdag", "Fredag", "Lørdag"]);
 
-    $("#datepicker").datepicker({ dayNamesMin: [translations.Su, translations.Mo, translations.Tu, translations.We, translations.Th, translations.Fr, translations.Sa] });
+    $("#datepicker").datepicker({ dayNamesMin: ["Sø", "Ma", "Ti", "On", "To", "Fr", "Lø"] });
     var dayNamesMin = $("#datepicker").datepicker("option", "dayNamesMin");
-    $("#datepicker").datepicker("option", "dayNamesMin", [translations.Su, translations.Mo, translations.Tu, translations.We, translations.Th, translations.Fr, translations.Sa]);
+    $("#datepicker").datepicker("option", "dayNamesMin", ["Sø", "Ma", "Ti", "On", "To", "Fr", "Lø"]);
 
-    $("#datepicker").datepicker({ monthNamesShort: [translations.Jan, translations.Feb, translations.Mar, translations.Apr, translations.Maj, translations.Jun, translations.Jul, translations.Aug, translations.Sep, translations.Oct, translations.Nov, translations.Dec] });
+    $("#datepicker").datepicker({ monthNamesShort: ["Jan", "Feb", "Mar", "Apr", "Maj", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dec"] });
     var monthNamesShort = $("#datepicker").datepicker("option", "dayNamesMin");
-    $("#datepicker").datepicker("option", "monthNamesShort", [translations.Jan, translations.Feb, translations.Mar, translations.Apr, translations.Maj, translations.Jun, translations.Jul, translations.Aug, translations.Sep, translations.Oct, translations.Nov, translations.Dec]);
+    $("#datepicker").datepicker("option", "monthNamesShort", ["Jan", "Feb", "Mar", "Apr", "Maj", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dec"]);
 
-    $("#datepicker").datepicker({ monthNames: [translations.January, translations.February, translations.March, translations.April, translations.May, translations.June, translations.July, translations.August, translations.September, translations.October, translations.November, translations.December] });
+    $("#datepicker").datepicker({ monthNames: ["Januar", "Februar", "Marts", "April", "Maj", "Juni", "Juli", "August", "September", "Oktober", "November", "December"] });
     var dayNamesMin = $("#datepicker").datepicker("option", "monthNames");
-    $("#datepicker").datepicker("option", "monthNames", [translations.January, translations.February, translations.March, translations.April, translations.May, translations.June, translations.July, translations.August, translations.September, translations.October, translations.November, translations.December]);
+    $("#datepicker").datepicker("option", "monthNames", ["Januar", "Februar", "Marts", "April", "Maj", "Juni", "Juli", "August", "September", "Oktober", "November", "December"]);
 
     $("#datepicker").datepicker({ gotoCurrent: true });
     var gotoCurrent = $("#datepicker").datepicker("option", "gotoCurrent");
@@ -175,17 +175,17 @@ $(function () {
     var hideIfNoPrevNext = $("#datepicker").datepicker("option", "hideIfNoPrevNext");
     $("#datepicker").datepicker("option", "hideIfNoPrevNext", true);
 
-    $("#datepicker").datepicker({ nextText: translations.Next });
+    $("#datepicker").datepicker({ nextText: "Næste" });
     var nextText = $("#datepicker").datepicker("option", "nextText");
-    $("#datepicker").datepicker("option", "nextText", translations.Next);
+    $("#datepicker").datepicker("option", "nextText", "Næste");
 
-    $("#datepicker").datepicker({ prevText: translations.Previous });
+    $("#datepicker").datepicker({ prevText: "Forrige" });
     var prevText = $("#datepicker").datepicker("option", "nextText");
-    $("#datepicker").datepicker("option", "prevText", translations.Previous);
+    $("#datepicker").datepicker("option", "prevText", "Forrige");
 
     $("#datepicker").val(formatDate(new Date().toString()));
     
-    $('#input-journal-title').attr('placeholder', translations.Title);
+    $('#input-journal-title').attr('placeholder', 'Titel');
 });
 
 
