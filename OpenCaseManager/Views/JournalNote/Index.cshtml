@@ -22,7 +22,7 @@
     var documentTitle = Request.QueryString["documentTitle"];
     var documentAuthor = Request.QueryString["documentAuthor"];
     var document = Request.QueryString["documentTitle"];
-    var dataFile = Server.MapPath($"~/App_Data/JournalNotes/{instanceId}/{documentLink}.html");
+    var dataFile = Server.MapPath($"~/App_Data/JournalNotes/{instanceId}/{documentLink}");
 
     if (File.Exists(dataFile))
     {
@@ -105,7 +105,7 @@
         query.filters.push({
             "column": "Link",
             "operator": "equal",
-            "value": link + ".html",
+            "value": link,
             "valueType": "string"
 
         });

@@ -2,13 +2,12 @@
     .obsbox {
         background-color: #EFEFEF;
         height: auto;
-        padding: 20px;
         width: 230px;
-        margin-top: 15px;
+        padding: 10px;
         text-align: right;
     }
     .obsHeader {
-        margin: -10px -10px 0 -15px;
+        margin: 0 0 0 -5px;
         padding-left: 5px;
         display: flex;
         justify-content: space-between;
@@ -30,14 +29,23 @@
         }
 
     .obsTextArea{
-        margin: 10px -10px 5px -10px;
-        width: calc(100% + 20px);
+        margin: 10px 0 0 0;
+        width: 100%;
         overflow:hidden;
-        min-height: 50px;
+        min-height: 120px;
         resize: none;
         text-align: left;
         display: block;
         padding: 10px;
+        border-width: 2px;
+    }
+
+    .obsTextArea:disabled {
+        background-color: #EFEFEF;
+    }
+
+    .obsTextArea:focus{
+        outline:none;
     }
 
     .obsSaveButton {
@@ -45,7 +53,7 @@
         background-color: transparent;
         color: #9C1A5E;
         padding: 5px 10px 5px 10px;
-        margin: 0px -10px -10px 0;
+        margin: 10px 0 0 0;
     }
 
     .obsSaveButton:hover {
@@ -59,7 +67,7 @@
     <div class="obsHeader">
         <h3 >OBS! </h3> <a onclick="toggleEdit()" id="EditOBS" class="fa fa-edit"></a>
     </div>
-    <textarea id="obsTextArea" class="obsTextArea" onkeyup="auto_grow(this)" onchange="auto_grow(this)" placeholder="importen info..." disabled="true" ></textarea>
+    <textarea id="obsTextArea" class="obsTextArea" onkeyup="auto_grow(this)" onchange="auto_grow(this)" placeholder="Tilføj vigtig information..." disabled="true" ></textarea>
     <button class="obsSaveButton hide" onclick="saveObs()">Save</button>
 </div>
 

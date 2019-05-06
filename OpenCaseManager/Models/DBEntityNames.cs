@@ -34,7 +34,10 @@ namespace OpenCaseManager.Models
             UserDetail,
             InstanceExtension,
             AcadreLog,
-            Document
+            Document,
+            StamdataChild,
+            StamdataDummyData,
+            StamdataDummyDataExtension
         }
 
         public enum StoredProcedures
@@ -395,7 +398,6 @@ namespace OpenCaseManager.Models
         public enum Child
         {
             Id,
-            Name,
             Responsible,
             ObsBoxText
         }
@@ -444,6 +446,35 @@ namespace OpenCaseManager.Models
             CreationDate,
             EventDate,
             IsLocked
+        }
+
+        public enum StamdataChild
+        {
+            Id,
+            ChildId,
+            Sagsnummer,
+            Addresse,
+            Forældremyndighed,
+            Skole,
+            Alder,
+            Navn
+        }
+
+        public enum StamdataDummyData
+        {
+            Id,
+            CPR,
+            Address,
+            City,
+            Postcode
+        }
+
+        public enum StamdataDummyDataExtension
+        {
+            Id,
+            ChildId,
+            StamdataId,
+            Relation
         }
     }
 }

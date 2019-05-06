@@ -1,7 +1,8 @@
 ﻿function CreateJournalNoteView() {
     var id = $.urlParam("id");
-    window.open("/JournalNote/Create" + (id ? "?id=" + id : ""), "", "width=800,height=600");
-    //postwindow,dialog=yes,close=no,location=no,status=no,
+    var newWindow = window.open("/JournalNote/Create" + (id ? "?id=" + id : ""), "", "width=800,height=600");
+    newWindow.alreadyDrafted = false;
+    newWindow.isAlreadyDraftWhenOpened = true;
 }
 
 

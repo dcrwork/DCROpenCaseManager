@@ -1,5 +1,12 @@
+/****** Object:  UserDefinedFunction [dbo].[JournalHistoryForASingleInstance]    Script Date: 03-05-2019 13:01:15 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
 -- =============================================
--- Author: Jonathan E. Mogensen, Thais Kure Corneliusen  
+-- Author:		JoeJoe and T-Boi
 -- Create date: 27-03-2019
 -- Description:	Get history of past executed tasks for an instance
 -- =============================================
@@ -26,7 +33,7 @@ AS
 	           WHERE  [dbo].[Event].[Id] = [dbo].[JournalHistory].[EventId]
 					  AND [dbo].[Event].[InstanceId] = [dbo].[JournalHistory].[InstanceId]
 					  AND [dbo].[User].[Id] = [dbo].[Event].[Responsible]
-					  AND IsIncluded = 1
-	                  AND (IsEnabled = 1 OR IsPending = 1)
 					  AND [dbo].[JournalHistory].[InstanceId]=@InstanceId
 	       )
+GO
+
