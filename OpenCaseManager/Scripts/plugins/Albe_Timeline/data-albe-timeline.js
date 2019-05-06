@@ -100,5 +100,11 @@ $(document).ready(function () {
         else getData(activityChecked, journalnoteChecked, documentChecked);
     });
     
+    $('body').on('click', 'a[name="downloadDoc"]', function () {
+        elem = $(this);
+        var link = elem.attr('documentlink');
+        var win = window.open(window.location.origin + "/file/downloadfile?link=" + link, '_blank');
+        win.focus();
+    })
 });
 
