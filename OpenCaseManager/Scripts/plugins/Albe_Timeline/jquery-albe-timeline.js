@@ -21,10 +21,7 @@ var months;
             updateMonthMenu(year, monthMenu, months);
         });
 
-        // toggles the filter checkboxes when the filter button is clicked
-        $(document).on('click', '#filterButton', function () {
-            $('.filterTypeWrapper').toggle("slide");
-        });
+      
 });
 
 function updateMonthMenu(year, monthMenu, months) {
