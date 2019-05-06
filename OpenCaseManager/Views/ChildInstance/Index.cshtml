@@ -10,15 +10,26 @@
 }
 
 
+<div class="addDocumentModal">
+    @Html.Partial("~/Views/PartialViews/AddDocumentModal.cshtml")
+</div>
+
 <div class="wholeActionsPage">
     <input type="hidden" id="childIdHidden">
     <input type="hidden" id="instanceIdHidden">
     <div class="buttonsBox">
-        @Html.Partial("~/Views/PartialViews/AddButton.cshtml", new ViewDataDictionary { { "add-text", "Tilføj dokument" }, { "onClick", "addDocument()" } })
-        @Html.Partial("~/Views/PartialViews/AddButton.cshtml", new ViewDataDictionary { { "add-text", "Tilføj journalnotat" }, { "onClick", "CreateJournalNoteView()" } })
+        @Html.Partial("~/Views/PartialViews/AddButton.cshtml", new ViewDataDictionary { { "add-text", "AddDocument" }, { "onClick", "addDocument()" } })
+        @Html.Partial("~/Views/PartialViews/AddButton.cshtml", new ViewDataDictionary { { "add-text", "AddJournalNote" }, { "onClick", "CreateJournalNoteView()" } })
     </div>
 
     <div class="tabsBox">
+        <nav aria-label="breadcrumb" class="breadcrumbsNavigation">
+            <ol class="breadcrumb arr-right bg-dark ">
+                <li class="breadcrumb-item  "><a href="~/">Mine Børn</a></li>
+                <li class="breadcrumb-item "><a href="" id="childLink"></a></li>
+                <li class="breadcrumb-item active instance" aria-current="page"></li>
+            </ol>
+        </nav>
         <table class="table table-responsive entityDetailTable">
             <tr>
                 <th class="caseTitle"><span id="instanceTitle"></span></th>
@@ -27,10 +38,10 @@
         <div>
             <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
                 <li class="nav-item active">
-                    <a class="nav-link" id="pills-activitiesb" data-toggle="tab" href="#pills-activities" role="tab" aria-controls="pills-activities" aria-selected="false">Aktiviteter</a>
+                    <a class="nav-link" id="pills-activitiesb" data-toggle="tab" href="#pills-activities" role="tab" aria-controls="pills-activities" aria-selected="false"><span data-locale data-apply="text" data-key="Activities"></span></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" id="pills-document-tab" data-toggle="tab" href="#pills-document" role="tab" aria-controls="pills-document" aria-selected="false">Dokumenter</a>
+                    <a class="nav-link" id="pills-document-tab" data-toggle="tab" href="#pills-document" role="tab" aria-controls="pills-document" aria-selected="false"><span data-locale data-apply="text" data-key="Documents"></span></a>
                 </li>
             </ul>
             <div class="tab-content" id="pills-tabContent">
@@ -49,11 +60,10 @@
     </div>
 </div><!-- Row Div End -->
 
-<div class="addDocumentModal">
-    @Html.Partial("~/Views/PartialViews/AddDocumentModal.cshtml")
-</div>
 
 <script src="~/Scripts/instance.js"></script>
+<script src="~/Scripts/breadcrumbs.js"></script>
+
 
 <script type="text/javascript">
     var webPortalType = "Instance";
@@ -106,6 +116,7 @@
     }
     
 </script>
+
 <script src="~/Scripts/task.js"></script>
-<script src="~/Scripts/journalNote.js" type="text/javascript"></script>
+<script src="~/Scripts/journalNoteCreate.js" type="text/javascript"></script>
 <script src="~/Scripts/addDocument.js" type="text/javascript"></script>

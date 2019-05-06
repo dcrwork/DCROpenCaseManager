@@ -1,7 +1,7 @@
 ﻿
 CREATE VIEW [dbo].[StamdataView]
 AS
-SELECT        dbo.Child.Name, dbo.StamdataChild.Sagsnummer, dbo.StamdataChild.Addresse, dbo.StamdataChild.Alder, dbo.StamdataChild.Forældremyndighed, dbo.StamdataChild.Skole, dbo.StamdataDummyData.CPR, 
+SELECT        dbo.StamdataChild.Navn As Name, dbo.StamdataChild.Sagsnummer, dbo.StamdataChild.Addresse, dbo.StamdataChild.Alder, dbo.StamdataChild.Forældremyndighed, dbo.StamdataChild.Skole, dbo.StamdataDummyData.CPR, 
                          dbo.StamdataDummyData.Name AS StamdataName, dbo.StamdataDummyData.Address, dbo.StamdataDummyData.City, dbo.StamdataDummyData.Postcode, dbo.StamdataDummyDataExtension.Relation, 
                          dbo.Child.Id AS ChildId
 FROM            dbo.StamdataChild RIGHT OUTER JOIN

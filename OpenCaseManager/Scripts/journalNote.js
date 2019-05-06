@@ -68,8 +68,7 @@ function CreateJournalNoteViewWithLink() {
             newWindow.documentTitle = documentInfo.Title;
             newWindow.isAlreadyDraftWhenOpened = documentInfo.IsDraft;
             newWindow.childId = $('#childIdHidden').val();
-            console.log(documentInfo.IsDraft);
-            console.log(newWindow.isAlreadyDraftWhenOpened);
+
 
             var splitTime = documentInfo.EventDate.split("T");
             var regex = /(\d\d:\d\d)/gm;
@@ -115,7 +114,7 @@ function automaticSaveDraft() {
             type: 'alert',
             theme: 'mint',
             layout: 'topRight',
-            text: "Kladde gemt",
+            text: translations.DraftSaved,
             timeout: 2000,
             progressBar: false,
             container: '.custom-container2'
@@ -129,7 +128,7 @@ function automaticSaveDraft() {
             type: 'alert',
             theme: 'mint',
             layout: 'topRight',
-            text: "Kladde gemt",
+            text: translations.DraftSaved,
             timeout: 2000,
             progressBar: false,
             container: '.custom-container2'
@@ -144,7 +143,7 @@ function formatDate(_date) {
 
     var day = value.getDate() < 10 ? '0' + value.getDate() : value.getDate();
     var month = value.getMonth + 1;
-        month = value.getMonth() < 10 ? "0" + value.getMonth() : value.getMonth();
+        month = (value.getMonth()+1) < 10 ? "0" + (value.getMonth()+1) : (value.getMonth()+1);
     var year = value.getFullYear();
 
     return day + "/" + month + "/" + year;
@@ -158,13 +157,13 @@ $(function () {
         var maxDate = $("#datepicker").datepicker("option", "maxDate");
         $("#datepicker").datepicker("option", "maxDate", "+0d");
 
-        $("#datepicker").datepicker({ dayNames: ["SÃ¸ndag", "Mandag", "Tirsdag", "Onsdag", "Torsdag", "Fredag", "LÃ¸rdag"] });
+        $("#datepicker").datepicker({ dayNames: ["Søndag", "Mandag", "Tirsdag", "Onsdag", "Torsdag", "Fredag", "Lørdag"] });
         var dayNames = $("#datepicker").datepicker("option", "dayNames");
-        $("#datepicker").datepicker("option", "dayNames", ["SÃ¸ndag", "Mandag", "Tirsdag", "Onsdag", "Torsdag", "Fredag", "LÃ¸rdag"]);
+        $("#datepicker").datepicker("option", "dayNames", ["Søndag", "Mandag", "Tirsdag", "Onsdag", "Torsdag", "Fredag", "Lørdag"]);
 
-        $("#datepicker").datepicker({ dayNamesMin: ["SÃ¸", "Ma", "Ti", "On", "To", "Fr", "LÃ¸"] });
+        $("#datepicker").datepicker({ dayNamesMin: ["Sø", "Ma", "Ti", "On", "To", "Fr", "Lø"] });
         var dayNamesMin = $("#datepicker").datepicker("option", "dayNamesMin");
-        $("#datepicker").datepicker("option", "dayNamesMin", ["SÃ¸", "Ma", "Ti", "On", "To", "Fr", "LÃ¸"]);
+        $("#datepicker").datepicker("option", "dayNamesMin", ["Sø", "Ma", "Ti", "On", "To", "Fr", "Lø"]);
 
         $("#datepicker").datepicker({ monthNamesShort: ["Jan", "Feb", "Mar", "Apr", "Maj", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dec"] });
         var monthNamesShort = $("#datepicker").datepicker("option", "dayNamesMin");
@@ -186,9 +185,9 @@ $(function () {
         var hideIfNoPrevNext = $("#datepicker").datepicker("option", "hideIfNoPrevNext");
         $("#datepicker").datepicker("option", "hideIfNoPrevNext", true);
 
-        $("#datepicker").datepicker({ nextText: "NÃ¦ste" });
+        $("#datepicker").datepicker({ nextText: "Næste" });
         var nextText = $("#datepicker").datepicker("option", "nextText");
-        $("#datepicker").datepicker("option", "nextText", "NÃ¦ste");
+        $("#datepicker").datepicker("option", "nextText", "Næste");
 
         $("#datepicker").datepicker({ prevText: "Forrige" });
         var prevText = $("#datepicker").datepicker("option", "nextText");
@@ -196,6 +195,7 @@ $(function () {
 
         $("#datepicker").val(formatDate(new Date().toString()));
         $("#datepicker").attr('readonly', 'readonly');
+        $('#input-journal-title').attr('placeholder', 'Titel');
     }
     catch (err) { }
 
@@ -328,8 +328,8 @@ $(document).ready(function () {
 
 $(document).on('click', '.change-journal-note-button', function (event) {
     saveFile(isAlreadyDraftWhenOpened, false, event);
-    var notyText = "Journalnotat opdateret";
-    if (isAlreadyDraftWhenOpened) notyText = "Kladde gemt";
+    var notyText = translations.OpdatedJournalNote;
+    if (isAlreadyDraftWhenOpened) notyText = translations.DraftSaved;
     new Noty({
         type: 'success',
         theme: 'mint',

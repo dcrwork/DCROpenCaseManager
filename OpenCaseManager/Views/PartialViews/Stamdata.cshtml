@@ -50,23 +50,23 @@
 
 
 <div class="stamdata">
-    <h3 class="headline-stamdata">Stamdata</h3>
+    <h3 class="headline-stamdata"><span data-locale data-apply="text" data-key="Stamdata"></span></h3>
     <div class="childStamdata">
-        <h5 class="sagsnr"><b>Sagsnummer</b></h5>
-        <h5 class="name"><b>Navn</b></h5>
-        <h5 class="address"><b>Adresse</b></h5>
-        <h5 class="parentalrights"><b>Forældremyndighed</b></h5>
-        <h5 class="school"><b>Skole</b></h5>
-        <h5 class="age"><b>Alder</b></h5>
+        <h5 class="sagsnr"><b><span data-locale data-apply="text" data-key="CaseNumber"></span></b></h5>
+        <h5 class="name"><b><span data-locale data-apply="text" data-key="Name"></span></b></h5>
+        <h5 class="address"><b><span data-locale data-apply="text" data-key="Address"></span></b></h5>
+        <h5 class="parentalrights"><b><span data-locale data-apply="text" data-key="Custody"></span></b></h5>
+        <h5 class="school"><b><span data-locale data-apply="text" data-key="School"></span></b></h5>
+        <h5 class="age"><b><span data-locale data-apply="text" data-key="Age"></span></b></h5>
     </div>
     <div class="udvidet-stamdata">
         <div class="table-responsive information">
-            <h3 class="headline-stamdata">Udvidet stamdata</h3>
+            <h3 class="headline-stamdata"><span data-locale data-apply="text" data-key="ExpandedStamdata"></span></h3>
             <div class="expandedStamdata"></div>
             
 
         </div>
-        <h4 class="expander"><span class="glyphicon glyphiconStamdata glyphicon-plus"></span><span class="expand-text" data-locale data-apply="text">Se udvidet stamdata</span></h4>
+        <h4 class="expander"><span class="glyphicon glyphiconStamdata glyphicon-plus"></span><span class="expand-text" data-locale data-apply="text" data-key="SeeExpandedStamdata"></span></h4>
     </div>
 </div>
 
@@ -83,14 +83,14 @@
             icon.removeClass('glyphicon-minus');
             icon.addClass('glyphicon-plus');
             setTimeout(function () {
-                text.text('Se udvidet stamdata');
+                text.text(translations.SeeExpandedStamdata);
             }, 1000);
         } else {
             panel.slideDown(1000);
             icon.removeClass('glyphicon-plus');
             icon.addClass('glyphicon-minus');
             setTimeout(function () {
-                text.text('Se mindre');
+                text.text(translations.SeeLess);
             }, 1000);
         }
     });

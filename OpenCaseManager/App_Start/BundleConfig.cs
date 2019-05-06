@@ -35,6 +35,7 @@ namespace OpenCaseManager
                       "~/Content/myChildren.css",
                       "~/Content/syddjurs.css",
                       "~/Content/tabs.css",
+                      "~/Content/breadcrumbs.css",
                       "~/Content/journalnote.css"));
 
             // CopenhagenCountry css

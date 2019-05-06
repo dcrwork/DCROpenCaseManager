@@ -22,5 +22,5 @@
 
 <div class="add-box" onClick="@this.ViewData["onClick"]">
     <img src="~/Content/Images/addicon.svg" class="add-icon" />
-    <span class="add-text" id="add-text">@this.ViewData["add-text"]</span>
+    <span class="add-text" id="add-text" data-locale data-apply="text" data-key="@this.ViewData["add-text"]"></span>
 </div>

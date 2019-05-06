@@ -125,9 +125,10 @@
             });
     }
 
-    function addChild(childName, responsible) {
+    function addChild(childName, caseNumber, responsible) {
         var data = {
             childName: childName,
+            caseNumber: caseNumber,
             responsible: responsible
         }
 
