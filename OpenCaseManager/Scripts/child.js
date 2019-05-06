@@ -5,10 +5,8 @@
 
     var query = {
         "type": "SELECT",
-        "entity": "Child",
-        "resultSet": ["Name, ObsBoxText"],
         "entity": "ChildView",
-        "resultSet": ["Name", "Responsible"],
+        "resultSet": ["*"],
         "filters": new Array(),
         "order": []
     }
@@ -24,6 +22,7 @@
 
     API.service('records', query)
         .done(function (response) {
+            console.log(response);
             displayChildName(response);
             displayChildObsBox(response)
         })
@@ -60,7 +59,7 @@
 
 function displayChildName(response) {
     var result = JSON.parse(response);
-    var childName = (result[0] == undefined) ? 'Intet barn at finde' : ((result[0].Name == null) ? "Intet navn på barn" : result[0].Name);
+    var childName = (result[0] == undefined) ? 'Intet barn at finde' : ((result[0].Navn == null) ? "Intet navn på barn" : result[0].Navn);
     $("#childName").html("").append(childName);
     $('head title', window.parent.document).text(childName);
 }
