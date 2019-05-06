@@ -33,14 +33,18 @@ namespace OpenCaseManager.Controllers
             {
                 var path = string.Empty;
                 var type = data.Rows[0]["Type"].ToString();
+                var currentUser = Common.GetCurrentUserName();
+                var instanceId = data.Rows[0]["InstanceId"].ToString();
+
                 switch (type) //TODO: Maybe needs to be extended, when we are to actually show the journalnotes, and be able to download them
                 {
                     case "PersonalDocument":
-                        var currentUser = Common.GetCurrentUserName();
                         path = Configurations.Config.PersonalFileLocation + "\\" + currentUser + "\\" + data.Rows[0]["Link"].ToString();
                         break;
                     case "InstanceDocument":
-                        var instanceId = data.Rows[0]["InstanceId"].ToString();
+                        path = Configurations.Config.InstanceFileLocation + "\\" + instanceId + "\\" + data.Rows[0]["Link"].ToString();
+                        break;
+                    case "Instance":
                         path = Configurations.Config.InstanceFileLocation + "\\" + instanceId + "\\" + data.Rows[0]["Link"].ToString();
                         break;
                 }

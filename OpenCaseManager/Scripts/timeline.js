@@ -1,4 +1,5 @@
-﻿async function getTimelineData(userId) {
+﻿
+async function getTimelineData(userId) {
     var childId = userId;
     var query = {
         "type": "SELECT",
@@ -20,3 +21,13 @@
     var result = await API.service('records', query);
     return JSON.parse( result )
 }
+
+$(document).ready(function () {
+
+    $('body').on('click', 'a[name="downloadDoc"]', function () {
+        elem = $(this);
+        var link = elem.attr('documentLink');
+        var win = window.open(window.location.origin + "/File/DownloadFile?link=" + link, '_blank');
+        win.focus();
+    })
+})
