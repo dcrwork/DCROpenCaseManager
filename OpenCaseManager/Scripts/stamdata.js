@@ -1,6 +1,4 @@
-﻿
-
-$(function () {
+﻿$(function () {
 
     async function setStamDataContent(id, isInstance) {
 

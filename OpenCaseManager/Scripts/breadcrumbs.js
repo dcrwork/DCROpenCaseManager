@@ -77,21 +77,21 @@ async function setInstancePageBreadcrumb() {
         var childId = childIds[0].ChildId;
         var path = "/Child?id=" + childId;
         var childnames = await getChildName(childId);
-        var childName = (childnames[0] == undefined) ? 'Intet barn at finde' : ((childnames[0].Name == null) ? "Intet navn på barn" : childnames[0].Name);
+        var childName = (childnames[0] == undefined) ? translations.NoChild : ((childnames[0].Name == null) ? translations.NoName : childnames[0].Name);
         $('a#childLink').attr("href", path).text(childName);
 
         var instanceNames = await getInstanceName(instanceId);
         var instanceName = instanceNames[0].Title;
         $("li.instance").text(instanceName);
     } else {
-        $('a#childLink').attr("href", '/Child?id=').text('Intet barn at finde');
-        $("li.instance").text('Ingen gyldig indsats med dette id');
+        $('a#childLink').attr("href", '/Child?id=').text(translations.NoChild);
+        $("li.instance").text(translations.NoValidInstance);
     }
 }
 
 async function setChildPageBreadcrumb() {
     var childId = App.getParameterByName("id", window.location.href);
     var childnames = await getChildName(childId);
-    var childName = (childnames[0] == undefined) ? 'Intet barn at finde' : ((childnames[0].Name == null) ? "Intet navn på barn" : childnames[0].Name);
+    var childName = (childnames[0] == undefined) ? translations.NoChild : ((childnames[0].Name == null) ? translations.NoName : childnames[0].Name);
     $('li.child').text(childName);
 }
