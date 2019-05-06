@@ -32,8 +32,15 @@ function saveObs() {
     $(".obsSaveButton").toggleClass('hide');
 }
 
-function auto_grow(element) {
-    element.style.height = "5px";
-    element.style.height = (element.scrollHeight + 10) + "px";
-    console.log(element)
+function updateTextCount(element) {
+    var value = element.value.length
+    $("#textCount").text(value + " / 100");
+    if (value > 100) {
+        $("#textCount").attr("style", "color:#E04141");
+        $("#obsSaveButton").attr("disabled", true);
+    }
+    else {
+        $("#textCount").removeAttr("style");
+        $("#obsSaveButton").removeAttr("disabled");
+    }
 }
