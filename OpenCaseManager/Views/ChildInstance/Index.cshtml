@@ -10,6 +10,10 @@
 }
 
 
+<div class="addDocumentModal">
+    @Html.Partial("~/Views/PartialViews/AddDocumentModal.cshtml")
+</div>
+
 <div class="wholeActionsPage">
     <div class="buttonsBox">
         @Html.Partial("~/Views/PartialViews/AddButton.cshtml", new ViewDataDictionary { { "add-text", "AddDocument" }, { "onClick", "addDocument()" } })
@@ -54,9 +58,6 @@
     </div>
 </div><!-- Row Div End -->
 
-<div class="addDocumentModal">
-    @Html.Partial("~/Views/PartialViews/AddDocumentModal.cshtml")
-</div>
 
 <script src="~/Scripts/instance.js"></script>
 <script src="~/Scripts/breadcrumbs.js"></script>
