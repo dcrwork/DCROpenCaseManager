@@ -74,7 +74,7 @@ function CreateJournalNoteViewWithLink() {
 
 
 $(function () {
-    if (!isAlreadyDraftWhenOpened) $('.change-journal-note-button').html('Opdater');
+    if (!isAlreadyDraftWhenOpened) $('.change-journal-note-button').html(translations.Opdate);
     $("#input-journal-title").val(documentTitle);
     $(".ui-datepicker").val(documentEventDate);
     $(".timepicker").val(documentEventTime);
@@ -103,7 +103,7 @@ function automaticSaveDraft() {
             type: 'alert',
             theme: 'mint',
             layout: 'topRight',
-            text: "Kladde gemt",
+            text: translations.DraftSaved,
             timeout: 2000,
             progressBar: false,
             container: '.custom-container2'
@@ -117,7 +117,7 @@ function automaticSaveDraft() {
             type: 'alert',
             theme: 'mint',
             layout: 'topRight',
-            text: "Kladde gemt",
+            text: translations.DraftSaved,
             timeout: 2000,
             progressBar: false,
             container: '.custom-container2'
@@ -145,21 +145,21 @@ $(function () {
     var maxDate = $("#datepicker").datepicker("option", "maxDate");
     $("#datepicker").datepicker("option", "maxDate", "+0d");
 
-    $("#datepicker").datepicker({ dayNames: ["Søndag", "Mandag", "Tirsdag", "Onsdag", "Torsdag", "Fredag", "Lørdag"] });
+    $("#datepicker").datepicker({ dayNames: [translations.Sunday, translations.Monday, translations.Tuesday, translations.Wednesday, translations.Thursday, translations.Friday, translations.Saturday] });
     var dayNames = $("#datepicker").datepicker("option", "dayNames");
-    $("#datepicker").datepicker("option", "dayNames", ["Søndag", "Mandag", "Tirsdag", "Onsdag", "Torsdag", "Fredag", "Lørdag"]);
+    $("#datepicker").datepicker("option", "dayNames", [translations.Sunday, translations.Monday, translations.Tuesday, translations.Wednesday, translations.Thursday, translations.Friday, translations.Saturday]);
 
-    $("#datepicker").datepicker({ dayNamesMin: ["Sø", "Ma", "Ti", "On", "To", "Fr", "Lø"] });
+    $("#datepicker").datepicker({ dayNamesMin: [translations.Su, translations.Mo, translations.Tu, translations.We, translations.Th, translations.Fr, translations.Sa] });
     var dayNamesMin = $("#datepicker").datepicker("option", "dayNamesMin");
-    $("#datepicker").datepicker("option", "dayNamesMin", ["Sø", "Ma", "Ti", "On", "To", "Fr", "Lø"]);
+    $("#datepicker").datepicker("option", "dayNamesMin", [translations.Su, translations.Mo, translations.Tu, translations.We, translations.Th, translations.Fr, translations.Sa]);
 
-    $("#datepicker").datepicker({ monthNamesShort: ["Jan", "Feb", "Mar", "Apr", "Maj", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dec"] });
+    $("#datepicker").datepicker({ monthNamesShort: [translations.Jan, translations.Feb, translations.Mar, translations.Apr, translations.Maj, translations.Jun, translations.Jul, translations.Aug, translations.Sep, translations.Oct, translations.Nov, translations.Dec] });
     var monthNamesShort = $("#datepicker").datepicker("option", "dayNamesMin");
-    $("#datepicker").datepicker("option", "monthNamesShort", ["Jan", "Feb", "Mar", "Apr", "Maj", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dec"]);
+    $("#datepicker").datepicker("option", "monthNamesShort", [translations.Jan, translations.Feb, translations.Mar, translations.Apr, translations.Maj, translations.Jun, translations.Jul, translations.Aug, translations.Sep, translations.Oct, translations.Nov, translations.Dec]);
 
-    $("#datepicker").datepicker({ monthNames: ["Januar", "Februar", "Marts", "April", "Maj", "Juni", "Juli", "August", "September", "Oktober", "November", "December"] });
+    $("#datepicker").datepicker({ monthNames: [translations.January, translations.February, translations.March, translations.April, translations.May, translations.June, translations.July, translations.August, translations.September, translations.October, translations.November, translations.December] });
     var dayNamesMin = $("#datepicker").datepicker("option", "monthNames");
-    $("#datepicker").datepicker("option", "monthNames", ["Januar", "Februar", "Marts", "April", "Maj", "Juni", "Juli", "August", "September", "Oktober", "November", "December"]);
+    $("#datepicker").datepicker("option", "monthNames", [translations.January, translations.February, translations.March, translations.April, translations.May, translations.June, translations.July, translations.August, translations.September, translations.October, translations.November, translations.December]);
 
     $("#datepicker").datepicker({ gotoCurrent: true });
     var gotoCurrent = $("#datepicker").datepicker("option", "gotoCurrent");
@@ -173,15 +173,17 @@ $(function () {
     var hideIfNoPrevNext = $("#datepicker").datepicker("option", "hideIfNoPrevNext");
     $("#datepicker").datepicker("option", "hideIfNoPrevNext", true);
 
-    $("#datepicker").datepicker({ nextText: "Næste" });
+    $("#datepicker").datepicker({ nextText: translations.Next });
     var nextText = $("#datepicker").datepicker("option", "nextText");
-    $("#datepicker").datepicker("option", "nextText", "Næste");
+    $("#datepicker").datepicker("option", "nextText", translations.Next);
 
-    $("#datepicker").datepicker({ prevText: "Forrige" });
+    $("#datepicker").datepicker({ prevText: translations.Previous });
     var prevText = $("#datepicker").datepicker("option", "nextText");
-    $("#datepicker").datepicker("option", "prevText", "Forrige");
+    $("#datepicker").datepicker("option", "prevText", translations.Previous);
 
     $("#datepicker").val(formatDate(new Date().toString()));
+    
+    $('#input-journal-title').attr('placeholder', translations.Title);
 });
 
 
@@ -307,8 +309,8 @@ $(document).ready(function () {
 
 $(document).on('click', '.change-journal-note-button', function (event) {
     saveFile(isAlreadyDraftWhenOpened, false, event);
-    var notyText = "Journalnotat opdateret";
-    if (isAlreadyDraftWhenOpened) notyText = "Kladde gemt";
+    var notyText = translations.OpdatedJournalNote;
+    if (isAlreadyDraftWhenOpened) notyText = translations.DraftSaved;
     new Noty({
         type: 'success',
         theme: 'mint',
