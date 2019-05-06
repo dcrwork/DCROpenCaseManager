@@ -11,6 +11,7 @@
     API.service('records', query)
         .done(function (response) {
             displayChildren(response);
+            $('#child-name').attr('placeholder', translations.NameOfChild);
         })
         .fail(function (e) {
             reject(e);

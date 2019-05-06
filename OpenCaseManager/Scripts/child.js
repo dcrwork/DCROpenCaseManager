@@ -23,6 +23,7 @@
     API.service('records', query)
         .done(function (response) {
             displayChildName(response);
+            $('#process-title').attr('placeholder', translations.AddTitle);
         })
         .fail(function (e) {
             reject(e);
