@@ -8,6 +8,7 @@ function addZero(i) {
     return i;
 }
 function documentType(data) {
+    var text = (data.DocumentType === 'ChildDocument') ? '' : 'Indsats: ' + data.InstanceTitle;
     return {
         type: "Dokument",
         time: data.EventDate,
@@ -24,7 +25,7 @@ function documentType(data) {
         },
         {
             tag: 'p',
-            content: "Indsats: " + data.InstanceTitle
+            content: text
             }]
     }
 }
@@ -76,7 +77,7 @@ $(document).ready(function () {
         var normData = [];
         $.each(data, function (index, value) {   
             if (journalnote && (value.DocumentType === 'JournalNote' || value.Type === 'JournalNoteBig' || value.Type === 'JournalNoteLittle')) normData.push(journalNoteType(value));
-            if (document && value.DocumentType === 'Instance') normData.push(documentType(value));
+            if (document && (value.DocumentType === 'Instance' || value.DocumentType === 'ChildDocument' || value.DocumentType === 'InstanceDocument')) normData.push(documentType(value));
             if (activity && value.Type === 'Event') normData.push(activitiesType(value)); 
         });
 
