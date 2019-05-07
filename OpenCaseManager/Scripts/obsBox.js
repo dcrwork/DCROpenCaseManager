@@ -11,6 +11,7 @@ function toggleEdit() {
     $(".obsBoxEdit").toggleClass('hide');
     $(".obsSaveButton").toggleClass('hide');
     $(".obsCancelButton").toggleClass('hide');
+    $(".textCount").toggleClass('hide');
     oldText = $("#obsTextArea").val();
 }
 
@@ -35,6 +36,7 @@ function saveObs() {
     $(".obsSaveButton").toggleClass('hide');
     $(".obsBoxEdit").toggleClass('hide');
     $(".obsCancelButton").toggleClass('hide');
+    $(".textCount").toggleClass('hide');
 }
 
 function cancelObs() {
@@ -43,6 +45,7 @@ function cancelObs() {
     $(".obsSaveButton").toggleClass('hide');
     $(".obsCancelButton").toggleClass('hide');
     $(".obsBoxEdit").toggleClass('hide');
+    $(".textCount").toggleClass('hide');
     $("#obsTextArea").attr("disabled", true);
 }
 
