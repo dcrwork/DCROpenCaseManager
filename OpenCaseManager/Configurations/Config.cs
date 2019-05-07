@@ -60,6 +60,13 @@ namespace OpenCaseManager.Configurations
                 return ConfigurationManager.AppSettings["PersonalFileLocation"].ToString();
             }
         }
+        public static string ChildFileLocation
+        {
+            get
+            {
+                return ConfigurationManager.AppSettings["ChildFileLocation"].ToString();
+            }
+        }
         public static string InstanceFileLocation
         {
             get

@@ -9,7 +9,10 @@
 	[UploadDate]	  Datetime,
 	[isLocked]	BIT		NULL,
 	[isDraft]	BIT		NULL,
+	[ChildId]  INT             NULL,
     CONSTRAINT [PK_Document] PRIMARY KEY CLUSTERED ([Id] ASC),
-    CONSTRAINT [FK_Document_Instance] FOREIGN KEY ([InstanceId]) REFERENCES [dbo].[Instance] ([Id])
+    CONSTRAINT [FK_Document_Instance] FOREIGN KEY ([InstanceId]) REFERENCES [dbo].[Instance] ([Id]),
+	CONSTRAINT [FK_Document_Child] FOREIGN KEY ([ChildId]) REFERENCES [dbo].[Child] ([Id])
 );
+
 

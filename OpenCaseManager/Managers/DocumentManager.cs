@@ -18,19 +18,19 @@ namespace OpenCaseManager.Managers
         /// <param name="manager"></param>
         /// <param name="dataModelManager"></param>
         /// <returns></returns>
-        public string AddDocument(string instanceId, string fileType, string givenFileName, string fileName, string eventId, IManager manager, IDataModelManager dataModelManager)
+        public string AddDocument(string instanceId, string fileType, string givenFileName, string fileName, string eventId, string childId, IManager manager, IDataModelManager dataModelManager)
         {
             CreateFileLink(fileName);
-            string filePath = AddDocumentChecks(instanceId, fileType, givenFileName, fileName, eventId);
-            Common.AddDocument(givenFileName, fileType, fileLink, instanceId, false, DateTime.Now, manager, dataModelManager);
+            string filePath = AddDocumentChecks(instanceId, fileType, givenFileName, fileName, eventId, childId);
+            Common.AddDocument(givenFileName, fileType, fileLink, instanceId, false, DateTime.Now, childId, manager, dataModelManager);
             return filePath;
         }
 
-        public Tuple<string, string> AddDocument(string instanceId, string fileType, string givenFileName, string fileName, string eventId, bool isDraft, DateTime eventDateTime, IManager manager, IDataModelManager dataModelManager)
+        public Tuple<string, string> AddDocument(string instanceId, string fileType, string givenFileName, string fileName, string eventId, bool isDraft, DateTime eventDateTime, string childId, IManager manager, IDataModelManager dataModelManager)
         {
             CreateFileLink(fileName);
-            string filePath = AddDocumentChecks(instanceId, fileType, givenFileName, fileName, eventId);
-            string documentId = Common.AddDocument(givenFileName, fileType, fileLink, instanceId, isDraft, eventDateTime, manager, dataModelManager);
+            string filePath = AddDocumentChecks(instanceId, fileType, givenFileName, fileName, eventId, childId);
+            string documentId = Common.AddDocument(givenFileName, fileType, fileLink, instanceId, isDraft, eventDateTime, childId, manager, dataModelManager);
             Tuple<string, string> returnTuple = new Tuple<string, string>(filePath, documentId);
             return returnTuple;
         }
@@ -41,7 +41,7 @@ namespace OpenCaseManager.Managers
             fileLink = DateTime.Now.ToFileTime() + ext;
         }
 
-        public string AddDocumentChecks(string instanceId, string fileType, string givenFileName, string fileName, string eventId)
+        public string AddDocumentChecks(string instanceId, string fileType, string givenFileName, string fileName, string eventId, string childId)
         {
             string ext = Path.GetExtension(fileName);
             string filePath = string.Empty;
@@ -75,6 +75,19 @@ namespace OpenCaseManager.Managers
                     }
                     filePath = directoryInfo.FullName;
                     break;
+                case "ChildDocument":
+                    directoryInfo = new DirectoryInfo(Configurations.Config.InstanceFileLocation);
+                    if (!directoryInfo.Exists)
+                    {
+                        directoryInfo.Create();
+                    }
+                    directoryInfo = new DirectoryInfo(Configurations.Config.ChildFileLocation + "\\" + childId);
+                    if (!directoryInfo.Exists)
+                    {
+                        directoryInfo.Create();
+                    }
+                    filePath = directoryInfo.FullName;
+                    break;
                 case "JournalNoteImportant":
                     directoryInfo = new DirectoryInfo(Configurations.Config.JournalNoteFileLocation);
                     if (!directoryInfo.Exists)
@@ -102,17 +115,35 @@ namespace OpenCaseManager.Managers
                     filePath = directoryInfo.FullName;
                     break;
                 case "JournalNoteBig":
-                    directoryInfo = new DirectoryInfo(Configurations.Config.JournalNoteFileLocation);
-                    if (!directoryInfo.Exists)
+                   if (string.IsNullOrEmpty(instanceId) || instanceId == "null")
                     {
-                        directoryInfo.Create();
+                        directoryInfo = new DirectoryInfo(Configurations.Config.ChildFileLocation);
+                        if (!directoryInfo.Exists)
+                        {
+                            directoryInfo.Create();
+                        }
+                        directoryInfo = new DirectoryInfo(Configurations.Config.ChildFileLocation + "\\" + childId);
+                        if (!directoryInfo.Exists)
+                        {
+                            directoryInfo.Create();
+                        }
+                        filePath = directoryInfo.FullName;
                     }
-                    directoryInfo = new DirectoryInfo(Configurations.Config.JournalNoteFileLocation + "\\" + instanceId);
-                    if (!directoryInfo.Exists)
+                    else
                     {
-                        directoryInfo.Create();
+                        directoryInfo = new DirectoryInfo(Configurations.Config.JournalNoteFileLocation);
+                        if (!directoryInfo.Exists)
+                        {
+                            directoryInfo.Create();
+                        }
+                        directoryInfo = new DirectoryInfo(Configurations.Config.JournalNoteFileLocation + "\\" + instanceId);
+                        if (!directoryInfo.Exists)
+                        {
+                            directoryInfo.Create();
+                        }
+                        filePath = directoryInfo.FullName;
                     }
-                    filePath = directoryInfo.FullName;
+                    
                     break;
                 case "Temp":
                 default:

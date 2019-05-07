@@ -390,6 +390,12 @@ namespace OpenCaseManager.Controllers.ApiControllers
             var fileName = request.Headers["filename"];
             var fileType = request.Headers["type"];
             var instanceId = request.Headers["instanceId"];
+            var childId = string.Empty;
+            try
+            {
+                childId = request.Headers["childId"];
+            }
+            catch (Exception) { }
             var eventId = string.Empty;
             try
             {
@@ -412,11 +418,11 @@ namespace OpenCaseManager.Controllers.ApiControllers
             var documentId = string.Empty;
             if (fileType == "JournalNoteBig")
             {
-                var addedDocument = _documentManager.AddDocument(instanceId, fileType, givenFileName, fileName, eventId, isDraft, eventTime, _manager, _dataModelManager);
+                var addedDocument = _documentManager.AddDocument(instanceId, fileType, givenFileName, fileName, eventId, isDraft, eventTime, childId, _manager, _dataModelManager);
                 filePath = addedDocument.Item1;
                 documentId = addedDocument.Item2;
             }
-            else filePath = _documentManager.AddDocument(instanceId, fileType, givenFileName, fileName, eventId, _manager, _dataModelManager);
+            else filePath = _documentManager.AddDocument(instanceId, fileType, givenFileName, fileName, eventId, childId, _manager, _dataModelManager);
             try
             {
                 using (var fs = new FileStream(filePath, FileMode.Create))
@@ -428,8 +434,11 @@ namespace OpenCaseManager.Controllers.ApiControllers
             {
                 throw ex;
             }
-
-            return Ok(Common.ToJson(Convert.ToInt32(documentId)));
+            if (!string.IsNullOrEmpty(documentId))
+            {
+                return Ok(Common.ToJson(Convert.ToInt32(documentId)));
+            }
+            else return Ok();
         }
 
         /// <summary>
@@ -457,6 +466,12 @@ namespace OpenCaseManager.Controllers.ApiControllers
             try
             {
                 isDraft = Convert.ToBoolean(request.Headers["isDraft"]);
+            }
+            catch (Exception) { }
+            var childId = string.Empty;
+            try
+            {
+                childId = request.Headers["childId"];
             }
             catch (Exception) { }
             if (isNewFileAdded)
@@ -524,17 +539,34 @@ namespace OpenCaseManager.Controllers.ApiControllers
                         filePath = directoryInfo.FullName;
                         break;
                     case "JournalNoteBig": //Should only temporarily be allowed to be edited
-                        directoryInfo = new DirectoryInfo(Configurations.Config.JournalNoteFileLocation);
-                        if (!directoryInfo.Exists)
+                        if (string.IsNullOrEmpty(instanceId) || instanceId == "null")
                         {
-                            directoryInfo.Create();
+                            directoryInfo = new DirectoryInfo(Configurations.Config.ChildFileLocation);
+                            if (!directoryInfo.Exists)
+                            {
+                                directoryInfo.Create();
+                            }
+                            directoryInfo = new DirectoryInfo(Configurations.Config.ChildFileLocation + "\\" + childId);
+                            if (!directoryInfo.Exists)
+                            {
+                                directoryInfo.Create();
+                            }
+                            filePath = directoryInfo.FullName;
                         }
-                        directoryInfo = new DirectoryInfo(Configurations.Config.JournalNoteFileLocation + "\\" + instanceId);
-                        if (!directoryInfo.Exists)
+                        else
                         {
-                            directoryInfo.Create();
+                            directoryInfo = new DirectoryInfo(Configurations.Config.JournalNoteFileLocation);
+                            if (!directoryInfo.Exists)
+                            {
+                                directoryInfo.Create();
+                            }
+                            directoryInfo = new DirectoryInfo(Configurations.Config.JournalNoteFileLocation + "\\" + instanceId);
+                            if (!directoryInfo.Exists)
+                            {
+                                directoryInfo.Create();
+                            }
+                            filePath = directoryInfo.FullName;
                         }
-                        filePath = directoryInfo.FullName;
                         break;
                 }
                 filePath = filePath + "\\" + fileLink;
@@ -670,7 +702,7 @@ namespace OpenCaseManager.Controllers.ApiControllers
                 data = Common.GetFormData(formId, _manager, _dataModelManager);
             }
 
-            var filePath = _documentManager.AddDocument(string.Empty, "Personal", givenFileName, fileName, string.Empty, _manager, _dataModelManager);
+            var filePath = _documentManager.AddDocument(string.Empty, "Personal", givenFileName, fileName, string.Empty, string.Empty, _manager, _dataModelManager);
             Common.SaveBytesToFile(filePath, data);
 
             return Ok(Common.ToJson(new { }));

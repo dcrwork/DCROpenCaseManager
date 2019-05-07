@@ -33,14 +33,16 @@
 </div>
 
 <div class="wholeChildPage">
+    <input type="hidden" id="childIdHidden">
+
     <div>
         <div class="buttonsBox">
             <div data-toggle="modal" data-target="#create-process-modal" class="create-process-button">
-                @Html.Partial("~/Views/PartialViews/AddButton.cshtml", new ViewDataDictionary { { "add-text", "Tilføj indsats" } })
+                @Html.Partial("~/Views/PartialViews/AddButton.cshtml", new ViewDataDictionary { { "add-text", "AddProcess" } })
             </div>
 
-            @Html.Partial("~/Views/PartialViews/AddButton.cshtml", new ViewDataDictionary { { "add-text", "Tilføj dokument" }, { "onClick", "addDocument()" } })
-            @Html.Partial("~/Views/PartialViews/AddButton.cshtml", new ViewDataDictionary { { "add-text", "Tilføj journalnotat" }, { "onClick", "CreateJournalNoteView()" } })
+            @Html.Partial("~/Views/PartialViews/AddButton.cshtml", new ViewDataDictionary { { "add-text", "AddDocument" }, { "onClick", "addDocument()" } })
+            @Html.Partial("~/Views/PartialViews/AddButton.cshtml", new ViewDataDictionary { { "add-text", "AddJournalNote" }, { "onClick", "CreateJournalNoteViewChild()" } })
         </div>
 
         <div class="pendingActivitiesBox">
@@ -63,13 +65,13 @@
         <div>
             <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
                 <li class="nav-item active">
-                    <a class="nav-link" id="pills-activitiesb" data-toggle="tab" href="#pills-activities" role="tab" aria-controls="pills-activities" aria-selected="false">Indsatser</a>
+                    <a class="nav-link" id="pills-activitiesb" data-toggle="tab" href="#pills-activities" role="tab" aria-controls="pills-activities" aria-selected="false"><span data-locale data-apply="text" data-key="Instances"></span></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" id="pills-timeline-tab" data-toggle="tab" href="#pills-timeline" role="tab" aria-controls="pills-timeline" aria-selected="false">Tidslinje</a>
+                    <a class="nav-link" id="pills-timeline-tab" data-toggle="tab" href="#pills-timeline" role="tab" aria-controls="pills-timeline" aria-selected="false"><span data-locale data-apply="text" data-key="Timeline"></span></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" id="pills-document-tab" data-toggle="tab" href="#pills-document" role="tab" aria-controls="pills-document" aria-selected="false">Dokumenter</a>
+                    <a class="nav-link" id="pills-document-tab" data-toggle="tab" href="#pills-document" role="tab" aria-controls="pills-document" aria-selected="false"><span data-locale data-apply="text" data-key="Documents"></span></a>
                 </li>
             </ul>
             <div class="tab-content" id="pills-tabContent">
@@ -79,12 +81,12 @@
                         <table class="table tasksTable table-striped">
                             <thead class="childInstancesHeader">
                                 <tr>
-                                    <th width="6%">Status</th>
+                                    <th width="6%"><span data-locale data-apply="text" data-key="Status"></span></th>
                                     <th width="52px"><img src='../Content/Images/priorityicon.svg' height='16' width='16' /></th>
-                                    <th width="">Titel</th>
-                                    <th width="25%">Process</th>
-                                    <th width="10%">Ansvarlig</th>
-                                    <th width="10%">Opdateret</th>
+                                    <th width=""><span data-locale data-apply="text" data-key="Title"></span></th>
+                                    <th width="25%"><span data-locale data-apply="text" data-key="DCRProcess"></span></th>
+                                    <th width="10%"><span data-locale data-apply="text" data-key="Responsible"></span></th>
+                                    <th width="10%"><span data-locale data-apply="text" data-key="Opdated"></span></th>
                                 </tr>
                             </thead>
                             <tbody id="childInstances"></tbody>
@@ -116,23 +118,23 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4>Tilføj indsats</h4>
+                <h4><span data-locale data-apply="text" data-key="AddProcess"></span></h4>
             </div>
             <div class="modal-body">
                 <form role="form">
                     <div class="form-group">
-                        <label for="processes">Proces</label>
+                        <label for="processes"><span data-locale data-apply="text" data-key="DCRProcess"></span></label>
                         <select class="form-control" id="processes"></select>
                     </div>
                     <div class="form-group">
-                        <label for="title">Titel</label>
-                        <input type="text" class="form-control" id="process-title" placeholder="Tilføj titel">
+                        <label for="title"><span data-locale data-apply="text" data-key="Title"></span></label>
+                        <input type="text" class="form-control" id="process-title" placeholder="">
                     </div>
                     <div class="form-group">
                         <div id="responsible"></div>
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" id="create-process" class="btn btn-default">Tilføj</button>
+                        <button type="submit" id="create-process" class="btn btn-default"><span data-locale data-apply="text" data-key="Add"></span></button>
                     </div>
                 </form>
             </div>
@@ -142,10 +144,14 @@
 
 
 <script type="text/javascript">
-    var webPortalType = "Instance";
+    var webPortalType = "Child";
+    $(document).ready(function () {
+        var childId = App.getParameterByName("id".toLowerCase(), window.location.href);
+        $('#childIdHidden').val(childId);
+});
 </script>
 <script type="text/javascript" src="~/Scripts/breadcrumbs.js"></script>
 <script type="text/javascript" src="~/Scripts/createprocess.js"></script>
 <script type="text/javascript" src="~/Scripts/child.js"></script>
-<script type="text/javascript" src="~/Scripts/journalNoteCreate.js"></script>
+<script type="text/javascript" src="~/Scripts/journalNote.js"></script>
 <script type="text/javascript" src="~/Scripts/addDocument.js"></script>

@@ -425,6 +425,7 @@
     <Content Include="Scripts\addDocument.js" />
     <Content Include="Scripts\breadcrumbs.js" />
     <Content Include="Scripts\child.js" />
+    <Content Include="Scripts\childTasks.js" />
     <Content Include="Scripts\createprocess.js" />
     <Content Include="Scripts\formserver.js" />
     <Content Include="Scripts\myChildren.js" />
@@ -1195,6 +1196,7 @@
     <Content Include="Views\ChildInstance\Index.cshtml" />
     <Content Include="Views\ChildInstance\Search.cshtml" />
     <Content Include="Views\PartialViews\ObsBox.cshtml" />
+    <Content Include="Views\PartialViews\ChildTasks.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
