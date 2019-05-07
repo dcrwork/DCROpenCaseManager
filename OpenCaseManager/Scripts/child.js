@@ -6,7 +6,7 @@
     var query = {
         "type": "SELECT",
         "entity": "ChildView",
-        "resultSet": ["Name", "Responsible"],
+        "resultSet": ["*"],
         "filters": new Array(),
         "order": []
     }
@@ -23,6 +23,7 @@
     API.service('records', query)
         .done(function (response) {
             displayChildName(response);
+            displayChildObsBox(response);
             $('#process-title').attr('placeholder', translations.AddTitle);
         })
         .fail(function (e) {
@@ -102,4 +103,12 @@ function setClosedInstancesToFadedAndMoveDown() {
         $(this).remove();
         $('#childInstances').append(this);
     });
+}
+
+function displayChildObsBox(response) {
+    var result = JSON.parse(response);
+    var obsBox = (result[0] == undefined) ? 'Intet data at være opmærksom på' : result[0].ObsBoxText;
+
+    $("#obsTextArea").html("").append(obsBox);
+    updateTextCount($("#obsTextArea")[0]);
 }

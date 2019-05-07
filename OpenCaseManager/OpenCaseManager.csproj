@@ -436,6 +436,7 @@
     <Content Include="Scripts\jasmine\jasmine.js" />
     <Content Include="Scripts\journalNote.js" />
     <Content Include="Scripts\journalNoteCreate.js" />
+    <Content Include="Scripts\obsBox.js" />
     <Content Include="Scripts\plugins\Albe_Timeline\data-albe-timeline.js" />
     <Content Include="Scripts\plugins\Albe_Timeline\jquery-albe-timeline.js" />
     <Content Include="Scripts\plugins\Albe_Timeline\jquery-albe-timeline.min.js" />
@@ -1194,6 +1195,7 @@
     <Content Include="Views\MyChildren\UnAuthorized.cshtml" />
     <Content Include="Views\ChildInstance\Index.cshtml" />
     <Content Include="Views\ChildInstance\Search.cshtml" />
+    <Content Include="Views\PartialViews\ObsBox.cshtml" />
     <Content Include="Views\PartialViews\ChildTasks.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
