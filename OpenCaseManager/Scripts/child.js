@@ -111,4 +111,5 @@ function displayChildObsBox(response) {
 
     $("#obsTextArea").html("").append(obsBox);
     updateTextCount($("#obsTextArea")[0]);
+    $('#obsTextArea').attr('placeholder', translations.AddImportantInfo);
 }

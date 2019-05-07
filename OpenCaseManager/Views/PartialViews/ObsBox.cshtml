@@ -83,10 +83,10 @@
         <h3>OBS!</h3>
     </div>
     <a onclick="toggleEdit()" id="EditOBS" class="obsBoxEdit fa fa-edit"></a>
-    <button id="obsCancelButton" class="obsCancelButton hide" onclick="cancelObs()">Annuller</button>
-    <button id="obsSaveButton" class="obsSaveButton hide" onclick="saveObs()">Gem</button>
+    <button id="obsCancelButton" class="obsCancelButton hide" onclick="cancelObs()"><span data-locale data-apply="text" data-key="Cancel"></span></button>
+    <button id="obsSaveButton" class="obsSaveButton hide" onclick="saveObs()"><span data-locale data-apply="text" data-key="Save"></span></button>
     <label id="textCount" class="textCount hide"></label>
-    <textarea id="obsTextArea" class="obsTextArea" oninput="updateTextCount(this)" placeholder="Tilføj vigtig information..." disabled="true"></textarea>
+    <textarea id="obsTextArea" class="obsTextArea" oninput="updateTextCount(this)" disabled="disabled"></textarea>
 </div>
 
 <script type="text/javascript" src="~/Scripts/obsBox.js"></script>
