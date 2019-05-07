@@ -1,14 +1,17 @@
-﻿function toggleEdit() {
+﻿var oldText;
+
+function toggleEdit() {
     if ($("#obsTextArea").attr("disabled")) {
         $("#obsTextArea").attr("disabled", false);
         $("#obsTextArea").focus();
-
     }
     else {
         $("#obsTextArea").attr("disabled", true);
     }
-
+    $(".obsBoxEdit").toggleClass('hide');
     $(".obsSaveButton").toggleClass('hide');
+    $(".obsCancelButton").toggleClass('hide');
+    oldText = $("#obsTextArea").val();
 }
 
 function saveObs() {
@@ -30,6 +33,17 @@ function saveObs() {
 
     $("#obsTextArea").attr("disabled", true);
     $(".obsSaveButton").toggleClass('hide');
+    $(".obsBoxEdit").toggleClass('hide');
+    $(".obsCancelButton").toggleClass('hide');
+}
+
+function cancelObs() {
+    $("#obsTextArea").val(oldText);
+    updateTextCount($("#obsTextArea")[0]);
+    $(".obsSaveButton").toggleClass('hide');
+    $(".obsCancelButton").toggleClass('hide');
+    $(".obsBoxEdit").toggleClass('hide');
+    $("#obsTextArea").attr("disabled", true);
 }
 
 function updateTextCount(element) {
