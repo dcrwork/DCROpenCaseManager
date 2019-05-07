@@ -46,7 +46,10 @@ AS
 	                  [IsUIEvent],
 	                  [UIEventValue],
 	                  [UIEventCssClass],
-	                  [InstanceEvents].[Type]
+	                  [InstanceEvents].[Type],
+					  CASE [InstanceEvents].Responsible
+						   WHEN @Responsible THEN 1 ELSE 0
+					  END AS MyTask
 	           FROM   [dbo].[InstanceEvents], [dbo].[Event]
 	           WHERE  [Event].[InstanceId] = [InstanceEvents].[InstanceId]
 					  AND [Event].[EventId] = [InstanceEvents].[EventId]
