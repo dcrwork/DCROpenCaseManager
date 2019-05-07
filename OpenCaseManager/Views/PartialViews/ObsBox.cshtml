@@ -49,12 +49,11 @@
         outline:none;
     }
 
-    .obsSaveButton {
+    .obsSaveButton, .obsCancelButton {
         border: 1px solid #9C1A5E;
         background-color: transparent;
         color: #9C1A5E;
-        padding: 5px 10px 5px 10px;
-        margin: 10px 0 0 0;
+        padding: 2px 8px;
     }
     
         button:disabled {
@@ -68,7 +67,7 @@
                 background-color: lightgray;
             }
 
-        .obsSaveButton:hover {
+        .obsSaveButton:hover, .obsCancelButton:hover {
             color: #fff;
             background: #9C1A5E;
         }
@@ -81,11 +80,15 @@
 
 <div class="obsbox">
     <div class="obsHeader">
-        <h3 >OBS! </h3> <a onclick="toggleEdit()" id="EditOBS" class="fa fa-edit"></a>
+        <h3>OBS!</h3>
     </div>
+    <a onclick="toggleEdit()" id="EditOBS" class="obsBoxEdit fa fa-edit"></a>
+
     <label id="textCount" class="textCount"></label>
-    <textarea id="obsTextArea" class="obsTextArea" oninput="updateTextCount(this)" placeholder="Tilføj vigtig information..." disabled="true" ></textarea>
-    <button id="obsSaveButton" class="obsSaveButton hide" onclick="saveObs()">Save</button>
+    <textarea id="obsTextArea" class="obsTextArea" oninput="updateTextCount(this)" placeholder="Tilføj vigtig information..." disabled="true"></textarea>
+    <button id="obsCancelButton" class="obsCancelButton hide" onclick="cancelObs()">Annuller</button>
+    <button id="obsSaveButton" class="obsSaveButton hide" onclick="saveObs()">Gem</button>
+
 </div>
 
 <script type="text/javascript" src="~/Scripts/obsBox.js"></script>
