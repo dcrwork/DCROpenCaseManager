@@ -7,6 +7,7 @@ function addZero(i) {
     if (i < 10) i = "0" + i;
     return i;
 }
+
 function documentType(data) {
     return {
         type: "Dokument",
@@ -38,8 +39,7 @@ function journalNoteType(data) {
             tag: 'a',
             content: '<h3>' + data.DocumentTitle + '</h3>',
             attr: {
-                href: '/JournalNote?instanceId=' + data.InstanceId + '&documentLink=' + data.Link + '&documentTitle=' + data.DocumentTitle + '&documentAuthor=' + data.DocumentResponsible,
-                target: '_blank'
+                onclick: 'window.open("/JournalNote?instanceId=' + data.InstanceId + '&documentLink=' + data.Link + '&documentTitle=' + data.DocumentTitle + '&documentAuthor=' + data.DocumentResponsible + '" , "" , "width=1200,height=1200")',
             }
         },
         {
