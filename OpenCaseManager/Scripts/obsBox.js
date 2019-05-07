@@ -28,9 +28,7 @@ function saveObs() {
 
     var API = window.API;
 
-    API.service('records/updateChild', data).done(function (response) {
-        console.log($("#obsTextArea").val(), response);
-    });
+    API.service('records/updateChild', data);
 
     $("#obsTextArea").attr("disabled", true);
     $(".obsSaveButton").toggleClass('hide');
