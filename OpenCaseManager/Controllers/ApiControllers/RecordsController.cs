@@ -45,6 +45,23 @@ namespace OpenCaseManager.Controllers.ApiControllers
         }
 
         /// <summary>
+        /// Add child 
+        /// </summary>
+        /// <param name="childName"></param>
+        /// <param name="responsible"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("addChild")]
+        // POST api/values
+        public IHttpActionResult AddChildApi(AddChildModel input)
+        {
+            // add child 
+            var childId = AddChild(input);
+            AddChildName(input.ChildName, input.CaseNumber, childId);
+            return Ok(Common.ToJson(childId));
+        }
+
+        /// <summary>
         /// Add Instance
         /// </summary>
         /// <param name="input"></param>
@@ -56,6 +73,7 @@ namespace OpenCaseManager.Controllers.ApiControllers
         {
             // add Instance
             var instanceId = AddInstance(input);
+            if (input.ChildId != null) ConnectInstanceToChild(instanceId, input.ChildId);
             return Ok(Common.ToJson(instanceId));
         }
 
@@ -361,8 +379,27 @@ namespace OpenCaseManager.Controllers.ApiControllers
                 eventId = request.Headers["eventId"];
             }
             catch (Exception) { }
+            var eventTime = DateTime.Now;
+            try
+            {
+                eventTime = request.Headers["eventTime"].parseDanishDateToDate();
+            }
+            catch (Exception) { }
+            var isDraft = false;
+            try
+            {
+                isDraft = Convert.ToBoolean(request.Headers["isDraft"]);
+            }
+            catch (Exception) { }
             var filePath = string.Empty;
-            filePath = _documentManager.AddDocument(instanceId, fileType, givenFileName, fileName, eventId, _manager, _dataModelManager);
+            var documentId = string.Empty;
+            if (fileType == "JournalNoteBig")
+            {
+                var addedDocument = _documentManager.AddDocument(instanceId, fileType, givenFileName, fileName, eventId, isDraft, eventTime, _manager, _dataModelManager);
+                filePath = addedDocument.Item1;
+                documentId = addedDocument.Item2;
+            }
+            else filePath = _documentManager.AddDocument(instanceId, fileType, givenFileName, fileName, eventId, _manager, _dataModelManager);
             try
             {
                 using (var fs = new FileStream(filePath, FileMode.Create))
@@ -375,7 +412,10 @@ namespace OpenCaseManager.Controllers.ApiControllers
                 throw ex;
             }
 
-            return Ok(Common.ToJson(new { }));
+            var docId = 0;
+            var parseResult = int.TryParse(documentId, out docId);
+
+            return Ok(Common.ToJson(docId == 0 ? "" : docId.ToString()));
         }
 
         /// <summary>
@@ -393,7 +433,18 @@ namespace OpenCaseManager.Controllers.ApiControllers
             var instanceId = request.Headers["instanceId"];
             var isNewFileAdded = bool.Parse(request.Headers["isNewFileAdded"]);
             var fileLink = string.Empty;
-
+            var eventTime = DateTime.Now;
+            try
+            {
+                eventTime = Convert.ToDateTime(request.Headers["eventTime"]);
+            }
+            catch (Exception) { }
+            var isDraft = false;
+            try
+            {
+                isDraft = Convert.ToBoolean(request.Headers["isDraft"]);
+            }
+            catch (Exception) { }
             if (isNewFileAdded)
             {
                 DeleteFileFromFileSystem(id, fileType, instanceId);
@@ -405,7 +456,7 @@ namespace OpenCaseManager.Controllers.ApiControllers
 
                 switch (fileType)
                 {
-                    case "Personal":
+                    case "PersonalDocument":
                         var directoryInfo = new DirectoryInfo(Configurations.Config.PersonalFileLocation);
                         if (!directoryInfo.Exists)
                         {
@@ -419,13 +470,52 @@ namespace OpenCaseManager.Controllers.ApiControllers
                         }
                         filePath = directoryInfo.FullName;
                         break;
-                    case "Instance":
+                    case "InstanceDocument":
                         directoryInfo = new DirectoryInfo(Configurations.Config.InstanceFileLocation);
                         if (!directoryInfo.Exists)
                         {
                             directoryInfo.Create();
                         }
                         directoryInfo = new DirectoryInfo(Configurations.Config.InstanceFileLocation + "\\" + instanceId);
+                        if (!directoryInfo.Exists)
+                        {
+                            directoryInfo.Create();
+                        }
+                        filePath = directoryInfo.FullName;
+                        break;
+                    case "JournalNoteImportant":
+                        directoryInfo = new DirectoryInfo(Configurations.Config.JournalNoteFileLocation);
+                        if (!directoryInfo.Exists)
+                        {
+                            directoryInfo.Create();
+                        }
+                        directoryInfo = new DirectoryInfo(Configurations.Config.JournalNoteFileLocation + "\\" + instanceId);
+                        if (!directoryInfo.Exists)
+                        {
+                            directoryInfo.Create();
+                        }
+                        filePath = directoryInfo.FullName;
+                        break;
+                    case "JournalNoteLittle": //Should only temporarily be allowed to be edited
+                        directoryInfo = new DirectoryInfo(Configurations.Config.JournalNoteFileLocation);
+                        if (!directoryInfo.Exists)
+                        {
+                            directoryInfo.Create();
+                        }
+                        directoryInfo = new DirectoryInfo(Configurations.Config.JournalNoteFileLocation + "\\" + instanceId);
+                        if (!directoryInfo.Exists)
+                        {
+                            directoryInfo.Create();
+                        }
+                        filePath = directoryInfo.FullName;
+                        break;
+                    case "JournalNoteBig": //Should only temporarily be allowed to be edited
+                        directoryInfo = new DirectoryInfo(Configurations.Config.JournalNoteFileLocation);
+                        if (!directoryInfo.Exists)
+                        {
+                            directoryInfo.Create();
+                        }
+                        directoryInfo = new DirectoryInfo(Configurations.Config.JournalNoteFileLocation + "\\" + instanceId);
                         if (!directoryInfo.Exists)
                         {
                             directoryInfo.Create();
@@ -447,10 +537,12 @@ namespace OpenCaseManager.Controllers.ApiControllers
                     throw ex;
                 }
             }
-            UpdateDocument(id, givenFileName, fileLink);
+            UpdateDocument(id, givenFileName, fileLink, isDraft.ToString());
+            if (fileType == "JournalNoteBig") UpdateJournalHistoryDocument(id, givenFileName, eventTime);
 
             return Ok(Common.ToJson(new { }));
         }
+
 
         /// <summary>
         /// Delete Document
@@ -665,11 +757,11 @@ namespace OpenCaseManager.Controllers.ApiControllers
                     // delete document from file system
                     switch (type)
                     {
-                        case "Personal":
+                        case "PersonalDocument":
                             var currentUser = Common.GetCurrentUserName();
                             path = Configurations.Config.PersonalFileLocation + "\\" + currentUser + "\\" + document["Link"].ToString();
                             break;
-                        case "Instance":
+                        case "InstanceDocument":
                             path = Configurations.Config.InstanceFileLocation + "\\" + instanceId + "\\" + document["Link"].ToString();
                             break;
                     }
@@ -759,6 +851,34 @@ namespace OpenCaseManager.Controllers.ApiControllers
         }
 
         /// <summary>
+        /// Add Child 
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        private string AddChild(AddChildModel model)
+        {
+            _dataModelManager.GetDefaultDataModel(Enums.SQLOperation.INSERT, DBEntityNames.Tables.Child.ToString());
+            _dataModelManager.AddParameter(DBEntityNames.Child.Responsible.ToString(), Enums.ParameterType._int, Common.GetResponsibleId());
+            // Returns child id
+            return _manager.InsertData(_dataModelManager.DataModel).Rows[0][DBEntityNames.Child.Id.ToString()].ToString();
+        }
+
+        /// <summary>
+        /// Add Child Name
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        private void AddChildName(string name, string caseNumber, string id)
+        {
+            _dataModelManager.GetDefaultDataModel(Enums.SQLOperation.INSERT, DBEntityNames.Tables.StamdataChild.ToString());
+            _dataModelManager.AddParameter(DBEntityNames.StamdataChild.ChildId.ToString(), Enums.ParameterType._string, id);
+            _dataModelManager.AddParameter(DBEntityNames.StamdataChild.Navn.ToString(), Enums.ParameterType._string, name);
+            _dataModelManager.AddParameter(DBEntityNames.StamdataChild.Sagsnummer.ToString(), Enums.ParameterType._string, caseNumber);
+            _manager.InsertData(_dataModelManager.DataModel).Rows[0][DBEntityNames.Child.Id.ToString()].ToString();
+        }
+
+        /// <summary>
         /// Add Roles to Instance
         /// </summary>
         /// <param name="UserRoles"></param>
@@ -836,7 +956,7 @@ namespace OpenCaseManager.Controllers.ApiControllers
         /// <param name="documentName"></param>
         /// <param name="type"></param>
         /// <param name="link"></param>
-        private void UpdateDocument(string id, string documentName, string link)
+        private void UpdateDocument(string id, string documentName, string link, string isDraft)
         {
             _dataModelManager.GetDefaultDataModel(Enums.SQLOperation.UPDATE, DBEntityNames.Tables.Document.ToString());
             _dataModelManager.AddParameter(DBEntityNames.Document.Title.ToString(), Enums.ParameterType._string, documentName);
@@ -844,7 +964,20 @@ namespace OpenCaseManager.Controllers.ApiControllers
             {
                 _dataModelManager.AddParameter(DBEntityNames.Document.Link.ToString(), Enums.ParameterType._string, link);
             }
+            if (!string.IsNullOrEmpty(isDraft))
+            {
+                _dataModelManager.AddParameter(DBEntityNames.Document.IsDraft.ToString(), Enums.ParameterType._boolean, isDraft);
+            }
             _dataModelManager.AddFilter(DBEntityNames.Document.Id.ToString(), Enums.ParameterType._int, id, Enums.CompareOperator.equal, Enums.LogicalOperator.none);
+            _manager.UpdateData(_dataModelManager.DataModel);
+        }
+
+        private void UpdateJournalHistoryDocument(string id, string documentName, DateTime eventTime)
+        {
+            _dataModelManager.GetDefaultDataModel(Enums.SQLOperation.UPDATE, DBEntityNames.Tables.JournalHistory.ToString());
+            _dataModelManager.AddParameter(DBEntityNames.JournalHistory.Title.ToString(), Enums.ParameterType._string, documentName);
+            _dataModelManager.AddParameter(DBEntityNames.JournalHistory.EventDate.ToString(), Enums.ParameterType._datetime, eventTime.ToString());
+            _dataModelManager.AddFilter(DBEntityNames.JournalHistory.DocumentId.ToString(), Enums.ParameterType._int, id, Enums.CompareOperator.equal, Enums.LogicalOperator.none);
             _manager.UpdateData(_dataModelManager.DataModel);
         }
 
@@ -908,12 +1041,15 @@ namespace OpenCaseManager.Controllers.ApiControllers
                 // delete document from file system
                 switch (type)
                 {
-                    case "Personal":
+                    case "PersonalDocument":
                         var currentUser = Common.GetCurrentUserName();
                         path = Configurations.Config.PersonalFileLocation + "\\" + currentUser + "\\" + document.Rows[0]["Link"].ToString();
                         break;
-                    case "Instance":
+                    case "InstanceDocument":
                         path = Configurations.Config.InstanceFileLocation + "\\" + instanceId + "\\" + document.Rows[0]["Link"].ToString();
+                        break;
+                    case "JournalNoteBig":
+                        path = Configurations.Config.JournalNoteFileLocation + "\\" + instanceId + "\\" + document.Rows[0]["Link"].ToString();
                         break;
                 }
 
@@ -931,6 +1067,20 @@ namespace OpenCaseManager.Controllers.ApiControllers
                 }
             }
             return true;
+        }
+
+        /// <summary>
+        /// Connect an instance to a child
+        /// </summary>
+        /// <param name="instanceId"></param>
+        /// <param name="childId"></param>
+        private void ConnectInstanceToChild(string instanceId, int? childId)
+        {
+            _dataModelManager.GetDefaultDataModel(Enums.SQLOperation.INSERT, DBEntityNames.Tables.InstanceExtension.ToString());
+            _dataModelManager.AddParameter(DBEntityNames.InstanceExtension.InstanceId.ToString(), Enums.ParameterType._int, instanceId);
+            _dataModelManager.AddParameter(DBEntityNames.InstanceExtension.ChildId.ToString(), Enums.ParameterType._int, childId.ToString());
+
+            _manager.InsertData(_dataModelManager.DataModel);
         }
     }
 }

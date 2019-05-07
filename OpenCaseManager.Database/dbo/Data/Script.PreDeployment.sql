@@ -16,7 +16,7 @@ GO
 INSERT [dbo].[Employee]
   (
     [Id],
-    [cprnr],
+    [cpr],
     [EmployeeId],
     [fullName],
     [cprnr2],

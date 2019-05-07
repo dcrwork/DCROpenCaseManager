@@ -6,6 +6,7 @@
 *.user
 *.userosscache
 *.sln.docstates
+*Web.config
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
@@ -192,8 +193,9 @@ ClientBin/
 *.jfm
 *.pfx
 *.publishsettings
-node_modules/
+
 orleans.codegen.cs
+Img
 
 # Since there are multiple workflows, uncomment next line to ignore bower_components
 # (https://github.com/github/gitignore/pull/1529#issuecomment-104372622)
@@ -259,3 +261,6 @@ paket-files/
 # Python Tools for Visual Studio (PTVS)
 __pycache__/
 *.pyc
+/OpenCaseManager/App_Data
+/OpenCaseManager/node_modules
+/OpenCaseManager/tmp

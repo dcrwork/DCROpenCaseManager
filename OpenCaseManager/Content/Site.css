@@ -5,6 +5,10 @@ div.wrapper {
     flex-direction: column;
 }
 
+body.swal2-shown:not(.swal2-no-backdrop):not(.swal2-toast-shown) {
+    overflow-y: visible !important;
+}
+
 main {
     flex: 1;
 }
@@ -29,10 +33,6 @@ h4.tasksHeading, h4.instancesHeading, h4.phaseHeading {
     padding: 10px 10px;
 }
 
-.includedTask {
-    color: blue;
-}
-
 .executedTask {
     color: green;
 }
@@ -42,6 +42,10 @@ label.labelStyling {
     width: 30%;
     line-height: 2;
     display: inline;
+}
+
+.headerContainer {
+    margin: 1vh 9vw 0vw 4vw;
 }
 
 .formFieldStyling {
@@ -156,21 +160,15 @@ ul.events-log-ul {
 }
 
 table.entityDetailTable tr th {
-    color: #007ea4;
-    width: 80%;
+    color: #4A4A4A;
+    font-size: xx-large;
+    padding: 0px;
+    border-top: none;
 }
-
-table.entityDetailTable tbody tr {
-    background: #f9f9f9;
-}
-
-    table.entityDetailTable tbody tr th,
-    table.entityDetailTable tbody tr td {
-        border-bottom: 1px solid #ddd;
-    }
 
 table.entityDetailTable {
     margin: 0px;
+    border: none;
 }
 
 .drop-area {
@@ -235,8 +233,7 @@ a > span.sort-arrow-head {
 .spanMUS {
     padding: 3px 4px;
     margin: 0px 6px 0px 0px;
-    color: #fff;
-    background-color: #9C1A5E;
+    color: #9C1A5E;
     border-radius: 4px;
     cursor: pointer;
 }
@@ -257,4 +254,23 @@ a > span.sort-arrow-head {
 .faIconStyling {
     font-size: 16px;
     color: #9C1A5E;
+}
+
+.arrow {
+    border: solid #9C1A5E;
+    border-width: 0 3px 3px 0;
+    display: block;
+    height 50%;
+    padding: 3px;
+    cursor: pointer;
+}
+
+.arrow.up {
+    transform: rotate(-135deg);
+    -webkit-transform: rotate(-135deg);
+}
+
+.arrow.down {
+    transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
 }

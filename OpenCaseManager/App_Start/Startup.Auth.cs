@@ -54,6 +54,7 @@ namespace OpenCaseManager
                     }
                 }
             );
+
             app.UseWindowsAzureActiveDirectoryBearerAuthentication(
                 new WindowsAzureActiveDirectoryBearerAuthenticationOptions
                 {

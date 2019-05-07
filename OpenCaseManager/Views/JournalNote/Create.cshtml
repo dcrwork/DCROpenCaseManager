@@ -1,0 +1,49 @@
+﻿
+@{
+    ViewBag.Title = "CreateJournalNote";
+    var date = DateTime.Now.ToString("dd/MM/yyyy");
+}
+
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<link rel="stylesheet" href="~/Scripts/plugins/Trumbowyg/dist/ui/trumbowyg.css" />
+<script src="~/Scripts/plugins/Trumbowyg/dist/trumbowyg.js"></script>
+<link rel="stylesheet" href="~/Scripts/plugins/Timepicker/jquery.timepicker.css" />
+<script src="~/Scripts/plugins/Timepicker/jquery.timepicker.js"></script>
+
+
+<style>
+    header {
+        display: none;
+    }
+
+    .footer {
+        display: none;
+    }
+</style>
+
+
+
+
+<link type="text/css" rel="stylesheet" href="~/Content/journalnote.css" />
+
+<form class="form-create-journal-note">
+    <h3>Opret journalnotat</h3>
+    <input type="text" placeholder=" Titel" id="input-journal-title" autocomplete="off" />
+    <div class="change-date-div"> <label id="change-date-label">Hændelsesdato: </label><input type="text" class="ui-datepicker change-date-link" value="@date" placeholder="@date" id="datepicker" autocomplete="off" /> </div>
+    <div class="change-time-div">
+        <label id="change-time-label">Hændelsestidspunkt: </label><input type="text" class="timepicker" />
+        <div class="timeAdjustButtons">
+            <a><i class="arrow up" onclick="incrementTime()"> </i> </a>
+            <a><i class="arrow down" onclick="decrementTime()"></i> </a>
+        </div>
+    </div>
+    <div id="input-journal-note" placeholder="Skriv journalnotat her..."></div>
+    <div class="journalNotatButtons">
+        <button class="cancel-journal-note-button" onclick="closeJournalNotatWindow();">Annuller</button>
+        <button class="change-journal-note-button">Gem som kladde</button>
+        <button class="add-journal-note-button">Gem og luk</button>
+    </div>
+</form>
+
+
+<script src="~/Scripts/journalNote.js" type="text/javascript"></script>

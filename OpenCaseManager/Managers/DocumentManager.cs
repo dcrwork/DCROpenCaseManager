@@ -6,6 +6,7 @@ namespace OpenCaseManager.Managers
 {
     public class DocumentManager : IDocumnentManager
     {
+        private string fileLink;
         /// <summary>
         /// Add Document
         /// </summary>
@@ -19,13 +20,35 @@ namespace OpenCaseManager.Managers
         /// <returns></returns>
         public string AddDocument(string instanceId, string fileType, string givenFileName, string fileName, string eventId, IManager manager, IDataModelManager dataModelManager)
         {
+            CreateFileLink(fileName);
+            string filePath = AddDocumentChecks(instanceId, fileType, givenFileName, fileName, eventId);
+            Common.AddDocument(givenFileName, fileType, fileLink, instanceId, false, DateTime.Now, manager, dataModelManager);
+            return filePath;
+        }
+
+        public Tuple<string, string> AddDocument(string instanceId, string fileType, string givenFileName, string fileName, string eventId, bool isDraft, DateTime eventDateTime, IManager manager, IDataModelManager dataModelManager)
+        {
+            CreateFileLink(fileName);
+            string filePath = AddDocumentChecks(instanceId, fileType, givenFileName, fileName, eventId);
+            string documentId = Common.AddDocument(givenFileName, fileType, fileLink, instanceId, isDraft, eventDateTime, manager, dataModelManager);
+            Tuple<string, string> returnTuple = new Tuple<string, string>(filePath, documentId);
+            return returnTuple;
+        }
+
+        public void CreateFileLink(string fileName)
+        {
             string ext = Path.GetExtension(fileName);
-            string fileLink = DateTime.Now.ToFileTime() + ext;
+            fileLink = DateTime.Now.ToFileTime() + ext;
+        }
+
+        public string AddDocumentChecks(string instanceId, string fileType, string givenFileName, string fileName, string eventId)
+        {
+            string ext = Path.GetExtension(fileName);
             string filePath = string.Empty;
 
             switch (fileType)
             {
-                case "Personal":
+                case "PersonalDocument":
                     DirectoryInfo directoryInfo = new DirectoryInfo(Configurations.Config.PersonalFileLocation);
                     if (!directoryInfo.Exists)
                     {
@@ -39,13 +62,52 @@ namespace OpenCaseManager.Managers
                     }
                     filePath = directoryInfo.FullName;
                     break;
-                case "Instance":
+                case "InstanceDocument":
                     directoryInfo = new DirectoryInfo(Configurations.Config.InstanceFileLocation);
                     if (!directoryInfo.Exists)
                     {
                         directoryInfo.Create();
                     }
                     directoryInfo = new DirectoryInfo(Configurations.Config.InstanceFileLocation + "\\" + instanceId);
+                    if (!directoryInfo.Exists)
+                    {
+                        directoryInfo.Create();
+                    }
+                    filePath = directoryInfo.FullName;
+                    break;
+                case "JournalNoteImportant":
+                    directoryInfo = new DirectoryInfo(Configurations.Config.JournalNoteFileLocation);
+                    if (!directoryInfo.Exists)
+                    {
+                        directoryInfo.Create();
+                    }
+                    directoryInfo = new DirectoryInfo(Configurations.Config.JournalNoteFileLocation + "\\" + instanceId);
+                    if (!directoryInfo.Exists)
+                    {
+                        directoryInfo.Create();
+                    }
+                    filePath = directoryInfo.FullName;
+                    break;
+                case "JournalNoteLittle":
+                    directoryInfo = new DirectoryInfo(Configurations.Config.JournalNoteFileLocation);
+                    if (!directoryInfo.Exists)
+                    {
+                        directoryInfo.Create();
+                    }
+                    directoryInfo = new DirectoryInfo(Configurations.Config.JournalNoteFileLocation + "\\" + instanceId);
+                    if (!directoryInfo.Exists)
+                    {
+                        directoryInfo.Create();
+                    }
+                    filePath = directoryInfo.FullName;
+                    break;
+                case "JournalNoteBig":
+                    directoryInfo = new DirectoryInfo(Configurations.Config.JournalNoteFileLocation);
+                    if (!directoryInfo.Exists)
+                    {
+                        directoryInfo.Create();
+                    }
+                    directoryInfo = new DirectoryInfo(Configurations.Config.JournalNoteFileLocation + "\\" + instanceId);
                     if (!directoryInfo.Exists)
                     {
                         directoryInfo.Create();
@@ -75,9 +137,8 @@ namespace OpenCaseManager.Managers
             filePath = filePath + "\\" + fileLink;
             if (fileType == "Temp")
                 fileLink = filePath;
-
-            Common.AddDocument(givenFileName, fileType, fileLink, instanceId, manager, dataModelManager);
             return filePath;
         }
     }
+
 }

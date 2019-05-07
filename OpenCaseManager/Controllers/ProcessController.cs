@@ -6,6 +6,7 @@ using System.Web.Mvc;
 
 namespace OpenCaseManager.Controllers
 {
+    [Authorize]
     public class ProcessController : Controller
     {
         // GET: Process

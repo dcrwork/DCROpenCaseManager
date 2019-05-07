@@ -1,0 +1,68 @@
+﻿@{
+    ViewBag.Title = "Mine Børn";
+}
+<link href="~/Content/bootstrap-multiselect.css" rel="stylesheet" />
+<script src="~/Scripts/bootstrap-multiselect.js"></script>
+<script type="text/javascript" src="~/Scripts/myChildren.js"></script>
+
+<div class="containerChildren">
+    <div class="leftContainer">
+        <div class="buttonView">
+            <div data-toggle="modal" data-target="#add-child-modal" class="add-child-button">
+                @Html.Partial("~/Views/PartialViews/AddButton.cshtml", new ViewDataDictionary { { "add-text", "Tilføj barn" } })
+            </div>
+        </div>
+        <div class="pendingActivitiesBox">
+            @Html.Partial("~/Views/PartialViews/PendingActivities.cshtml")
+        </div>
+    </div>
+
+    <div class="tabsBox">
+        <table class="table headline table-responsive entityDetailTable">
+            <tr>
+                <th><span>Mine Børn</span></th>
+            </tr>
+        </table>
+        <table class="table tasksTable table-striped">
+            <thead class="childrenHeader">
+                <tr>
+                    <th width="6%">Status</th>
+                    <th width="140px">Antal aktiviteter</th>
+                    <th width="">Navn</th>
+                    <th width="170px">CPR-nr</th>
+                    <th width="">Ansvarlig</th>
+                    <th width="200px">Næste Deadline</th>
+                </tr>
+            </thead>
+            <tbody id="allMyChildren"></tbody>
+        </table>
+    </div>
+</div>
+
+<div class="modal fade" id="add-child-modal" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4>Tilføj barn</h4>
+            </div>
+            <div class="modal-body">
+                <form role="form">
+                    <div class="form-group">
+                        <label for="title">Navn på barn</label>
+                        <input type="text" class="form-control" id="child-name" placeholder="Barnets navn">
+
+                        <label for="title">Sagsnummer</label>
+                        <input type="text" class="form-control" id="case-number" placeholder="Sagsnummer">
+                    </div>
+                    <div class="form-group">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" id="add-child" class="btn btn-default">Tilføj</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

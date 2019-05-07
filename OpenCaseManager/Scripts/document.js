@@ -36,8 +36,8 @@ $(document).ready(function () {
         var win = window.open(window.location.origin + "/File/DownloadFile?link=" + link, '_blank');
         win.focus();
     })
-
-    // To create a template funtion
+    
+    
     $('body').on('click', '#addNewDocumentBtn', function () {
         initializeForm();
         $('#addNewDocumentModal').modal('toggle');
@@ -46,12 +46,14 @@ $(document).ready(function () {
         $('.instanceModalHeading').text(translations.AddDocument);
         $('#addDocument').text(translations.Add);
     })
+    
 });
+
 
 function deleteDocument(docId) {
     var query = {
         "Id": docId,
-        "Type": webPortalType,
+        "Type": webPortalType+"Document",
         "InstanceId": instanceId
     }
     API.service('records/deleteDocument', query)
@@ -92,6 +94,31 @@ function getDocumentDetails(docId) {
             $('#addDocument').text(translations.Update);
             $('#documentName').show();
             $('#documentNameLabel').show();
+        })
+        .fail(function (e) {
+            //showExceptionErrorMessage(e);
+        });
+}
+
+function getDocumentById(docId) {
+    var query = {
+        "type": "SELECT",
+        "entity": "Document",
+        "filters": [
+            {
+                "column": "Id",
+                "operator": "equal",
+                "value": docId,
+                "valueType": "int"
+            }
+        ],
+        "resultSet": ["Title", "Link"],
+        "order": [{ "column": "Title", "descending": false }]
+    }
+
+    API.service('records', query)
+        .done(function (response) {
+            console.log(response);
         })
         .fail(function (e) {
             //showExceptionErrorMessage(e);
@@ -145,24 +172,24 @@ function handleFiles(files) {
     }
 }
 
-function submitFiles() {
+function submitFilesDocuments() {
     var docId = $('#documentId').val();
     if (uploadFiles.length > 0) {
-        uploadFile(uploadFiles[0], docId);
+        uploadFileDocuments(uploadFiles[0], docId);
     }
     else if (docId != '') {
-        uploadFile(null, docId);
+        uploadFileDocuments(null, docId);
     }
 }
 
-function uploadFile(file, docId) {
+function uploadFileDocuments(file, docId) {
     if (isAdd && $('#documentName').val() != '') {
         $.ajax({
             url: window.location.origin + "/api/records/AddDocument",
             type: 'POST',
             headers: {
                 'filename': file.name,
-                'type': webPortalType,
+                'type': webPortalType+"Document",
                 'instanceId': instanceId,
                 'givenFileName': $('#documentName').val()
             },
@@ -189,7 +216,7 @@ function uploadFile(file, docId) {
             headers: {
                 'id': docId,
                 'filename': (file == null ? "" : file.name),
-                'type': webPortalType,
+                'type': webPortalType+"Document",
                 'instanceId': instanceId,
                 'givenFileName': $('#documentName').val(),
                 'isNewFileAdded': (file == null ? "false" : "true")
@@ -227,7 +254,7 @@ function getDocuments() {
             {
                 "column": "Type",
                 "operator": "equal",
-                "value": webPortalType,
+                "value": webPortalType+"Document",
                 "valueType": "string",
                 "logicalOperator": "and"
             }
@@ -258,8 +285,7 @@ function getDocuments() {
 
     API.service('records', query)
         .done(function (response) {
-
-            console.log("data", response);
+            
             var result = JSON.parse(response)
             var list = "";
             if (result.length === 0)
@@ -271,8 +297,8 @@ function getDocuments() {
                     var returnHtml = '';
                     returnHtml = '<tr class="trStyleClass">' +
                         '<td style="display:none"> ' + item.Id + ' </td><td>' + GetIconType(item.Link) + '</td><td><a name="downloadDoc" href="#" documentLink="' + item.Link + '" documentId="' + item.Id + '" > ' + item.Title + '</a> </td><td>';
-                    returnHtml += '<span documentId=' + item.Id + ' name="editDoc" value="editDoc" class="spanMUS floatLeftPro fa fa-pencil-alt" title="' + translations.Edit + '"></span> ';
-                    returnHtml += '<span documentId=' + item.Id + ' name="deleteDoc" value="deleteDoc" class="spanMUS floatLeftPro fa fa-trash" title="' + translations.Delete + '"></span> ';
+                    returnHtml += '<span documentId=' + item.Id + ' name="editDoc" value="editDoc" class="spanMUS floatLeftPro glyphicon glyphicon-edit" title="' + translations.Edit + '"></span> ';
+                    returnHtml += '<span documentId=' + item.Id + ' name="deleteDoc" value="deleteDoc" class="spanMUS floatLeftPro glyphicon glyphicon-trash" title="' + translations.Delete + '"></span> ';
                     returnHtml += '</td>' + '</tr>';
 
                     list += returnHtml;

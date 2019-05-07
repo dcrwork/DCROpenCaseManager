@@ -10,8 +10,10 @@ namespace OpenCaseManager.Models
         public enum Tables
         {
             AllInstances,
+            Child,
             Event,
             EventHistory,
+            DocumentTimes,
             Form,
             FormItem,
             Instance,
@@ -20,6 +22,7 @@ namespace OpenCaseManager.Models
             InstanceEvents,
             InstancePhases,
             InstanceRole,
+            JournalHistory,
             Log,
             MUS,
             MyInstances,
@@ -31,7 +34,10 @@ namespace OpenCaseManager.Models
             UserDetail,
             InstanceExtension,
             AcadreLog,
-            Document
+            Document,
+            StamdataChild,
+            StamdataDummyData,
+            StamdataDummyDataExtension
         }
 
         public enum StoredProcedures
@@ -46,7 +52,8 @@ namespace OpenCaseManager.Models
             SetFormItemSequence,
             DeleteFormItem,
             CopyFormFromTemplate,
-            AddInstanceDescription
+            AddInstanceDescription,
+            LockDocuments
         }
 
         public enum Functions
@@ -87,12 +94,13 @@ namespace OpenCaseManager.Models
 
         public enum EventHistory
         {
-            Instance,
+            InstanceId,
             Sequence,
             EventId,
             Status,
             Description,
-            Details
+            Details,
+            ExecutionDate
         }
 
         public enum Form
@@ -112,6 +120,20 @@ namespace OpenCaseManager.Models
             ItemId,
             SequenceNumber,
             ItemText
+        }
+
+        public enum DocumentTimes
+        {
+            Id,
+            Title,
+            Type,
+            Link,
+            Responsible,
+            InstanceId,
+            UploadDate,
+            IsLocked,
+            IsDraft,
+            EventDate
         }
 
         public enum Instance
@@ -366,9 +388,18 @@ namespace OpenCaseManager.Models
 
         public enum InstanceExtension
         {
+            Id,
             InstanceId,
             Employee,
-            Year
+            Year,
+            ChildId
+        }
+
+        public enum Child
+        {
+            Id,
+            Responsible,
+            ObsBoxText
         }
 
         public enum AcadreLog
@@ -392,13 +423,58 @@ namespace OpenCaseManager.Models
             Link,
             Responsible,
             InstanceId,
-            IsActive
+            IsActive,
+            UploadDate,
+            IsLocked,
+            IsDraft
         }
 
         public enum AddInstanceDescription
         {
             GraphId,
             InstanceId
+        }
+
+        public enum JournalHistory
+        {
+            Id,
+            InstanceId,
+            EventId,
+            DocumentId,
+            Type,
+            Title,
+            CreationDate,
+            EventDate,
+            IsLocked
+        }
+
+        public enum StamdataChild
+        {
+            Id,
+            ChildId,
+            Sagsnummer,
+            Addresse,
+            Forældremyndighed,
+            Skole,
+            Alder,
+            Navn
+        }
+
+        public enum StamdataDummyData
+        {
+            Id,
+            CPR,
+            Address,
+            City,
+            Postcode
+        }
+
+        public enum StamdataDummyDataExtension
+        {
+            Id,
+            ChildId,
+            StamdataId,
+            Relation
         }
     }
 }

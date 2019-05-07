@@ -2,12 +2,11 @@
 
 (function (window) {
 
-    // api functions
-    function getProcess(getRole, showOnFrontPage) {
+    function getProcessAsync(filters){
         var query = {
             "type": "SELECT",
             "entity": "Process",
-            "filters": [
+            "filters": filters || [
                 {
                     "column": "Status",
                     "operator": "equal",
@@ -20,8 +19,22 @@
             "order": [{ "column": "title", "descending": false }]
         }
 
+        var result = API.service('records', query)
+            .done(function (response) {
+                return response;
+            })
+            .fail(function (e) {
+                showExceptionErrorMessage(e);
+            })
+        return result;
+    }
+
+    // api functions
+    function getProcess(getRole, showOnFrontPage) {
+        var filters;
+
         if (showOnFrontPage) {
-            query.filters.push(
+            filters = 
                 {
                     "column": "OnFrontPage",
                     "operator": "equal",
@@ -29,11 +42,9 @@
                     "valueType": "boolean",
                     "logicalOperator": "none"
                 }
-            );
         }
 
-        API.service('records', query)
-            .done(function (response) {
+        getProcessAsync(filters).done(function (response) {
                 if (getRole) {
                     renderData("instanceProcesses", response, getProcessHtml)
                     var graphId = $('#instanceProcesses').find(":selected").val();
@@ -86,29 +97,46 @@
             });
     }
 
-    function addInstance(title, graphId, userRoles) {
+    function addInstance(title, graphId, userRoles, childId) {
 
         var data = {
             title: title,
             graphId: graphId,
-            userRoles: userRoles
+            userRoles: userRoles,
+            childId: childId
         }
 
         API.service('records/addInstance', data)
             .done(function (response) {
-
                 var result = JSON.parse(response);
                 var instanceId = result;
 
                 API.service('services/InitializeGraph', { instanceId: instanceId, graphId: graphId })
                     .done(function (response) {
-                        getMyInstances();
-                        getTasks();
+                        window.location.replace(`/ChildInstance?id=${instanceId}`);
                     })
-                    .fail(function (e) {
+                    .fail(function (e) { 
                         showExceptionErrorMessage(e);
                     });
 
+            })
+            .fail(function (e) {
+                showExceptionErrorMessage(e);
+            });
+    }
+
+    function addChild(childName, caseNumber, responsible) {
+        var data = {
+            childName: childName,
+            caseNumber: caseNumber,
+            responsible: responsible
+        }
+
+        API.service('records/addChild', data)
+            .done(function (response) {
+                var result = JSON.parse(response);
+                var childId = result;
+                window.location.replace(`/Child?id=${childId}`);
             })
             .fail(function (e) {
                 showExceptionErrorMessage(e);
@@ -134,7 +162,7 @@
             });
         }
         else {
-            API.service('services/ExecuteEvent', { taskId: data.taskId, instanceId: data.instanceId, graphId: data.graphId, simulationId: data.simulationId, eventId: data.eventId })
+            API.service('services/ExecuteEvent', { taskId: data.taskId, instanceId: data.instanceId, graphId: data.graphId, simulationId: data.simulationId, eventId: data.eventId, title: data.title, trueEventId: data.trueEventId })
                 .done(function (response) {
                     if (isMUS == null) {
                         if (isFrontPage) {
@@ -144,7 +172,7 @@
                         else {
                             getTasks(data.instanceId);
                             getInstanceDetails(data.instanceId);
-                            getPhases(data.instanceId);
+                            getJournalHistoryForInstance(data.instanceId);
                         }
                     }
                     else {
@@ -161,7 +189,7 @@
                         else {
                             getTasks(data.instanceId);
                             getInstanceDetails(data.instanceId);
-                            getPhases(data.instanceId);
+                            getJournalHistoryForInstance(data.instanceId);
                         }
                     } else {
                         MUS.musDetails(MUS.showMUS);
@@ -174,7 +202,7 @@
         var query = {
             "type": "SELECT",
             "entity": "Instance",
-            "resultSet": ["Title", "CaseNoForeign", "CaseLink", "CurrentPhaseNo", "Description"],
+            "resultSet": ["Title", "CaseNoForeign", "CaseLink", "CurrentPhaseNo", "Description", "NextDeadline", "IsOpen"],
             "filters": [
                 {
                     "column": "Id",
@@ -188,6 +216,24 @@
         API.service('records', query)
             .done(function (response) {
                 renderData("instanceDetails", response, getInstanceHtml)
+            })
+            .fail(function (e) {
+                showExceptionErrorMessage(e);
+            });
+    }
+
+    function getJournalHistoryForInstance(instanceId) {
+        var query = {
+            "type": "SELECT",
+            "entity": "JournalHistoryForASingleInstance(" + instanceId + ")",
+            "resultSet": ["*"],
+            "filters": [],
+            "order": [{ "column": "EventDate", "descending": true }]
+        }
+
+        API.service('records', query)
+            .done(function (response) {
+                Task.getJournalHistory(response);
             })
             .fail(function (e) {
                 showExceptionErrorMessage(e);
@@ -282,7 +328,7 @@
             });
     }
 
-    function getRoles(graphId, resolve) {
+    function getRoles(graphId, resolve, containerId) {
         //todo:mytasks-Check for Process Engine
         var data = { graphId: graphId };
         API.service('services/getProcessRoles', data)
@@ -302,7 +348,7 @@
                     }
                     API.service('records', query)
                         .done(function (response) {
-                            renderUserRolesData('userRoles', response, roles, getUserRoles);
+                            renderUserRolesData(containerId || 'userRoles', response, roles, getUserRoles);
                         })
                         .fail(function (e) {
                         });
@@ -416,7 +462,7 @@
         var data = {
             "type": "SELECT",
             "entity": "[User]",
-            "resultSet": ["Name"],
+            "resultSet": ["Name", "Id"],
             "filters": [
                 {
                     "column": "Id",
@@ -432,6 +478,7 @@
                 var user = JSON.parse(response);
                 if (user.length > 0)
                     $('#userName').text(user[0].Name);
+                    window.App.user = user[0];
             })
             .fail(function (e) {
                 showExceptionErrorMessage(e)
@@ -616,7 +663,6 @@
     }
 
     function getInstanceHtml(item) {
-
         $('#instanceTitle').text(item.Title);
         if (item.CaseNoForeign !== null) {
             $('.caseNum').show();
@@ -626,10 +672,9 @@
             $('.caseLink').show();
             $('#entityLink').attr('href', item.CaseLink);
         }
-        if (item.Description != null && item.Description != '')
-            Instruction.setText(item.Description);
-        else
-            Instruction.hideWebPart();
+
+        if (item.IsOpen) $('#instanceTitle').append(getStatus(item.NextDeadline));
+        else $('#instanceTitle').append("<span class='dot dotGrey'></span>");
     }
 
     function getProcessHtml(item) {
@@ -688,7 +733,6 @@
     }
 
     function renderUserRolesData(id, response, roles, template) {
-        console.log("data", response);
         var result = JSON.parse(response)
         var list = "";
         if (roles.length === 0)
@@ -700,20 +744,29 @@
         }
         $("#" + id).html("").append(list);
 
-        for (i = 0; i < result.length; i++) {
+      /*  for (i = 0; i < result.length; i++) {
             $('#multi-select-' + result[i].Id + '').multiselect();
-        }
+        }*/
     }
 
     function getUserRoles(role, users) {
         var returnHtml = '';
         returnHtml = '<div class="form-group clearfix" style="width:100%"><label class="labelStyling">' + role.title + '</label>' +
             '<select name="multi-select" class="form-control formFieldStyling" userId="' + role.title + '" id="multi-select-' + role.title + '">';
-        returnHtml += '<option value="0">' + translations.SelectResponsible + '</option>';
-        if (users.length > 0) {
-            $.each(users, function (index, user) {
-                returnHtml += '<option value="' + user.Id + '">' + user.Name + '</option>';
-            });
+        if (role.title == "Socialrådgiver") {
+            if (users.length > 0) {
+                $.each(users, function (index, user) {
+                    if (window.App.user.Id == user.Id) returnHtml += '<option selected="selected" value="' + user.Id + '">' + user.Name + '</option>';
+                    else returnHtml += '<option value="' + user.Id + '">' + user.Name + '</option>';
+                });
+            }
+        } else {
+            returnHtml += '<option value="0">' + translations.SelectResponsible + '</option>';
+            if (users.length > 0) {
+                $.each(users, function (index, user) {
+                    returnHtml += '<option value="' + user.Id + '">' + user.Name + '</option>';
+                });
+            }
         }
         returnHtml += '</select></div>';
         return returnHtml;
@@ -760,7 +813,7 @@
         else
             item.IsOpen = translations.Close;
         var returnHtml = '';
-        returnHtml = '<tr class="trStyleClass"><td> <a href="../Instance?id=' + item.Id + '">' + item.Title + '</a></td><td>' + item.CaseNoForeign + '</td><td>' + item.Responsible + '</td><td>' + item.IsOpen + '</td></tr>';
+        returnHtml = '<tr class="trStyleClass"><td> <a href="../ChildInstance?id=' + item.Id + '">' + item.Title + '</a></td><td>' + item.CaseNoForeign + '</td><td>' + item.Responsible + '</td><td>' + item.IsOpen + '</td></tr>';
         return returnHtml;
     }
 
@@ -996,10 +1049,13 @@
     }
 
     var app = function () {
+        this.getProcessAsync = getProcessAsync;
+        this.getProcessHtml = getProcessHtml;
         this.api = window.API || {};
         this.responsible = getResponsible;
         this.getProcess = getProcess;
         this.getMyInstances = getMyInstances;
+        this.getJournalHistoryForInstance = getJournalHistoryForInstance;
         this.getTasks = getTasks;
         this.addInstance = addInstance;
         this.executeEvent = executeEvent;
@@ -1022,10 +1078,12 @@
         this.showInformationMessage = showInformationMessage;
         this.showTaskWithNotePopup = showTaskWithNotePopup;
         this.hideDocumentWebpart = hideDocumentWebpart;
+        this.getUserRoles = getUserRoles;
+        this.addChild = addChild;
     };
 
     getTranslations(locale);
-
+    getResponsibleName();
     return window.App = new app;
 }(window));
 

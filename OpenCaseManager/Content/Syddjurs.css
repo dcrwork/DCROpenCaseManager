@@ -1,9 +1,9 @@
 ﻿body {
-    background: #f4eded;
     font-family: Arial,'Source Sans Pro',sans-serif;
     font-size: 14px;
     line-height: 1.35;
     color: #4a4a4a;
+    padding-right: 0 !important;
 }
 
 header div.page-header {
@@ -17,7 +17,6 @@ header div.page-header {
 .page-header > div.pull-left {
     width: 200px;
     height: 85px;
-    background: url(../content/images/logo.png);
     background-repeat: no-repeat;
 }
 
@@ -43,6 +42,10 @@ a {
     text-decoration: none;
 }
 
+.event-title {
+    color: #4A4A4A;
+}
+
     a:hover, a:focus {
         color: #9C1A5E;
         text-decoration: underline;
@@ -61,10 +64,11 @@ div.page-header div.search-field {
 
 ul.menu-header-ul li a {
     display: block;
-    color: #9C1A5E;
-    text-align: center;
-    padding-top: 16px;
-    padding-right: 20px;
+    color: #4a4a4a;
+    font-size: 20px;
+    text-align: end;
+    padding-top: 4px;
+    padding-left: 20px;
     text-decoration: none;
 }
 
@@ -72,13 +76,29 @@ ul.menu-header-ul li a {
         text-decoration: underline;
     }
 
+ul.welcome {
+    padding-top: 10px;
+    list-style-type: none;
+}
+    ul.welcome li a {
+        display: block;
+        color: #4a4a4a;
+        font-size: 14px;
+        text-align: end;
+        text-decoration: none;
+        cursor: default;
+    }
+
 div.search-field input {
-    width: 100%;
-    position: relative;
+    min-width: 529px;
+    max-width: 529px;
+    margin-top: 10px;
     padding: 10px 40px 10px 10px;
     font-size: 16px;
     border: 2px solid #9C1A5E;
     border-radius: 5px;
+    display: block;
+    outline: none;
 }
 
     div.search-field input:focus {
@@ -96,6 +116,8 @@ div.search-field i {
     cursor: pointer;
 }
 
+
+
 form.searchPageForm div.search-field input {
     border: 2px solid #208fcc;
     color: #9C1A5E;
@@ -108,8 +130,19 @@ form.searchPageForm div.search-field input {
 h4.tasksHeading, h4.instancesHeading {
     background: #9C1A5E;
     color: #fff;
-    border-radius: 4px;
 }
+
+.taskExecutionButton {
+    border: 2px solid #9C1A5E;
+    border-radius: 0px;
+    background-color: rgba(0, 0, 0, 0);
+    color: #9C1A5E;
+}
+
+    .taskExecutionButton:hover {
+        background-color: #9C1A5E;
+        color: white;
+    }
 
 .taskExecutionBtn, .addNewInstance {
     padding: 0px;
@@ -159,24 +192,10 @@ ul.phaseUl li.phaseItem {
     text-align: center;
 }
 
-table.entityDetailTable tr th {
-    color: #9C1A5E;
-    width: 25%;
-}
-
 span.entityLink {
     color: #9C1A5E;
     text-decoration: underline;
     cursor: pointer;
-}
-
-div.tableDataRow {
-    margin: 0px;
-    background: #fff;
-}
-
-table tbody tr.trStyleClass:hover {
-    background: #f5f5f5;
 }
 
 @media only screen and (min-width: 0px) and (max-width: 479px) {
@@ -292,8 +311,6 @@ table tbody tr.trStyleClass:hover {
     height: 14px;
     cursor: pointer
 }
-/*.editQuestion:hover,
-.deleteQuestion:hover { display: block; }*/
 
 .title-question,
 table.forms-listing-table {
@@ -489,4 +506,37 @@ img.newFormAddIcon {
     padding: 2px 6px;
     height: 23px;
     width: auto;
+}
+
+.tabsBox {
+    width: 100%;
+    margin: 0px 60px;
+}
+
+.dot {
+    height: 20px;
+    width: 20px;
+    background-color: #bbb;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.dotGreen {
+    background-color: #63C647;
+}
+
+.dotYellow {
+    background-color: #F4B516;
+}
+
+.dotRed {
+    background-color: #E04141;
+}
+
+.dotGrey {
+    background-color: #EDEDED;
+}
+
+.statusColumn {
+    text-align: center;
 }

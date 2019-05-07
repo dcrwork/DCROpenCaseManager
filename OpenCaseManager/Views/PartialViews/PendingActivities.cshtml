@@ -1,0 +1,136 @@
+﻿<style>
+    .pendingActivitiesTable {
+        border: solid 1px #EFEFEF;
+        width: 230px;
+    }
+
+    .pendingActivitiesTableHeader {
+        background: #9C1A5E;
+        color: #fff;
+        font-weight: lighter;
+    }
+
+    .pendingActivitiesTableBody {
+        display: block;
+        overflow: auto;
+        max-height: 184px;
+    }
+
+        .pendingActivitiesTableBody td:last-child {
+            width: 100%;
+        }
+
+        .pendingActivitiesTableBody td {
+            overflow: hidden;
+        }
+
+    /* Tooltip container */
+    .tooltipTip {
+        display: inline;
+    }
+
+    .tooltipTip-wrapper {
+        width: 25%;
+        position: absolute;
+        visibility: hidden;
+        margin: 40px 20px;
+    }
+
+    .tooltipTip:hover .tooltipTip-wrapper {
+        visibility: visible;
+        opacity: 1;
+    }
+
+    .tooltipTiptext {
+        display: block;
+        position: absolute;
+        bottom: 125%;
+        padding: 10px;
+        color: #4a4a4a;
+        text-align: center;
+        border: none;
+        border-radius: 5px;
+        background: #EFEFEF;
+    }
+
+        .tooltipTiptext::after {
+            content: "";
+            position: absolute;
+            top: 43%;
+            left: 0%;
+            margin-left: -10px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: transparent #EFEFEF transparent transparent;
+        }
+</style>
+
+<table class="table pendingActivitiesTable table-striped">
+    <thead class="pendingActivitiesTableHeader">
+        <tr>
+            <th colspan="2">Aktiviteter der har brug for din opmærksomhed</th>
+        </tr>
+    </thead>
+    <tbody class="pendingActivitiesTableBody"></tbody>
+</table>
+
+<script>
+    var childId;
+
+    $(document).ready(function () {
+        childId = (window.location.pathname.toLowerCase() == "/child") ? App.getParameterByName("id", window.location.href) : null;
+
+        query = {
+            "type": "SELECT",
+            "entity": "PendingActivities('$(loggedInUserId)')",
+            "resultSet": ["*"],
+            "filters": new Array(),
+            "order": []
+        }
+
+        if (childId != null) {
+            var whereChildIdMatchesFilter = {
+                "column": "ChildId",
+                "operator": "equal",
+                "value": childId,
+                "valueType": "int",
+                "logicalOperator": "and"
+            };
+            query.filters.push(whereChildIdMatchesFilter);
+        }
+
+        API.service('records', query)
+            .done(function (response) {
+                var result = JSON.parse(response);
+                fillPendingActivitiesTable(result);
+            })
+            .fail(function (e) {
+                reject(e);
+            });
+    });
+
+    function fillPendingActivitiesTable(result) {
+        var list = "";
+        if (result.length === 0) {
+            list = "<tr class='trStyleClass'><td></td><td>" + translations.NoRecordFound + " </td></tr>";
+        } else {
+            for (i = 0; i < result.length; i++) {
+                list += getPendingActivityHtml(result[i]);
+            }
+        }
+        $(".pendingActivitiesTableBody").append(list);
+    }
+
+    function getPendingActivityHtml(item) {
+        var instanceLink = "../ChildInstance?id=" + item.InstanceId;
+
+        var returnHtml = "<tr class='trStyleClass'><td width='16px'><img src='../Content/Images/priorityicon.svg' height='16' width='16'/></td>";
+
+        if (childId == null) {
+            returnHtml += "<td><a class='tooltipTip' href='" + instanceLink + "'>" + item.EventTitle + "<span class='tooltipTip-wrapper'><span class='tooltipTiptext'>" + item.Name + "<br> " + item.InstanceTitle + "</span></span></a></td>";
+        } else {
+            returnHtml += "<td><a class='tooltipTip' href='" + instanceLink + "'>" + item.EventTitle + "<span class='tooltipTip-wrapper'><span class='tooltipTiptext'>" + item.InstanceTitle + "</span></span></a></td>";
+        }
+        return returnHtml;
+    }
+</script>
