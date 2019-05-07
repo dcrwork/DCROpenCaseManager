@@ -22,7 +22,6 @@
 
     API.service('records', query)
         .done(function (response) {
-            console.log(response);
             displayChildName(response);
             displayChildObsBox(response)
         })
