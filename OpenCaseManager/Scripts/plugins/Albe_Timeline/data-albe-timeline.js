@@ -24,7 +24,7 @@ function documentType(data) {
         },
         {
             tag: 'p',
-            content: translations.Instance + ": " + data.InstanceTitle
+            content: "Indsats: " + data.InstanceTitle
             }]
     }
 }
@@ -38,13 +38,13 @@ function journalNoteType(data) {
             tag: 'a',
             content: '<h3>' + data.DocumentTitle + '</h3>',
             attr: {
-                href: '/JournalNote?instanceId=' + data.InstanceId + '&documentLink=' + data.Link + '&documentTitle=' + data.DocumentTitle + '&documentAuthor=' + data.DocumentResponsible,
+                href: '/JournalNote?instanceId=' + data.InstanceId + '&childId=' + data.ChildId + '&documentLink=' + data.Link + '&documentTitle=' + data.DocumentTitle + '&documentAuthor=' + data.DocumentResponsible,
                 target: '_blank'
             }
         },
         {
             tag: 'p',
-            content: translations.Added + ": " + formatDateTimeline(data.CreationDate),
+            content: "Tilføjet: " + formatDateTimeline(data.CreationDate),
         }]
     }
 }
@@ -64,7 +64,7 @@ function activitiesType(data) {
         },
             {
                 tag: 'p',
-                content: translations.Instance + ": " + data.InstanceTitle
+                content: "Indsats: " + data.InstanceTitle
             }]
     }
 }
@@ -73,7 +73,6 @@ $(document).ready(function () {
     async function getData(activity, journalnote, document) {
         var childId = App.getParameterByName("id", window.location.href);
         var data = await getTimelineData(childId);
-
         var normData = [];
         $.each(data, function (index, value) {   
             if (journalnote && (value.DocumentType === 'JournalNote' || value.Type === 'JournalNoteBig' || value.Type === 'JournalNoteLittle')) normData.push(journalNoteType(value));

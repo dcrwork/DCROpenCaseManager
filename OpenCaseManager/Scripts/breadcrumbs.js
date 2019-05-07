@@ -5,7 +5,7 @@ $(document).ready(function () {
     else setChildPageBreadcrumb();
 });
 
-async function getChildId(instanceId) {
+async function getChildIdX(instanceId) {
     var query = {
         "type": "SELECT",
         "entity": "InstanceExtension",
@@ -71,8 +71,9 @@ async function getInstanceName(instanceId) {
 
 async function setInstancePageBreadcrumb() {
     var instanceId = App.getParameterByName("id", window.location.href);
+    var childIds = await getChildIdX(instanceId);
 
-    var childIds = await getChildId(instanceId)
+
     if (childIds[0] != undefined) {
         var childId = childIds[0].ChildId;
         var path = "/Child?id=" + childId;
