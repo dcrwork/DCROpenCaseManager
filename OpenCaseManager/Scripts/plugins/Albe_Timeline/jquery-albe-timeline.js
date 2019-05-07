@@ -96,6 +96,8 @@ function updateTimeline(monthMenu) {
 
         if ($.isEmptyObject(json)) {
             console.warn(language.msgEmptyContent);
+            var noData = $("<h3>").attr('id', 'noObjectDataFound').text(translations.NoDataTimeLine);
+            noData.appendTo(_this);
             return;
         }
 

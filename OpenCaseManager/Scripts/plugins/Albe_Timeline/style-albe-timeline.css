@@ -253,6 +253,10 @@ section#timeline > article > div.timelinePanel div.badge {
     position: relative;
 }
 
+#noObjectDataFound {
+    text-align: center;
+    margin-top: 40px;
+}
 
 section#timeline > article:nth-last-child(2) > div.timelinePanel {
     width: 100%;
