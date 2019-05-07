@@ -33,6 +33,8 @@
 </div>
 
 <div class="wholeChildPage">
+    <input type="hidden" id="childIdHidden">
+
     <div>
         <div class="buttonsBox">
             <div data-toggle="modal" data-target="#create-process-modal" class="create-process-button">
@@ -40,7 +42,7 @@
             </div>
 
             @Html.Partial("~/Views/PartialViews/AddButton.cshtml", new ViewDataDictionary { { "add-text", "AddDocument" }, { "onClick", "addDocument()" } })
-            @Html.Partial("~/Views/PartialViews/AddButton.cshtml", new ViewDataDictionary { { "add-text", "AddJournalNote" }, { "onClick", "CreateJournalNoteView()" } })
+            @Html.Partial("~/Views/PartialViews/AddButton.cshtml", new ViewDataDictionary { { "add-text", "AddJournalNote" }, { "onClick", "CreateJournalNoteViewChild()" } })
         </div>
 
         <div class="pendingActivitiesBox">
@@ -141,10 +143,14 @@
 
 
 <script type="text/javascript">
-    var webPortalType = "Instance";
+    var webPortalType = "Child";
+    $(document).ready(function () {
+        var childId = App.getParameterByName("id".toLowerCase(), window.location.href);
+        $('#childIdHidden').val(childId);
+});
 </script>
 <script type="text/javascript" src="~/Scripts/breadcrumbs.js"></script>
 <script type="text/javascript" src="~/Scripts/createprocess.js"></script>
 <script type="text/javascript" src="~/Scripts/child.js"></script>
-<script type="text/javascript" src="~/Scripts/journalNoteCreate.js"></script>
+<script type="text/javascript" src="~/Scripts/journalNote.js"></script>
 <script type="text/javascript" src="~/Scripts/addDocument.js"></script>

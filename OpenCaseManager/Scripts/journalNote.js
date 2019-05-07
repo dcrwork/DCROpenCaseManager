@@ -2,6 +2,8 @@ var alreadyDrafted;
 var documentId;
 var documentText;
 var documentTitle;
+var childId;
+var instanceId;
 var documentEventDate;
 var documentEventTime;
 var timer = $.now()-1000;
@@ -43,11 +45,22 @@ function getDocumentByLinkQuery(documentLink) {
     return query;
 }
 
-function CreateJournalNoteView() {
+function CreateJournalNoteViewInstance() {
     var id = $.urlParam("id");
     var newWindow = window.open("/JournalNote/Create" + (id ? "?id=" + id : ""), "", "width=800,height=600");
     newWindow.alreadyDrafted = false;
     newWindow.isAlreadyDraftWhenOpened = true;
+    newWindow.childId = $('#childIdHidden').val();
+    newWindow.instanceId = $('#instanceIdHidden').val();
+}
+
+function CreateJournalNoteViewChild() {
+    var id = $.urlParam("id");
+    var newWindow = window.open("/JournalNote/Create" + (id ? "?childId=" + id : ""), "", "width=800,height=600");
+    newWindow.alreadyDrafted = false;
+    newWindow.isAlreadyDraftWhenOpened = true;
+    newWindow.childId = $('#childIdHidden').val();
+    newWindow.instanceId = "";
 }
 
 function CreateJournalNoteViewWithLink() {
@@ -65,6 +78,8 @@ function CreateJournalNoteViewWithLink() {
             newWindow.documentText = documentText;
             newWindow.documentTitle = documentInfo.Title;
             newWindow.isAlreadyDraftWhenOpened = documentInfo.IsDraft;
+            newWindow.childId = $('#childIdHidden').val();
+            newWindow.instanceId = id;
 
             var splitTime = documentInfo.EventDate.split("T");
             var regex = /(\d\d:\d\d)/gm;
@@ -76,27 +91,32 @@ function CreateJournalNoteViewWithLink() {
 
 
 $(function () {
-    if (!isAlreadyDraftWhenOpened) $('.change-journal-note-button').html(translations.Opdate);
-    $("#input-journal-title").val(documentTitle);
-    $(".ui-datepicker").val(documentEventDate);
-    $(".timepicker").val(documentEventTime);
+    try {
+        if (!isAlreadyDraftWhenOpened) $('.change-journal-note-button').html('Opdater');
+        $("#input-journal-title").val(documentTitle);
+        $(".ui-datepicker").val(documentEventDate);
+        $(".timepicker").val(documentEventTime);
 
-    $('#input-journal-title').on('input', function () {
-        numberOfChanges++;
-    });
-    var inputJournalNote = $('#input-journal-note');
-    if (inputJournalNote != null) {
-
-        inputJournalNote.trumbowyg();
-        inputJournalNote.trumbowyg({
-            tagsToRemove: ['Redo']
-        });
-        inputJournalNote.trumbowyg('html', documentText);
-        inputJournalNote.trumbowyg().on('tbwchange', function () {
+        $('#input-journal-title').on('input', function () {
             numberOfChanges++;
         });
+
+        var inputJournalNote = $('#input-journal-note');
+        if (inputJournalNote != null) {
+
+            inputJournalNote.trumbowyg();
+            inputJournalNote.trumbowyg({
+                tagsToRemove: ['Redo']
+            });
+            inputJournalNote.trumbowyg('html', documentText);
+            inputJournalNote.trumbowyg().on('tbwchange', function () {
+                numberOfChanges++;
+            });
+        }
     }
-})
+    catch (err) { }
+
+});
 
 function automaticSaveDraft() {
     if ($.now() - timer > 2000 && numberOfChanges >= 10) {
@@ -141,55 +161,60 @@ function formatDate(_date) {
 }
 
 $(function () {
-    $("#datepicker").datepicker();
-    $("#datepicker").datepicker("option", "dateFormat", "dd/mm/yy");
-    $("#datepicker").datepicker({ maxDate: "+0d" });
-    var maxDate = $("#datepicker").datepicker("option", "maxDate");
-    $("#datepicker").datepicker("option", "maxDate", "+0d");
+    try {
+        $("#datepicker").datepicker();
+        $("#datepicker").datepicker("option", "dateFormat", "dd/mm/yy");
+        $("#datepicker").datepicker({ maxDate: "+0d" });
+        var maxDate = $("#datepicker").datepicker("option", "maxDate");
+        $("#datepicker").datepicker("option", "maxDate", "+0d");
 
-    $("#datepicker").datepicker({ dayNames: ["Søndag", "Mandag", "Tirsdag", "Onsdag", "Torsdag", "Fredag", "Lørdag"] });
-    var dayNames = $("#datepicker").datepicker("option", "dayNames");
-    $("#datepicker").datepicker("option", "dayNames", ["Søndag", "Mandag", "Tirsdag", "Onsdag", "Torsdag", "Fredag", "Lørdag"]);
+        $("#datepicker").datepicker({ dayNames: ["Søndag", "Mandag", "Tirsdag", "Onsdag", "Torsdag", "Fredag", "Lørdag"] });
+        var dayNames = $("#datepicker").datepicker("option", "dayNames");
+        $("#datepicker").datepicker("option", "dayNames", ["Søndag", "Mandag", "Tirsdag", "Onsdag", "Torsdag", "Fredag", "Lørdag"]);
 
-    $("#datepicker").datepicker({ dayNamesMin: ["Sø", "Ma", "Ti", "On", "To", "Fr", "Lø"] });
-    var dayNamesMin = $("#datepicker").datepicker("option", "dayNamesMin");
-    $("#datepicker").datepicker("option", "dayNamesMin", ["Sø", "Ma", "Ti", "On", "To", "Fr", "Lø"]);
+        $("#datepicker").datepicker({ dayNamesMin: ["Sø", "Ma", "Ti", "On", "To", "Fr", "Lø"] });
+        var dayNamesMin = $("#datepicker").datepicker("option", "dayNamesMin");
+        $("#datepicker").datepicker("option", "dayNamesMin", ["Sø", "Ma", "Ti", "On", "To", "Fr", "Lø"]);
 
-    $("#datepicker").datepicker({ monthNamesShort: ["Jan", "Feb", "Mar", "Apr", "Maj", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dec"] });
-    var monthNamesShort = $("#datepicker").datepicker("option", "dayNamesMin");
-    $("#datepicker").datepicker("option", "monthNamesShort", ["Jan", "Feb", "Mar", "Apr", "Maj", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dec"]);
+        $("#datepicker").datepicker({ monthNamesShort: ["Jan", "Feb", "Mar", "Apr", "Maj", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dec"] });
+        var monthNamesShort = $("#datepicker").datepicker("option", "dayNamesMin");
+        $("#datepicker").datepicker("option", "monthNamesShort", ["Jan", "Feb", "Mar", "Apr", "Maj", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dec"]);
 
-    $("#datepicker").datepicker({ monthNames: ["Januar", "Februar", "Marts", "April", "Maj", "Juni", "Juli", "August", "September", "Oktober", "November", "December"] });
-    var dayNamesMin = $("#datepicker").datepicker("option", "monthNames");
-    $("#datepicker").datepicker("option", "monthNames", ["Januar", "Februar", "Marts", "April", "Maj", "Juni", "Juli", "August", "September", "Oktober", "November", "December"]);
+        $("#datepicker").datepicker({ monthNames: ["Januar", "Februar", "Marts", "April", "Maj", "Juni", "Juli", "August", "September", "Oktober", "November", "December"] });
+        var dayNamesMin = $("#datepicker").datepicker("option", "monthNames");
+        $("#datepicker").datepicker("option", "monthNames", ["Januar", "Februar", "Marts", "April", "Maj", "Juni", "Juli", "August", "September", "Oktober", "November", "December"]);
 
-    $("#datepicker").datepicker({ gotoCurrent: true });
-    var gotoCurrent = $("#datepicker").datepicker("option", "gotoCurrent");
-    $("#datepicker").datepicker("option", "gotoCurrent", true);
+        $("#datepicker").datepicker({ gotoCurrent: true });
+        var gotoCurrent = $("#datepicker").datepicker("option", "gotoCurrent");
+        $("#datepicker").datepicker("option", "gotoCurrent", true);
 
-    $("#datepicker").datepicker({ firstDay: 1 });
-    var firstDay = $("#datepicker").datepicker("option", "firstDay");
-    $("#datepicker").datepicker("option", "firstDay", 1);
+        $("#datepicker").datepicker({ firstDay: 1 });
+        var firstDay = $("#datepicker").datepicker("option", "firstDay");
+        $("#datepicker").datepicker("option", "firstDay", 1);
 
-    $("#datepicker").datepicker({ hideIfNoPrevNext: true });
-    var hideIfNoPrevNext = $("#datepicker").datepicker("option", "hideIfNoPrevNext");
-    $("#datepicker").datepicker("option", "hideIfNoPrevNext", true);
+        $("#datepicker").datepicker({ hideIfNoPrevNext: true });
+        var hideIfNoPrevNext = $("#datepicker").datepicker("option", "hideIfNoPrevNext");
+        $("#datepicker").datepicker("option", "hideIfNoPrevNext", true);
 
-    $("#datepicker").datepicker({ nextText: "Næste" });
-    var nextText = $("#datepicker").datepicker("option", "nextText");
-    $("#datepicker").datepicker("option", "nextText", "Næste");
+        $("#datepicker").datepicker({ nextText: "Næste" });
+        var nextText = $("#datepicker").datepicker("option", "nextText");
+        $("#datepicker").datepicker("option", "nextText", "Næste");
 
-    $("#datepicker").datepicker({ prevText: "Forrige" });
-    var prevText = $("#datepicker").datepicker("option", "nextText");
-    $("#datepicker").datepicker("option", "prevText", "Forrige");
+        $("#datepicker").datepicker({ prevText: "Forrige" });
+        var prevText = $("#datepicker").datepicker("option", "nextText");
+        $("#datepicker").datepicker("option", "prevText", "Forrige");
 
-    $("#datepicker").val(formatDate(new Date().toString()));
+        $("#datepicker").val(formatDate(new Date().toString()));
+        $("#datepicker").attr('readonly', 'readonly');
+        $('#input-journal-title').attr('placeholder', 'Titel');
+    }
+    catch (err) { }
+
     
-    $('#input-journal-title').attr('placeholder', 'Titel');
 });
 
 
-$("#datepicker").attr('readonly', 'readonly');
+
 
 /*$.datepicker.setDefaults($.datepicker.regional["da"]);*/
 
@@ -210,13 +235,12 @@ function makeTextFile(text) {
 };
 
 function submitFiles(fileName, textContents, isDraft, closeWindow) {
-    var instanceId = $.urlParam("id");
     var file = makeTextFile(textContents);
-    uploadFile(file, instanceId, fileName, isDraft, closeWindow);
+    uploadFile(file, fileName, isDraft, closeWindow);
 
 }
 
-function uploadFile(file, instanceId, fileName, isDraft, closeWindow) {
+function uploadFile(file, fileName, isDraft, closeWindow) {
     if (fileName == "") { fileName = "NA" };
     var eventDateTime = $(".ui-datepicker").val() + " " + $(".timepicker").val();
   
@@ -230,6 +254,7 @@ function uploadFile(file, instanceId, fileName, isDraft, closeWindow) {
                 'type': 'JournalNoteBig',
                 'instanceId': instanceId,
                 'givenFileName': fileName,
+                'childId': childId,
                 'eventTime': eventDateTime,
                 'isDraft': isDraft
             },
@@ -295,18 +320,20 @@ $(document).ready(function () {
     var now = new Date();
     var latestQuarter = now.getMinutes() - (now.getMinutes() % 15);
     var defaultTime = now.getHours() + ':' + latestQuarter;
-
-    $('input.timepicker').timepicker({
-        timeFormat: 'HH:mm',
-        defaultTime: defaultTime,
-        interval: 30,
-        minTime: '0000',
-        maxTime: '2359',
-        startTime: '06',
-        dynamic: false,
-        dropdown: true,
-        scrollbar: true,
-    });
+    try {
+        $('input.timepicker').timepicker({
+            timeFormat: 'HH:mm',
+            defaultTime: defaultTime,
+            interval: 30,
+            minTime: '0000',
+            maxTime: '2359',
+            startTime: '06',
+            dynamic: false,
+            dropdown: true,
+            scrollbar: true,
+        });
+    }
+    catch (err) { }
 });
 
 $(document).on('click', '.change-journal-note-button', function (event) {
@@ -341,7 +368,6 @@ function saveFile(isDraft, closeWindow, event) {
 
 function updateFiles(fileName, textContents, isDraft, closeWindow) {
     if (fileName == "") { fileName = "NA" };
-    var instanceId = $.urlParam("id");
     var file = makeTextFile(textContents);
 
     var eventDateTime = $(".ui-datepicker").val() + " " + $(".timepicker").val();
@@ -359,7 +385,8 @@ function updateFiles(fileName, textContents, isDraft, closeWindow) {
                 'givenFileName': fileName,
                 'isNewFileAdded': 'True',
                 'eventTime': eventDateTime,
-                'isDraft': isDraft
+                'isDraft': isDraft,
+                'childId': childId
             },
             data: file,
             async: true,

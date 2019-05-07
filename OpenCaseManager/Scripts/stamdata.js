@@ -5,7 +5,7 @@
         var x = id;
 
         if (isInstance) {
-            var result2 = await getChildId(id);
+            var result2 = await getChildIdY(id);
             var y = result2[0];
             if (y == null) return;
             x = y.ChildId;
@@ -45,7 +45,7 @@
 
             if (current.Relation == null) {
                 var nothingFound = $("<h5></h5>");
-                nothingFound.append($("<b></b>").text("Nothing found"));
+                nothingFound.append($("<b></b>").text(translations.NothingFound));
                 div.append(nothingFound);
                 $(".expandedStamdata").append(div);
                 continue;
@@ -109,7 +109,7 @@ async function getStamData(childId) {
     return JSON.parse(result)
 }
 
-async function getChildId(instanceId) {
+async function getChildIdY(instanceId) {
     var query = {
         "type": "SELECT",
         "entity": "InstanceExtension",
