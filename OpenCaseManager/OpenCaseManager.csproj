@@ -20,9 +20,10 @@
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
     <Use64BitIISExpress />
-    <IISExpressSSLPort>44397</IISExpressSSLPort>
-    <IISExpressAnonymousAuthentication />
-    <IISExpressWindowsAuthentication />
+    <IISExpressSSLPort>
+    </IISExpressSSLPort>
+    <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
+    <IISExpressWindowsAuthentication>disabled</IISExpressWindowsAuthentication>
     <IISExpressUseClassicPipelineMode />
     <UseGlobalApplicationHostFile />
     <NuGetPackageImportStamp>
@@ -531,6 +532,8 @@
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Properties\PublishProfiles\OpenCaseManager - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\OpenCaseManager - Web Deploy.pubxml" />
+    <None Include="Properties\PublishProfiles\opencasemanagerdemo - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\opencasemanagerdemo - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\OpenCaseManagerEarlyBird - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\core.js" />
@@ -676,34 +679,6 @@
     <Content Include="Scripts\plugins\Timepicker\test\visuals\i43\css\jquery.formstyler.css" />
     <Content Include="Scripts\plugins\Timepicker\test\visuals\i43\css\main.css" />
     <Content Include="Scripts\plugins\Timepicker\test\visuals\i43\css\normalize.min.css" />
-    <Content Include="Scripts\plugins\Timepicker\test\visuals\i43\img\calendar-list__link.png" />
-    <Content Include="Scripts\plugins\Timepicker\test\visuals\i43\img\ico-add-small.png" />
-    <Content Include="Scripts\plugins\Timepicker\test\visuals\i43\img\ico-add.png" />
-    <Content Include="Scripts\plugins\Timepicker\test\visuals\i43\img\ico-alarm__btn.png" />
-    <Content Include="Scripts\plugins\Timepicker\test\visuals\i43\img\ico-archive.png" />
-    <Content Include="Scripts\plugins\Timepicker\test\visuals\i43\img\ico-arrow-left.png" />
-    <Content Include="Scripts\plugins\Timepicker\test\visuals\i43\img\ico-arrow-next.png" />
-    <Content Include="Scripts\plugins\Timepicker\test\visuals\i43\img\ico-arrow-prev.png" />
-    <Content Include="Scripts\plugins\Timepicker\test\visuals\i43\img\ico-calendar.png" />
-    <Content Include="Scripts\plugins\Timepicker\test\visuals\i43\img\ico-camera-list.png" />
-    <Content Include="Scripts\plugins\Timepicker\test\visuals\i43\img\ico-clock.png" />
-    <Content Include="Scripts\plugins\Timepicker\test\visuals\i43\img\ico-close.png" />
-    <Content Include="Scripts\plugins\Timepicker\test\visuals\i43\img\ico-date.png" />
-    <Content Include="Scripts\plugins\Timepicker\test\visuals\i43\img\ico-download.png" />
-    <Content Include="Scripts\plugins\Timepicker\test\visuals\i43\img\ico-ignore.png" />
-    <Content Include="Scripts\plugins\Timepicker\test\visuals\i43\img\ico-live.png" />
-    <Content Include="Scripts\plugins\Timepicker\test\visuals\i43\img\ico-logout.png" />
-    <Content Include="Scripts\plugins\Timepicker\test\visuals\i43\img\ico-map-pins.png" />
-    <Content Include="Scripts\plugins\Timepicker\test\visuals\i43\img\ico-setting.png" />
-    <Content Include="Scripts\plugins\Timepicker\test\visuals\i43\img\ico-user.png" />
-    <Content Include="Scripts\plugins\Timepicker\test\visuals\i43\img\logo.png" />
-    <Content Include="Scripts\plugins\Timepicker\test\visuals\i43\img\timeline-bg.png" />
-    <Content Include="Scripts\plugins\Timepicker\test\visuals\i43\img\timeline__alarm-flag.png" />
-    <Content Include="Scripts\plugins\Timepicker\test\visuals\i43\img\timeline__record-current-bg.png" />
-    <Content Include="Scripts\plugins\Timepicker\test\visuals\i43\img\timeline__scroll-bridge.png" />
-    <Content Include="Scripts\plugins\Timepicker\test\visuals\i43\img\timeline__scroll-control-bg.png" />
-    <Content Include="Scripts\plugins\Timepicker\test\visuals\i43\img\timeline__scroll-control-left.png" />
-    <Content Include="Scripts\plugins\Timepicker\test\visuals\i43\img\timeline__scroll-control-right.png" />
     <Content Include="Scripts\plugins\Timepicker\test\visuals\i43\js\hoverIntent.js" />
     <Content Include="Scripts\plugins\Timepicker\test\visuals\i43\js\jquery.formstyler.min.js" />
     <Content Include="Scripts\plugins\Timepicker\test\visuals\i43\js\main.js" />
@@ -894,13 +869,6 @@
     <Content Include="Scripts\plugins\Trumbowyg\docs\favicon.png" />
     <Content Include="Scripts\plugins\Trumbowyg\docs\gulpfile.js" />
     <Content Include="Scripts\plugins\Trumbowyg\docs\humans.txt" />
-    <Content Include="Scripts\plugins\Trumbowyg\docs\img\beer.svg" />
-    <Content Include="Scripts\plugins\Trumbowyg\docs\img\globe.svg" />
-    <Content Include="Scripts\plugins\Trumbowyg\docs\img\introduction-customizable.svg" />
-    <Content Include="Scripts\plugins\Trumbowyg\docs\img\introduction-html.svg" />
-    <Content Include="Scripts\plugins\Trumbowyg\docs\img\introduction-lightweight.svg" />
-    <Content Include="Scripts\plugins\Trumbowyg\docs\img\logo-doc.svg" />
-    <Content Include="Scripts\plugins\Trumbowyg\docs\img\logo.svg" />
     <Content Include="Scripts\plugins\Trumbowyg\docs\index.html" />
     <Content Include="Scripts\plugins\Trumbowyg\docs\js\main.js" />
     <Content Include="Scripts\plugins\Trumbowyg\docs\js\vendor\highlight.js" />
@@ -1193,6 +1161,7 @@
     <Content Include="Views\MyChildren\UnAuthorized.cshtml" />
     <Content Include="Views\ChildInstance\Index.cshtml" />
     <Content Include="Views\ChildInstance\Search.cshtml" />
+    <Content Include="Views\PartialViews\AdditionalTasks.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

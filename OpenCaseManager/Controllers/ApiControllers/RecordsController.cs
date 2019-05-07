@@ -412,7 +412,10 @@ namespace OpenCaseManager.Controllers.ApiControllers
                 throw ex;
             }
 
-            return Ok(Common.ToJson(Convert.ToInt32(documentId)));
+            var docId = 0;
+            var parseResult = int.TryParse(documentId, out docId);
+
+            return Ok(Common.ToJson(docId == 0 ? "" : docId.ToString()));
         }
 
         /// <summary>

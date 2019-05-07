@@ -1,10 +1,4 @@
 /****** Object:  UserDefinedFunction [dbo].[PendingActivities]    Script Date: 06-05-2019 10:55:13 ******/
-SET ANSI_NULLS ON
-GO
-
-SET QUOTED_IDENTIFIER ON
-GO
-
 -- =============================================
 -- Author: Thais Kure Corneliusen  
 -- Create date: 17-04-2019

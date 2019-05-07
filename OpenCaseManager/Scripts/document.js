@@ -264,7 +264,7 @@ function getDocuments() {
     }
 
     switch (webPortalType) {
-        case 'PersonalDocument':
+        case 'Personal':
             query.filters.push({
                 "column": "Responsible",
                 "operator": "equal",
@@ -272,7 +272,7 @@ function getDocuments() {
                 "valueType": "string"
             });
             break;
-        case 'InstanceDocument':
+        case 'Instance':
             query.filters.push({
                 "column": "InstanceId",
                 "operator": "equal",

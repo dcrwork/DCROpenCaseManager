@@ -19,7 +19,7 @@
     <div class="tabsBox">
         <nav aria-label="breadcrumb" class="breadcrumbsNavigation">
             <ol class="breadcrumb arr-right bg-dark ">
-                <li class="breadcrumb-item  "><a href="~/">Mine Børn</a></li>
+                <li class="breadcrumb-item  "><a href="~/MyChildren/">Mine Børn</a></li>
                 <li class="breadcrumb-item "><a href="" id="childLink"></a></li>
                 <li class="breadcrumb-item active instance" aria-current="page"></li>
             </ol>
@@ -41,6 +41,7 @@
             <div class="tab-content" id="pills-tabContent">
                 <div class="tab-pane fade in active" id="pills-activities" role="tabpanel" aria-labelledby="pills-activities">
                     @Html.Partial("~/Views/PartialViews/Tasks.cshtml")
+                    @Html.Partial("~/Views/PartialViews/AdditionalTasks.cshtml")
                 </div>
                 <div class="tab-pane fade in" id="pills-document" role="tabpanel" aria-labelledby="pills-document">
                     @Html.Partial("~/Views/PartialViews/Document.cshtml")

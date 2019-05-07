@@ -1,10 +1,4 @@
 /****** Object:  UserDefinedFunction [dbo].[GetDataForAllMyChildren]    Script Date: 06-05-2019 10:48:01 ******/
-SET ANSI_NULLS ON
-GO
-
-SET QUOTED_IDENTIFIER ON
-GO
-
 -- =============================================
 -- =============================================
 -- Author: Daniel Guldberg Aaes, Louise Kahl Skafte

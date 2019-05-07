@@ -1,10 +1,4 @@
 /****** Object:  View [dbo].[Timeline]    Script Date: 03-05-2019 11:21:03 ******/
-SET ANSI_NULLS ON
-GO
-
-SET QUOTED_IDENTIFIER ON
-GO
-
 CREATE VIEW [dbo].[Timeline]
 AS
 SELECT        dbo.JournalHistory.InstanceId, dbo.JournalHistory.EventId, dbo.JournalHistory.Id, dbo.JournalHistory.DocumentId, dbo.JournalHistory.Type, dbo.JournalHistory.Title, dbo.JournalHistory.CreationDate, 

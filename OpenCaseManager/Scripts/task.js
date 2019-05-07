@@ -79,8 +79,10 @@
     function hideTableColumns(columns) {
         $.each(columns, function (index, value) {
             $('#tasksTable thead').children().first().children().each(function (index, elem) {
-                if (value == $(elem).children('span[data-key]').attr('data-key').trim().toLowerCase()) {
-                    $('#tasksTable td:nth-child(' + (index + 1) + '),#tasksTable th:nth-child(' + (index + 1) + ')').hide();
+                if ($(elem).children('span[data-key]').length > 0) {
+                    if (value == $(elem).children('span[data-key]').attr('data-key').trim().toLowerCase()) {
+                        $('#tasksTable td:nth-child(' + (index + 1) + '),#tasksTable th:nth-child(' + (index + 1) + ')').hide();
+                    }
                 }
             });
         })
@@ -249,7 +251,7 @@
 
         var caseTitle = item.Title;
         var caseLink = '#';
-        
+
         var instanceLink = "#";
         if (isFrontPage) {
             instanceLink = "../ChildInstance?id=" + item.InstanceId;
@@ -260,7 +262,7 @@
             '<td><a href="' + instanceLink + '">' + item.Title + '</a></td>' +
             '<td>' + item.ResponsibleName.substr(0, 1).toUpperCase() + item.ResponsibleName.substr(1) + '</td>' +
             '<td>' + moment(new Date(item.EventDate)).format('L LT') + '</td></tr>';
-        
+
         if (item.Description !== '' && !isFrontPage) {
             returnHtml += '<tr class="showMe" style="display:none"><td></td><td colspan="100%">' + item.Description + '</td></tr>';
         } else if (item.Description !== '' && isFrontPage) {
@@ -274,7 +276,7 @@
         var returnHtml = '';
         var taskStatusCssClass = 'includedTask';
         var taskStatus = (item.IsPending) ? "<img src='../Content/Images/priorityicon.svg' height='16' width='16'/>" : '&nbsp;';
-        
+
         var caseTitle = item.CaseTitle;
         var caseLink = '#';
 
@@ -340,7 +342,7 @@
                 returnHtml += ' uievent="' + item.UIEventValue + '"';
             }
             returnHtml += ' type="button" taskid="' + item.EventId + '" eventType= "' + item.EventType + '" graphid="' + item.GraphId + '" simulationid="' + item.SimulationId + '" instanceid="'
-                + item.InstanceId + '" id="' + item.EventId + '" trueEventId="' + item.TrueEventId + '"name="execute" value="execute" class="taskExecutionButton" data-toggle="modal" data-target="#executeTaskModal">Udført</button><div class="title" style="display: none;">' + item.EventTitle + '</div> <div class="description" style="display: none;">' + item.Description + '</div>';
+                + item.InstanceId + '" id="' + item.EventId + '" trueEventId="' + item.TrueEventId + '"name="execute" value="execute" class="taskExecutionButton" data-toggle="modal" data-target="#executeTaskModal">Udfør</button><div class="title" style="display: none;">' + item.EventTitle + '</div> <div class="description" style="display: none;">' + item.Description + '</div>';
         }
         else if (item.CanExecute && item.Type.toLowerCase() == "form") {
             returnHtml += '<button title="Open" eventType= "' + item.EventType + '" graphid="' + item.GraphId + '" simulationid="' + item.SimulationId + '" token="' + item.Token + '" eventId="' + item.EventId + '" trueEventId="' + item.TrueEventId + '" instanceid="' + item.InstanceId + '" id="openDcrForm" class="btn btn-info taskExecutionButton" name="btnDcrFormServer"><i class="fas fa-external-link-alt"></i></button><div class="title" style="display: none;">' + item.EventTitle + '</div> <div class="description" style="display: none;">' + item.Description + '</div>';

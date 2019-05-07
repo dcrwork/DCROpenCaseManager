@@ -476,19 +476,19 @@ namespace OpenCaseManager.Commons
         /// <param name="isLocked"></param>
         public static void AddJournalHistory(string instanceId, string eventId, string documentId, string type, string title, DateTime eventDateTime, IManager manager, IDataModelManager dataModelManager)
         {
-
-            dataModelManager.GetDefaultDataModel(Enums.SQLOperation.INSERT, DBEntityNames.Tables.JournalHistory.ToString());
-            dataModelManager.AddParameter(DBEntityNames.JournalHistory.InstanceId.ToString(), Enums.ParameterType._int, instanceId.ToString());
-            if (eventId != null) dataModelManager.AddParameter(DBEntityNames.JournalHistory.EventId.ToString(), Enums.ParameterType._int, eventId.ToString());
-            if (documentId != null) dataModelManager.AddParameter(DBEntityNames.JournalHistory.DocumentId.ToString(), Enums.ParameterType._int, documentId.ToString());
-            dataModelManager.AddParameter(DBEntityNames.JournalHistory.Type.ToString(), Enums.ParameterType._string, type);
-            dataModelManager.AddParameter(DBEntityNames.JournalHistory.Title.ToString(), Enums.ParameterType._string, title);
-            dataModelManager.AddParameter(DBEntityNames.JournalHistory.EventDate.ToString(), Enums.ParameterType._datetime, eventDateTime.ToString());
-            dataModelManager.AddParameter(DBEntityNames.JournalHistory.CreationDate.ToString(), Enums.ParameterType._datetime, DateTime.Now.ToString());
-            dataModelManager.AddParameter(DBEntityNames.JournalHistory.IsLocked.ToString(), Enums.ParameterType._boolean, "false");
-
-
-            manager.InsertData(dataModelManager.DataModel);
+            if (!string.IsNullOrEmpty(instanceId))
+            {
+                dataModelManager.GetDefaultDataModel(Enums.SQLOperation.INSERT, DBEntityNames.Tables.JournalHistory.ToString());
+                dataModelManager.AddParameter(DBEntityNames.JournalHistory.InstanceId.ToString(), Enums.ParameterType._int, instanceId.ToString());
+                if (eventId != null) dataModelManager.AddParameter(DBEntityNames.JournalHistory.EventId.ToString(), Enums.ParameterType._int, eventId.ToString());
+                if (documentId != null) dataModelManager.AddParameter(DBEntityNames.JournalHistory.DocumentId.ToString(), Enums.ParameterType._int, documentId.ToString());
+                dataModelManager.AddParameter(DBEntityNames.JournalHistory.Type.ToString(), Enums.ParameterType._string, type);
+                dataModelManager.AddParameter(DBEntityNames.JournalHistory.Title.ToString(), Enums.ParameterType._string, title);
+                dataModelManager.AddParameter(DBEntityNames.JournalHistory.EventDate.ToString(), Enums.ParameterType._datetime, eventDateTime.ToString());
+                dataModelManager.AddParameter(DBEntityNames.JournalHistory.CreationDate.ToString(), Enums.ParameterType._datetime, DateTime.Now.ToString());
+                dataModelManager.AddParameter(DBEntityNames.JournalHistory.IsLocked.ToString(), Enums.ParameterType._boolean, "False");
+                manager.InsertData(dataModelManager.DataModel);
+            }
         }
 
 

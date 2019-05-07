@@ -1,0 +1,98 @@
+﻿<style>
+    .expander {
+        cursor: pointer;
+        transition: 0.4s;
+    }
+
+    .information {
+        display: none;
+        background-color: lightgray;
+    }
+
+    .glyphicon {
+        margin-right: 5px;
+    }
+
+    .add-journal-note-button {
+    }
+
+    .add-journal-note {
+        position: fixed;
+        top: 20%;
+        right: 0;
+        background-color: white;
+        border: 1px solid black;
+        width: 11%;
+        margin-left: 5px;
+        padding: 10px;
+        z-index: 5;
+        cursor: pointer;
+    }
+
+        .add-journal-note:hover {
+            background-color: lightgrey;
+        }
+
+    .headline-add-journal-note {
+        margin-top: 10px;
+        margin-bottom: 10px;
+        transition: value 1s
+    }
+</style>
+
+
+<div class="add-journal-note">
+    <h5 class="add-journal-note-button"><span class="glyphicon glyphicon-plus"></span><span class="headline-add-journal-note" data-locale data-apply="text">Tilføj journalnotat</span></h5>
+    <div class="form-group">
+        <label class="journalNameLabel"><span data-locale data-apply="text" data-key="Title">Title:</span></label>
+        <input type="text" class="documentName">
+        <input type="hidden" class="documentId">
+    </div>
+    <div class="form-group">
+        <label class="journalTextLabel"><span data-locale data-apply="text" data-key="Text">Text:</span></label>
+        <input type="text" class="journalText">
+    </div>
+</div>
+
+
+
+<script>
+    $(document).on('click', '.add-journal-note-button', function () {
+        function makeTextFile(text) {
+            var data = new Blob([text], { type: 'text/plain' });
+            return data;
+        };
+
+        function submitFiles(fileName, textContents) {
+            var docId = $('.documentId').val();
+            var file = makeTextFile(textContents);
+            uploadFile(file, docId, fileName);
+
+        }
+
+        function uploadFile(file, docId, fileName) {
+            if (fileName != '') {
+                $.ajax({
+                    url: window.location.origin + "/api/records/AddDocument",
+                    type: 'POST',
+                    headers: {
+                        'filename': fileName,
+                        'type': 'JournalNoteBig',
+                        'instanceId': instanceId,
+                        'givenFileName': fileName
+                    },
+                    data: file,
+                    async: false,
+                    cache: false,
+                    contentType: false,
+                    enctype: 'multipart/form-data',
+                    processData: false,
+
+                });
+            }
+        }
+        var documentName = $(this).closest('.add-journal-note').find('.documentName').val() + '.txt';
+        var journalText = $(this).closest('.add-journal-note').find('.journalText').val();
+        submitFiles(documentName, journalText);
+    });
+</script>

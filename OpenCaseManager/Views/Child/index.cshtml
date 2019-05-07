@@ -51,7 +51,7 @@
     <div class="tabsBox">
         <nav aria-label="breadcrumb" class="breadcrumbsNavigation">
             <ol class="breadcrumb arr-right bg-dark ">
-                <li class="breadcrumb-item "><a href="~/">Mine Børn</a></li>
+                <li class="breadcrumb-item "><a href="~/MyChildren/">Mine Børn</a></li>
                 <li class="breadcrumb-item active child" aria-current="page"></li>
             </ol>
         </nav>
@@ -142,7 +142,20 @@
 
 <script type="text/javascript">
     var webPortalType = "Instance";
+    var instanceId = getParameterByName("id", window.location.href);
+
+    function getParameterByName(name, url) {
+        if (!url) url = window.location.href;
+        name = name.replace(/[\[\]]/g, "\\$&");
+        var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+            results = regex.exec(url);
+        if (!results) return null;
+        if (!results[2]) return '';
+        return decodeURIComponent(results[2].replace(/\+/g, " "));
+    }
+
 </script>
+
 <script type="text/javascript" src="~/Scripts/breadcrumbs.js"></script>
 <script type="text/javascript" src="~/Scripts/createprocess.js"></script>
 <script type="text/javascript" src="~/Scripts/child.js"></script>

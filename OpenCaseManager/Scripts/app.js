@@ -659,7 +659,7 @@
     }
 
     function getMyInstanceHtml(item) {
-        return '<tr class="trStyleClass"><td><a href="/ChildInstance?id=' + item.Id + '"> ' + item.Title + '</a></td ></tr>';
+        return '<tr class="trStyleClass"><td><a href="/Instance?id=' + item.Id + '"> ' + item.Title + '</a></td ></tr>';
     }
 
     function getInstanceHtml(item) {
@@ -1083,7 +1083,7 @@
     };
 
     getTranslations(locale);
-
+    getResponsibleName();
     return window.App = new app;
 }(window));
 
