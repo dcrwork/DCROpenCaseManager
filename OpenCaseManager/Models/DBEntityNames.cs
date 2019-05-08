@@ -426,7 +426,8 @@ namespace OpenCaseManager.Models
             IsActive,
             UploadDate,
             IsLocked,
-            IsDraft
+            IsDraft,
+            ChildId
         }
 
         public enum AddInstanceDescription
@@ -445,7 +446,8 @@ namespace OpenCaseManager.Models
             Title,
             CreationDate,
             EventDate,
-            IsLocked
+            IsLocked,
+            ChildId
         }
 
         public enum StamdataChild

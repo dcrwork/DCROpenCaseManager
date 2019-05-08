@@ -25,7 +25,7 @@ namespace OpenCaseManager.Controllers
         public FileResult DownloadFile(string link)
         {
             _dataModelManager.GetDefaultDataModel(Enums.SQLOperation.SELECT, DBEntityNames.Tables.Document.ToString());
-            _dataModelManager.AddResultSet(new List<string>() { DBEntityNames.Document.Link.ToString(), DBEntityNames.Document.Title.ToString(), DBEntityNames.Document.Responsible.ToString(), DBEntityNames.Document.InstanceId.ToString(), DBEntityNames.Document.Type.ToString() });
+            _dataModelManager.AddResultSet(new List<string>() { DBEntityNames.Document.Link.ToString(), DBEntityNames.Document.Title.ToString(), DBEntityNames.Document.Responsible.ToString(), DBEntityNames.Document.InstanceId.ToString(), DBEntityNames.Document.Type.ToString(), DBEntityNames.Document.ChildId.ToString() });
             _dataModelManager.AddFilter(DBEntityNames.Document.Link.ToString(), Enums.ParameterType._string, link, Enums.CompareOperator.like, Enums.LogicalOperator.none);
 
             var data = _manager.SelectData(_dataModelManager.DataModel);
@@ -33,15 +33,23 @@ namespace OpenCaseManager.Controllers
             {
                 var path = string.Empty;
                 var type = data.Rows[0]["Type"].ToString();
+                var currentUser = Common.GetCurrentUserName();
+                var instanceId = data.Rows[0]["InstanceId"].ToString();
+                var childId = data.Rows[0]["ChildId"].ToString();
+
                 switch (type) //TODO: Maybe needs to be extended, when we are to actually show the journalnotes, and be able to download them
                 {
                     case "PersonalDocument":
-                        var currentUser = Common.GetCurrentUserName();
                         path = Configurations.Config.PersonalFileLocation + "\\" + currentUser + "\\" + data.Rows[0]["Link"].ToString();
                         break;
                     case "InstanceDocument":
-                        var instanceId = data.Rows[0]["InstanceId"].ToString();
                         path = Configurations.Config.InstanceFileLocation + "\\" + instanceId + "\\" + data.Rows[0]["Link"].ToString();
+                        break;
+                    case "Instance":
+                        path = Configurations.Config.InstanceFileLocation + "\\" + instanceId + "\\" + data.Rows[0]["Link"].ToString();
+                        break;
+                    case "ChildDocument":
+                        path = Configurations.Config.ChildFileLocation + "\\" + childId + "\\" + data.Rows[0]["Link"].ToString();
                         break;
                 }
 

@@ -6,7 +6,7 @@
     var query = {
         "type": "SELECT",
         "entity": "ChildView",
-        "resultSet": ["Name", "Responsible"],
+        "resultSet": ["*"],
         "filters": new Array(),
         "order": []
     }
@@ -23,6 +23,8 @@
     API.service('records', query)
         .done(function (response) {
             displayChildName(response);
+            displayChildObsBox(response);
+            $('#process-title').attr('placeholder', translations.AddTitle);
         })
         .fail(function (e) {
             reject(e);
@@ -57,7 +59,7 @@
 
 function displayChildName(response) {
     var result = JSON.parse(response);
-    var childName = (result[0] == undefined) ? 'Intet barn at finde' : ((result[0].Name == null) ? "Intet navn på barn" : result[0].Name);
+    var childName = (result[0] == undefined) ? translations.NoChild : ((result[0].Name == null) ? translations.NoName : result[0].Name);
     $("#childName").html("").append(childName);
     $('head title', window.parent.document).text(childName);
 }
@@ -81,7 +83,7 @@ function getChildInstanceHtml(item) {
     var numberOfPending = (item.PendingAndEnabled == 0) ? "" : item.PendingAndEnabled;
 
     var returnHtml = "<tr class='trStyleClass " + open + "'>";
-    returnHtml += (item.IsOpen) ? "<td class='statusColumn'>" + getStatus(item.NextDeadline) + "</td>" : "<td class='statusColumn'>Lukket</td>";
+    returnHtml += (item.IsOpen) ? "<td class='statusColumn'>" + getStatus(item.NextDeadline) + "</td>" : "<td class='statusColumn'>" + translations.Closed + "</td>";
     returnHtml += (item.Pending == 'true') ? "<td><img src='../Content/Images/priorityicon.svg' height='16' width='16'/> " + numberOfPending + "</td>" : '<td></td>';
     returnHtml += "<td><a href='" + instanceLink + "'>" + item.Title + "</a></td>";
     returnHtml += "<td>" + item.Process + "</td>";
@@ -89,7 +91,7 @@ function getChildInstanceHtml(item) {
     if (item.LastUpdated != null) {
         returnHtml += "<td>" + item.LastUpdated.toString().substr(0, 10) + "</td>";
     } else {
-        returnHtml += "<td> intet gjort</td>";
+        returnHtml += "<td>" + translations.NothingDone + "</td>";
     }
     returnHtml += "</tr>";
     return returnHtml;
@@ -101,4 +103,13 @@ function setClosedInstancesToFadedAndMoveDown() {
         $(this).remove();
         $('#childInstances').append(this);
     });
+}
+
+function displayChildObsBox(response) {
+    var result = JSON.parse(response);
+    var obsBox = (result[0] == undefined) ? 'Intet data at være opmærksom på' : result[0].ObsBoxText;
+
+    $("#obsTextArea").html("").append(obsBox);
+    updateTextCount($("#obsTextArea")[0]);
+    $('#obsTextArea').attr('placeholder', translations.AddImportantInfo);
 }

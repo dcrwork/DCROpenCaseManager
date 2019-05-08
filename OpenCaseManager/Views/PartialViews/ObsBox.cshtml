@@ -1,0 +1,92 @@
+﻿<style>
+    .obsbox {
+        background-color: #EFEFEF;
+        height: auto;
+        width: 230px;
+        padding: 10px;
+        text-align: right;
+    }
+    .obsHeader {
+        margin: 0 0 0 -5px;
+        padding-left: 5px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+        .obsHeader h3 {
+            font-size: large;
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+
+        .obsHeader a{
+            margin-bottom: 2px;
+            cursor: pointer;
+        }
+        .obsHeader a:hover {
+            margin-bottom: 2px;
+            text-decoration: none;
+        }
+
+    .obsTextArea{
+        margin: 10px 0 0 0;
+        width: 100%;
+        height: 120px;
+        resize: none;
+        text-align: left;
+        display: block;
+        padding: 10px;
+        border-width: 2px;
+        border-style: solid;
+        border-color: #b6b6b6;
+    }
+
+    .obsTextArea:disabled {
+        background-color: #EFEFEF;
+    }
+
+    .obsTextArea:focus{
+        outline:none;
+    }
+
+    .obsSaveButton, .obsCancelButton {
+        border: 1px solid #9C1A5E;
+        background-color: transparent;
+        color: #9C1A5E;
+        padding: 2px 8px;
+    }
+    
+        button:disabled {
+            border-color: lightgray;
+            color: lightgray;
+        }
+
+            button:disabled:hover {
+                color: darkgray;
+                border-color: lightgrey;
+                background-color: lightgray;
+            }
+
+        .obsSaveButton:hover, .obsCancelButton:hover {
+            color: #fff;
+            background: #9C1A5E;
+        }
+
+        .textCount{
+            float: left;
+        }
+
+</style>
+
+<div class="obsbox">
+    <div class="obsHeader">
+        <h3>OBS!</h3>
+    </div>
+    <a onclick="toggleEdit()" id="EditOBS" class="obsBoxEdit fa fa-edit"></a>
+    <button id="obsCancelButton" class="obsCancelButton hide" onclick="cancelObs()"><span data-locale data-apply="text" data-key="Cancel"></span></button>
+    <button id="obsSaveButton" class="obsSaveButton hide" onclick="saveObs()"><span data-locale data-apply="text" data-key="Save"></span></button>
+    <label id="textCount" class="textCount hide"></label>
+    <textarea id="obsTextArea" class="obsTextArea" oninput="updateTextCount(this)" disabled="disabled"></textarea>
+</div>
+
+<script type="text/javascript" src="~/Scripts/obsBox.js"></script>

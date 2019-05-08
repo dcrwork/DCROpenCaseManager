@@ -7,7 +7,9 @@ function addZero(i) {
     if (i < 10) i = "0" + i;
     return i;
 }
+
 function documentType(data) {
+    var text = (data.DocumentType === 'ChildDocument') ? '' : 'Indsats: ' + data.InstanceTitle;
     return {
         type: "Dokument",
         time: data.EventDate,
@@ -24,7 +26,7 @@ function documentType(data) {
         },
         {
             tag: 'p',
-            content: "Indsats: " + data.InstanceTitle
+            content: text
             }]
     }
 }
@@ -38,8 +40,7 @@ function journalNoteType(data) {
             tag: 'a',
             content: '<h3>' + data.DocumentTitle + '</h3>',
             attr: {
-                href: '/JournalNote?instanceId=' + data.InstanceId + '&documentLink=' + data.Link + '&documentTitle=' + data.DocumentTitle + '&documentAuthor=' + data.DocumentResponsible,
-                target: '_blank'
+                onclick: 'window.open("/JournalNote?instanceId=' + data.InstanceId + '&documentLink=' + data.Link + '&documentTitle=' + data.DocumentTitle + '&documentAuthor=' + data.DocumentResponsible + '" , "" , "width=1200,height=1200")',
             }
         },
         {
@@ -73,11 +74,10 @@ $(document).ready(function () {
     async function getData(activity, journalnote, document) {
         var childId = App.getParameterByName("id", window.location.href);
         var data = await getTimelineData(childId);
-
         var normData = [];
         $.each(data, function (index, value) {   
             if (journalnote && (value.DocumentType === 'JournalNote' || value.Type === 'JournalNoteBig' || value.Type === 'JournalNoteLittle')) normData.push(journalNoteType(value));
-            if (document && value.DocumentType === 'Instance') normData.push(documentType(value));
+            if (document && (value.DocumentType === 'Instance' || value.DocumentType === 'ChildDocument' || value.DocumentType === 'InstanceDocument')) normData.push(documentType(value));
             if (activity && value.Type === 'Event') normData.push(activitiesType(value)); 
         });
 
