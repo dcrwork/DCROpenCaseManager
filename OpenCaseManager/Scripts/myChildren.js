@@ -57,7 +57,7 @@ function addZero(i) {
 function getChildInstanceHtml(item) {
     var childLink = "../Child?id=" + item.ChildId;
     var objDate = new Date(item.NextDeadline);
-    var date = objDate.getFullYear() + "-" + addZero((objDate.getMonth() + 1)) + "-" + addZero(objDate.getDay());
+    var date = objDate.getFullYear() + "-" + addZero((objDate.getMonth() + 1)) + "-" + addZero(objDate.getDate());
     var time = addZero(objDate.getHours()) + ":" + addZero(objDate.getMinutes());
     var returnHtml = "<tr class='trStyleClass'>";
     returnHtml += (item.NextDeadline != null || item.SumOfEvents > 0) ? "<td>" + getStatus(item) + "</td>" : "<td><span class='dot dotGrey' title='Ingen oprettede indsatser'></span></td>";
