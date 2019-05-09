@@ -12,6 +12,8 @@
         .done(function (response) {
             displayChildren(response);
             $('#child-name').attr('placeholder', translations.NameOfChild);
+            $('#case-number').attr('placeholder', translations.CaseNumber);
+            $('.dotGrey').attr('title', translations.NoInstances);
         })
         .fail(function (e) {
             reject(e);
@@ -60,7 +62,7 @@ function getChildInstanceHtml(item) {
     var date = objDate.getFullYear() + "-" + addZero((objDate.getMonth() + 1)) + "-" + addZero(objDate.getDate());
     var time = addZero(objDate.getHours()) + ":" + addZero(objDate.getMinutes());
     var returnHtml = "<tr class='trStyleClass'>";
-    returnHtml += (item.NextDeadline != null || item.SumOfEvents > 0) ? "<td>" + getStatus(item) + "</td>" : "<td><span class='dot dotGrey' title='Ingen oprettede indsatser'></span></td>";
+    returnHtml += (item.NextDeadline != null || item.SumOfEvents > 0) ? "<td>" + getStatus(item) + "</td>" : "<td><span class='dot dotGrey'></span></td>";
     returnHtml += "<td>" + item.SumOfEvents + "</td>";
     returnHtml += "<td><a href='" + childLink + "'>" + item.ChildName + "</a></td>";
     returnHtml += "<td>123456-7890</td>";

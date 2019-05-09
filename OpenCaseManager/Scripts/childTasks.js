@@ -284,6 +284,7 @@
             taskStatus = "<img src='../Content/Images/check.png' />";;
             taskStatusCssClass = 'executedTask';
         }
+        var buttonText = (typeof translations !== 'undefined') ? translations.Done : "Udført";
 
         returnHtml = '<tr isfrontPage="' + isFrontPage + '" name="description" class="trStyleClass">' +
             '<td class="' + taskStatusCssClass + '">' + taskStatus + '</td >' +
@@ -296,7 +297,7 @@
                 returnHtml += ' uievent="' + item.UIEventValue + '"';
             }
             returnHtml += ' type="button" taskid="' + item.EventId + '" eventType= "' + item.EventType + '" graphid="' + item.GraphId + '" simulationid="' + item.SimulationId + '" instanceid="'
-                + item.InstanceId + '" id="' + item.EventId + '" trueEventId="' + item.TrueEventId + '"name="execute" value="execute" class="taskExecutionButton" data-toggle="modal" data-target="#executeTaskModal">Udført</button><div class="title" style="display: none;">' + item.EventTitle + '</div> <div class="description" style="display: none;">' + item.Description + '</div>';
+                + item.InstanceId + '" id="' + item.EventId + '" trueEventId="' + item.TrueEventId + '"name="execute" value="execute" class="taskExecutionButton" data-toggle="modal" data-target="#executeTaskModal">' + buttonText + '</button><div class="title" style="display: none;">' + item.EventTitle + '</div> <div class="description" style="display: none;">' + item.Description + '</div>';
         }
         else if (item.CanExecute && item.Type.toLowerCase() == "form") {
             returnHtml += '<button title="Open" eventType= "' + item.EventType + '" graphid="' + item.GraphId + '" simulationid="' + item.SimulationId + '" token="' + item.Token + '" eventId="' + item.EventId + '" trueEventId="' + item.TrueEventId + '" instanceid="' + item.InstanceId + '" id="openDcrForm" class="btn btn-info taskExecutionButton" name="btnDcrFormServer"><i class="fas fa-external-link-alt"></i></button><div class="title" style="display: none;">' + item.EventTitle + '</div> <div class="description" style="display: none;">' + item.Description + '</div>';

@@ -80,7 +80,7 @@ function updateTimeline(monthMenu) {
         _this.html('');
         var settings = $.extend({}, $.fn.albeTimeline.defaults, options);
 
-        if (translations != undefined) {
+        if (typeof translations !== 'undefined') {
             var language = ($.fn.albeTimeline.languages.hasOwnProperty(settings.language)) ?
                 $.fn.albeTimeline.languages[settings.language] : { // da-DK
                     days: [translations.Monday, translations.Tuesday, translations.Wednesday, translations.Thursday, translations.Friday, translations.Saturday, translations.Sunday],
@@ -107,7 +107,7 @@ function updateTimeline(monthMenu) {
 
         if ($.isEmptyObject(json)) {
             console.warn(language.msgEmptyContent);
-            var texter = (translations != undefined) ? translations.NoDataTimeLine : 'Der er ikke noget data at finde.';
+            var texter = (typeof translations !== 'undefined') ? translations.NoDataTimeLine : 'Der er ikke noget data at finde.';
             var noData = $("<h3>").attr('id', 'noObjectDataFound').text(texter);
             noData.appendTo(_this);
             return;
@@ -119,7 +119,7 @@ function updateTimeline(monthMenu) {
 
         var yearMenu = $('<select>').attr('id', 'timeline-menu');
 
-        var text = (translations != undefined) ? translations.Find : 'Find';
+        var text = (typeof translations !== 'undefined') ? translations.Find : 'Find';
         var findTimeFrameButton = $('<button>').attr('id', 'find-timeframe-button').text(text);
         findTimeFrameButton.attr('onclick', 'goToTimeframe()');
 
@@ -165,8 +165,7 @@ function updateTimeline(monthMenu) {
 
                 var ePanel = $('<div>').addClass('timelinePanel').append(leftWrapper);
                 var symbol = $('<span>').addClass('icon ' + timelineType);
-
-                symbol.attr('title', timelineType);
+                
                 ePanel.append(symbol);
 
                 if (element.header) {

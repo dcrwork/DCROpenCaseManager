@@ -10,6 +10,7 @@ function addZero(i) {
 
 function documentType(data) {
     var text = (data.DocumentType === 'ChildDocument') ? '' : 'Indsats: ' + data.InstanceTitle;
+    var className = (data.DocumentType === 'ChildDocument') ? '' : 'translateInstance';
     return {
         type: "Dokument",
         time: data.EventDate,
@@ -26,8 +27,11 @@ function documentType(data) {
         },
         {
             tag: 'p',
-            content: text
-            }]
+            content: text,
+            attr: {
+                cssclass: className
+            }
+        }]
     }
 }
 // TODO -> Her skal der evt. v�re noget content tekst som er passer til den tekst de rer skrevet.
@@ -46,6 +50,9 @@ function journalNoteType(data) {
         {
             tag: 'p',
             content: "Tilføjet: " + formatDateTimeline(data.CreationDate),
+            attr: {
+                cssclass: 'translateAdded'
+            }
         }]
     }
 }
@@ -65,7 +72,10 @@ function activitiesType(data) {
         },
             {
                 tag: 'p',
-                content: "Indsats: " + data.InstanceTitle
+                content: "Indsats: " + data.InstanceTitle,
+                attr: {
+                    cssclass: 'translateInstance'
+                }
             }]
     }
 }
@@ -83,6 +93,18 @@ $(document).ready(function () {
 
         $('#myTimeline').albeTimeline(normData);
         $('#timeline-menu').trigger('change');
+        $('.translateInstance').each(function () {
+            var currentText = $(this).html();
+            var newText = currentText.substring(7)
+            newText = translations.Instance + newText;
+            $(this).html(newText);
+        });
+        $('.translateAdded').each(function () {
+            var currentText = $(this).html();
+            var newText = currentText.substring(8)
+            newText = translations.Added + newText;
+            $(this).html(newText);
+        });
     }
 
     var activityChecked = true;
