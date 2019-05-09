@@ -80,23 +80,35 @@ function updateTimeline(monthMenu) {
         _this.html('');
         var settings = $.extend({}, $.fn.albeTimeline.defaults, options);
 
-        var language = ($.fn.albeTimeline.languages.hasOwnProperty(settings.language)) ?
-            $.fn.albeTimeline.languages[settings.language] : { // da-DK
-                days: [translations.Monday, translations.Tuesday, translations.Wednesday, translations.Thursday, translations.Friday, translations.Saturday, translations.Sunday],
-                months: [translations.January, translations.February, translations.March, translations.April, translations.May, translations.June, translations.July, translations.August, translations.September, translations.October, translations.November, translations.December],
-                shortMonths: [translations.Jan, translations.Feb, translations.Mar, translations.Apr, translations.Maj, translations.Jun, translations.Jul, translations.Aug, translations.Sep, translations.Oct, translations.Nov, translations.Dec],
-                separator: 'den',
-                msgEmptyContent: 'Der var ikke noget.',
-            };
-        months = [translations.January, translations.February, translations.March, translations.April, translations.May, translations.June, translations.July, translations.August, translations.September, translations.October, translations.November, translations.December];
-
+        if (translations != undefined) {
+            var language = ($.fn.albeTimeline.languages.hasOwnProperty(settings.language)) ?
+                $.fn.albeTimeline.languages[settings.language] : { // da-DK
+                    days: [translations.Monday, translations.Tuesday, translations.Wednesday, translations.Thursday, translations.Friday, translations.Saturday, translations.Sunday],
+                    months: [translations.January, translations.February, translations.March, translations.April, translations.May, translations.June, translations.July, translations.August, translations.September, translations.October, translations.November, translations.December],
+                    shortMonths: [translations.Jan, translations.Feb, translations.Mar, translations.Apr, translations.Maj, translations.Jun, translations.Jul, translations.Aug, translations.Sep, translations.Oct, translations.Nov, translations.Dec],
+                    separator: 'den',
+                    msgEmptyContent: 'Der var ikke noget.',
+                };
+            months = [translations.January, translations.February, translations.March, translations.April, translations.May, translations.June, translations.July, translations.August, translations.September, translations.October, translations.November, translations.December];
+        } else {
+            var language = ($.fn.albeTimeline.languages.hasOwnProperty(settings.language)) ?
+                $.fn.albeTimeline.languages[settings.language] : { // da-DK
+                    days: ['Mandag', 'Tirsdag', 'Onsdag', 'Torsdag', 'Fredag', 'Lørdag', 'Søndag'],
+                    months: ['Januar', 'Februar', 'Marts', 'April', 'Maj', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'December'],
+                    shortMonths: ['Jan', 'Feb', 'Mar', 'Apr', 'Maj', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                    separator: 'den',
+                    msgEmptyContent: 'Der var ikke noget.',
+                };
+        }
+        
         if (typeof (json) == 'string') {
             json = $.parseJSON(json);
         }
 
         if ($.isEmptyObject(json)) {
             console.warn(language.msgEmptyContent);
-            var noData = $("<h3>").attr('id', 'noObjectDataFound').text(translations.NoDataTimeLine);
+            var texter = (translations != undefined) ? translations.NoDataTimeLine : 'Der er ikke noget data at finde.';
+            var noData = $("<h3>").attr('id', 'noObjectDataFound').text(texter);
             noData.appendTo(_this);
             return;
         }
@@ -107,7 +119,8 @@ function updateTimeline(monthMenu) {
 
         var yearMenu = $('<select>').attr('id', 'timeline-menu');
 
-        var findTimeFrameButton = $('<button>').attr('id', 'find-timeframe-button').text(translations.Find);
+        var text = (translations != undefined) ? translations.Find : 'Find';
+        var findTimeFrameButton = $('<button>').attr('id', 'find-timeframe-button').text(text);
         findTimeFrameButton.attr('onclick', 'goToTimeframe()');
 
         var eTimeline = $('<section>').attr('id', 'timeline');
