@@ -18,7 +18,7 @@ namespace OpenCaseManagerTests
             var dataManager = new Mock<IDataModelManager>();
             manager.Setup(s => s.InsertData(dataManager.Object.DataModel));
 
-            Common.AddJournalHistory("1", "1", null, "Event", "Slicing pizzas", DateTime.Now, manager.Object, dataManager.Object);
+            Common.AddJournalHistory("1", "1", null, "Event", "Slicing pizzas", DateTime.Now, "1", manager.Object, dataManager.Object);
 
             manager.Verify(m => m.InsertData(dataManager.Object.DataModel));
         }
@@ -31,7 +31,7 @@ namespace OpenCaseManagerTests
             manager.Setup(s => s.InsertData(dataManager.Object.DataModel));
             dataManager.Setup(s => s.AddParameter(DBEntityNames.JournalHistory.EventId.ToString(), Enums.ParameterType._int, null));
 
-            Common.AddJournalHistory("1", null, "42", "Event", "Slicing pizzas", DateTime.Now, manager.Object, dataManager.Object);
+            Common.AddJournalHistory("1", null, "42", "Event", "Slicing pizzas", DateTime.Now, "1", manager.Object, dataManager.Object);
 
             dataManager.Verify(dm => dm.AddParameter(DBEntityNames.JournalHistory.EventId.ToString(), Enums.ParameterType._int, null), Times.Never());
         }
@@ -44,7 +44,7 @@ namespace OpenCaseManagerTests
             string instanceId = null;
             manager.Setup(s => s.InsertData(dataManager.Object.DataModel));
 
-            Assert.Throws<NullReferenceException>(() => Common.AddJournalHistory(instanceId, null, "42", "Event", "Wuhu", DateTime.Now, manager.Object, dataManager.Object));
+            Assert.Throws<NullReferenceException>(() => Common.AddJournalHistory(instanceId, null, "42", "Event", "Wuhu", DateTime.Now, "1", manager.Object, dataManager.Object));
         }
     }
 }
