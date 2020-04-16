@@ -1,4 +1,5 @@
 ﻿using NLog;
+using OpenCaseManager.Commons;
 using OpenCaseManager.Managers;
 using System;
 using System.Collections.Generic;
@@ -17,8 +18,7 @@ namespace OpenCaseManager.App_Start
     {
         public override void Log(ExceptionLoggerContext context)
         {
-            Logger logger = LogManager.GetCurrentClassLogger();
-            logger.Error(context.Exception, "Error");
+            Common.LogError(context.Exception);
         }
     }
 

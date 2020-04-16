@@ -14,5 +14,20 @@ namespace OpenCaseManager.Controllers
         {
             return View();
         }
+
+        public ActionResult SearchProcess()
+        {
+            return View();
+        }
+
+        public ActionResult Processes()
+        {
+            return View();
+        }
+
+        public ActionResult ProcessHistory(int graphId)
+        {
+            return View();
+        }
     }
 }

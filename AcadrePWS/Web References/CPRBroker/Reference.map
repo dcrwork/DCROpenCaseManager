@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<DiscoveryClientResultsFile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Results>
+    <DiscoveryClientResult referenceType="System.Web.Services.Discovery.ContractReference" url="https://cprbroker.syddjurs.dk/services/Part.asmx?wsdl" filename="Part.wsdl" />
+    <DiscoveryClientResult referenceType="System.Web.Services.Discovery.DiscoveryDocumentReference" url="https://cprbroker.syddjurs.dk/services/Part.asmx?disco" filename="Part.disco" />
+  </Results>
+</DiscoveryClientResultsFile>

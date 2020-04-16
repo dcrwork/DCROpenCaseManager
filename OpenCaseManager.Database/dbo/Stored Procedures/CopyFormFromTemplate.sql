@@ -4,7 +4,7 @@
 -- Description:	Copy Form items for a new form 
 -- from template
 -- =============================================
-CREATE PROCEDURE CopyFormFromTemplate
+CREATE PROCEDURE [dbo].[CopyFormFromTemplate]
 -- Add the parameters for the stored procedure here
 	@FormId INT,
 	@TemplateId INT
@@ -54,7 +54,7 @@ BEGIN
 		        @SequenceNumber,
 		        @ItemText
 		      )
-		      
+		    
 		    SET @NewId = @@identity
 		    
 		    INSERT INTO FormItem
@@ -84,11 +84,20 @@ BEGIN
 		SELECT 1
 	END TRY
 	BEGIN CATCH
-		SELECT ERROR_NUMBER()     AS ErrorNumber,
-		       ERROR_SEVERITY()   AS ErrorSeverity,
-		       ERROR_STATE()      AS ErrorState,
-		       ERROR_PROCEDURE()  AS ErrorProcedure,
-		       ERROR_LINE()       AS ErrorLine,
-		       ERROR_MESSAGE()    AS ErrorMessage
+		INSERT INTO LOG
+		  (
+		    Logged,
+		    [LEVEL],
+		    [MESSAGE],
+		    Exception
+		  )
+		VALUES
+		  (
+		    GETDATE(),
+		    1,
+		    'CopyFormFromTemplate(' + CAST(@FormId AS NVARCHAR) + ',' + CAST(@TemplateId AS NVARCHAR) 
+		    + ')',
+		    ERROR_MESSAGE()
+		  )
 	END CATCH
 END

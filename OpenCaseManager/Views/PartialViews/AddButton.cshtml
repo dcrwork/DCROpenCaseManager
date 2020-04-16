@@ -1,26 +1,15 @@
-﻿<style>
-    .add-box {
-        background-color: #EDEDED;
-        padding: 5px 10px 5px 10px;
-        height: 50px;
-        width: 230px;
-        margin-top: 15px;
-        cursor:pointer;
-    }
-
-    .add-text {
-        color: #4A4A4A;
-        font-size: 18px;
-        padding: 10px 5px 5px 10px;
-    }
-
-    .add-icon {
-        width: 40px;
-        padding: 5px;
-    }
-</style>
+﻿<!-- CSS is defined in ~/Content/PartialViews.css and bundled in App_Start/BundleConfig.cs -->
 
 <div class="add-box" onClick="@this.ViewData["onClick"]">
-    <img src="~/Content/Images/addicon.svg" class="add-icon" />
-    <span class="add-text" id="add-text">@this.ViewData["add-text"]</span>
+    <div class="add-container" style="display:inline-flex">
+        <div class="add-icon" style="display:inline-block">
+            <svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 11.93 11.93">
+                <title>addicon</title>
+                <path class="cls-1" d="M6,12a6,6,0,1,1,6-6A6,6,0,0,1,6,12ZM6,1.49A4.54,4.54,0,1,0,10.51,6,4.55,4.55,0,0,0,6,1.49Z" transform="translate(0 -0.07)" />
+                <rect class="cls-1" x="5.32" y="3.14" width="1.43" height="5.49" transform="translate(0.14 11.86) rotate(-90)" />
+                <rect class="cls-1" x="5.32" y="3.08" width="1.43" height="5.49" />
+            </svg>
+        </div>
+        <span class="add-text" id="add-text" data-locale data-apply="text" data-key="@this.ViewData["add-text"]"></span>
+    </div>
 </div>

@@ -1,10 +1,10 @@
-var alreadyDrafted;
+﻿var alreadyDrafted;
 var documentId;
 var documentText;
 var documentTitle;
 var documentEventDate;
 var documentEventTime;
-var timer = $.now()-1000;
+var timer = $.now() - 1000;
 var numberOfChanges = 0;
 var intervalPause = false;
 var isAlreadyDraftWhenOpened;
@@ -32,7 +32,7 @@ function getDocumentByLinkQuery(documentLink) {
         "resultSet": ["Id", "Title", "EventDate", "IsDraft"],
         "order": [{ "column": "Id", "descending": false }]
     }
-    
+
     query.filters.push({
         "column": "Link",
         "operator": "equal",
@@ -73,7 +73,6 @@ function CreateJournalNoteViewWithLink() {
             newWindow.documentEventDate = splitTime[0];
         });
 }
-
 
 $(function () {
     if (!isAlreadyDraftWhenOpened) $('.change-journal-note-button').html('Opdater');
@@ -134,7 +133,7 @@ function formatDate(_date) {
 
     var day = value.getDate() < 10 ? '0' + value.getDate() : value.getDate();
     var month = value.getMonth + 1;
-        month = (value.getMonth()+1) < 10 ? "0" + (value.getMonth()+1) : (value.getMonth()+1);
+    month = (value.getMonth() + 1) < 10 ? "0" + (value.getMonth() + 1) : (value.getMonth() + 1);
     var year = value.getFullYear();
 
     return day + "/" + month + "/" + year;
@@ -199,8 +198,23 @@ function changedate(inputId, lableId) {
 }
 
 $(document).on('click', '.add-journal-note-button', function (event) {
-    saveFile(false, true, event);
+    var id = $.urlParam("id");
+    var eventId = $.urlParam("eventId");
+    var documentName = $('#input-journal-title').val();
+    var journalText = "<div>" + $('#input-journal-note').html() + "</div>";
+    saveJournalInAcadre(id, documentName, journalText, true);
+    //    saveFile(false, true, event);
+    event.preventDefault();
 });
+
+$(document).on('click', '.cancel-journal-note-button', function (event) {
+    closeWindow(event);
+});
+
+function closeWindow(event) {
+    window.close();
+    event.preventDefault();
+}
 
 function makeTextFile(text) {
     var data = new Blob([text], { type: 'text/html' });
@@ -217,7 +231,7 @@ function submitFiles(fileName, textContents, isDraft, closeWindow) {
 function uploadFile(file, instanceId, fileName, isDraft, closeWindow) {
     if (fileName == "") { fileName = "NA" };
     var eventDateTime = $(".ui-datepicker").val() + " " + $(".timepicker").val();
-  
+
     if (fileName != '') {
         intervalPause = true;
         $.ajax({
@@ -254,10 +268,6 @@ function uploadFile(file, instanceId, fileName, isDraft, closeWindow) {
     }
 }
 
-function closeJournalNotatWindow() {
-    window.close()
-}
-
 function addMinutsToTime(currentTime, minutsToAdd) {
     var timeValues = currentTime.split(':');
     var h = parseInt(timeValues[0]);
@@ -267,10 +277,10 @@ function addMinutsToTime(currentTime, minutsToAdd) {
         h = h - 1
         m = m + 60;
     }
-    h = h < 0 ? 23 : h; 
+    h = h < 0 ? 23 : h;
 
-    var h = (h + Math.floor(m / 60)) % 24; 
-    var m = m % 60; 
+    var h = (h + Math.floor(m / 60)) % 24;
+    var m = m % 60;
 
     var m = m < 10 ? '0' + m : m;
 
@@ -305,6 +315,7 @@ $(document).ready(function () {
         dropdown: true,
         scrollbar: true,
     });
+
 });
 
 $(document).on('click', '.change-journal-note-button', function (event) {
@@ -327,8 +338,7 @@ function saveFile(isDraft, closeWindow, event) {
     var documentName = $('#input-journal-title').val();
     var journalText = "<div>" + $('#input-journal-note').html() + "</div>";
 
-    if (!alreadyDrafted)
-    {
+    if (!alreadyDrafted) {
         submitFiles(documentName, journalText, isDraft, closeWindow);
         alreadyDrafted = true;
     }
@@ -376,9 +386,138 @@ function updateFiles(fileName, textContents, isDraft, closeWindow) {
     }
 }
 
-window.setInterval(function () {
-    if (!intervalPause && isAlreadyDraftWhenOpened) {
-        automaticSaveDraft();
-    }
-}, 1000);
+// save journal in acadre
+function saveJournalInAcadre(id, title, description, isLocked) {
+    try {
+        var data = {
+            accessCode: 'BO',
+            caseFileReferenceNumber: id,
+            fileName: 'testfile.rtf',
+            memoTitleText: title,
+            memoTypeReference: "2",
+            isLocked: isLocked,
+            noteText: description,
+            date: new Date(moment($('#datepicker').val() + ' ' + $('.timepicker').val() + ':00', 'DD/MM/YYYY HH:mm:ssZ')),
+            html: 'html', // can be html
+            eventId: App.getParameterByName('eventId'),
+            type: App.getParameterByName('type'),
+            instanceId: $.urlParam('instanceId') === false ? App.getParameterByName('id') : App.getParameterByName('instanceId')
+        }
 
+        var eventId = App.getParameterByName("eventId");
+        var instanceId = App.getParameterByName("instanceId");
+        var modified = App.getParameterByName("modified");
+
+        if (eventId !== null && eventId !== "") {
+
+            var promise = new Promise(function (resolve, reject) {
+                var comment = "<div>" + $('#input-journal-note').html() + "</div>";
+                Task.saveTasksNote(eventId, data.instanceId, comment, true, resolve, reject);
+            });
+            promise.then(function (response) {
+                executeTasksWNoteFull(eventId, data.instanceId, modified);
+            }, function (e) {
+                App.showExceptionErrorMessage(e);
+            });
+        } else {
+            API.service('services/CreateJournalAcadre', data)
+                .done(function (response, data) {
+                    closeWindowWithoutAsking = null;
+                    window.close();
+                })
+                .fail(function (e) {
+                    App.showErrorMessage(e.responseJSON.ExceptionMessage);
+                });
+        }
+    }
+    catch (e) {
+        alert('Exception');
+    }
+}
+
+async function executeTasksWNoteFull(eventId, instanceId, modified) {
+    // Check event is current - begin
+    var query = {
+        "type": "SELECT",
+        "entity": "[InstanceEvents]",
+        "resultSet": ["NextDelay", "NextDeadline", "Modified", "NeedToSetTime", "TrueEventId", "EventTitle", "GraphId", "SimulationId", "EventId"],
+        "filters": new Array(),
+        "order": []
+    }
+
+    var whereInstanceIdMatchesFilter = {
+        "column": "instanceId",
+        "operator": "equal",
+        "value": instanceId,
+        "valueType": "int",
+        "logicalOperator": "and"
+    };
+    query.filters.push(whereInstanceIdMatchesFilter);
+
+    var whereEventIdMatchesFilter = {
+        "column": "eventId",
+        "operator": "equal",
+        "value": eventId,
+        "valueType": "string",
+        "logicalOperator": "and"
+    };
+    query.filters.push(whereEventIdMatchesFilter);
+    modified = modified.replace('t', 'T');
+    var whereModifiedMatchesFilter = {
+        "column": "Modified",
+        "operator": "equal",
+        "value": modified,
+        "valueType": "datetime"
+    };
+    query.filters.push(whereModifiedMatchesFilter);
+
+    var result1 = await API.service('records', query);
+    var EventOK = JSON.parse(result1);
+    if (EventOK.length == 0) {
+        App.showWarningMessage('Page not current - press F5 to refresh');
+        return;
+    }
+    if (EventOK[0].NeedToSetTime == 1) {
+        var setTimeData = {
+            "instanceId": instanceId,
+            "time": new Date().toUTCString()
+        }
+
+        var responseSetTime = await API.service('services/settime', setTimeData);
+
+        App.showWarningMessage('Page not current - press F5 to refresh - time');
+        return;
+    }
+    // Check event is current - end
+    var data = {
+        taskId: EventOK[0].EventId,
+        instanceId: instanceId,
+        graphId: EventOK[0].GraphId,
+        simulationId: EventOK[0].SimulationId,
+        eventId: EventOK[0].EventId,
+        title: EventOK[0].EventTitle,
+        trueEventId: EventOK[0].TrueEventId,
+        Modified: modified
+    };
+    App.executeEvent(data, false, null, null, "tasksWNoteFull");
+}
+
+function saveJournalInAcadreTest() {
+    var data = {
+        accessCode: 'BO',
+        caseFileReferenceNumber: 727191,
+        fileName: 'testfile.rtf',
+        memoTitleText: "title",
+        memoTypeReference: "2",
+        isLocked: false,
+        noteText: "this is a note",
+        html: 'html' // can be html
+    }
+
+    API.service('services/CreateJournalAcadre', data)
+        .done(function (response) {
+        })
+        .fail(function (e) {
+            App.showErrorMessage(e.responseJSON.ExceptionMessage);
+        });
+}

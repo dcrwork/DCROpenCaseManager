@@ -22,7 +22,7 @@ input[type="submit"].btn-save-draft{
     display: none;
     background-color: #fff;
     padding: 10px;
-    border: 1px solid #9C1A5E;
+    border: 1px solid var(--main-color);
     border-radius: 5px;
     z-index: 12 !important;
 }
@@ -41,21 +41,21 @@ input[type="submit"].btn-save-draft{
 
 
 .add-journal-note-button, .btn-update-date, .change-journal-note-button, .open-journal-note-button {
-    border: 1px solid #9C1A5E;
+    border: 1px solid var(--button-color);
     background-color: #fff;
     color: #9C1A5E;
     padding: 5px 10px 5px 10px;
 }
 
     .add-journal-note-button:hover, .btn-update-date:hover, .change-journal-note-button:hover, .open-journal-note-button:hover {
-        background-color: #9C1A5E;
+        background-color: var(--button-on-hover);
         color: #fff;
     }
 
 .change-date-link {
     border: none;
     outline: none;
-    color: #9C1A5E;
+    color: var(--button-color);
 }
 
 .change-date-div {
@@ -63,7 +63,7 @@ input[type="submit"].btn-save-draft{
 }
 
 .change-date-link::placeholder {
-    color: #9C1A5E;
+    color: var(--button-color);
 }
 
 .change-date-link:hover {
@@ -104,8 +104,8 @@ input[type="submit"].btn-save-draft{
     padding: 0 5px 0 5px;
 }
 
-.ui-timepicker-standard a{
-    color: #9C1A5E;
+.ui-timepicker-standard a {
+    color: var(--main-color);
     font-size: 12px;
     padding: 5px;
     width: 50px;
@@ -113,6 +113,6 @@ input[type="submit"].btn-save-draft{
 
 .ui-timepicker-standard a:hover {
     background-color: #ededed;
-    border:none;
-    color: #9C1A5E;
+    border: none;
+    color: var(--button-on-hover);
 }

@@ -24,22 +24,30 @@ namespace OpenCaseManager.Managers
         /// <returns></returns>
         public DataTable SelectData(DataModel dataModel)
         {
-            var command = new StringBuilder();
+            try
+            {
+                var command = new StringBuilder();
 
-            command.Append("SELECT ");
+                command.Append("SELECT ");
 
-            // columns
-            command.Append(GetColumnsToSelect(dataModel) + " FROM " + dataModel.Entity + "");
+                // columns
+                command.Append(GetColumnsToSelect(dataModel) + " FROM " + dataModel.Entity + "");
 
-            // where clause
-            command.Append(Where(dataModel));
+                // where clause
+                command.Append(Where(dataModel));
 
-            // order by clause
+                // order by clause
 
-            command.Append(OrderBy(dataModel));
-            var sqlCommand = Common.ReplaceKeyWithResponsible(command.ToString());
-            var dataTable = _dbManager.SelectData(sqlCommand);
-            return dataTable;
+                command.Append(OrderBy(dataModel));
+                var sqlCommand = Common.ReplaceKeyWithResponsible(command.ToString());
+                var dataTable = _dbManager.SelectData(sqlCommand);
+                return dataTable;
+            }
+            catch (Exception ex)
+            {
+                LogSQLModel(dataModel, ex, "SelectData");
+                throw ex;
+            }
         }
 
         /// <summary>
@@ -49,18 +57,26 @@ namespace OpenCaseManager.Managers
         /// <returns></returns>
         public DataTable UpdateData(DataModel dataModel)
         {
-            var updateCommand = new StringBuilder();
+            try
+            {
+                var updateCommand = new StringBuilder();
 
-            updateCommand.Append("UPDATE [" + dataModel.Entity + "]");
+                updateCommand.Append("UPDATE [" + dataModel.Entity + "]");
 
-            updateCommand.Append(GetParametersUpdate(dataModel));
+                updateCommand.Append(GetParametersUpdate(dataModel));
 
-            // where clause
-            updateCommand.Append(Where(dataModel));
+                // where clause
+                updateCommand.Append(Where(dataModel));
 
-            var sqlCommand = Common.ReplaceKeyWithResponsible(updateCommand.ToString());
-            var dataTable = _dbManager.UpdateData(sqlCommand);
-            return dataTable;
+                var sqlCommand = updateCommand.ToString();
+                var dataTable = _dbManager.UpdateData(sqlCommand);
+                return dataTable;
+            }
+            catch (Exception ex)
+            {
+                LogSQLModel(dataModel, ex, "UpdateData");
+                throw ex;
+            }
         }
 
         /// <summary>
@@ -70,14 +86,30 @@ namespace OpenCaseManager.Managers
         /// <returns></returns>
         public DataTable InsertData(DataModel dataModel)
         {
-            var insertCommand = new StringBuilder();
+            try
+            {
+                var insertCommand = new StringBuilder();
 
-            insertCommand.Append("INSERT INTO [" + dataModel.Entity + "]");
-            insertCommand.Append(GetParametersInsert(dataModel));
+                insertCommand.Append("INSERT INTO [" + dataModel.Entity + "]");
+                insertCommand.Append(GetParametersInsert(dataModel));
 
-            var sqlCommand = Common.ReplaceKeyWithResponsible(insertCommand.ToString());
-            var dataTable = _dbManager.InsertData(sqlCommand);
-            return dataTable;
+                var sqlCommand = insertCommand.ToString();
+                var dataTable = _dbManager.InsertData(sqlCommand);
+                return dataTable;
+            }
+            catch (Exception ex)
+            {
+                try
+                {
+                    LogSQLModel(dataModel, ex, "InsertData");
+                    throw ex;
+                }
+                catch (Exception e)
+                {
+                    // Log into file
+                    throw e;
+                }
+            }
         }
 
         /// <summary>
@@ -85,38 +117,46 @@ namespace OpenCaseManager.Managers
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public DataTable ExecuteStoreProcedure(DataModel model)
+        public DataTable ExecuteStoredProcedure(DataModel model)
         {
-            var parameters = new Dictionary<string, dynamic>();
-
-            foreach (var param in model.Parameters)
+            try
             {
-                dynamic value = string.Empty;
-                switch (param.ColumnType)
-                {
-                    case "int":
-                        value = int.Parse(param.ColumnValue);
-                        break;
-                    case "decimal":
-                        value = float.Parse(param.ColumnValue);
-                        break;
-                    case "boolean":
-                        value = bool.Parse(param.ColumnValue);
-                        break;
-                    case "datetime":
-                        value = DateTime.Parse(param.ColumnValue);
-                        break;
-                    case "xml":
-                    case "string":
-                    default:
-                        value = param.ColumnValue;
-                        break;
-                }
-                parameters.Add(param.ColumnName, value);
-            }
+                var parameters = new Dictionary<string, dynamic>();
 
-            var dataTable = _dbManager.ExecuteStoreProcedure(model.Entity, parameters);
-            return dataTable;
+                foreach (var param in model.Parameters)
+                {
+                    dynamic value = string.Empty;
+                    switch (param.ColumnType)
+                    {
+                        case "int":
+                            value = int.Parse(param.ColumnValue);
+                            break;
+                        case "decimal":
+                            value = float.Parse(param.ColumnValue);
+                            break;
+                        case "boolean":
+                            value = bool.Parse(param.ColumnValue);
+                            break;
+                        case "datetime":
+                            value = DateTime.Parse(param.ColumnValue);
+                            break;
+                        case "xml":
+                        case "string":
+                        default:
+                            value = param.ColumnValue;
+                            break;
+                    }
+                    parameters.Add(param.ColumnName, value);
+                }
+
+                var dataTable = _dbManager.ExecuteStoreProcedure(model.Entity, parameters);
+                return dataTable;
+            }
+            catch (Exception ex)
+            {
+                LogSQLModel(model, ex, "ExecuteStoreProcedure");
+                throw ex;
+            }
         }
 
         /// <summary>
@@ -157,10 +197,10 @@ namespace OpenCaseManager.Managers
                         case "like":
                             where.Append(" LIKE ");
                             break;
-                        case "null":
+                        case "_null":
                             where.Append(" IS NULL ");
                             break;
-                        case "not_null":
+                        case "_not_null":
                             where.Append(" IS NOT NULL ");
                             break;
                     }
@@ -181,7 +221,7 @@ namespace OpenCaseManager.Managers
                                 break;
                             case "datetime":
                                 value = DateTime.Parse(param.Value);
-                                value = value.ToString("yyyy-MM-dd HH:mm:ss.fff");
+                                value = value.ToString("yyyy-MM-dd HH:mm:ss.fffffff");
                                 value = "\'" + value + "\'";
                                 break;
                             case "string":
@@ -346,6 +386,35 @@ namespace OpenCaseManager.Managers
             values.Append(")");
             columnName.Append(values);
             return columnName.ToString();
+        }
+
+        /// <summary>
+        /// Log sql model
+        /// </summary>
+        /// <param name="dataModel"></param>
+        public void LogSQLModel(DataModel dataModel, Exception ex, string methodName)
+        {
+            try
+            {
+                var jsonModel = JsonConvert.SerializeObject(dataModel);
+                var logDataModel = new DataModel()
+                {
+                    Type = "INSERT",
+                    Entity = "Log",
+                    Parameters = new List<Parameter>()
+                    {
+                       new Parameter(){ ColumnName = "Message", ColumnType ="string", ColumnValue = jsonModel},
+                       new Parameter(){ ColumnName = "Logged", ColumnType ="datetime", ColumnValue = DateTime.Now.ToString()},
+                       new Parameter(){ ColumnName = "Level", ColumnType ="string", ColumnValue = "Info"},
+                       new Parameter(){ ColumnName = "Exception", ColumnType ="string", ColumnValue = methodName + " : " + ex.StackTrace}
+                    }
+                };
+                InsertData(logDataModel);
+            }
+            catch (Exception e)
+            {
+                // Log into Log file
+            }
         }
     }
 }

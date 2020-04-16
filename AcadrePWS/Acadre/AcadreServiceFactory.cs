@@ -1,66 +1,99 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Web.Services.Protocols;
+﻿using System.Web.Services.Protocols;
 
 namespace AcadrePWS.Acadre
 {
     public static class AcadreServiceFactory
     {
-        private static AcadreServiceV7.CaseService7 caseService7;
-        private static AcadreServiceV7.ContactService7 contactService7;
-		private static AcadreServiceV7.MainDocumentService7 mainDocumentService7;
-		private static AcadreServiceV7.ConfigurationService7 configurationService7;
+        private static AcadreLib.AcadreServiceV7.CaseService7 caseService7;
+        private static AcadreLib.AcadreServiceV7.ContactService7 contactService7;
+        private static AcadreLib.AcadreServiceV7.MainDocumentService7 mainDocumentService7;
+        private static AcadreLib.AcadreServiceV7.MemoService7 memoService7;
+        private static AcadreLib.AcadreServiceV7.ConfigurationService7 configurationService7;
+        private static System.Net.NetworkCredential networkCredential = new System.Net.NetworkCredential(Config.AcadreServiceUserName, Config.AcadreServiceUserPassword, Config.AcadreServiceUserDomain);
 
-        public static AcadreServiceV7.CaseService7 GetCaseService7()
+        /// <summary>
+        /// Get Case Service
+        /// </summary>
+        /// <returns></returns>
+        public static AcadreLib.AcadreServiceV7.CaseService7 GetCaseService7()
         {
             if (caseService7 == null)
             {
-                caseService7 = new AcadreServiceV7.CaseService7(Properties.Settings.Default.AcadrePWS_AcadreServiceV7_AcadreServiceV7);
-                ConfigureService(caseService7);
+                caseService7 = new AcadreLib.AcadreServiceV7.CaseService7()
+                {
+                    Url = Config.AcadreService,
+                    Credentials = networkCredential
+                };
             }
             return caseService7;
         }
 
-        public static AcadreServiceV7.ContactService7 GetContactService7()
+        /// <summary>
+        /// Get contact service
+        /// </summary>
+        /// <returns></returns>
+        public static AcadreLib.AcadreServiceV7.ContactService7 GetContactService7()
         {
             if (contactService7 == null)
             {
-                contactService7 = new AcadreServiceV7.ContactService7(Properties.Settings.Default.AcadrePWS_AcadreServiceV7_AcadreServiceV7);
-                ConfigureService(contactService7);
+                contactService7 = new AcadreLib.AcadreServiceV7.ContactService7()
+                {
+                    Url = Config.AcadreService,
+                    Credentials = networkCredential
+                };
             }
             return contactService7;
         }
 
-        public static AcadreServiceV7.MainDocumentService7 GetMainDocumentService7()
+        /// <summary>
+        /// Get Main Document
+        /// </summary>
+        /// <returns></returns>
+        public static AcadreLib.AcadreServiceV7.MainDocumentService7 GetMainDocumentService7()
         {
             if (mainDocumentService7 == null)
             {
-                mainDocumentService7 = new AcadreServiceV7.MainDocumentService7(Properties.Settings.Default.AcadrePWS_AcadreServiceV7_AcadreServiceV7);
-                ConfigureService(mainDocumentService7);
+                mainDocumentService7 = new AcadreLib.AcadreServiceV7.MainDocumentService7()
+                {
+                    Url = Config.AcadreService,
+                    Credentials = networkCredential
+                };
             }
             return mainDocumentService7;
         }
 
-		public static AcadreServiceV7.ConfigurationService7 GetConfigurationService7()
+        /// <summary>
+        /// Get Memo Service
+        /// </summary>
+        /// <returns></returns>
+        public static AcadreLib.AcadreServiceV7.MemoService7 GetMemoService7()
         {
-			if (configurationService7 == null)
+            if (memoService7 == null)
             {
-				configurationService7 = new AcadreServiceV7.ConfigurationService7(Properties.Settings.Default.AcadrePWS_AcadreServiceV7_AcadreServiceV7);
-				ConfigureService(configurationService7);
+                memoService7 = new AcadreLib.AcadreServiceV7.MemoService7()
+                {
+                    Url = Config.AcadreService,
+                    Credentials = networkCredential
+                };
             }
-			return configurationService7;
+            return memoService7;
         }
 
-        private static void ConfigureService(SoapHttpClientProtocol service)
+        /// <summary>
+        /// Get Configuration Service
+        /// </summary>
+        /// <returns></returns>
+        public static AcadreLib.AcadreServiceV7.ConfigurationService7 GetConfigurationService7()
         {
-			var credential = new System.Net.NetworkCredential(
-				Properties.Settings.Default.PWSServiceUserName
-				, Properties.Settings.Default.PWSServiceUserPassword
-				, Properties.Settings.Default.PWSServiceUserDomain);
-            service.Credentials = credential;
+            if (configurationService7 == null)
+            {
+                configurationService7 = new AcadreLib.AcadreServiceV7.ConfigurationService7()
+                {
+                    Url = Config.AcadreService,
+                    Credentials = networkCredential
+                };
+            }
+            return configurationService7;
         }
     }
 }

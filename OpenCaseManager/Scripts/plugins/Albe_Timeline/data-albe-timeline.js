@@ -1,6 +1,8 @@
-function formatDateTimeline(date) {
+﻿function formatDateTimeline(date, americanFormat = true) {
     var value = new Date(date);
-    return addZero(value.getDate()) + "/" + addZero(value.getMonth() + 1) + "-" + value.getFullYear();
+    var x = value.getMonth();
+    if (americanFormat) return addZero(value.getMonth() + 1) + "/" + addZero(value.getDate()) + "-" + value.getFullYear();
+    else return addZero(value.getDate()) + "/" + addZero(value.getMonth() + 1) + "-" + value.getFullYear();
 }
 
 function addZero(i) {
@@ -10,36 +12,32 @@ function addZero(i) {
 function documentType(data) {
     return {
         type: "Dokument",
-        time: data.EventDate,
+        time: formatDateTimeline(data.EventDate),
         responsible: data.DocumentResponsible,
         body: [{
-            tag: 'a',
-            content: '<h3>' + data.DocumentTitle + '</h3>',
+            tag: 'h3',
+            content: data.DocumentTitle,
             attr: {
-                href: '#',
-                documentlink: data.Link,
-                documentid: data.DocumentId,
-                name: "downloadDoc"
+                cssclass: 'group-title'
             }
         },
         {
             tag: 'p',
             content: "Indsats: " + data.InstanceTitle
-            }]
+        }]
     }
 }
 // TODO -> Her skal der evt. v�re noget content tekst som er passer til den tekst de rer skrevet.
 function journalNoteType(data) {
     return {
         type: "Journalnotat",
-        time: data.EventDate,
+        time: formatDateTimeline(data.EventDate),
         responsible: data.DocumentResponsible,
         body: [{
-            tag: 'a',
-            content: '<h3>' + data.DocumentTitle + '</h3>',
+            tag: 'h3',
+            content: data.DocumentTitle,
             attr: {
-                href: '/JournalNote?instanceId=' + data.InstanceId + '&documentLink=' + data.Link + '&documentTitle=' + data.DocumentTitle + '&documentAuthor=' + data.DocumentResponsible,
-                target: '_blank'
+                cssclass: 'group-title'
             }
         },
         {
@@ -53,7 +51,7 @@ function activitiesType(data) {
     if (data.Type === 'Event') eventtype = "Aktivitet";
     return {
         type: eventtype,
-        time: data.EventDate,
+        time: formatDateTimeline(data.EventDate),
         responsible: data.EventResponsible,
         body: [{
             tag: 'h3',
@@ -62,12 +60,17 @@ function activitiesType(data) {
                 cssclass: 'group-title'
             }
         },
-            {
-                tag: 'p',
-                content: "Indsats: " + data.InstanceTitle
-            }]
+        {
+            tag: 'p',
+            content: "Indsats: " + data.InstanceTitle
+        }]
     }
 }
+
+
+var hasTimelineData = false;
+var timeLineData = [];
+
 
 $(document).ready(function () {
     async function getData(activity, journalnote, document) {
@@ -75,10 +78,10 @@ $(document).ready(function () {
         var data = await getTimelineData(childId);
 
         var normData = [];
-        $.each(data, function (index, value) {   
+        $.each(data, function (index, value) {
             if (journalnote && (value.DocumentType === 'JournalNote' || value.Type === 'JournalNoteBig' || value.Type === 'JournalNoteLittle')) normData.push(journalNoteType(value));
-            if (document && value.DocumentType === 'Instance') normData.push(documentType(value));
-            if (activity && value.Type === 'Event') normData.push(activitiesType(value)); 
+            if (document && value.DocumentType === 'InstanceDocument') normData.push(documentType(value));
+            if (activity && value.Type === 'Event') normData.push(activitiesType(value));
         });
 
         $('#myTimeline').albeTimeline(normData);
@@ -99,6 +102,7 @@ $(document).ready(function () {
         if (!activityChecked && !journalnoteChecked && !documentChecked) getData(true, true, true);
         else getData(activityChecked, journalnoteChecked, documentChecked);
     });
-    
+
 });
+
 

@@ -6,12 +6,13 @@
 <script src="~/Scripts/bootstrap-multiselect.js"></script>
 
 @Html.Partial("~/Views/PartialViews/TasksWithNote.cshtml")
+@Html.Partial("~/Views/PartialViews/dcrform.cshtml")
 
 <div class="row tableDataRow">
     <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
         <!-- Trigger the modal with a button -->
         <h4 class="instancesHeading">
-            <span data-locale data-apply="text" data-key="Instances">Instances</span> <button type="button" class="btn addNewInstance" data-toggle="modal" data-target="#addNewInstance">
+            <span data-locale data-apply="text" data-key="Instances">Instances</span> <button style="margin-bottom:5px;" type="button" class="btn addNewInstance" data-toggle="modal" data-target="#addNewInstance">
                 <span><img src="~/Content/Images/addicon.png"></span>
             </button>
         </h4>
@@ -27,7 +28,6 @@
         </div>
     </div><!-- Cols Div End -->
     <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-        <h4 class="tasksHeading"><span data-locale data-apply="text" data-key="Tasks">Tasks</span></h4>
         <div class="table-responsive" style="border:none">
             @Html.Partial("~/Views/PartialViews/Tasks.cshtml")
         </div>
@@ -47,7 +47,7 @@
                 <form>
                     <div class="form-group">
                         <label for="instanceTitle"><span data-locale data-apply="text" data-key="Title">Title</span>:</label>
-                        <input type="text" class="form-control" id="instanceTitle">
+                        <input type="text" class="form-control" id="instanceTitle" autofocus>
                     </div>
                     <div class="form-group">
                         <label for="instanceProcesses"><span data-locale data-apply="text" data-key="Processes">Processes</span></label>
@@ -65,5 +65,4 @@
     </div>
 </div><!-- Modal End-->
 
-<script src="~/Scripts/task.js"></script>
 <script type="text/javascript" src="~/Scripts/home.js"></script>

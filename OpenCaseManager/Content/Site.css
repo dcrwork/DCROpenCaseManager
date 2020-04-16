@@ -1,13 +1,22 @@
-﻿/*Common css fot all opena case manager Apps*/
+﻿:root {
+    --headline-color: var(--header-text-color);
+}
+
+/*Common css for all open case manager Apps*/
 div.wrapper {
     height: 100vh;
     display: flex;
     flex-direction: column;
 }
 
-body.swal2-shown:not(.swal2-no-backdrop):not(.swal2-toast-shown) {
-    overflow-y: visible !important;
+body {
+    overflow-y: auto;
+    overflow-x: hidden;
 }
+
+    body.swal2-shown:not(.swal2-no-backdrop):not(.swal2-toast-shown) {
+        overflow-y: visible !important;
+    }
 
 main {
     flex: 1;
@@ -160,7 +169,7 @@ ul.events-log-ul {
 }
 
 table.entityDetailTable tr th {
-    color: #4A4A4A;
+    color: var(--headline-color);
     font-size: xx-large;
     padding: 0px;
     border-top: none;
@@ -188,6 +197,9 @@ table.entityDetailTable {
 
 table.tasksTable tr td {
     vertical-align: middle;
+}
+.tasksTable {
+    /*overflow: hidden;*/
 }
 
 a > span.sort-arrow-head {
@@ -265,12 +277,42 @@ a > span.sort-arrow-head {
     cursor: pointer;
 }
 
-.arrow.up {
-    transform: rotate(-135deg);
-    -webkit-transform: rotate(-135deg);
+    .arrow.up {
+        transform: rotate(-135deg);
+        -webkit-transform: rotate(-135deg);
+    }
+
+    .arrow.down {
+        transform: rotate(45deg);
+        -webkit-transform: rotate(45deg);
+    }
+
+.pending-icon {
+    color: rgb(3, 161, 252);
 }
 
-.arrow.down {
-    transform: rotate(45deg);
-    -webkit-transform: rotate(45deg);
+.chageResFormating {
+    float: left !important;
+    padding: 20px 0px !important;
 }
+
+.responsibleImg {
+    width:16px;    
+}
+.responsibleImgSpan {
+    padding: 2px;
+    border: 2px solid #9C1A5E;
+    border-radius: 50%;
+}
+
+ul.notApplicableUl {
+    min-width: 115px !important;
+    left: -20px !important; 
+}
+ul.notApplicableUl li>a {
+    padding: 3px 12px !important;
+}
+table#tasksTable tbody tr td>div.btn-group {
+    display:flex !important;
+}
+.marginBottom10 {margin-bottom: 10px;}

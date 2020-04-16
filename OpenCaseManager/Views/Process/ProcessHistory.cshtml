@@ -1,0 +1,32 @@
+﻿
+@{
+    ViewBag.Title = "Process History";
+}
+
+<div class="row tableDataRow">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <h4 class="tasksHeading"><span data-locale data-apply="text" data-key="ProcessHistory">Process History</span></h4>
+        <div class="table-responsive" style="border:none">
+            <table class="table tasksTable table-striped">
+                <thead>
+                    <tr class="trStyleClass">
+                        <th style="display:none;"><span data-locale data-apply="text" data-key="ProcessId">ProcessId</span></th>
+                        <th width=""><span data-locale data-apply="text" data-key="Title">Title</span></th>
+                        <th width=""><span data-locale data-apply="text" data-key="RevisionTitle">Revision Title</span></th>
+                        <th width=""><span data-locale data-apply="text" data-key="RevisionDate">Revision Date</span></th>
+                        <th width=""><span data-locale data-apply="text" data-key="ReleaseDate">Release Date</span></th>
+                    </tr>
+                </thead>
+                <tbody id="processes-history"></tbody>
+            </table>
+        </div>
+    </div><!-- Cols Div End -->
+</div><!-- Row Div End -->
+
+<script src="~/Scripts/process.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        var graphId = App.getParameterByName("graphId", window.location.href);
+        Processes.getProcessHistory(graphId, Processes.renderProcessHistory);
+    })
+</script>

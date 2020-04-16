@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://www.traen.com/2010/06/01" elementFormDefault="qualified" targetNamespace="http://www.traen.com/2010/06/01" id="schema17" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import namespace="http://www.traen.com/2007/11/01" />
+  <xs:import namespace="http://www.traen.com/2007/04/01" />
+  <xs:import namespace="http://www.traen.com/2008/08/20" />
+  <xs:complexType name="PersonType3">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q1="http://www.traen.com/2007/11/01" base="q1:PersonType2">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="1" name="ContactSubType" type="tns:ContactSubType" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="ContactSubType">
+    <xs:sequence>
+      <xs:element minOccurs="1" maxOccurs="1" name="Id" type="xs:int" />
+      <xs:element minOccurs="0" maxOccurs="1" name="SubTypeName" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Description" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="SubTypeCode" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="OrganizationType3">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q2="http://www.traen.com/2007/11/01" base="q2:OrganizationType2">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="1" name="ContactSubType" type="tns:ContactSubType" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="GroupType3">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q3="http://www.traen.com/2007/11/01" base="q3:GroupType2">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="1" name="ContactSubType" type="tns:ContactSubType" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="PropertyType3">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q4="http://www.traen.com/2007/11/01" base="q4:PropertyType2">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="1" name="ContactSubType" type="tns:ContactSubType" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="SearchContactCriterionType2">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q5="http://www.traen.com/2007/04/01" base="q5:SearchContactCriterionType">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="1" default="0" name="ContactSubTypeId" type="xs:int" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="RecordType2">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q6="http://www.traen.com/2008/08/20" base="q6:RecordType1">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="1" name="CustomFieldCollection" type="tns:ArrayOfCustomField" />
+          <xs:element minOccurs="0" maxOccurs="1" name="StorageForm" type="xs:int" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="ArrayOfCustomField">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="CustomFields" type="tns:CustomField" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="CustomField">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="1" name="Name" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Value" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="CaseFileType3">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q7="http://www.traen.com/2008/08/20" base="q7:CaseFileType2">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="1" name="SubType" type="xs:string" />
+          <xs:element minOccurs="0" maxOccurs="1" name="DeletionCode" type="xs:string" />
+          <xs:element minOccurs="0" maxOccurs="1" name="DeletionDate" type="xs:date" />
+          <xs:element minOccurs="0" maxOccurs="1" name="CustomFieldCollection" type="tns:ArrayOfCustomField" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="BUCaseFileType">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:CaseFileType3">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="1" name="SpecialistId" type="xs:int" />
+          <xs:element minOccurs="0" maxOccurs="1" name="Gender" type="tns:Genders" />
+          <xs:element minOccurs="0" maxOccurs="1" name="RecommendationId" type="xs:int" />
+          <xs:element minOccurs="0" maxOccurs="1" name="SubRecommendationId" type="xs:int" />
+          <xs:element minOccurs="0" maxOccurs="1" name="ArrangementId" type="xs:int" />
+          <xs:element minOccurs="0" maxOccurs="1" name="EvaluationId" type="xs:int" />
+          <xs:element minOccurs="0" maxOccurs="1" name="CategoryId" type="xs:int" />
+          <xs:element minOccurs="0" maxOccurs="1" name="ClassId" type="xs:int" />
+          <xs:element minOccurs="0" maxOccurs="1" name="GuardianParentsId" type="xs:int" />
+          <xs:element minOccurs="0" maxOccurs="1" name="Birthday" type="xs:dateTime" />
+          <xs:element minOccurs="0" maxOccurs="1" name="Age" type="xs:decimal" />
+          <xs:element minOccurs="0" maxOccurs="1" name="Note" type="xs:string" />
+          <xs:element minOccurs="0" maxOccurs="1" name="Services" type="tns:ArrayOfBUService" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:simpleType name="Genders">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Unknown" />
+      <xs:enumeration value="Male" />
+      <xs:enumeration value="Female" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:complexType name="ArrayOfBUService">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="BUService" nillable="true" type="tns:BUService" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="BUService">
+    <xs:sequence>
+      <xs:element minOccurs="1" maxOccurs="1" name="ServiceTypeId" type="xs:int" />
+      <xs:element minOccurs="0" maxOccurs="1" name="AmountPerMonth" type="xs:int" />
+      <xs:element minOccurs="0" maxOccurs="1" name="StartDate" type="xs:dateTime" />
+      <xs:element minOccurs="0" maxOccurs="1" name="EndDate" type="xs:dateTime" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Place" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="GrantLevelId" type="xs:int" />
+      <xs:element minOccurs="0" maxOccurs="1" name="AccountNumber" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="AdvancedSearchCaseCriterionType2">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q8="http://www.traen.com/2008/08/20" base="q8:AdvancedSearchCaseCriterionType">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="1" name="CaseFileSubTypeCode" type="xs:string" />
+          <xs:element minOccurs="0" maxOccurs="1" name="CustomFields" type="tns:ArrayOfCustomField" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="TimedJournalMemoType">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q9="http://www.traen.com/2007/04/01" base="q9:MemoType">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="1" name="MemoDeadline" type="tns:MemoDeadlineType" />
+          <xs:element minOccurs="1" maxOccurs="1" name="IsLocked" type="xs:boolean" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="MemoDeadlineType">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="1" name="DeadlineDate" type="xs:dateTime" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Note" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>

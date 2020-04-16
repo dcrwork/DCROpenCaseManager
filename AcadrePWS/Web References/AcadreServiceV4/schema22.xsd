@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://www.traen.com/2007/11/02/schema" elementFormDefault="qualified" targetNamespace="http://www.traen.com/2007/11/02/schema" id="schema22" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import namespace="http://www.traen.com/2007/11/01" />
+  <xs:import namespace="http://www.traen.com/2007/04/01" />
+  <xs:element name="UpdateContactRequest" type="tns:UpdateContactRequestType2" />
+  <xs:complexType name="UpdateContactRequestType2">
+    <xs:sequence>
+      <xs:element xmlns:q1="http://www.traen.com/2007/11/01" minOccurs="0" maxOccurs="1" ref="q1:ContactObject" />
+      <xs:element xmlns:q2="http://www.traen.com/2007/04/01" minOccurs="0" maxOccurs="1" ref="q2:GUID" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element xmlns:q3="http://www.traen.com/2007/04/01" name="SearchContactCriterion" type="q3:SearchContactCriterionType" />
+  <xs:element xmlns:q4="http://www.traen.com/2007/04/01" name="ArrayOfContacts" type="q4:ArrayOfContactSearchResponseType" />
+  <xs:element xmlns:q5="http://www.traen.com/2007/11/01" name="Person" type="q5:PersonType2" />
+  <xs:element xmlns:q6="http://www.traen.com/2007/11/01" name="Organization" type="q6:OrganizationType2" />
+  <xs:element xmlns:q7="http://www.traen.com/2007/11/01" name="Property" type="q7:PropertyType2" />
+  <xs:element xmlns:q8="http://www.traen.com/2007/11/01" name="Group" type="q8:GroupType2" />
+  <xs:element name="UpdatePersonRequest" type="tns:UpdatePersonRequestType2" />
+  <xs:complexType name="UpdatePersonRequestType2">
+    <xs:sequence>
+      <xs:element xmlns:q9="http://www.traen.com/2007/11/01" minOccurs="0" maxOccurs="1" name="Person" type="q9:PersonType2" />
+      <xs:element xmlns:q10="http://www.traen.com/2007/04/01" minOccurs="0" maxOccurs="1" ref="q10:GUID" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="UpdateOrganizationRequest" type="tns:UpdateOrganizationRequestType2" />
+  <xs:complexType name="UpdateOrganizationRequestType2">
+    <xs:sequence>
+      <xs:element xmlns:q11="http://www.traen.com/2007/11/01" minOccurs="0" maxOccurs="1" name="Organization" type="q11:OrganizationType2" />
+      <xs:element xmlns:q12="http://www.traen.com/2007/04/01" minOccurs="0" maxOccurs="1" ref="q12:GUID" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="UpdatePropertyRequest" type="tns:UpdatePropertyRequestType2" />
+  <xs:complexType name="UpdatePropertyRequestType2">
+    <xs:sequence>
+      <xs:element xmlns:q13="http://www.traen.com/2007/11/01" minOccurs="0" maxOccurs="1" name="Property" type="q13:PropertyType2" />
+      <xs:element xmlns:q14="http://www.traen.com/2007/04/01" minOccurs="0" maxOccurs="1" ref="q14:GUID" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="UpdateGroupRequest" type="tns:UpdateGroupRequestType2" />
+  <xs:complexType name="UpdateGroupRequestType2">
+    <xs:sequence>
+      <xs:element xmlns:q15="http://www.traen.com/2007/11/01" minOccurs="0" maxOccurs="1" name="Group" type="q15:GroupType2" />
+      <xs:element xmlns:q16="http://www.traen.com/2007/04/01" minOccurs="0" maxOccurs="1" ref="q16:GUID" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="PersonId" type="xs:string" />
+  <xs:element name="OrganizationId" type="xs:string" />
+  <xs:element name="PropertyId" type="xs:string" />
+  <xs:element name="GroupId" type="xs:string" />
+  <xs:element name="SearchContactByPublicIdRequest" type="tns:SearchContactByPublicIdRequestType" />
+  <xs:complexType name="SearchContactByPublicIdRequestType">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="1" name="PublicIdTerm" type="xs:string" />
+      <xs:element xmlns:q17="http://www.traen.com/2007/04/01" minOccurs="0" maxOccurs="1" ref="q17:ContactTypeName" />
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>

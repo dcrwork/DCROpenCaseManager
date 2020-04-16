@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://www.traen.com/2007/09/06/schema" elementFormDefault="qualified" targetNamespace="http://www.traen.com/2007/09/06/schema" id="schema1" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import namespace="http://rep.oio.dk/fesd.dk/xml/schemas/2005/10/26/" />
+  <xs:import namespace="http://www.traen.com/2007/04/01" />
+  <xs:import namespace="http://www.traen.com/2006/08/01/case" />
+  <xs:import namespace="http://www.traen.com/2007/06/01" />
+  <xs:element xmlns:q1="http://rep.oio.dk/fesd.dk/xml/schemas/2005/10/26/" name="Contact" type="q1:ContactType" />
+  <xs:element name="ContactId" type="xs:string" />
+  <xs:element name="UpdateContactRequest" type="tns:UpdateContactRequestType" />
+  <xs:complexType name="UpdateContactRequestType">
+    <xs:sequence>
+      <xs:element xmlns:q2="http://rep.oio.dk/fesd.dk/xml/schemas/2005/10/26/" minOccurs="0" maxOccurs="1" name="Contact" type="q2:ContactType" />
+      <xs:element minOccurs="0" maxOccurs="1" name="ContactId" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element xmlns:q3="http://www.traen.com/2007/04/01" name="SearchContactCriterion" type="q3:SearchContactCriterionType" />
+  <xs:element xmlns:q4="http://www.traen.com/2007/04/01" name="ArrayOfContacts" type="q4:ArrayOfContactSearchResponseType" />
+  <xs:element xmlns:q5="http://www.traen.com/2007/04/01" name="Person" type="q5:PersonType1" />
+  <xs:element xmlns:q6="http://www.traen.com/2007/04/01" name="Organization" type="q6:OrganizationType1" />
+  <xs:element xmlns:q7="http://www.traen.com/2007/04/01" name="Property" type="q7:PropertyType1" />
+  <xs:element xmlns:q8="http://www.traen.com/2007/04/01" name="Group" type="q8:GroupType1" />
+  <xs:element name="UpdatePersonRequest" type="tns:UpdatePersonRequestType" />
+  <xs:complexType name="UpdatePersonRequestType">
+    <xs:sequence>
+      <xs:element xmlns:q9="http://www.traen.com/2007/04/01" minOccurs="0" maxOccurs="1" name="Person" type="q9:PersonType1" />
+      <xs:element minOccurs="0" maxOccurs="1" name="ContactId" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="UpdateOrganizationRequest" type="tns:UpdateOrganizationRequestType" />
+  <xs:complexType name="UpdateOrganizationRequestType">
+    <xs:sequence>
+      <xs:element xmlns:q10="http://www.traen.com/2007/04/01" minOccurs="0" maxOccurs="1" name="Organization" type="q10:OrganizationType1" />
+      <xs:element minOccurs="0" maxOccurs="1" name="ContactId" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="UpdatePropertyRequest" type="tns:UpdatePropertyRequestType" />
+  <xs:complexType name="UpdatePropertyRequestType">
+    <xs:sequence>
+      <xs:element xmlns:q11="http://www.traen.com/2007/04/01" minOccurs="0" maxOccurs="1" name="Property" type="q11:PropertyType1" />
+      <xs:element minOccurs="0" maxOccurs="1" name="ContactId" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="UpdateGroupRequest" type="tns:UpdateGroupRequestType" />
+  <xs:complexType name="UpdateGroupRequestType">
+    <xs:sequence>
+      <xs:element xmlns:q12="http://www.traen.com/2007/04/01" minOccurs="0" maxOccurs="1" name="Group" type="q12:GroupType1" />
+      <xs:element minOccurs="0" maxOccurs="1" name="ContactId" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="PersonId" type="xs:nonNegativeInteger" />
+  <xs:element name="OrganizationId" type="xs:nonNegativeInteger" />
+  <xs:element name="PropertyId" type="xs:nonNegativeInteger" />
+  <xs:element name="GroupId" type="xs:nonNegativeInteger" />
+  <xs:element name="CreateMainDocumentRequest" type="tns:CreateMainDocumentRequestType" />
+  <xs:complexType name="CreateMainDocumentRequestType">
+    <xs:sequence>
+      <xs:element xmlns:q13="http://www.traen.com/2006/08/01/case" minOccurs="0" maxOccurs="1" name="Document" type="q13:DocumentType" />
+      <xs:element xmlns:q14="http://www.traen.com/2006/08/01/case" minOccurs="0" maxOccurs="1" name="DocumentLink" type="q14:DocumentLinkType" />
+      <xs:element xmlns:q15="http://www.traen.com/2006/08/01/case" minOccurs="0" maxOccurs="1" name="Record" type="q15:RecordType" />
+      <xs:element minOccurs="0" maxOccurs="1" name="FileName" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="XMLBinary" type="xs:base64Binary" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="DocumentIdentifier" type="xs:nonNegativeInteger" />
+  <xs:element xmlns:q16="http://www.traen.com/2006/08/01/case" name="DocumentResponse" type="q16:DocumentResponseType" />
+  <xs:element name="CaseFileIdentifier" type="xs:nonNegativeInteger" />
+  <xs:element xmlns:q17="http://www.traen.com/2006/08/01/case" name="ArrayOfDocuments" type="q17:ArrayOfDocumentResponseType" />
+  <xs:element name="UpdateMainDocumentRequest" type="tns:UpdateMainDocumentRequestType" />
+  <xs:complexType name="UpdateMainDocumentRequestType">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="1" name="DocumentId" type="xs:nonNegativeInteger" />
+      <xs:element xmlns:q18="http://www.traen.com/2006/08/01/case" minOccurs="0" maxOccurs="1" name="Record" type="q18:RecordType" />
+      <xs:element minOccurs="0" maxOccurs="1" name="FileName" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="XMLBinary" type="xs:base64Binary" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="CreateSupplementRequest" type="tns:SupplementRequestType" />
+  <xs:complexType name="SupplementRequestType">
+    <xs:sequence>
+      <xs:element xmlns:q19="http://www.traen.com/2006/08/01/case" minOccurs="0" maxOccurs="1" name="Supplement" type="q19:DocumentType" />
+      <xs:element xmlns:q20="http://www.traen.com/2006/08/01/case" minOccurs="0" maxOccurs="1" name="SupplementLink" type="q20:DocumentLinkType" />
+      <xs:element xmlns:q21="http://www.traen.com/2006/08/01/case" minOccurs="0" maxOccurs="1" name="SupplementVersion" type="q21:DocumentVersionType" />
+      <xs:element minOccurs="0" maxOccurs="1" name="FileName" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="XMLBinary" type="xs:base64Binary" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="SupplementIdentifier" type="xs:nonNegativeInteger" />
+  <xs:element name="UpdateSupplementRequest" type="tns:SupplementRequestType" />
+  <xs:element name="DocumentId" type="xs:nonNegativeInteger" />
+  <xs:element xmlns:q22="http://www.traen.com/2007/06/01" name="ArrayOfSupplementResponses" type="q22:ArrayOfSupplementResponseType" />
+  <xs:element xmlns:q23="http://www.traen.com/2007/06/01" name="SupplementResponse" type="q23:SupplementResponseType" />
+  <xs:element xmlns:q24="http://www.traen.com/2007/04/01" name="CreateCaseRequest" type="q24:CaseFileType1" />
+  <xs:element xmlns:q25="http://www.traen.com/2007/04/01" name="CaseFile" type="q25:CaseFileType1" />
+  <xs:element xmlns:q26="http://www.traen.com/2007/04/01" name="UpdateCaseRequest" type="q26:CaseFileType1" />
+  <xs:element xmlns:q27="http://www.traen.com/2007/04/01" name="SearchCaseCriterion" type="q27:SearchCaseCriterionType" />
+  <xs:element xmlns:q28="http://www.traen.com/2007/04/01" name="ArrayOfCases" type="q28:ArrayOfCaseSearchResponseType" />
+  <xs:element name="ErrorCode" type="xs:string" />
+  <xs:element xmlns:q29="http://www.traen.com/2007/04/01" name="ErrorType" type="q29:ErrorListEnum" />
+  <xs:element name="FileVersionReference" type="tns:FileVersionReferenceType" />
+  <xs:complexType name="FileVersionReferenceType">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="1" name="FileReference" type="xs:nonNegativeInteger" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Version" type="xs:nonNegativeInteger" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="XMLBinary" type="xs:base64Binary" />
+  <xs:element name="FileVersionReference1" type="tns:FileVersionReferenceType" />
+  <xs:element name="FileName1" type="xs:string" />
+  <xs:element name="LockDocumentId" type="xs:nonNegativeInteger" />
+  <xs:element name="LockDocumentLockStatus" type="xs:boolean" />
+  <xs:element name="UnlockDocumentId" type="xs:nonNegativeInteger" />
+  <xs:element name="UnlockDocumentLockStatus" type="xs:boolean" />
+  <xs:element name="GetLockStatusDocumentId" type="xs:nonNegativeInteger" />
+  <xs:element name="DocumentLockStatus" type="xs:boolean" />
+  <xs:element name="CreateMemoRequest" type="tns:CreateMemoRequestType" />
+  <xs:complexType name="CreateMemoRequestType">
+    <xs:sequence>
+      <xs:element xmlns:q30="http://www.traen.com/2007/04/01" minOccurs="0" maxOccurs="1" name="Memo" type="q30:MemoType" />
+      <xs:element minOccurs="0" maxOccurs="1" name="FileName" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="XMLBinary" type="xs:base64Binary" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="MemoId" type="xs:nonNegativeInteger" />
+  <xs:element xmlns:q31="http://www.traen.com/2007/04/01" name="Memo" type="q31:MemoType" />
+  <xs:element name="CaseId" type="xs:nonNegativeInteger" />
+  <xs:element name="UpdateMemoRequest" type="tns:UpdateMemoRequestType" />
+  <xs:complexType name="UpdateMemoRequestType">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="1" name="MemoId" type="xs:nonNegativeInteger" />
+      <xs:element xmlns:q32="http://www.traen.com/2007/04/01" minOccurs="0" maxOccurs="1" name="Memo" type="q32:MemoType" />
+      <xs:element minOccurs="0" maxOccurs="1" name="FileName" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="XMLBinary" type="xs:base64Binary" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="CaseIdentifier" type="xs:nonNegativeInteger" />
+  <xs:element xmlns:q33="http://www.traen.com/2007/04/01" name="MemoListResponse" type="q33:ArrayOfMemoType" />
+</xs:schema>

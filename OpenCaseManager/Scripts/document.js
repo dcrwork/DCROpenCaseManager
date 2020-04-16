@@ -36,8 +36,8 @@ $(document).ready(function () {
         var win = window.open(window.location.origin + "/File/DownloadFile?link=" + link, '_blank');
         win.focus();
     })
-    
-    
+
+
     $('body').on('click', '#addNewDocumentBtn', function () {
         initializeForm();
         $('#addNewDocumentModal').modal('toggle');
@@ -46,14 +46,14 @@ $(document).ready(function () {
         $('.instanceModalHeading').text(translations.AddDocument);
         $('#addDocument').text(translations.Add);
     })
-    
+
 });
 
 
 function deleteDocument(docId) {
     var query = {
         "Id": docId,
-        "Type": webPortalType+"Document",
+        "Type": webPortalType + "Document",
         "InstanceId": instanceId
     }
     API.service('records/deleteDocument', query)
@@ -182,16 +182,59 @@ function submitFilesDocuments() {
     }
 }
 
+function getAdjunktId(instanceId) {
+    if (window.location.pathname == '/ChildInstance') {
+        return App.getParameterByName("ChildId", window.location.href);
+    } else if (window.location.pathname == '/AdjunktInstance') {
+        return App.getParameterByName("AdjunktId", window.location.href);
+    } 
+
+    var query = {
+        "type": "SELECT",
+        "entity": "InstanceExtension",
+        "resultSet": ["ChildId"],
+        "filters": new Array(),
+        "order": []
+
+    }
+
+    var whereInstanceIdMatchesFilter = {
+        "column": "InstanceId",
+        "operator": "equal",
+        "value": instanceId,
+        "valueType": "int",
+        "logicalOperator": "and"
+    };
+    query.filters.push(whereInstanceIdMatchesFilter);
+
+    API.service('records', query)
+        .done(function (response) {
+            var result = JSON.parse(response);
+            var x = result[0];
+            return x["ChildId"];
+        })
+        .fail(function (e) {
+            App.showErrorMessage(e.responseJSON.ExceptionMessage);
+        });
+}
+
 function uploadFileDocuments(file, docId) {
+    if (instanceId == null)
+        instanceId = getParameterByName("id");
+
+    var adjunktId;
+    adjunktId = getAdjunktId(instanceId);
+
     if (isAdd && $('#documentName').val() != '') {
         $.ajax({
             url: window.location.origin + "/api/records/AddDocument",
             type: 'POST',
             headers: {
                 'filename': file.name,
-                'type': webPortalType+"Document",
+                'type': webPortalType + "Document",
                 'instanceId': instanceId,
-                'givenFileName': $('#documentName').val()
+                'givenFileName': $('#documentName').val(),
+                'childId': adjunktId
             },
             data: file,
             async: false,
@@ -216,9 +259,10 @@ function uploadFileDocuments(file, docId) {
             headers: {
                 'id': docId,
                 'filename': (file == null ? "" : file.name),
-                'type': webPortalType+"Document",
+                'type': webPortalType + "Document",
                 'instanceId': instanceId,
                 'givenFileName': $('#documentName').val(),
+                'childId': $('#childIdHidden').val(),
                 'isNewFileAdded': (file == null ? "false" : "true")
             },
             data: file,
@@ -254,22 +298,40 @@ function getDocuments() {
             {
                 "column": "Type",
                 "operator": "equal",
-                "value": webPortalType+"Document",
+                "value": webPortalType + "Document",
                 "valueType": "string",
                 "logicalOperator": "and"
             }
         ],
-        "resultSet": ["Id", "Title", "Link", "IsActive"],
+        "resultSet": ["Id", "Title", "Link", "IsActive", "UploadDate"],
         "order": [{ "column": "Title", "descending": false }]
     }
 
     switch (webPortalType) {
+        case 'PersonalDocument':
+            query.filters.push({
+                "column": "Responsible",
+                "operator": "equal",
+                "value": "$(loggedInUser)",
+                "valueType": "string"
+            });
+            break;
         case 'Personal':
             query.filters.push({
                 "column": "Responsible",
                 "operator": "equal",
                 "value": "$(loggedInUser)",
                 "valueType": "string"
+            });
+            break;
+        case 'InstanceDocument':
+            var x = instanceId;
+            query.filters.push({
+                "column": "InstanceId",
+                "operator": "equal",
+                "value": instanceId,
+                "valueType": "string"
+
             });
             break;
         case 'Instance':
@@ -281,11 +343,12 @@ function getDocuments() {
 
             });
             break;
+        
     }
-
+    
     API.service('records', query)
         .done(function (response) {
-            
+
             var result = JSON.parse(response)
             var list = "";
             if (result.length === 0)
@@ -293,10 +356,12 @@ function getDocuments() {
             else {
                 for (i = 0; i < result.length; i++) {
                     var item = result[i];
-
+                    var date = new Date(item.UploadDate);
+                    var dateString = date.getDate() + '/' + (date.getMonth() + 1) + '-' + date.getFullYear();
                     var returnHtml = '';
                     returnHtml = '<tr class="trStyleClass">' +
                         '<td style="display:none"> ' + item.Id + ' </td><td>' + GetIconType(item.Link) + '</td><td><a name="downloadDoc" href="#" documentLink="' + item.Link + '" documentId="' + item.Id + '" > ' + item.Title + '</a> </td><td>';
+                    returnHtml += dateString + ' </td><td>';
                     returnHtml += '<span documentId=' + item.Id + ' name="editDoc" value="editDoc" class="spanMUS floatLeftPro glyphicon glyphicon-edit" title="' + translations.Edit + '"></span> ';
                     returnHtml += '<span documentId=' + item.Id + ' name="deleteDoc" value="deleteDoc" class="spanMUS floatLeftPro glyphicon glyphicon-trash" title="' + translations.Delete + '"></span> ';
                     returnHtml += '</td>' + '</tr>';
@@ -327,42 +392,36 @@ function GetIconType(link) {
         case 'doc':
         case 'docx':
             return '<i title="Word" class="fa fa-file-word faIconStyling"></i>';
-            break;
         case 'ppt':
         case 'pptx':
             return '<i title="PowerPoint" class="fa fa-file-powerpoint faIconStyling"></i>';
-            break;
         case 'xls':
         case 'xlsx':
             return '<i title="Excel" class="fa fa-file-excel faIconStyling"></i>';
-            break;
         case 'pdf':
             return '<i title="PDF" class="fa fa-file-pdf faIconStyling"></i>';
-            break;
         case 'zip':
         case '7z':
         case 'rar':
             return '<i title="Compressed" class="fas fa-file-archive faIconStyling"></i>';
-            break;
         case 'png':
         case 'jpeg':
         case 'jpg':
             return '<i title="Image" class="fas fa-file-image faIconStyling"></i>';
-            break;
         case 'mp3':
             return '<i title="Audio" class="fa fa-file-audio faIconStyling"></i>';
-            break;
         case 'mp4':
         case 'wmv':
         case 'mkv':
         case 'avi':
             return '<i title="Video" class="fa fa-file-movie faIconStyling"></i>';
-            break;
         case 'txt':
             return '<i title="Text" class="fa fa-file-text faIconStyling"></i>';
-            break;
         default:
             return '<i title="Unknown Type" class="fas fa-file faIconStyling"></i>';
-            break;
     }
+}
+
+function GetDocumentLink(prefix, docId) {
+    return prefix + '/MainDocument/Details?documentId=' + docId;
 }

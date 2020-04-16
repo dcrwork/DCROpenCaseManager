@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://rep.oio.dk/cpr.dk/xml/schemas/core/2005/10/31/" elementFormDefault="qualified" targetNamespace="http://rep.oio.dk/cpr.dk/xml/schemas/core/2005/10/31/" id="schema13" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import namespace="http://rep.oio.dk/ebxml/xml/schemas/dkcc/2005/05/19/" />
+  <xs:element name="SecondaryPostalLabel" type="tns:SecondaryPostalLabelType" />
+  <xs:complexType name="SecondaryPostalLabelType">
+    <xs:sequence>
+      <xs:element xmlns:q1="http://rep.oio.dk/ebxml/xml/schemas/dkcc/2005/05/19/" minOccurs="0" maxOccurs="1" ref="q1:PostalAddressFirstLineText" />
+      <xs:element xmlns:q2="http://rep.oio.dk/ebxml/xml/schemas/dkcc/2005/05/19/" minOccurs="0" maxOccurs="1" ref="q2:PostalAddressSecondLineText" />
+      <xs:element xmlns:q3="http://rep.oio.dk/ebxml/xml/schemas/dkcc/2005/05/19/" minOccurs="0" maxOccurs="1" ref="q3:PostalAddressThirdLineText" />
+      <xs:element xmlns:q4="http://rep.oio.dk/ebxml/xml/schemas/dkcc/2005/05/19/" minOccurs="0" maxOccurs="1" ref="q4:PostalAddressFourthLineText" />
+      <xs:element xmlns:q5="http://rep.oio.dk/ebxml/xml/schemas/dkcc/2005/05/19/" minOccurs="0" maxOccurs="1" ref="q5:PostalAddressFifthLineText" />
+      <xs:element xmlns:q6="http://rep.oio.dk/ebxml/xml/schemas/dkcc/2005/05/19/" minOccurs="0" maxOccurs="1" ref="q6:PostalAddressSixthLineText" />
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>

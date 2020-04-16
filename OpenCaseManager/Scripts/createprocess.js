@@ -23,11 +23,13 @@
 
     setProcess();
 
-    
+
     $('#create-process').on('click', function (e) {
-        var title = $('#process-title').val();
+        var title = $('#process-title').val().trim();
         var graphId = $('#processes').find(":selected").val();
-        var childId = (window.location.pathname.toLowerCase() == "/child") ? App.getParameterByName("id", window.location.href) : null;
+        var childId = (window.location.pathname.toLowerCase() == "/adjunkt") ? App.getParameterByName("id", window.location.href) : null;
+        var caseNumberIdentifier = $('#Case-Number-Identifier').text();
+        var caseId = $('#CaseId').text();
 
         var userRoles = new Array()
         $('select[name="multi-select"]').each(function (index, select) {
@@ -39,9 +41,9 @@
             if (userRole.userId !== '')
                 userRoles.push(userRole)
         })
-        
+
         if (title !== '' && graphId > 0) {
-            App.addInstance(title, graphId, userRoles, childId);
+            App.addInstance(title, graphId, userRoles, true, childId, caseNumberIdentifier, caseId);
             $('#create-process-modal').modal('toggle');
         }
         else {

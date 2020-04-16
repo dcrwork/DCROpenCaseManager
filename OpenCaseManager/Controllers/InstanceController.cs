@@ -20,5 +20,15 @@ namespace OpenCaseManager.Controllers
         {
             return View();
         }
+
+        public ActionResult MyActivities()
+        {
+            return View();
+        }
+
+        public ActionResult SyncEvents()
+        {
+            return View();
+        }
     }
 }

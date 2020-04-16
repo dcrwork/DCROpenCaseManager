@@ -1,8 +1,22 @@
-﻿.containerChildren {
+﻿:root {
+    --header-color: var(--main-color);
+}
+
+.containerChildren {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     margin: 40px 60px 0px 60px;
+}
+
+#myChildrenTabsBox {
+    margin-right:60px;
+    width: 900px;
+}
+
+.tag {
+    width: fit-content;
+    padding: 0px 5px 0px 5px;
 }
 
 .pendingActivitiesBox {
@@ -14,7 +28,7 @@
 }
 
 .childrenHeader {
-    background: #9C1A5E;
+    background: var(--header-color);
     color: #fff;
     font-weight: lighter;
     margin-bottom: 20px;
@@ -23,4 +37,15 @@
 .headline {
     margin-top: 42px !important;
     margin-bottom: 20px !important;
+}
+
+.lineHeightStyling {
+    line-height : 2.5em;
+}
+.marginBtm30 {
+    margin-bottom : 30px;
+}
+
+.maxWidth95 {
+    max-width: 95px;
 }

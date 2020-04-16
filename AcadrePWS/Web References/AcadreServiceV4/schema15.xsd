@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://rep.oio.dk/cvr.dk/xml/schemas/2005/03/22/" elementFormDefault="qualified" targetNamespace="http://rep.oio.dk/cvr.dk/xml/schemas/2005/03/22/" id="schema15" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="ProductionUnitIdentifier" type="xs:string" />
+  <xs:element name="CVRnumberIdentifier" type="xs:string" />
+</xs:schema>

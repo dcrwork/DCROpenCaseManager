@@ -1,74 +1,9 @@
-﻿<style>
-    .pendingActivitiesTable {
-        border: solid 1px #EFEFEF;
-        width: 230px;
-    }
-
-    .pendingActivitiesTableHeader {
-        background: #9C1A5E;
-        color: #fff;
-        font-weight: lighter;
-    }
-
-    .pendingActivitiesTableBody {
-        display: block;
-        overflow: auto;
-        max-height: 184px;
-    }
-
-        .pendingActivitiesTableBody td:last-child {
-            width: 100%;
-        }
-
-        .pendingActivitiesTableBody td {
-            overflow: hidden;
-        }
-
-    /* Tooltip container */
-    .tooltipTip {
-        display: inline;
-    }
-
-    .tooltipTip-wrapper {
-        width: 25%;
-        position: absolute;
-        visibility: hidden;
-        margin: 40px 20px;
-    }
-
-    .tooltipTip:hover .tooltipTip-wrapper {
-        visibility: visible;
-        opacity: 1;
-    }
-
-    .tooltipTiptext {
-        display: block;
-        position: absolute;
-        bottom: 125%;
-        padding: 10px;
-        color: #4a4a4a;
-        text-align: center;
-        border: none;
-        border-radius: 5px;
-        background: #EFEFEF;
-    }
-
-        .tooltipTiptext::after {
-            content: "";
-            position: absolute;
-            top: 43%;
-            left: 0%;
-            margin-left: -10px;
-            border-width: 5px;
-            border-style: solid;
-            border-color: transparent #EFEFEF transparent transparent;
-        }
-</style>
+﻿<link rel="stylesheet" href="~/Content/PartialViews.css" type="text/css" />
 
 <table class="table pendingActivitiesTable table-striped">
     <thead class="pendingActivitiesTableHeader">
         <tr>
-            <th colspan="2">Aktiviteter der har brug for din opmærksomhed</th>
+            <th colspan="2"><span data-locale data-apply="text" data-key="PendingActivities"></span></th>
         </tr>
     </thead>
     <tbody class="pendingActivitiesTableBody"></tbody>
@@ -105,7 +40,7 @@
                 fillPendingActivitiesTable(result);
             })
             .fail(function (e) {
-                reject(e);
+                App.showExceptionErrorMessage(e);
             });
     });
 
@@ -122,7 +57,7 @@
     }
 
     function getPendingActivityHtml(item) {
-        var instanceLink = "../ChildInstance?id=" + item.InstanceId;
+        var instanceLink = "../AdjunktInstance?id=" + item.InstanceId;
 
         var returnHtml = "<tr class='trStyleClass'><td width='16px'><img src='../Content/Images/priorityicon.svg' height='16' width='16'/></td>";
 

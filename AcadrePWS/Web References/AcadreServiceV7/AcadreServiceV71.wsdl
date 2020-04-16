@@ -1,71 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
-<wsdl:definitions xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:tns="http://traen.com/Services/AcadreService" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:i0="http://www.traen.com/2010/06/01" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:i1="http://www.traen.com/2010/06/01/schema" targetNamespace="http://traen.com/Services/AcadreService" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
-  <wsdl:import namespace="http://www.traen.com/2010/06/01" location="http://esdhtest2/acadre/Acadre.CM.PublicServices.soapauth/AcadreServiceV7.asmx?wsdl=wsdl1" />
-  <wsdl:import namespace="http://www.traen.com/2010/06/01/schema" location="http://esdhtest2/acadre/Acadre.CM.PublicServices.soapauth/AcadreServiceV7.asmx?wsdl=wsdl2" />
+<wsdl:definitions xmlns:i0="http://www.traen.com/2010/06/01" xmlns:i1="http://www.traen.com/2010/06/01/schema" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://traen.com/Services/AcadreService" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://traen.com/Services/AcadreService" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:import namespace="http://www.traen.com/2010/06/01" location="http://esdhtest2/acadre/Acadre.CM.PublicServices/SoapAuth/AcadreServiceV7.asmx?wsdl=wsdl1" />
+  <wsdl:import namespace="http://www.traen.com/2010/06/01/schema" location="http://esdhtest2/acadre/Acadre.CM.PublicServices/SoapAuth/AcadreServiceV7.asmx?wsdl=wsdl2" />
   <wsdl:types>
     <s:schema targetNamespace="http://traen.com/Services/AcadreService">
-      <s:import schemaLocation="http://esdhtest2/acadre/Acadre.CM.PublicServices.soapauth/AcadreServiceV7.asmx?schema=schema1" namespace="http://www.traen.com/2007/11/01" />
-      <s:import schemaLocation="http://esdhtest2/acadre/Acadre.CM.PublicServices.soapauth/AcadreServiceV7.asmx?schema=schema2" namespace="http://rep.oio.dk/fesd.dk/xml/schemas/2005/10/26/" />
-      <s:import schemaLocation="http://esdhtest2/acadre/Acadre.CM.PublicServices.soapauth/AcadreServiceV7.asmx?schema=schema3" namespace="http://rep.oio.dk/xkom.dk/xml/schemas/2005/05/13/" />
-      <s:import schemaLocation="http://esdhtest2/acadre/Acadre.CM.PublicServices.soapauth/AcadreServiceV7.asmx?schema=schema4" namespace="http://rep.oio.dk/xkom.dk/xml/schemas/2005/03/15/" />
-      <s:import schemaLocation="http://esdhtest2/acadre/Acadre.CM.PublicServices.soapauth/AcadreServiceV7.asmx?schema=schema5" namespace="http://rep.oio.dk/cpr.dk/xml/schemas/core/2005/03/18/" />
-      <s:import schemaLocation="http://esdhtest2/acadre/Acadre.CM.PublicServices.soapauth/AcadreServiceV7.asmx?schema=schema6" namespace="http://rep.oio.dk/ebxml/xml/schemas/dkcc/2003/02/13/" />
-      <s:import schemaLocation="http://esdhtest2/acadre/Acadre.CM.PublicServices.soapauth/AcadreServiceV7.asmx?schema=schema7" namespace="http://rep.oio.dk/ebxml/xml/schemas/dkcc/2005/03/15/" />
-      <s:import schemaLocation="http://esdhtest2/acadre/Acadre.CM.PublicServices.soapauth/AcadreServiceV7.asmx?schema=schema8" namespace="http://rep.oio.dk/ebxml/xml/schemas/dkcc/2005/05/13/" />
-      <s:import schemaLocation="http://esdhtest2/acadre/Acadre.CM.PublicServices.soapauth/AcadreServiceV7.asmx?schema=schema9" namespace="http://www.traen.com/2007/04/01" />
-      <s:import schemaLocation="http://esdhtest2/acadre/Acadre.CM.PublicServices.soapauth/AcadreServiceV7.asmx?schema=schema10" namespace="http://rep.oio.dk/itst.dk/xml/schemas/2005/09/01/" />
-      <s:import schemaLocation="http://esdhtest2/acadre/Acadre.CM.PublicServices.soapauth/AcadreServiceV7.asmx?schema=schema11" namespace="http://rep.oio.dk/ebxml/xml/schemas/dkcc/2005/09/01/" />
-      <s:import schemaLocation="http://esdhtest2/acadre/Acadre.CM.PublicServices.soapauth/AcadreServiceV7.asmx?schema=schema12" namespace="http://rep.oio.dk/cpr.dk/xml/schemas/core/2005/10/31/" />
-      <s:import schemaLocation="http://esdhtest2/acadre/Acadre.CM.PublicServices.soapauth/AcadreServiceV7.asmx?schema=schema13" namespace="http://rep.oio.dk/ebxml/xml/schemas/dkcc/2005/05/19/" />
-      <s:import schemaLocation="http://esdhtest2/acadre/Acadre.CM.PublicServices.soapauth/AcadreServiceV7.asmx?schema=schema14" namespace="http://rep.oio.dk/cvr.dk/xml/schemas/2005/03/22/" />
-      <s:import schemaLocation="http://esdhtest2/acadre/Acadre.CM.PublicServices.soapauth/AcadreServiceV7.asmx?schema=schema15" namespace="http://rep.oio.dk/itst.dk/xml/schemas/2005/02/22/" />
-      <s:import schemaLocation="http://esdhtest2/acadre/Acadre.CM.PublicServices.soapauth/AcadreServiceV7.asmx?schema=schema16" namespace="http://www.traen.com/2010/06/01" />
-      <s:import schemaLocation="http://esdhtest2/acadre/Acadre.CM.PublicServices.soapauth/AcadreServiceV7.asmx?schema=schema17" namespace="http://rep.oio.dk/kms.dk/xml/schemas/2005/03/11/" />
-      <s:import schemaLocation="http://esdhtest2/acadre/Acadre.CM.PublicServices.soapauth/AcadreServiceV7.asmx?schema=schema18" namespace="http://rep.oio.dk/ebxml/xml/schemas/dkcc/2005/05/09/" />
-      <s:import schemaLocation="http://esdhtest2/acadre/Acadre.CM.PublicServices.soapauth/AcadreServiceV7.asmx?schema=schema19" namespace="http://www.traen.com/2007/11/02/schema" />
-      <s:import schemaLocation="http://esdhtest2/acadre/Acadre.CM.PublicServices.soapauth/AcadreServiceV7.asmx?schema=schema20" namespace="http://www.traen.com/2008/08/20" />
-      <s:import schemaLocation="http://esdhtest2/acadre/Acadre.CM.PublicServices.soapauth/AcadreServiceV7.asmx?schema=schema21" namespace="http://www.traen.com/2006/08/01/case" />
-      <s:import schemaLocation="http://esdhtest2/acadre/Acadre.CM.PublicServices.soapauth/AcadreServiceV7.asmx?schema=schema22" namespace="http://www.traen.com/2008/01/30" />
-      <s:import schemaLocation="http://esdhtest2/acadre/Acadre.CM.PublicServices.soapauth/AcadreServiceV7.asmx?schema=schema23" namespace="http://www.traen.com/2008/01/20" />
-      <s:import schemaLocation="http://esdhtest2/acadre/Acadre.CM.PublicServices.soapauth/AcadreServiceV7.asmx?schema=schema24" namespace="http://www.traen.com/2007/09/06/schema" />
+      <s:import schemaLocation="http://esdhtest2/acadre/Acadre.CM.PublicServices/SoapAuth/AcadreServiceV7.asmx?schema=schema1" namespace="http://www.traen.com/2007/11/01" />
+      <s:import schemaLocation="http://esdhtest2/acadre/Acadre.CM.PublicServices/SoapAuth/AcadreServiceV7.asmx?schema=schema2" namespace="http://rep.oio.dk/fesd.dk/xml/schemas/2005/10/26/" />
+      <s:import schemaLocation="http://esdhtest2/acadre/Acadre.CM.PublicServices/SoapAuth/AcadreServiceV7.asmx?schema=schema3" namespace="http://rep.oio.dk/xkom.dk/xml/schemas/2005/05/13/" />
+      <s:import schemaLocation="http://esdhtest2/acadre/Acadre.CM.PublicServices/SoapAuth/AcadreServiceV7.asmx?schema=schema4" namespace="http://rep.oio.dk/xkom.dk/xml/schemas/2005/03/15/" />
+      <s:import schemaLocation="http://esdhtest2/acadre/Acadre.CM.PublicServices/SoapAuth/AcadreServiceV7.asmx?schema=schema5" namespace="http://rep.oio.dk/cpr.dk/xml/schemas/core/2005/03/18/" />
+      <s:import schemaLocation="http://esdhtest2/acadre/Acadre.CM.PublicServices/SoapAuth/AcadreServiceV7.asmx?schema=schema6" namespace="http://rep.oio.dk/ebxml/xml/schemas/dkcc/2003/02/13/" />
+      <s:import schemaLocation="http://esdhtest2/acadre/Acadre.CM.PublicServices/SoapAuth/AcadreServiceV7.asmx?schema=schema7" namespace="http://rep.oio.dk/ebxml/xml/schemas/dkcc/2005/03/15/" />
+      <s:import schemaLocation="http://esdhtest2/acadre/Acadre.CM.PublicServices/SoapAuth/AcadreServiceV7.asmx?schema=schema8" namespace="http://rep.oio.dk/ebxml/xml/schemas/dkcc/2005/05/13/" />
+      <s:import schemaLocation="http://esdhtest2/acadre/Acadre.CM.PublicServices/SoapAuth/AcadreServiceV7.asmx?schema=schema9" namespace="http://www.traen.com/2007/04/01" />
+      <s:import schemaLocation="http://esdhtest2/acadre/Acadre.CM.PublicServices/SoapAuth/AcadreServiceV7.asmx?schema=schema10" namespace="http://rep.oio.dk/itst.dk/xml/schemas/2005/09/01/" />
+      <s:import schemaLocation="http://esdhtest2/acadre/Acadre.CM.PublicServices/SoapAuth/AcadreServiceV7.asmx?schema=schema11" namespace="http://rep.oio.dk/ebxml/xml/schemas/dkcc/2005/09/01/" />
+      <s:import schemaLocation="http://esdhtest2/acadre/Acadre.CM.PublicServices/SoapAuth/AcadreServiceV7.asmx?schema=schema12" namespace="http://rep.oio.dk/cpr.dk/xml/schemas/core/2005/10/31/" />
+      <s:import schemaLocation="http://esdhtest2/acadre/Acadre.CM.PublicServices/SoapAuth/AcadreServiceV7.asmx?schema=schema13" namespace="http://rep.oio.dk/ebxml/xml/schemas/dkcc/2005/05/19/" />
+      <s:import schemaLocation="http://esdhtest2/acadre/Acadre.CM.PublicServices/SoapAuth/AcadreServiceV7.asmx?schema=schema14" namespace="http://rep.oio.dk/cvr.dk/xml/schemas/2005/03/22/" />
+      <s:import schemaLocation="http://esdhtest2/acadre/Acadre.CM.PublicServices/SoapAuth/AcadreServiceV7.asmx?schema=schema15" namespace="http://rep.oio.dk/itst.dk/xml/schemas/2005/02/22/" />
+      <s:import schemaLocation="http://esdhtest2/acadre/Acadre.CM.PublicServices/SoapAuth/AcadreServiceV7.asmx?schema=schema16" namespace="http://www.traen.com/2010/06/01" />
+      <s:import schemaLocation="http://esdhtest2/acadre/Acadre.CM.PublicServices/SoapAuth/AcadreServiceV7.asmx?schema=schema17" namespace="http://rep.oio.dk/kms.dk/xml/schemas/2005/03/11/" />
+      <s:import schemaLocation="http://esdhtest2/acadre/Acadre.CM.PublicServices/SoapAuth/AcadreServiceV7.asmx?schema=schema18" namespace="http://rep.oio.dk/ebxml/xml/schemas/dkcc/2005/05/09/" />
+      <s:import schemaLocation="http://esdhtest2/acadre/Acadre.CM.PublicServices/SoapAuth/AcadreServiceV7.asmx?schema=schema19" namespace="http://www.traen.com/2007/11/02/schema" />
+      <s:import schemaLocation="http://esdhtest2/acadre/Acadre.CM.PublicServices/SoapAuth/AcadreServiceV7.asmx?schema=schema20" namespace="http://www.traen.com/2008/08/20" />
+      <s:import schemaLocation="http://esdhtest2/acadre/Acadre.CM.PublicServices/SoapAuth/AcadreServiceV7.asmx?schema=schema21" namespace="http://www.traen.com/2006/08/01/case" />
+      <s:import schemaLocation="http://esdhtest2/acadre/Acadre.CM.PublicServices/SoapAuth/AcadreServiceV7.asmx?schema=schema22" namespace="http://www.traen.com/2008/01/30" />
+      <s:import schemaLocation="http://esdhtest2/acadre/Acadre.CM.PublicServices/SoapAuth/AcadreServiceV7.asmx?schema=schema23" namespace="http://www.traen.com/2008/01/20" />
+      <s:import schemaLocation="http://esdhtest2/acadre/Acadre.CM.PublicServices/SoapAuth/AcadreServiceV7.asmx?schema=schema24" namespace="http://www.traen.com/2007/09/06/schema" />
     </s:schema>
   </wsdl:types>
   <wsdl:service name="AcadreServiceV7">
     <wsdl:port name="ContactService7" binding="i0:ContactService7">
-      <soap:address location="http://esdhtest2/acadre/Acadre.CM.PublicServices.soapauth/AcadreServiceV7.asmx" />
+      <soap:address location="http://esdhtest2/acadre/Acadre.CM.PublicServices/SoapAuth/AcadreServiceV7.asmx" />
     </wsdl:port>
     <wsdl:port name="AdvancedMultiCaseService7" binding="i1:AdvancedMultiCaseService7">
-      <soap:address location="http://esdhtest2/acadre/Acadre.CM.PublicServices.soapauth/AcadreServiceV7.asmx" />
+      <soap:address location="http://esdhtest2/acadre/Acadre.CM.PublicServices/SoapAuth/AcadreServiceV7.asmx" />
     </wsdl:port>
     <wsdl:port name="CaseService7" binding="i1:CaseService7">
-      <soap:address location="http://esdhtest2/acadre/Acadre.CM.PublicServices.soapauth/AcadreServiceV7.asmx" />
+      <soap:address location="http://esdhtest2/acadre/Acadre.CM.PublicServices/SoapAuth/AcadreServiceV7.asmx" />
     </wsdl:port>
     <wsdl:port name="ConfigurationService7" binding="i1:ConfigurationService7">
-      <soap:address location="http://esdhtest2/acadre/Acadre.CM.PublicServices.soapauth/AcadreServiceV7.asmx" />
+      <soap:address location="http://esdhtest2/acadre/Acadre.CM.PublicServices/SoapAuth/AcadreServiceV7.asmx" />
     </wsdl:port>
     <wsdl:port name="MemoService7" binding="i0:MemoService7">
-      <soap:address location="http://esdhtest2/acadre/Acadre.CM.PublicServices.soapauth/AcadreServiceV7.asmx" />
+      <soap:address location="http://esdhtest2/acadre/Acadre.CM.PublicServices/SoapAuth/AcadreServiceV7.asmx" />
     </wsdl:port>
     <wsdl:port name="MainDocumentService7" binding="i1:MainDocumentService7">
-      <soap:address location="http://esdhtest2/acadre/Acadre.CM.PublicServices.soapauth/AcadreServiceV7.asmx" />
+      <soap:address location="http://esdhtest2/acadre/Acadre.CM.PublicServices/SoapAuth/AcadreServiceV7.asmx" />
     </wsdl:port>
     <wsdl:port name="ContactService71" binding="i0:ContactService71">
-      <soap12:address location="http://esdhtest2/acadre/Acadre.CM.PublicServices.soapauth/AcadreServiceV7.asmx" />
+      <soap12:address location="http://esdhtest2/acadre/Acadre.CM.PublicServices/SoapAuth/AcadreServiceV7.asmx" />
     </wsdl:port>
     <wsdl:port name="AdvancedMultiCaseService71" binding="i1:AdvancedMultiCaseService71">
-      <soap12:address location="http://esdhtest2/acadre/Acadre.CM.PublicServices.soapauth/AcadreServiceV7.asmx" />
+      <soap12:address location="http://esdhtest2/acadre/Acadre.CM.PublicServices/SoapAuth/AcadreServiceV7.asmx" />
     </wsdl:port>
     <wsdl:port name="CaseService71" binding="i1:CaseService71">
-      <soap12:address location="http://esdhtest2/acadre/Acadre.CM.PublicServices.soapauth/AcadreServiceV7.asmx" />
+      <soap12:address location="http://esdhtest2/acadre/Acadre.CM.PublicServices/SoapAuth/AcadreServiceV7.asmx" />
     </wsdl:port>
     <wsdl:port name="ConfigurationService71" binding="i1:ConfigurationService71">
-      <soap12:address location="http://esdhtest2/acadre/Acadre.CM.PublicServices.soapauth/AcadreServiceV7.asmx" />
+      <soap12:address location="http://esdhtest2/acadre/Acadre.CM.PublicServices/SoapAuth/AcadreServiceV7.asmx" />
     </wsdl:port>
     <wsdl:port name="MemoService71" binding="i0:MemoService71">
-      <soap12:address location="http://esdhtest2/acadre/Acadre.CM.PublicServices.soapauth/AcadreServiceV7.asmx" />
+      <soap12:address location="http://esdhtest2/acadre/Acadre.CM.PublicServices/SoapAuth/AcadreServiceV7.asmx" />
     </wsdl:port>
     <wsdl:port name="MainDocumentService71" binding="i1:MainDocumentService71">
-      <soap12:address location="http://esdhtest2/acadre/Acadre.CM.PublicServices.soapauth/AcadreServiceV7.asmx" />
+      <soap12:address location="http://esdhtest2/acadre/Acadre.CM.PublicServices/SoapAuth/AcadreServiceV7.asmx" />
     </wsdl:port>
   </wsdl:service>
 </wsdl:definitions>

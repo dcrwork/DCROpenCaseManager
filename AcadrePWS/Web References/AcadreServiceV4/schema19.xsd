@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://rep.oio.dk/ebxml/xml/schemas/dkcc/2005/05/09/" elementFormDefault="qualified" targetNamespace="http://rep.oio.dk/ebxml/xml/schemas/dkcc/2005/05/09/" id="schema19" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="BuildingIdentifier" type="xs:string" />
+</xs:schema>

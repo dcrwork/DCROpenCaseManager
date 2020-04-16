@@ -8,11 +8,11 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace AcadrePWS.Properties {
+namespace AcadreLib.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "15.5.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "15.9.0.0")]
     internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
@@ -25,46 +25,31 @@ namespace AcadrePWS.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://esdhtest2/acadre/Acadre.CM.PublicServices.SoapAuth/AcadreServiceV7.asmx")]
-        public string AcadrePWS_AcadreServiceV7_AcadreServiceV7 {
+        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.WebServiceUrl)]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://esdhtest2/acadre/Acadre.CM.PublicServices/SoapAuth/AcadreServiceV7.asmx")]
+        public string AcadreLib_AcadreServiceV7_AcadreServiceV7 {
             get {
-                return ((string)(this["AcadrePWS_AcadreServiceV7_AcadreServiceV7"]));
+                return ((string)(this["AcadreLib_AcadreServiceV7_AcadreServiceV7"]));
             }
         }
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://esdhwebtest2:8083/Frontend/CM")]
-        public string AcadreFrontEndBaseURL {
+        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.WebServiceUrl)]
+        [global::System.Configuration.DefaultSettingValueAttribute("https://cprbroker.syddjurs.dk/services/Part.asmx")]
+        public string AcadreLib_CPRBroker_Part {
             get {
-                return ((string)(this["AcadreFrontEndBaseURL"]));
+                return ((string)(this["AcadreLib_CPRBroker_Part"]));
             }
         }
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("esdhtest3")]
-        public string PWSServiceUserName {
+        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.WebServiceUrl)]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://esdhtest2/acadre/Acadre.CM.PublicServices/soapAuth/AcadreServiceV4.asmx")]
+        public string AcadreLib_AcadreServiceV4_AcadreServiceV4 {
             get {
-                return ((string)(this["PWSServiceUserName"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("password")]
-        public string PWSServiceUserPassword {
-            get {
-                return ((string)(this["PWSServiceUserPassword"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("syddjursnet")]
-        public string PWSServiceUserDomain {
-            get {
-                return ((string)(this["PWSServiceUserDomain"]));
+                return ((string)(this["AcadreLib_AcadreServiceV4_AcadreServiceV4"]));
             }
         }
     }

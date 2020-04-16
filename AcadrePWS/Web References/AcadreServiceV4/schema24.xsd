@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://www.traen.com/2008/01/30" elementFormDefault="qualified" targetNamespace="http://www.traen.com/2008/01/30" id="schema24" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import namespace="http://www.traen.com/2007/04/01" />
+  <xs:complexType name="CaseFileType2">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q1="http://www.traen.com/2007/04/01" base="q1:CaseFileType1">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="1" name="MultiCaseId" type="xs:integer" />
+          <xs:element minOccurs="0" maxOccurs="1" name="NumberOfMemos" type="xs:integer" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+</xs:schema>

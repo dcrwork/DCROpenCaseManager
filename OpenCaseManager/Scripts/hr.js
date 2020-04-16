@@ -288,9 +288,9 @@ function treeGridHTML(id, parentId, itemText, newItemParent) {
     var parentClassName = newItemParent != undefined ? 'newItem' : 'isParent';
     var html = '';
     if (parentId == null)
-        html = '<tr id=' + id + ' class="' + parentClassName + ' treegrid-' + id + '"><td><span questionId=' + id + ' class="title-question">' + itemText + '</span><span class="Questions-actions"><img questionId=' + id + ' class="addQuestion addQuestion-' + id + '" src="../content/images/addNewQuestion.png"><img questionId=' + id + ' class="deleteQuestion deleteQuestion-' + id + '" src="../content/images/delete-question.png" /></span></td></tr>';
+        html = '<tr id=' + id + ' class="' + parentClassName + ' treegrid-' + id + '"><td><span questionId=' + id + ' class="title-question">' + itemText + '</span><span class="Questions-actions"><img questionId=' + id + ' class="backgroundImagesCss  addQuestion addQuestion-' + id + '" src=""><img questionId=' + id + ' class="backgroundDeleteImagesCss deleteQuestion deleteQuestion-' + id + '" src="" /></span></td></tr>';
     else
-        html = '<tr id=' + id + ' class="isChild treegrid-' + id + ' treegrid-parent-' + parentId + '" > <td><span questionId=' + id + ' class="title-question">' + itemText + '</span><span class="Questions-actions"><img questionId=' + id + ' class="deleteQuestion deleteQuestion-' + id + '"" src="../content/images/delete-question.png" /></span></td></tr>';
+        html = '<tr id=' + id + ' class="isChild treegrid-' + id + ' treegrid-parent-' + parentId + '" > <td><span questionId=' + id + ' class="title-question">' + itemText + '</span><span class="Questions-actions"><img questionId=' + id + ' class="backgroundDeleteImagesCss deleteQuestion deleteQuestion-' + id + '"" src="" /></span></td></tr>';
     return html;
 }
 

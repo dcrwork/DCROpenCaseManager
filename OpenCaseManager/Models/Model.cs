@@ -9,5 +9,6 @@ namespace OpenCaseManager.Models
     {
         public string GraphId { get; set; }
         public string Title { get; set; }
+        public string InstanceId { get; set; }
     }
 }

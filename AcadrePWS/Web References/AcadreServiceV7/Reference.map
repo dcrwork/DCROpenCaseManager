@@ -1,33 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<DiscoveryClientResultsFile xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<DiscoveryClientResultsFile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <Results>
-    <DiscoveryClientResult referenceType="System.Web.Services.Discovery.SchemaReference" url="http://esdhtest2/acadre/Acadre.CM.PublicServices.soapauth/AcadreServiceV7.asmx?schema=schema19" filename="schema19.xsd" />
-    <DiscoveryClientResult referenceType="System.Web.Services.Discovery.SchemaReference" url="http://esdhtest2/acadre/Acadre.CM.PublicServices.soapauth/AcadreServiceV7.asmx?schema=schema18" filename="schema18.xsd" />
-    <DiscoveryClientResult referenceType="System.Web.Services.Discovery.ContractReference" url="http://esdhtest2/acadre/Acadre.CM.PublicServices.soapauth/AcadreServiceV7.asmx?wsdl=wsdl1" filename="AcadreServiceV7.wsdl" />
-    <DiscoveryClientResult referenceType="System.Web.Services.Discovery.ContractReference" url="http://esdhtest2/acadre/Acadre.CM.PublicServices.soapauth/AcadreServiceV7.asmx?wsdl=wsdl2" filename="AcadreServiceV70.wsdl" />
-    <DiscoveryClientResult referenceType="System.Web.Services.Discovery.SchemaReference" url="http://esdhtest2/acadre/Acadre.CM.PublicServices.soapauth/AcadreServiceV7.asmx?schema=schema5" filename="schema5.xsd" />
-    <DiscoveryClientResult referenceType="System.Web.Services.Discovery.SchemaReference" url="http://esdhtest2/acadre/Acadre.CM.PublicServices.soapauth/AcadreServiceV7.asmx?schema=schema4" filename="schema4.xsd" />
-    <DiscoveryClientResult referenceType="System.Web.Services.Discovery.SchemaReference" url="http://esdhtest2/acadre/Acadre.CM.PublicServices.soapauth/AcadreServiceV7.asmx?schema=schema7" filename="schema7.xsd" />
-    <DiscoveryClientResult referenceType="System.Web.Services.Discovery.SchemaReference" url="http://esdhtest2/acadre/Acadre.CM.PublicServices.soapauth/AcadreServiceV7.asmx?schema=schema6" filename="schema6.xsd" />
-    <DiscoveryClientResult referenceType="System.Web.Services.Discovery.SchemaReference" url="http://esdhtest2/acadre/Acadre.CM.PublicServices.soapauth/AcadreServiceV7.asmx?schema=schema1" filename="schema1.xsd" />
-    <DiscoveryClientResult referenceType="System.Web.Services.Discovery.SchemaReference" url="http://esdhtest2/acadre/Acadre.CM.PublicServices.soapauth/AcadreServiceV7.asmx?schema=schema3" filename="schema3.xsd" />
-    <DiscoveryClientResult referenceType="System.Web.Services.Discovery.SchemaReference" url="http://esdhtest2/acadre/Acadre.CM.PublicServices.soapauth/AcadreServiceV7.asmx?schema=schema2" filename="schema2.xsd" />
-    <DiscoveryClientResult referenceType="System.Web.Services.Discovery.SchemaReference" url="http://esdhtest2/acadre/Acadre.CM.PublicServices.soapauth/AcadreServiceV7.asmx?schema=schema9" filename="schema9.xsd" />
-    <DiscoveryClientResult referenceType="System.Web.Services.Discovery.SchemaReference" url="http://esdhtest2/acadre/Acadre.CM.PublicServices.soapauth/AcadreServiceV7.asmx?schema=schema8" filename="schema8.xsd" />
-    <DiscoveryClientResult referenceType="System.Web.Services.Discovery.SchemaReference" url="http://esdhtest2/acadre/Acadre.CM.PublicServices.soapauth/AcadreServiceV7.asmx?schema=schema15" filename="schema15.xsd" />
-    <DiscoveryClientResult referenceType="System.Web.Services.Discovery.SchemaReference" url="http://esdhtest2/acadre/Acadre.CM.PublicServices.soapauth/AcadreServiceV7.asmx?schema=schema14" filename="schema14.xsd" />
-    <DiscoveryClientResult referenceType="System.Web.Services.Discovery.DiscoveryDocumentReference" url="http://esdhtest2/acadre/Acadre.CM.PublicServices.soapauth/AcadreServiceV7.asmx?disco" filename="AcadreServiceV7.disco" />
-    <DiscoveryClientResult referenceType="System.Web.Services.Discovery.SchemaReference" url="http://esdhtest2/acadre/Acadre.CM.PublicServices.soapauth/AcadreServiceV7.asmx?schema=schema24" filename="schema24.xsd" />
-    <DiscoveryClientResult referenceType="System.Web.Services.Discovery.ContractReference" url="http://esdhtest2/acadre/Acadre.CM.PublicServices.soapauth/AcadreServiceV7.asmx?wsdl" filename="AcadreServiceV71.wsdl" />
-    <DiscoveryClientResult referenceType="System.Web.Services.Discovery.SchemaReference" url="http://esdhtest2/acadre/Acadre.CM.PublicServices.soapauth/AcadreServiceV7.asmx?schema=schema11" filename="schema11.xsd" />
-    <DiscoveryClientResult referenceType="System.Web.Services.Discovery.SchemaReference" url="http://esdhtest2/acadre/Acadre.CM.PublicServices.soapauth/AcadreServiceV7.asmx?schema=schema22" filename="schema22.xsd" />
-    <DiscoveryClientResult referenceType="System.Web.Services.Discovery.SchemaReference" url="http://esdhtest2/acadre/Acadre.CM.PublicServices.soapauth/AcadreServiceV7.asmx?schema=schema10" filename="schema10.xsd" />
-    <DiscoveryClientResult referenceType="System.Web.Services.Discovery.SchemaReference" url="http://esdhtest2/acadre/Acadre.CM.PublicServices.soapauth/AcadreServiceV7.asmx?schema=schema21" filename="schema21.xsd" />
-    <DiscoveryClientResult referenceType="System.Web.Services.Discovery.SchemaReference" url="http://esdhtest2/acadre/Acadre.CM.PublicServices.soapauth/AcadreServiceV7.asmx?schema=schema17" filename="schema17.xsd" />
-    <DiscoveryClientResult referenceType="System.Web.Services.Discovery.SchemaReference" url="http://esdhtest2/acadre/Acadre.CM.PublicServices.soapauth/AcadreServiceV7.asmx?schema=schema20" filename="schema20.xsd" />
-    <DiscoveryClientResult referenceType="System.Web.Services.Discovery.SchemaReference" url="http://esdhtest2/acadre/Acadre.CM.PublicServices.soapauth/AcadreServiceV7.asmx?schema=schema12" filename="schema12.xsd" />
-    <DiscoveryClientResult referenceType="System.Web.Services.Discovery.SchemaReference" url="http://esdhtest2/acadre/Acadre.CM.PublicServices.soapauth/AcadreServiceV7.asmx?schema=schema13" filename="schema13.xsd" />
-    <DiscoveryClientResult referenceType="System.Web.Services.Discovery.SchemaReference" url="http://esdhtest2/acadre/Acadre.CM.PublicServices.soapauth/AcadreServiceV7.asmx?schema=schema23" filename="schema23.xsd" />
-    <DiscoveryClientResult referenceType="System.Web.Services.Discovery.SchemaReference" url="http://esdhtest2/acadre/Acadre.CM.PublicServices.soapauth/AcadreServiceV7.asmx?schema=schema16" filename="schema16.xsd" />
+    <DiscoveryClientResult referenceType="System.Web.Services.Discovery.SchemaReference" url="http://esdhtest2/acadre/Acadre.CM.PublicServices/SoapAuth/AcadreServiceV7.asmx?schema=schema9" filename="schema9.xsd" />
+    <DiscoveryClientResult referenceType="System.Web.Services.Discovery.SchemaReference" url="http://esdhtest2/acadre/Acadre.CM.PublicServices/SoapAuth/AcadreServiceV7.asmx?schema=schema8" filename="schema8.xsd" />
+    <DiscoveryClientResult referenceType="System.Web.Services.Discovery.ContractReference" url="http://esdhtest2/acadre/Acadre.CM.PublicServices/SoapAuth/AcadreServiceV7.asmx?wsdl=wsdl1" filename="AcadreServiceV7.wsdl" />
+    <DiscoveryClientResult referenceType="System.Web.Services.Discovery.SchemaReference" url="http://esdhtest2/acadre/Acadre.CM.PublicServices/SoapAuth/AcadreServiceV7.asmx?schema=schema22" filename="schema22.xsd" />
+    <DiscoveryClientResult referenceType="System.Web.Services.Discovery.SchemaReference" url="http://esdhtest2/acadre/Acadre.CM.PublicServices/SoapAuth/AcadreServiceV7.asmx?schema=schema5" filename="schema5.xsd" />
+    <DiscoveryClientResult referenceType="System.Web.Services.Discovery.SchemaReference" url="http://esdhtest2/acadre/Acadre.CM.PublicServices/SoapAuth/AcadreServiceV7.asmx?schema=schema4" filename="schema4.xsd" />
+    <DiscoveryClientResult referenceType="System.Web.Services.Discovery.SchemaReference" url="http://esdhtest2/acadre/Acadre.CM.PublicServices/SoapAuth/AcadreServiceV7.asmx?schema=schema7" filename="schema7.xsd" />
+    <DiscoveryClientResult referenceType="System.Web.Services.Discovery.SchemaReference" url="http://esdhtest2/acadre/Acadre.CM.PublicServices/SoapAuth/AcadreServiceV7.asmx?schema=schema6" filename="schema6.xsd" />
+    <DiscoveryClientResult referenceType="System.Web.Services.Discovery.SchemaReference" url="http://esdhtest2/acadre/Acadre.CM.PublicServices/SoapAuth/AcadreServiceV7.asmx?schema=schema1" filename="schema1.xsd" />
+    <DiscoveryClientResult referenceType="System.Web.Services.Discovery.SchemaReference" url="http://esdhtest2/acadre/Acadre.CM.PublicServices/SoapAuth/AcadreServiceV7.asmx?schema=schema3" filename="schema3.xsd" />
+    <DiscoveryClientResult referenceType="System.Web.Services.Discovery.SchemaReference" url="http://esdhtest2/acadre/Acadre.CM.PublicServices/SoapAuth/AcadreServiceV7.asmx?schema=schema2" filename="schema2.xsd" />
+    <DiscoveryClientResult referenceType="System.Web.Services.Discovery.SchemaReference" url="http://esdhtest2/acadre/Acadre.CM.PublicServices/SoapAuth/AcadreServiceV7.asmx?schema=schema15" filename="schema15.xsd" />
+    <DiscoveryClientResult referenceType="System.Web.Services.Discovery.SchemaReference" url="http://esdhtest2/acadre/Acadre.CM.PublicServices/SoapAuth/AcadreServiceV7.asmx?schema=schema10" filename="schema10.xsd" />
+    <DiscoveryClientResult referenceType="System.Web.Services.Discovery.SchemaReference" url="http://esdhtest2/acadre/Acadre.CM.PublicServices/SoapAuth/AcadreServiceV7.asmx?schema=schema20" filename="schema20.xsd" />
+    <DiscoveryClientResult referenceType="System.Web.Services.Discovery.SchemaReference" url="http://esdhtest2/acadre/Acadre.CM.PublicServices/SoapAuth/AcadreServiceV7.asmx?schema=schema13" filename="schema13.xsd" />
+    <DiscoveryClientResult referenceType="System.Web.Services.Discovery.ContractReference" url="http://esdhtest2/acadre/Acadre.CM.PublicServices/SoapAuth/AcadreServiceV7.asmx?wsdl=wsdl2" filename="AcadreServiceV70.wsdl" />
+    <DiscoveryClientResult referenceType="System.Web.Services.Discovery.SchemaReference" url="http://esdhtest2/acadre/Acadre.CM.PublicServices/SoapAuth/AcadreServiceV7.asmx?schema=schema23" filename="schema23.xsd" />
+    <DiscoveryClientResult referenceType="System.Web.Services.Discovery.SchemaReference" url="http://esdhtest2/acadre/Acadre.CM.PublicServices/SoapAuth/AcadreServiceV7.asmx?schema=schema18" filename="schema18.xsd" />
+    <DiscoveryClientResult referenceType="System.Web.Services.Discovery.DiscoveryDocumentReference" url="http://esdhtest2/acadre/Acadre.CM.PublicServices/SoapAuth/AcadreServiceV7.asmx?disco" filename="AcadreServiceV7.disco" />
+    <DiscoveryClientResult referenceType="System.Web.Services.Discovery.SchemaReference" url="http://esdhtest2/acadre/Acadre.CM.PublicServices/SoapAuth/AcadreServiceV7.asmx?schema=schema12" filename="schema12.xsd" />
+    <DiscoveryClientResult referenceType="System.Web.Services.Discovery.SchemaReference" url="http://esdhtest2/acadre/Acadre.CM.PublicServices/SoapAuth/AcadreServiceV7.asmx?schema=schema11" filename="schema11.xsd" />
+    <DiscoveryClientResult referenceType="System.Web.Services.Discovery.SchemaReference" url="http://esdhtest2/acadre/Acadre.CM.PublicServices/SoapAuth/AcadreServiceV7.asmx?schema=schema21" filename="schema21.xsd" />
+    <DiscoveryClientResult referenceType="System.Web.Services.Discovery.SchemaReference" url="http://esdhtest2/acadre/Acadre.CM.PublicServices/SoapAuth/AcadreServiceV7.asmx?schema=schema14" filename="schema14.xsd" />
+    <DiscoveryClientResult referenceType="System.Web.Services.Discovery.ContractReference" url="http://esdhtest2/acadre/Acadre.CM.PublicServices/SoapAuth/AcadreServiceV7.asmx?wsdl" filename="AcadreServiceV71.wsdl" />
+    <DiscoveryClientResult referenceType="System.Web.Services.Discovery.SchemaReference" url="http://esdhtest2/acadre/Acadre.CM.PublicServices/SoapAuth/AcadreServiceV7.asmx?schema=schema24" filename="schema24.xsd" />
+    <DiscoveryClientResult referenceType="System.Web.Services.Discovery.SchemaReference" url="http://esdhtest2/acadre/Acadre.CM.PublicServices/SoapAuth/AcadreServiceV7.asmx?schema=schema19" filename="schema19.xsd" />
+    <DiscoveryClientResult referenceType="System.Web.Services.Discovery.SchemaReference" url="http://esdhtest2/acadre/Acadre.CM.PublicServices/SoapAuth/AcadreServiceV7.asmx?schema=schema17" filename="schema17.xsd" />
+    <DiscoveryClientResult referenceType="System.Web.Services.Discovery.SchemaReference" url="http://esdhtest2/acadre/Acadre.CM.PublicServices/SoapAuth/AcadreServiceV7.asmx?schema=schema16" filename="schema16.xsd" />
   </Results>
 </DiscoveryClientResultsFile>

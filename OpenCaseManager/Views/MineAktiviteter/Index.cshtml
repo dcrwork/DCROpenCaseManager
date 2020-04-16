@@ -1,0 +1,37 @@
+﻿<link rel="stylesheet" href="~/Content/Child.css" type="text/css" />
+@{
+    /**/
+
+    ViewBag.Title = "Mine Aktiviteter";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+<div class="tabsBox col-lg-12 col-md-12 col-sm-12 col-xs-12">
+    <div>
+        <div class="fade in active">
+            <div class="childInstancesBox">
+                <table class="table tasksTable table-striped" id="tableAdjunktAktiviteter">
+                    <thead class="childInstancesHeader">
+                        <tr>
+                            <th width="52px" type="customSort"><img src='../Content/Images/priorityicon.svg' height='16' width='16' /></th>
+                            <th width=""><a style="color:white" href="#"><span data-locale data-apply="text" data-key="Title"></span></a></th>
+                            <th><a style="color:white" href="#"><span data-locale data-apply="text" data-key="DueDate"></span></a></th>
+                            <th><a style="color:white" href="#"><span data-locale data-apply="text" data-key="Instance"></span></a></th>
+                            <th><a style="color:white" href="#"><span data-locale data-apply="text" data-key="Action"></span></a></th>
+                        </tr>
+                    </thead>
+                    <tbody id="adjunktAktiviteter">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="~/Scripts/task.js"></script>
+<script type="text/javascript" src="~/Scripts/adjunktaktiviteter.js"></script>
+<script src="~/Scripts/sortable.js"></script>
+<link href="~/Content/sortable.css" rel="stylesheet" />

@@ -2,7 +2,7 @@
 $(document).ready(function () {
     $('#createInstance').on('click', function (e) {
 
-        var title = $('#instanceTitle').val();
+        var title = $('#instanceTitle').val().trim();
         var graphId = $('#instanceProcesses').find(":selected").val();
 
         var userRoles = new Array()
@@ -16,11 +16,15 @@ $(document).ready(function () {
                 userRoles.push(userRole)
         })
 
-        if (title !== '' && graphId > 0) {
-            App.addInstance(title, graphId, userRoles);
+        if (title.length > 500) {
+            App.showWarningMessage('Title max length reached.');
+        }
+        else if (title !== '' && graphId > 0) {
+            App.addInstance(title, graphId, userRoles, false);
             App.getMyInstances();
             $('#addNewInstance').modal('toggle');
         }
+
         else {
             App.showWarningMessage(translations.InstanceCreateError);
         }

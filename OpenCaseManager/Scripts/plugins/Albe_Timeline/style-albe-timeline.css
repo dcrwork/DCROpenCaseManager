@@ -11,6 +11,11 @@
     .oldest             =   article:nth-last-child(2) > div.timelinePanel:before
 */
 
+:root {
+    --timeline-main-color: var(--main-color);
+}
+
+
 
 h2, h3, h4, h5 {
     margin-top: 5px;
@@ -47,8 +52,8 @@ ul#timeline-menu li a {
 }
 
 ul#timeline-menu li a:hover {
-    color: #9C1A5E;
-    border-bottom: 5px solid #9C1A5E;
+    color: var(--timeline-main-color);
+    border-bottom: 5px solid var(--timeline-main-color);
     font-weight: normal;
 }
 
@@ -90,7 +95,7 @@ ul#timeline-menu li a:hover {
     background: #fff;
     float:left;
     margin-right:5px;
-    border: 2px solid #9C1A5E;
+    border: 2px solid var(--timeline-main-color);
 }
 
 #activitySpan {
@@ -105,7 +110,7 @@ ul#timeline-menu li a:hover {
 #journalnoteSpan:after, #activitySpan:after, #documentSpan:after {
     content: "";
     display: none;
-    background-color: #9C1A5E;
+    background-color: var(--timeline-main-color);
     height: 16px;
     width: 16px;
 }
@@ -128,7 +133,7 @@ ul#timeline-menu li a:hover {
 
 #filterButton {
     margin: 20px 0px 8px 0px;
-    color: #9C1A5E;
+    color: var(--timeline-main-color);
     cursor: pointer;
     font-size: 18px;
 }
@@ -143,15 +148,15 @@ ul#timeline-menu li a:hover {
 
 #find-timeframe-button {
     background: #fff;
-    border: 1px solid #9C1A5E;
-    color: #9C1A5E;
+    border: 1px solid var(--timeline-main-color);
+    color: var(--timeline-main-color);
     height: 22px;
     padding: 2px 8px 0px 8px;
     margin-left: 10px;
 }
 
     #find-timeframe-button:hover {
-        background: #9C1A5E;
+        background: var(--timeline-main-color);
         color: #fff;
     }
 
@@ -167,13 +172,13 @@ section#timeline:before {
     left: 49.95%;
     height: 100%;
     width: 2px;
-    background: #9C1A5E;
+    background: var(--timeline-main-color);
 }
 
 section#timeline div[class*="group"] {
     text-align: center;
     font-weight: bold;
-    color: #9C1A5E;
+    color: var(--timeline-main-color);
     font-size: 1.2em;
     letter-spacing: 5px;
     margin: 25px 0px 25px 4px;
@@ -207,7 +212,7 @@ section#timeline > article > div.timelinePanel .icon:before {
     left: 0;
     right: 0;
     top: 38px;
-    border: 2px solid #9C1A5E;
+    border: 2px solid var(--timeline-main-color);
 }
 
 section#timeline .Aktivitet:before {
@@ -274,7 +279,7 @@ section#timeline > article:nth-last-child(2) > div.timelinePanel {
 }
 
 section#timeline > article:nth-last-child(2) > div.timelinePanel:before {
-    background: #9C1A5E;
+    background: var(--timeline-main-color);
     position: absolute;
     bottom: 10px;
 }

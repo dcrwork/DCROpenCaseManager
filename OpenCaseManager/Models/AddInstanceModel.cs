@@ -12,5 +12,7 @@ namespace OpenCaseManager.Models
         public int Responsible { get; set; }
         public List<UserRole> UserRoles { get; set; }
         public int? ChildId { get; set; }
+        public string CaseNumberIdentifier { get; set; }
+        public string CaseId { get; set; }
     }
 }

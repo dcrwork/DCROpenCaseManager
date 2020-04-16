@@ -9,8 +9,11 @@
     [Https]      BIT            NULL,
     [Message]    NVARCHAR (MAX) NOT NULL,
     [Exception]  NVARCHAR (MAX) NULL,
+    [XML]        XML            NULL,
     CONSTRAINT [PK_dbo.Log] PRIMARY KEY CLUSTERED ([Id] ASC)
 );
+
+
 
 
 

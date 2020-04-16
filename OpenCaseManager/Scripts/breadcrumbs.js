@@ -30,7 +30,7 @@ async function getChildId(instanceId) {
 async function getChildName(childId) {
     var query = {
         "type": "SELECT",
-        "entity": "ChildView",
+        "entity": "AdjunktView",
         "resultSet": ["Name", "Responsible"],
         "filters": new Array(),
         "order": []
@@ -75,7 +75,7 @@ async function setInstancePageBreadcrumb() {
     var childIds = await getChildId(instanceId)
     if (childIds[0] != undefined) {
         var childId = childIds[0].ChildId;
-        var path = "/Child?id=" + childId;
+        var path = "/Adjunkt?id=" + childId;
         var childnames = await getChildName(childId);
         var childName = (childnames[0] == undefined) ? 'Intet barn at finde' : ((childnames[0].Name == null) ? "Intet navn på barn" : childnames[0].Name);
         $('a#childLink').attr("href", path).text(childName);
@@ -84,7 +84,7 @@ async function setInstancePageBreadcrumb() {
         var instanceName = instanceNames[0].Title;
         $("li.instance").text(instanceName);
     } else {
-        $('a#childLink').attr("href", '/Child?id=').text('Intet barn at finde');
+        $('a#childLink').attr("href", '/Adjunkt?id=').text('Intet barn at finde');
         $("li.instance").text('Ingen gyldig indsats med dette id');
     }
 }
@@ -95,3 +95,15 @@ async function setChildPageBreadcrumb() {
     var childName = (childnames[0] == undefined) ? 'Intet barn at finde' : ((childnames[0].Name == null) ? "Intet navn på barn" : childnames[0].Name);
     $('li.child').text(childName);
 }
+
+async function setChildPageBreadcrumbX(childName, childId) {
+    //	var o = document.getElementById('childLink');
+    $('li.child').text(childName);
+}
+
+async function setInstancePageBreadcrumbX(childName, childId, instanceName) {
+    var path = "/Child?id=" + childId;
+    $('a#childLink').attr("href", path).text(childName);
+    $("li.instance").text(instanceName);
+}
+

@@ -71,6 +71,8 @@
     <Folder Include="dbo\Functions\" />
     <Folder Include="dbo\Stored Procedures\" />
     <Folder Include="dbo\Data" />
+    <Folder Include="dbo\ReleaseScripts" />
+    <Folder Include="dbo\ReleaseScripts\1.14" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\Tables\User.sql" />
@@ -112,19 +114,37 @@
     <Build Include="dbo\Tables\Document.sql" />
     <Build Include="dbo\Stored Procedures\AddInstanceDescription.sql" />
     <Build Include="dbo\Views\MUSTasks.sql" />
-    <Build Include="dbo\Tables\Child.sql" />
     <Build Include="dbo\Tables\JournalHistory.sql" />
     <Build Include="dbo\Functions\PendingActivities.sql" />
     <Build Include="dbo\Functions\ChildInstances.sql" />
-    <Build Include="dbo\Functions\GetDataForAllMyChildren.sql" />
-    <Build Include="dbo\Tables\StamdataDummyData.sql" />
-    <Build Include="dbo\Tables\StamdataDummyDataExtension.sql" />
-    <Build Include="dbo\Views\StamdataView.sql" />
-    <Build Include="dbo\Tables\StamdataChild.sql" />
     <Build Include="dbo\Views\Timeline.sql" />
     <Build Include="dbo\Functions\JournalHistoryForASingleInstance.sql" />
+    <Build Include="dbo\Stored Procedures\GetMenuItems.sql" />
+    <Build Include="dbo\Tables\MenuItemAccess.sql" />
+    <Build Include="dbo\Tables\MenuItem.sql" />
+    <Build Include="dbo\Functions\GetDataForChildren.sql" />
+    <Build Include="dbo\Views\CaseMemoBridge.sql" />
+    <Build Include="dbo\Stored Procedures\OCMSpawnChildProcessCopyContext.sql" />
+    <Build Include="dbo\Stored Procedures\GetGlobalEvents.sql" />
+    <Build Include="dbo\Stored Procedures\CanExecuteGlobalEvent.sql" />
+    <Build Include="dbo\Stored Procedures\ChangeResponsibleOfChild.sql" />
+    <Build Include="dbo\Stored Procedures\GetValueFromForm.sql" />
+    <PreDeploy Include="dbo\ReleaseScripts\1.14\Script.PreDeployment1.sql" />
+    <Build Include="dbo\Tables\ProcessHistory.sql" />
+    <Build Include="dbo\Views\Processes.sql" />
+    <Build Include="dbo\Stored Procedures\ReleaseProcessInstance.sql" />
+    <Build Include="dbo\Stored Procedures\GetDCRXMLLog.sql" />
+    <Build Include="dbo\Views\ContextInstances.sql" />
+    <Build Include="dbo\Stored Procedures\GetEventResponsibleRoles.sql" />
+    <Build Include="dbo\Functions\AdjunktActivities.sql" />
+    <Build Include="dbo\Tables\Adjunkt.sql" />
+    <Build Include="dbo\Tables\AdjunktUser.sql" />
+    <Build Include="dbo\Views\MineAktiviteter.sql" />
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="dbo\Data\Script.PreDeployment.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="dbo\ReleaseScripts\1.14\Script.PreDeployment2.sql" />
   </ItemGroup>
 </Project>

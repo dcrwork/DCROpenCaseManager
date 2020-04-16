@@ -10,6 +10,9 @@ namespace OpenCaseManager.Models
         public enum Tables
         {
             AllInstances,
+            Adjunkt,
+            AdjunktUser,
+            AdjunktView,
             Child,
             Event,
             EventHistory,
@@ -24,6 +27,7 @@ namespace OpenCaseManager.Models
             InstanceRole,
             JournalHistory,
             Log,
+            MineAktiviteter,
             MUS,
             MyInstances,
             PhaseInstances,
@@ -37,7 +41,9 @@ namespace OpenCaseManager.Models
             Document,
             StamdataChild,
             StamdataDummyData,
-            StamdataDummyDataExtension
+            StamdataDummyDataExtension,
+            ProcessHistory,
+            ContextInstances
         }
 
         public enum StoredProcedures
@@ -53,7 +59,15 @@ namespace OpenCaseManager.Models
             DeleteFormItem,
             CopyFormFromTemplate,
             AddInstanceDescription,
-            LockDocuments
+            LockDocuments,
+            GetMenuItems,
+            OCMSpawnChildProcessCopyContext,
+            CanExecuteGlobalEvent,
+            GetGlobalEvents,
+            ChangeResponsibleOfChild,
+            GetDCRXMLLog,
+            ReleaseProcessInstance,
+            GetEventResponsibleRoles
         }
 
         public enum Functions
@@ -72,6 +86,29 @@ namespace OpenCaseManager.Models
             Description,
             Details
         }
+        
+        public enum Adjunkt
+        {
+            Id,
+            Responsible,
+            Name,
+            ObsBoxText
+        }
+
+        public enum AdjunktUser
+        {
+            Id, 
+            AdjunktId,
+            UserId
+        }
+
+        public enum AdjunktView
+        {
+            Id, 
+            Responsible,
+            Name,
+            ResponsibleName
+        }
 
         public enum Event
         {
@@ -89,7 +126,11 @@ namespace OpenCaseManager.Models
             EventType,
             isOpen,
             Description,
-            EventTypeData
+            EventTypeData,
+            Note,
+            NoteIsHtml,
+            NotApplicable,
+            Roles
         }
 
         public enum EventHistory
@@ -243,6 +284,46 @@ namespace OpenCaseManager.Models
             Exception
         }
 
+        public enum MineAktiviteter
+        {
+            InstanceId,
+            EventId,
+            Title,
+            Responsible,
+            Due,
+            PhaseId,
+            IsEnabled,
+            IsPending,
+            IsIncluded,
+            IsExecuted,
+            Type,
+            EventType,
+            isOpen,
+            Description,
+            EventTypeData,
+            Note,
+            NoteIsHtml,
+            NotApplicable,
+            Roles,
+            ParentId,
+            ChildId, 
+            SamAccountName,
+            Name,
+            UserTitle,
+            ManagerId,
+            Acadreorgid, 
+            DepartmentId,
+            IsManager,
+            Familieafdelingen,
+            Department,
+            InstanceTitle,
+            Modified,
+            GraphId,
+            SimulationId,
+            TrueEventId,
+            EventTitle
+        }
+
         public enum MUS
         {
             Id,
@@ -293,7 +374,40 @@ namespace OpenCaseManager.Models
             Status,
             Modified,
             Created,
-            OnFrontPage
+            OnFrontPage,
+            Guid,
+            CreateInstance,
+            EventId,
+            InstanceGuid,
+            MajorVersionId,
+            MajorVersionTitle,
+            MajorVerisonDate,
+            ReleaseDate,
+            Owner
+        }
+
+        public enum ProcessHistory
+        {
+            Id,
+            GraphId,
+            Title,
+            ForeignIntegration,
+            DCRXML,
+            Status,
+            Modified,
+            Created,
+            OnFrontPage,
+            Guid,
+            CreateInstance,
+            EventId,
+            InstanceGuid,
+            MajorVersionId,
+            MajorVersionTitle,
+            MajorVerisonDate,
+            ReleaseDate,
+            Owner,
+            InstanceId,
+            State
         }
 
         public enum ProcessPhase
@@ -319,7 +433,10 @@ namespace OpenCaseManager.Models
             Name,
             Title,
             Department,
-            ManagerId
+            ManagerId,
+            Acadreorgid,
+            DepartmentId,
+            IsManager
         }
 
         public enum UserDetail
@@ -348,6 +465,12 @@ namespace OpenCaseManager.Models
         {
             ProcessId,
             PhaseXml
+        }
+
+        public enum ReleaseProcessInstance
+        {
+            InstanceId,
+            ProcessPhaseXML
         }
 
         public enum CopyFormFromTemplate
@@ -426,7 +549,8 @@ namespace OpenCaseManager.Models
             IsActive,
             UploadDate,
             IsLocked,
-            IsDraft
+            IsDraft,
+            ChildId
         }
 
         public enum AddInstanceDescription
@@ -441,11 +565,14 @@ namespace OpenCaseManager.Models
             InstanceId,
             EventId,
             DocumentId,
+            ChildId,
             Type,
             Title,
             CreationDate,
             EventDate,
-            IsLocked
+            IsLocked,
+            ResponsibleInitials,
+            ResponsibleName
         }
 
         public enum StamdataChild
@@ -475,6 +602,56 @@ namespace OpenCaseManager.Models
             ChildId,
             StamdataId,
             Relation
+        }
+
+        public enum OCMSpawnChildProcessCopyContext
+        {
+            InstanceId,
+            ParentInstanceId
+        }
+
+        public enum CanExecuteGlobalEvent
+        {
+            ChildId,
+            EventId
+        }
+
+        public enum GetGlobalEvents
+        {
+            ChildId,
+            EventId
+        }
+
+        public enum ChangeResponsibleOfChild
+        {
+            ChildId,
+            InstanceId,
+            EventId,
+            FromInitials,
+            ToInitials
+        }
+
+        public enum GetDCRXMLLog
+        {
+            GraphId,
+            From,
+            To,
+            IsAccepting
+        }
+
+        public enum ContextInstances
+        {
+            InstanceId,
+            ChildId,
+            GraphId
+        }
+
+        public enum GetEventResponsibleRoles
+        {
+            InstanceId,
+            EventId,
+            ResponsibleId,
+            EventsXML
         }
     }
 }

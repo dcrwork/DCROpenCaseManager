@@ -3,10 +3,16 @@ using OpenCaseManager.Managers;
 using OpenCaseManager.Models;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.IO;
 using System.Linq;
+using System.Net;
+using System.Text;
 using System.Web;
 using System.Web.Mvc;
+using System.Xml;
+using System.Xml.Linq;
+using System.Xml.Xsl;
 
 namespace OpenCaseManager.Controllers
 {
@@ -63,6 +69,79 @@ namespace OpenCaseManager.Controllers
             {
                 throw new Exception("File not found");
             }
+        }
+
+        /// <summary>
+        /// Download dcr xml log or XES
+        /// </summary>
+        /// <param name="graphId"></param>
+        /// <param name="from"></param>
+        /// <param name="to"></param>
+        /// <param name="isAccepting"></param>
+        /// <param name="toXES"></param>
+        /// <returns></returns>
+        public FileResult DownloadDCRXMLLog(string graphId, DateTime? from, DateTime? to, bool isAccepting, bool toXES)
+        {
+            var xmlString = string.Empty;
+
+            _dataModelManager.GetDefaultDataModel(Enums.SQLOperation.SP, DBEntityNames.StoredProcedures.GetDCRXMLLog.ToString());
+            _dataModelManager.AddParameter(DBEntityNames.GetDCRXMLLog.GraphId.ToString(), Enums.ParameterType._int, graphId);
+            if (from.HasValue)
+                _dataModelManager.AddParameter(DBEntityNames.GetDCRXMLLog.From.ToString(), Enums.ParameterType._datetime, from.ToString());
+            if (to.HasValue)
+                _dataModelManager.AddParameter(DBEntityNames.GetDCRXMLLog.To.ToString(), Enums.ParameterType._datetime, to.ToString());
+            _dataModelManager.AddParameter(DBEntityNames.GetDCRXMLLog.IsAccepting.ToString(), Enums.ParameterType._boolean, isAccepting.ToString());
+
+            var data = _manager.ExecuteStoredProcedure(_dataModelManager.DataModel);
+
+            if (data.Rows.Count > 0)
+            {
+                xmlString = data.Rows[0]["DCRXML"].ToString();
+            }
+
+            if (!toXES)
+                return File(Encoding.UTF8.GetBytes(xmlString), "application/xml", graphId + "-" + DateTime.Now.ToFileTime() + ".xml");
+            else
+            {
+                var xesString = GetXESXML(xmlString);
+                return File(Encoding.UTF8.GetBytes(xesString), "application/xml", graphId + "-" + DateTime.Now.ToFileTime() + ".xes");
+            }
+        }
+
+        private static string GetXESXML(string logxml)
+        {
+            XDocument xlsDoc = new XDocument();
+            try
+            {
+                XDocument logxmlDoc = XDocument.Parse(logxml);
+                string url = AppDomain.CurrentDomain.BaseDirectory + @"\App_Data\DCR XML Log 2 XES.xslt";
+                byte[] data;
+                try
+                {
+                    data = System.IO.File.ReadAllBytes(url);
+                }
+                catch (Exception ex)
+                {
+
+                    throw new Exception("Unable to find XSLT file on this location " + url);
+                }
+                string xslfile = Encoding.GetEncoding("UTF-8").GetString(data);
+                using (XmlWriter writer = xlsDoc.CreateWriter())
+                {
+                    // Load the style sheet. 
+                    XslCompiledTransform xslt = new XslCompiledTransform();
+                    xslt.Load(XmlReader.Create(new StringReader(xslfile.ToString())));
+
+                    // Execute the transform and output the results to a writer. 
+                    xslt.Transform(logxmlDoc.CreateReader(), writer);
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+            return xlsDoc.ToString();
         }
     }
 }

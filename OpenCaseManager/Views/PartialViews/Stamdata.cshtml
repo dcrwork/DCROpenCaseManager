@@ -1,72 +1,30 @@
-﻿<style>
-    .expander {
-        cursor: pointer;
-        transition: 0.4s;
-    }
-
-    .information {
-        display: none;
-        background-color: #EFEFEF;
-    }
-
-    .stamdata {
-        background-color: #EFEFEF;
-        height: auto;
-        padding: 20px;
-        width: 230px;
-        margin-top: 15px;
-        margin-bottom: 40px;
-    }
-
-    .pstamdata {
-        margin-bottom: 0px;
-    }
-
-    .h5stamdata {
-        margin-top: 10px;
-    }
-
-    .glyphiconStamdata {
-        margin-right: 5px;
-    }
-
-    .headline-stamdata {
-        font-size: large;
-        margin-top: 10px;
-        margin-bottom: 10px;
-    }
-
-    .expand-text {
-        font-size: large;
-        margin-top: 10px;
-        margin-bottom: 10px;
-        color: #9C1A5E;
-    }
-
-    .glyphicon-plus, .glyphicon-minus {
-        color: #9C1A5E;
-    }
-</style>
-
+﻿<!-- CSS is defined in ~/Content/PartialViews.css and bundled in App_Start/BundleConfig.cs -->
 
 <div class="stamdata">
-    <h3 class="headline-stamdata">Stamdata</h3>
+    <h3 class="headline-stamdata"><span data-locale data-apply="text" data-key="Stamdata"></span></h3>
     <div class="childStamdata">
-        <h5 class="sagsnr"><b>Sagsnummer</b></h5>
-        <h5 class="name"><b>Navn</b></h5>
-        <h5 class="address"><b>Adresse</b></h5>
-        <h5 class="parentalrights"><b>Forældremyndighed</b></h5>
-        <h5 class="school"><b>Skole</b></h5>
-        <h5 class="age"><b>Alder</b></h5>
+        <h5 class="cpr"><b><span data-locale data-apply="text" data-key="SocialSecurityID"></span></b></h5>
+        <h5 class="name"><b><span data-locale data-apply="text" data-key="Name"></span></b></h5>
+        <h5 class="address"><b><span data-locale data-apply="text" data-key="Address"></span></b></h5>
+        <h5 class="parentalrights"><b><span data-locale data-apply="text" data-key="Custody"></span></b></h5>
+        <h5 class="school"><b><span data-locale data-apply="text" data-key="School"></span></b></h5>
+        <h5 class="age"><b><span data-locale data-apply="text" data-key="Age"></span></b></h5>
     </div>
     <div class="udvidet-stamdata">
         <div class="table-responsive information">
-            <h3 class="headline-stamdata">Udvidet stamdata</h3>
-            <div class="expandedStamdata"></div>
-            
+            <h3 class="headline-stamdata"><span data-locale data-apply="text" data-key="ExpandedStamdata"></span></h3>
+            <div class="expandedStamdata">
+                <h5 class="Mor"><b>Mor</b></h5>
+                <div class="Mordata"></div>
+                <h5 class="Far"><b>Far</b></h5>
+                <div class="Fardata"></div>
+                <h5 class="Søskende"><b>Søskende</b></h5>
+                <div class="Søskendedata"></div>
+            </div>
+
 
         </div>
-        <h4 class="expander"><span class="glyphicon glyphiconStamdata glyphicon-plus"></span><span class="expand-text" data-locale data-apply="text">Se udvidet stamdata</span></h4>
+        <h4 class="expander"><span class="glyphicon glyphiconStamdata glyphicon-plus"></span><span class="expand-text" data-locale data-apply="text" data-key="SeeExpandedStamdata"></span></h4>
     </div>
 </div>
 
@@ -83,14 +41,14 @@
             icon.removeClass('glyphicon-minus');
             icon.addClass('glyphicon-plus');
             setTimeout(function () {
-                text.text('Se udvidet stamdata');
+                text.text(translations.SeeExpandedStamdata);
             }, 1000);
         } else {
             panel.slideDown(1000);
             icon.removeClass('glyphicon-plus');
             icon.addClass('glyphicon-minus');
             setTimeout(function () {
-                text.text('Se mindre');
+                text.text(translations.SeeLess);
             }, 1000);
         }
     });
