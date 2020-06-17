@@ -570,6 +570,7 @@
     <Content Include="Scripts\journalNote.js" />
     <Content Include="Scripts\journalNoteCreate.js" />
     <Content Include="Scripts\ObsBox.js" />
+    <Content Include="Scripts\PendingActivities.js" />
     <Content Include="Scripts\plugins\Albe_Timeline\data-albe-timeline.js" />
     <Content Include="Scripts\plugins\Albe_Timeline\jquery-albe-timeline.js" />
     <Content Include="Scripts\plugins\Albe_Timeline\jquery-albe-timeline.min.js" />
@@ -664,15 +665,14 @@
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="package.json" />
+    <None Include="Properties\PublishProfiles\dikuocm - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
-    <None Include="Properties\PublishProfiles\OCMDiku - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\OCMDiku - FTP1.pubxml" />
-    <None Include="Properties\PublishProfiles\OCMDiku - ReadOnly - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\OCMDiku - ReadOnly - FTP1.pubxml" />
     <None Include="Properties\PublishProfiles\OCMDiku - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\OCMDiku - Web Deploy1.pubxml" />
-    <None Include="Properties\PublishProfiles\opencasemanagerdemo - Deploy Debug.pubxml" />
-    <None Include="Properties\PublishProfiles\opencasemanagerdemo - Deploy Release.pubxml" />
+    <None Include="Properties\PublishProfiles\OpenCaseManager - Web Deploy.pubxml" />
+    <None Include="Properties\PublishProfiles\opencasemanagerdemo - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\core.js" />
     <Content Include="Scripts\CustomFunctions.js" />

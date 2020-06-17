@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using OpenCaseManager.Commons;
 using OpenCaseManager.Custom.Syddjurs;
 using OpenCaseManager.Managers;
@@ -10,6 +11,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Web;
 using System.Web.Http;
@@ -29,10 +31,12 @@ namespace OpenCaseManager.Controllers.ApiControllers
         private IDocumentManager _documentManager;
         private ISyddjursWork _syddjursWork;
         private ICommons _commons;
+        private ServicesController _servicesController;
 
         public RecordsController(IManager manager, IService service, IDCRService dCRService,
                                     IDataModelManager dataModelManager, IDocumentManager documentManager,
-                                    ISyddjursWork syddjursWork, ICommons commons)
+                                    ISyddjursWork syddjursWork, IAutomaticEvents automaticEvents,
+                                    IMailRepository mailRepository, ICommons commons)
         {
             _manager = manager;
             _service = service;
@@ -41,6 +45,7 @@ namespace OpenCaseManager.Controllers.ApiControllers
             _documentManager = documentManager;
             _syddjursWork = syddjursWork;
             _commons = commons;
+            _servicesController = new ServicesController(manager, service, dCRService, dataModelManager, documentManager, automaticEvents, mailRepository, commons);
         }
 
         // POST api/values
@@ -103,14 +108,17 @@ namespace OpenCaseManager.Controllers.ApiControllers
             try
             {
                 // add Instance
-                var instanceId = Common.AddInstance(input, _manager, _dataModelManager);
-                if (input.ChildId != null)
+                var instanceId = AddInstance(input);
+                if (instanceId != "")
                 {
-                    if (!string.IsNullOrEmpty(input.CaseId))
-                        LinkCaseToInstance(input.CaseId, input.CaseNumberIdentifier, instanceId);
-                    ConnectInstanceToChild(instanceId, input.ChildId);
+                    return Ok(Common.ToJson(instanceId));
+                } else
+                {
+                    Common.LogInfo(_manager, _dataModelManager, "AddInstance - Failed. - " + Common.ToJson(input));
+                    Exception ex = new Exception("AddInstance failed");
+                    Common.LogError(ex);
+                    return InternalServerError(ex);
                 }
-                return Ok(Common.ToJson(instanceId));
             }
             catch (Exception ex)
             {
@@ -119,6 +127,72 @@ namespace OpenCaseManager.Controllers.ApiControllers
                 return InternalServerError(ex);
             }
         }
+        
+        private string AddInstance(AddInstanceModel input)
+        {
+            try
+            {
+                // add Instance
+                var instanceId = Common.AddInstance(input, _manager, _dataModelManager);
+                if (input.ChildId != null)
+                {
+                    if (!string.IsNullOrEmpty(input.CaseId))
+                        LinkCaseToInstance(input.CaseId, input.CaseNumberIdentifier, instanceId);
+                    ConnectInstanceToChild(instanceId, input.ChildId);
+                }
+                return instanceId;
+            }
+            catch (Exception ex)
+            {
+                Common.LogInfo(_manager, _dataModelManager, "AddInstance - Failed. - " + Common.ToJson(input));
+                Common.LogError(ex);
+                return "";
+            }
+        }
+
+        /// <summary>
+        /// Add Instance and Initialize graph
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("createInstance")]
+        // POST api/values
+        public IHttpActionResult CreateInstanceApi(AddInstanceModel input)
+        {
+            try
+            {
+                // Call AddInstanceAPI
+                var instanceString = AddInstance(input);
+
+                // Call InitializeGraph via http
+
+                
+                var json = @"{""instanceId"":" + instanceString + @",""graphId"":" + input.GraphId + "}";
+                dynamic graphInput = JObject.Parse(json);
+
+
+                var result = _servicesController.InitializeGraph(graphInput, out string output);
+                if (result){
+                    return Ok(Common.ToJson(instanceString));
+                } else
+                {
+                    Common.LogInfo(_manager, _dataModelManager, "CreateInstance - InitializeGraph - Failed. - " + Common.ToJson(input));
+                    Exception ex = new Exception();
+                    Common.LogError(ex);
+                    return InternalServerError(ex);
+                }
+            }
+            catch (Exception ex)
+            {
+                Common.LogInfo(_manager, _dataModelManager, "CreateInstance - AddInstance - Failed. - " + Common.ToJson(input));
+                Common.LogError(ex);
+                return InternalServerError(ex);
+            }
+        }
+
+
+
 
         /// <summary>
         /// Update Child
@@ -345,9 +419,12 @@ namespace OpenCaseManager.Controllers.ApiControllers
 
 
                 var adjunktdatatable = _manager.SelectData(_dataModelManager.DataModel);
-                
+
+                if (adjunktdatatable.Rows.Count < 1) return InternalServerError(new Exception("No data found for user."));
+
+
                 int adjunktId = (int) adjunktdatatable.Rows[0].ItemArray[0];
-                int tempUserId = (int)adjunktdatatable.Rows[0].ItemArray[1];
+                int tempUserId = (int) adjunktdatatable.Rows[0].ItemArray[1];
 
                 var input = new MineAktiviteterModel() { AdjunktId = adjunktId, UserId = tempUserId };
 
@@ -384,8 +461,10 @@ namespace OpenCaseManager.Controllers.ApiControllers
                 if (userId != 0) _dataModelManager.AddFilter(DBEntityNames.MineAktiviteter.Responsible.ToString(), Enums.ParameterType._int, userId.ToString(), Enums.CompareOperator.equal, Enums.LogicalOperator.none);
                 _dataModelManager.AddResultSet(new List<string> { DBEntityNames.MineAktiviteter.Acadreorgid.ToString(), DBEntityNames.MineAktiviteter.ChildId.ToString(), DBEntityNames.MineAktiviteter.Department.ToString(), DBEntityNames.MineAktiviteter.DepartmentId.ToString(), DBEntityNames.MineAktiviteter.Description.ToString(), DBEntityNames.MineAktiviteter.Due.ToString(), DBEntityNames.MineAktiviteter.EventId.ToString(), DBEntityNames.MineAktiviteter.EventType.ToString(), DBEntityNames.MineAktiviteter.EventTypeData.ToString(), DBEntityNames.MineAktiviteter.Familieafdelingen.ToString(), DBEntityNames.MineAktiviteter.InstanceId.ToString(), DBEntityNames.MineAktiviteter.IsEnabled.ToString(), DBEntityNames.MineAktiviteter.IsExecuted.ToString(), DBEntityNames.MineAktiviteter.IsIncluded.ToString(), DBEntityNames.MineAktiviteter.IsManager.ToString(),
                     DBEntityNames.MineAktiviteter.isOpen.ToString(), DBEntityNames.MineAktiviteter.IsPending.ToString(), DBEntityNames.MineAktiviteter.ManagerId.ToString(), DBEntityNames.MineAktiviteter.Name.ToString(), DBEntityNames.MineAktiviteter.NotApplicable.ToString(), DBEntityNames.MineAktiviteter.Note.ToString(), DBEntityNames.MineAktiviteter.NoteIsHtml.ToString(), DBEntityNames.MineAktiviteter.ParentId.ToString(), DBEntityNames.MineAktiviteter.PhaseId.ToString(), DBEntityNames.MineAktiviteter.Responsible.ToString(), DBEntityNames.MineAktiviteter.Roles.ToString(), DBEntityNames.MineAktiviteter.SamAccountName.ToString(), DBEntityNames.MineAktiviteter.Title.ToString(), DBEntityNames.MineAktiviteter.UserTitle.ToString(), DBEntityNames.MineAktiviteter.InstanceTitle.ToString(), DBEntityNames.MineAktiviteter.Type.ToString(), DBEntityNames.MineAktiviteter.Modified.ToString(), DBEntityNames.MineAktiviteter.GraphId.ToString(), DBEntityNames.MineAktiviteter.SimulationId.ToString(), DBEntityNames.MineAktiviteter.TrueEventId.ToString(), DBEntityNames.MineAktiviteter.EventTitle.ToString()});
-                
-                
+                _dataModelManager.AddOrderBy(DBEntityNames.MineAktiviteter.IsPending.ToString(), true);
+                _dataModelManager.AddOrderBy(DBEntityNames.MineAktiviteter.IsEnabled.ToString(), true);
+                _dataModelManager.AddOrderBy("ISNULL(Due, DateFromParts(3000, 10, 10))", false);
+
                 var datatable = _manager.SelectData(_dataModelManager.DataModel);
                 return Ok(Common.ToJson(datatable));
 
@@ -399,14 +478,14 @@ namespace OpenCaseManager.Controllers.ApiControllers
         }
 
         /// <summary>
-        /// Get Adjunkter from database
+        /// Get AdjunktInfo from database
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
         [HttpPost]
-        [Route("GetAdjunktCases")]
+        [Route("GetAdjunktInfo")]
         // Post api/values
-        public IHttpActionResult GetAdjunktCases(AdjunktModel input)
+        public IHttpActionResult GetAdjunktInfo(AdjunktModel input)
         {
             try
             {
@@ -422,7 +501,7 @@ namespace OpenCaseManager.Controllers.ApiControllers
             }
             catch (Exception ex)
             {
-                Common.LogInfo(_manager, _dataModelManager, "UpdateProcess - Failed. - " + Common.ToJson(input));
+                Common.LogInfo(_manager, _dataModelManager, "GetAdjunktInfo - Failed. - " + Common.ToJson(input));
                 Common.LogError(ex);
                 return InternalServerError(ex);
             }

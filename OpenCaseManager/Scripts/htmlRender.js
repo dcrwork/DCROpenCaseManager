@@ -3,13 +3,13 @@
         var now = new Date().getTime();
         deadline = new Date(deadline).getTime();
         if (now >= deadline) {
-            return "<span class='dot dotRed'></span>";
+            return "<span title='Frist overskredet' class='dot dotRed'></span>";
         } else if (now + 604800000 >= deadline) {
-            return "<span class='dot dotYellow'></span>";
+            return "<span title='Frist snart overskredet' class='dot dotYellow'></span>";
         }
     }
 
-    return "<span class='dot dotGreen'></span>";
+    return "<span title='Ingen kommende frister' class='dot dotGreen'></span>";
 }
 
 

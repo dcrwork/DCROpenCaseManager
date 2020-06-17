@@ -1,34 +1,17 @@
 ﻿$(document).ready(function () {
     App.hideDocumentWebpart();
 
-    var childId = App.getParameterByName("id", window.location.href);
-    /*
+    var adjunktId = App.getParameterByName("id", window.location.href);
+    
     var query = {
-        "type": "SELECT",
-        "entity": "Child",
-        "resultSet": ["Name", "Responsible"],
-        "filters": new Array(),
-        "order": []
+        "AdjunktId": adjunktId
     }
-
-    var whereChildIdMatchesFilter = {
-        "column": "Id",
-        "operator": "equal",
-        "value": childId,
-        "valueType": "int",
-        "logicalOperator": "and"
-    };
-    query.filters.push(whereChildIdMatchesFilter);
-    */
-    var query = {
-        "AdjunktId": childId
-    }
-    API.service('records/GetAdjunktCases', query)
+    API.service('records/GetAdjunktInfo', query)
         .done(function (response) {
-            displayChildName(response);
+            displayAdjunktName(response);
             setupChangeResponsible(response);
             var result = JSON.parse(response);
-            showChildInstancesX(result);
+            showAdjunktInstancesX();
         })
         .fail(function (e) {
             App.showErrorMessage(e.responseJSON.ExceptionMessage);
@@ -77,8 +60,8 @@ function setupChangeResponsible(response) {
 }
 
 
-function showChildInstancesX(AcadreResult) {
-    var childId = App.getParameterByName("id", window.location.href);
+function showAdjunktInstancesX() {
+    var adjunktId = App.getParameterByName("id", window.location.href);
     var query = {
         "type": "SELECT",
         "entity": "ChildInstances('$(loggedInUserId)')",
@@ -88,56 +71,53 @@ function showChildInstancesX(AcadreResult) {
 
     }
 
-    var whereChildIdMatchesFilter = {
+    var whereAdjunktIdMatchesFilter = {
         "column": "ChildId",
         "operator": "equal",
-        "value": childId,
+        "value": adjunktId,
         "valueType": "int",
         "logicalOperator": "and"
     };
-    query.filters.push(whereChildIdMatchesFilter);
+    query.filters.push(whereAdjunktIdMatchesFilter);
 
     API.service('records', query)
         .done(function (response) {
-            showChildInstances(AcadreResult, response);
+            showAdjunktInstances(response);
         })
         .fail(function (e) {
             App.showErrorMessage(e.responseJSON.ExceptionMessage);
         });
 }
 
-function displayChildName(response) {
+function displayAdjunktName(response) {
     var result = JSON.parse(response);
-    var childName = (result[0] == undefined) ? 'Intet barn at finde' : ((result[0].Name == null) ? "Intet navn på barn" : result[0].Name);
-    $("#childName").html("").append(childName);
-    $('head title', window.parent.document).text(childName);
+    var adjunktName = (result[0] == undefined) ? 'Ingen adjunkt at finde' : ((result[0].Name == null) ? "Intet navn på adjunkt" : result[0].Name);
+    $("#childName").html("").append(adjunktName);
+    $('head title', window.parent.document).text(adjunktName);
 }
 
-function displayChildNameX(childName) {
-    $("#childName").html("").append(childName);
-    $('head title', window.parent.document).text(childName);
-    $('#itemResponsible').attr('itemTitle', childName);
+function displayAdjunktNameX(adjunktName) {
+    $("#childName").html("").append(adjunktName);
+    $('head title', window.parent.document).text(adjunktName);
+    $('#itemResponsible').attr('itemTitle', adjunktName);
 }
 
-function setChildResponsible(childInfo, childId) {
-    $('#childResponsibleName').text(childInfo.CaseManagerName);
-    $('#itemResponsible').attr('itemResponsible', childInfo.CaseManagerName);
-    $('#itemResponsible').attr('oldResponsible', childInfo.CaseManagerInitials);
-    $('#itemResponsible').attr('itemChildId', childId);
+function setAdjunktResponsible(adjunktInfo, adjunktId) {
+    $('#childResponsibleName').text(adjunktInfo.CaseManagerName);
+    $('#itemResponsible').attr('itemResponsible', adjunktInfo.CaseManagerName);
+    $('#itemResponsible').attr('oldResponsible', adjunktInfo.CaseManagerInitials);
+    $('#itemResponsible').attr('itemChildId', adjunktId);
     $('#itemResponsible').attr('changeResponsibleFor', 'child');
 }
 
-function showChildInstances(result, OCMresponse) {
+function showAdjunktInstances(OCMresponse) {
     var OCMresult = JSON.parse(OCMresponse);
     var list = "";
-    if (result.length === 0 && OCMresult.length === 0) {
+    if (OCMresult.length === 0) {
         list = "<tr class='trStyleClass'><td colspan='100%'>" + translations.NoRecordFound + " </td></tr>";
     } else {
         for (i = 0; i < OCMresult.length; i++) {
-            list += getChildInstanceHtml(OCMresult[i], 0, null);
-        }
-        for (i = 0; i < result.length; i++) {
-            list += getChildInstanceHtml(result[i], 1, OCMresult);
+            list += getAdjunktInstanceHtml(OCMresult[i]);
         }
     }
     $("#childInstances").html("").append(list);
@@ -159,34 +139,17 @@ function showChildInstances(result, OCMresponse) {
     });
 }
 
-function getChildInstanceHtml(item, iType, OCMresult) {
-    // iType: 0:OCM, 1:Acadre
-    // Ignore Acadre cases already in OCM list
-    if (iType == 1) {
-        for (var j = 0; j < OCMresult.length; j++) {
-            if (item.CaseID == OCMresult[j].InternalCaseId)
-                return "";
-        }
-    }
+function getAdjunktInstanceHtml(item) {
 
     var open;
     var instanceLink;
     var numberOfPending;
     var title;
-    if (iType == 0) {
-        open = item.IsOpen ? "" : "instanceClosed";
-        instanceLink = "../AdjunktInstance?id=" + item.Id + "&AdjunktId=" + item.ChildId;
-        numberOfPending = (item.PendingAndEnabled == 0) ? "" : item.PendingAndEnabled;
-        title = item.Title;
-    }
-    else {
-        open = (!item.IsClosed) ? "" : "instanceClosed";
-        instanceLink = "";
-        numberOfPending = (item.PendingAndEnabled == 0) ? "" : item.PendingAndEnabled;
-        title = item.CaseContent;
-        if (title.indexOf('Løbende journal') == 0)
-            return "";
-    }
+    open = item.IsOpen ? "" : "instanceClosed";
+    instanceLink = "../AdjunktInstance?id=" + item.Id + "&AdjunktId=" + item.ChildId;
+    numberOfPending = (item.PendingAndEnabled == 0) ? "" : item.PendingAndEnabled;
+    title = item.Title;
+    
     console.log(item);
     var returnHtml = "<tr class='trStyleClass " + open + "'>";
     returnHtml += (open == "") ? "<td class='statusColumn'>" + getStatus(item.NextDeadline) + "</td>" : "<td class='statusColumn'>Lukket</td>";
@@ -213,17 +176,11 @@ function getChildInstanceHtml(item, iType, OCMresult) {
     if (instanceLink == "")
         returnHtml += "<td>" + title + "</td>";
     else
-        returnHtml += "<td><a href='" + instanceLink + "'>" + title + "</a></td>";
-    if (iType == 0)
-        returnHtml += "<td>" + item.Process + "</td>";
-    else
-        returnHtml += "<td><a href='#' onclick='LinkCaseToInstance(" + item.CaseID + ",\"" + item.CaseNumberIdentifier + "\",\"" + title.replace(/\'/g, '') + "\")'>" + "Knyt til proces" + "</a></td>";
+        returnHtml += "<td><a class='linkStyling' href='" + instanceLink + "'>" + title + "</a></td>";
+    returnHtml += "<td>" + item.Process + "</td>";
     if (item.CaseManagerName == null)
         returnHtml += "<td>" + "NULL" + "</td>";
-    else if (iType == 0)
         returnHtml += '<td><a href="#" class="linkStyling responsibleSelectOptions" itemResponsible="' + item.CaseManagerName.substr(0, 1).toUpperCase() + item.CaseManagerName.substr(1) + '" itemTitle="' + title + '" itemInstanceId="' + item.Id + '" changeResponsibleFor="instance">' + item.CaseManagerName.substr(0, 1).toUpperCase() + item.CaseManagerName.substr(1) + '</a></td>';
-    else
-        returnHtml += '<td>' + item.CaseManagerName.substr(0, 1).toUpperCase() + item.CaseManagerName.substr(1) + '</td>';
 
     if (item.LastUpdated != null) {
         var sDate = item.LastUpdated.toString().substr(0, 10);

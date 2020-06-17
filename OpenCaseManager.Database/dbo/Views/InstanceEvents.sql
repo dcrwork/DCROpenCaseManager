@@ -48,7 +48,7 @@ SELECT e.EventId,
        i.NextDeadline,
        CASE 
             WHEN i.NextDelay < GETUTCDATE() THEN 1
-            WHEN i.NextDeadline < GETUTCDATE() THEN 1
+            WHEN i.NextDeadline < GETUTCDATE() and datediff(minute,i.nextdeadline,getutcdate())<5 THEN 1
             ELSE 0
        END AS NeedToSetTime,
        e.Id AS TrueEventId,
@@ -65,7 +65,8 @@ SELECT e.EventId,
                  ) > 0 THEN 0
             ELSE 1
        END AS Preference,
-       e.ParentId
+       e.ParentId,
+	   e.Roles
 FROM   dbo.Event AS e
        INNER JOIN dbo.Instance AS i
             ON  e.InstanceId = i.Id

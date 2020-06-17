@@ -59,7 +59,8 @@ AS
                               [dbo].[InstanceEvents].ActualIsPending,
                               [dbo].[InstanceEvents].ActualIsEnabled,
                               [dbo].[InstanceEvents].ActualIsExecuted,
-                              [dbo].[InstanceEvents].ParentId
+                              [dbo].[InstanceEvents].ParentId,
+							  [dbo].[InstanceEvents].Roles
                        FROM   [dbo].[InstanceEvents],
                               [dbo].[Event]
                        WHERE  [Event].[InstanceId] = [InstanceEvents].[InstanceId]

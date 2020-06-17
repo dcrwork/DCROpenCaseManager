@@ -37,9 +37,18 @@
                 }
             }
             else {
-                if (element.next().hasClass('showMe') && e.target.localName !== 'img' && e.target.localName !== 'a' && e.target.localName !== 'button') {
+
+                if (element.next().hasClass('showMe') && e.target.localName !== 'img' && e.target.localName !== 'button') {
                     element.next().toggle();
-                    element.next().next('tr.showMe').toggle();
+                } else {
+                    var desc = element.find('td.description');
+                    var showMe = $('<tr class="showMe"><td></td><td colspan="100%" class="descspot"></td></tr>');
+                    var descSpot = showMe.find('td.descspot');
+                    var descclone = desc.clone();
+                    descSpot.append(descclone);
+                    descclone.toggle();
+                    $(showMe).insertAfter(element);
+
                 }
             }
         });
@@ -267,41 +276,29 @@
         if (showCaseInfo) {
             $('#addTasks').hide();
         }
-    }
 
 
-    function getTaskHtmlForDoneTasks(item, isFrontPage) {
-        var returnHtml = '';
-        var taskStatusCssClass = 'includedTask';
-
-        var caseTitle = item.Title;
-        var caseLink = '#';
-
-        var instanceLink = "#";
-        if (isFrontPage) {
-            instanceLink = "../AdjunktInstance?id=" + item.InstanceId;
-        }
-
-        returnHtml = '<tr isfrontPage="' + isFrontPage + '" name="description" class="trStyleClass">' +
-            '<td class="' + taskStatusCssClass + '"></td >' +
-            '<td><a href="' + instanceLink + '">' + item.Title + '</a></td>' +
-            '<td>' + item.ResponsibleName.substr(0, 1).toUpperCase() + item.ResponsibleName.substr(1) + '</td>' +
-            '<td>' + moment(new Date(item.EventDate)).format('L LT') + '</td></tr>';
-
-        if (item.Description !== '' && !isFrontPage) {
-            returnHtml += '<tr class="showMe" style="display:none"><td></td><td colspan="100%">' + item.Description + '</td></tr>';
-        } else if (item.Description !== '' && isFrontPage) {
-            returnHtml += '<tr class="showMe" style="display:none"><td></td><td colspan="100%"><p>' + translations.Description + " : " + item.Description + '</td></tr>' +
-                '<tr class="showMe" style="display:none"><td></td><td colspan="100%"> ' + translations.CaseNo + ' :  <a target="_blank" href="' + caseLink + '">' + caseTitle + '</a> </td></tr>';
-        }
-        return returnHtml;
+        $('#tableAdjunktAktiviteter').sortable({
+            // DIV selector before table
+            divBeforeTable: '',
+            // DIV selector after table
+            divAfterTable: '',
+            // initial sortable column
+            initialSort: '',
+            // ascending or descending order
+            initialSortDesc: false,
+            // language
+            locale: locale,
+            // use table array
+            tableArray: []
+        });
     }
 
     function getTaskHtmlForOthersTasks(item, isFrontPage) {
         var returnHtml = '';
         var taskStatusCssClass = 'includedTask';
         var taskStatus = (item.IsPending) ? "<img src='../Content/Images/priorityicon.svg' height='16' width='16'/>" : '&nbsp;';
-
+        var taskTitle = "Afventende";
         var caseTitle = item.CaseTitle;
         var caseLink = '#';
 
@@ -317,7 +314,7 @@
         }
 
         returnHtml = '<tr isfrontPage="' + isFrontPage + '" name="description" class="trStyleClass' + (item.NotApplicable === true ? ' notapplicable' : '') + ' ">' +
-            '<td class="' + taskStatusCssClass + '">' + taskStatus + '</td >' +
+            '<td class="' + taskStatusCssClass + '" title="' + taskTitle + '">' + taskStatus + '</td >' +
             '<td><a href="' + instanceLink + '">' + item.EventTitle + '</a></td>' +
             '<td>' + (item.Due === null ? '&nbsp;' : moment(new Date(item.Due)).format('L LT')) + '</td>' +
             '<td><a href="#" class="linkStyling responsibleSelectOptions" itemResponsible="' + item.ResponsibleName + '" itemTitle="' + item.EventTitle + '" itemInstanceId="' + item.InstanceId + '" itemEventId="' + item.TrueEventId + '" changeResponsibleFor="activity">' + item.ResponsibleName.substr(0, 1).toUpperCase() + item.ResponsibleName.substr(1) + '</a></td></tr>';
@@ -336,14 +333,21 @@
         var returnHtml = '';
         var taskStatusCssClass = 'includedTask';
         var taskStatus = '&nbsp;';
+        var taskStatusNumber = 1;
+        var taskTitle = '&nbsp;';
         if (item.IsPending) {
-            taskStatus = '<i class="fas fa-exclamation-circle pending-icon"></i>';
+            taskStatus = "<img src='../Content/Images/priorityicon.svg' height='16' width='16'/>";
+            taskStatusNumber = 0;
+            taskTitle = "Afventende";
         } else if (item.IsExecuted) {
             taskStatus = "<img src='../Content/Images/check.png' />";;
             taskStatusCssClass = 'executedTask';
+            taskStatusNumber = 2;
+            taskTitle = "Udført";
         }
         var caseTitle = item.CaseTitle;
         var caseLink = '#';
+
 
         if (item.CaseLink !== null) {
             caseLink = item.CaseLink;
@@ -361,12 +365,15 @@
             }
         }
         returnHtml = '<tr name="description" class="trStyleClass' + (item.NotApplicable === true ? ' notapplicable' : '') + ' ">' +
-            '<td class="' + taskStatusCssClass + '">' + taskStatus + '</td >' +
-            '<td><a class="' + overDueCssClass + (item.ParentId !== null ? 'subprocess-child' : '') + '" href="../Instance?id=' + item.InstanceId + '">' +
+            '<td class="' + taskStatusCssClass + '" title="' + taskTitle + '">' + taskStatus + '</td >' +
+            '<td style="display:none">' + taskStatusNumber + '</td >' +
+            '<td><a class="' + overDueCssClass + (item.ParentId !== null ? 'subprocess-child' : '') + '">' +
             item.Title +
             '</a></td>' +
             '<td  class="' + overDueCssClass + '" >' + (item.Due === null ? '&nbsp;' : moment(new Date(item.Due)).format('L LT')) + '</td>' +
-            '<td><a href="../Instance?id=' + item.InstanceId + '" class="linkStyling responsibleSelectOptions">' + item.SamAccountName + '</a></td>' +
+            '<td style="display:none">' + (item.Due === null ? new Date('1002-01-01') : new Date(item.Due)) + '</td>' +
+            '<td><a>' + item.InstanceTitle + '</a></td>' +
+            '<td>' + item.Roles + '</td>' +
             '<td>';
         if (item.IsEnabled && item.IsIncluded && item.Responsible == currentUserId && item.Type.toLowerCase() !== "form" && item.Type.toLowerCase() !== "subprocess") {
             returnHtml += '<div class="btn-group"><button';
@@ -377,84 +384,14 @@
                 + item.InstanceId + '" id="' + item.EventId + '" trueEventId="' + item.TrueEventId + '" Modified="' + item.Modified + '" name="execute" value="execute" class="btn btn-default" data-toggle="modal" data-target="#executeTaskModal">' + translations.Execute + '</button><div class="title" style="display: none;">' + item.EventTitle + '</div> <div class="description" style="display: none;">' + item.Description + '</div><button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button><ul itemTitle="' + item.EventTitle + '" taskid="' + item.EventId + '" eventType= "' + item.EventType + '" graphid="' + item.GraphId + '" simulationid="' + item.SimulationId + '" instanceid="'
                 + item.InstanceId + '" id="' + item.EventId + '" trueEventId="' + item.TrueEventId + '" Modified="' + item.Modified + '" class="dropdown-menu notApplicableUl" role="menu" name="notApplicable"><li><a href="#">' + translations.NotApplicable + '</a></li></ul>';
         }
-        else if (item.CanExecute && item.Type.toLowerCase() === "form") {
+        else if (item.IsEnabled && item.IsIncluded && item.Responsible == currentUserId && item.Type.toLowerCase() === "form") {
             returnHtml += '<button title="Open" eventType= "' + item.EventType + '" graphid="' + item.GraphId + '" simulationid="' + item.SimulationId + '" token="' + item.Token + '" eventId="' + item.EventId + '" trueEventId="' + item.TrueEventId + '" Modified="' + item.Modified + '" instanceid="' + item.InstanceId + '" id="openDcrForm" class="btn taskExecutionButton" name="btnDcrFormServer"><i class="fas fa-external-link-alt"></i></button><div class="title" style="display: none;">' + item.EventTitle + '</div> <div class="description" style="display: none;">' + item.Description + '</div>';
         }
-        returnHtml += '</td></div>' + '</tr>';
+        returnHtml += '</td></div> ';
+        returnHtml += '<td class="description" style="display: none;">' + item.Description + '</td>';
+        returnHtml += '</tr > ';
 
         return returnHtml;
-    }
-
-    function setWarningDelayDoIt() {
-        $('#trTasksWarning').show();
-    }
-
-    function showChildInstancesX(AcadreResult) {
-        var childId = App.getParameterByName("id", window.location.href);
-        var query = {
-            "type": "SELECT",
-            "entity": "ChildInstances('$(loggedInUserId)')",
-            "resultSet": ["*"],
-            "filters": new Array(),
-            "order": [{ "column": "Pending", "descending": true }, { "column": "PendingAndEnabled", "descending": true }]
-
-        }
-
-        var whereChildIdMatchesFilter = {
-            "column": "ChildId",
-            "operator": "equal",
-            "value": childId,
-            "valueType": "int",
-            "logicalOperator": "and"
-        };
-        query.filters.push(whereChildIdMatchesFilter);
-
-        API.service('records', query)
-            .done(function (response) {
-                showChildInstances(AcadreResult, response);
-            })
-            .fail(function (e) {
-                App.showErrorMessage(e.responseJSON.ExceptionMessage);
-            });
-    }
-
-    function displayChildName(response) {
-        var result = JSON.parse(response);
-        var childName = (result[0] == undefined) ? 'Intet barn at finde' : ((result[0].Name == null) ? "Intet navn på barn" : result[0].Name);
-        $("#childName").html("").append(childName);
-        $('head title', window.parent.document).text(childName);
-    }
-
-    function showAdjunktAktiviteter(result, OCMresponse) {
-        var OCMresult = JSON.parse(OCMresponse);
-        var list = "";
-        if (result.length === 0 && OCMresult.length === 0) {
-            list = "<tr class='trStyleClass'><td colspan='100%'>" + translations.NoRecordFound + " </td></tr>";
-        } else {
-            for (i = 0; i < OCMresult.length; i++) {
-                list += getChildInstanceHtml(OCMresult[i], 0, null);
-            }
-            for (i = 0; i < result.length; i++) {
-                list += getChildInstanceHtml(result[i], 1, OCMresult);
-            }
-        }
-        $("#childInstances").html("").append(list);
-        setClosedInstancesToFadedAndMoveDown();
-
-        $('#tableChildInstances').sortable({
-            // DIV selector before table
-            divBeforeTable: '',
-            // DIV selector after table
-            divAfterTable: '',
-            // initial sortable column
-            initialSort: '',
-            // ascending or descending order
-            initialSortDesc: false,
-            // language
-            locale: locale,
-            // use table array
-            tableArray: []
-        });
     }
 
     function getTasks() {
@@ -476,20 +413,6 @@ $(document).ready(function () {
     var userId = App.getParameterByName("userid", window.location.href);
     var adjunktId = App.getParameterByName("adjunktid", window.location.href);
 
-    $('#tableAdjunktAktiviteter').sortable({
-        // DIV selector before table
-        divBeforeTable: '',
-        // DIV selector after table
-        divAfterTable: '',
-        // initial sortable column
-        initialSort: '',
-        // ascending or descending order
-        initialSortDesc: false,
-        // language
-        locale: locale,
-        // use table array
-        tableArray: []
-    });
 
     if (userId == null && adjunktId == null) { //default behaviour, showing all activities current user is responsible for as well as all activities under the corresponding adjunkt
         API.service('records/GetMineAktiviteterNoInput', null)

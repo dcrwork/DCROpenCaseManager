@@ -102,7 +102,7 @@ function updateTimeline(monthMenu) {
         }
 
         json = json.sort(function (a, b) {
-            return (settings.sortDesc) ? (Date.parse(b['time']) - Date.parse(a['time'])) : (Date.parse(a['time']) - Date.parse(b['time']));
+            return (settings.sortDesc) ? (Date.parse(b['realtime']) - Date.parse(a['realtime'])) : (Date.parse(a['realtime']) - Date.parse(b['realtime']));
         });
 
         var yearMenu = $('<select>').attr('id', 'timeline-menu');

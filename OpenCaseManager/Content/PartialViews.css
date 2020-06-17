@@ -136,6 +136,7 @@
     width: 230px;
     padding: 10px;
     text-align: right;
+    margin-top: 15px;
 }
 
 .obsHeader {
@@ -314,11 +315,6 @@ button:disabled {
         visibility: visible;
     }
 
-.modal-dialog {
-    position: fixed;
-    top: 35vh;
-    left: 35vw;
-}
 
 .executeModalButtons button {
     color: white;

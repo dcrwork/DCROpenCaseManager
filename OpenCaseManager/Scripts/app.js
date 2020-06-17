@@ -658,7 +658,7 @@ var Responsible = null;
         var data = {
             "type": "SELECT",
             "entity": "AllInstances",
-            "resultSet": ["Id", "Title", "CaseNoForeign", "IsOpen", "Responsible"],
+            "resultSet": ["Id", "Title", "CaseNoForeign", "IsOpen", "Responsible", "AdjunktName"],
             "filters": [
                 {
                     "column": "Title",
@@ -1120,7 +1120,7 @@ var Responsible = null;
         else
             item.IsOpen = translations.Close;
         var returnHtml = '';
-        returnHtml = '<tr class="trStyleClass"><td> <a href="../Instance?id=' + item.Id + '">' + item.Title + '</a></td><td>' + item.CaseNoForeign + '</td><td>' + item.Responsible + '</td><td>' + item.IsOpen + '</td></tr>';
+        returnHtml = '<tr class="trStyleClass"><td> <a href="../Instance?id=' + item.Id + '">' + item.Title + '</a></td><td>' + item.AdjunktName + '</td><td>' + item.Responsible + '</td><td>' + item.IsOpen + '</td></tr>';
         return returnHtml;
     }
 

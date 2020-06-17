@@ -2,7 +2,7 @@
 @{
     /**/
 
-    ViewBag.Title = "Child";
+    ViewBag.Title = "Adjunkt";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -15,22 +15,7 @@
 <div class="wholeChildPage cont">
     <input type="hidden" id="childIdHidden">
     <div class="row">
-
-        <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
-            <div class="buttonsBox">
-                <div data-toggle="modal" data-target="#create-process-modal" class="create-process-button">
-                    @Html.Partial("~/Views/PartialViews/AddButton.cshtml", new ViewDataDictionary { { "add-text", "AddProcess" } })
-                </div>
-
-                @Html.Partial("~/Views/PartialViews/AddButton.cshtml", new ViewDataDictionary { { "add-text", "AddJournalNote" }, { "onClick", "CreateJournalNoteView()" } })
-            </div>
-
-            <div class="pendingActivitiesBox">
-                @Html.Partial("~/Views/PartialViews/PendingActivities.cshtml")
-            </div>
-        </div>
-
-        <div class="tabsBox col-lg-6 col-md-6 col-sm-12 col-xs-12">
+        <div class="tabsBox col-lg-10 col-md-10 col-sm-12 col-xs-12">
             <nav aria-label="breadcrumb" class="breadcrumbsNavigation">
                 <ol class="breadcrumb arr-right bg-dark ">
                     <li class="breadcrumb-item "><a href="~/MineAdjunkter"><span data-locale data-apply="text" data-key="MyChildren"></span></a></li>
@@ -66,7 +51,7 @@
                                         <th width="52px" type="customSort"><img src='../Content/Images/priorityicon.svg' height='16' width='16' /></th>
                                         <th style="display:none;" width="140px" type="number"><span data-locale data-apply="text" data-key="Status">PActivityCount</span></th>
                                         <th width=""><a style="color:white" href="#"><span data-locale data-apply="text" data-key="Title"></span></a></th>
-                                        <th width="25%"><a style="color:white" href="#"><span data-locale data-apply="text" data-key="DCRProcess"></span></a></th>
+                                        <th width="35%"><a style="color:white" href="#"><span data-locale data-apply="text" data-key="DCRProcess"></span></a></th>
                                         <th width="10%"><a style="color:white" href="#"><span data-locale data-apply="text" data-key="Responsible"></span></a></th>
                                         <th type="date" width="10%"><a style="color:white" href="#"><span data-locale data-apply="text" data-key="Opdated"></span></a></th>
                                         <th style="display:none" width="10%"><a style="color:white" href="#"><span data-locale data-apply="text" data-key="Opdated"></span></a></th>
@@ -83,10 +68,19 @@
                 </div>
             </div>
         </div>
+        <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+            <div class="buttonsBox">
+                <div data-toggle="modal" data-target="#create-process-modal" class="create-process-button">
+                    @Html.Partial("~/Views/PartialViews/AddButton.cshtml", new ViewDataDictionary { { "add-text", "AddProcess" } })
+                </div>
 
-        <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                @Html.Partial("~/Views/PartialViews/AddButton.cshtml", new ViewDataDictionary { { "add-text", "AddJournalNote" }, { "onClick", "CreateJournalNoteView()" } })
+            </div>
             <div class="stamdataBox">
                 @Html.Partial("~/Views/PartialViews/ObsBox.cshtml")
+            </div>
+            <div class="pendingActivitiesBox">
+                @Html.Partial("~/Views/PartialViews/PendingActivities.cshtml")
             </div>
         </div>
 

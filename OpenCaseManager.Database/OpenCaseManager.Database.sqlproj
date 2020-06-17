@@ -136,10 +136,10 @@
     <Build Include="dbo\Stored Procedures\GetDCRXMLLog.sql" />
     <Build Include="dbo\Views\ContextInstances.sql" />
     <Build Include="dbo\Stored Procedures\GetEventResponsibleRoles.sql" />
-    <Build Include="dbo\Functions\AdjunktActivities.sql" />
     <Build Include="dbo\Tables\Adjunkt.sql" />
     <Build Include="dbo\Tables\AdjunktUser.sql" />
     <Build Include="dbo\Views\MineAktiviteter.sql" />
+    <Build Include="dbo\Views\AdjunktView.sql" />
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="dbo\Data\Script.PreDeployment.sql" />

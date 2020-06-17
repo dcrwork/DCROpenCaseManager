@@ -13,6 +13,7 @@ function documentType(data) {
     return {
         type: "Dokument",
         time: formatDateTimeline(data.EventDate),
+        realtime: data.EventDate,
         responsible: data.DocumentResponsible,
         body: [{
             tag: 'h3',
@@ -32,6 +33,7 @@ function journalNoteType(data) {
     return {
         type: "Journalnotat",
         time: formatDateTimeline(data.EventDate),
+        realtime: data.EventDate,
         responsible: data.DocumentResponsible,
         body: [{
             tag: 'h3',
@@ -52,6 +54,7 @@ function activitiesType(data) {
     return {
         type: eventtype,
         time: formatDateTimeline(data.EventDate),
+        realtime: data.EventDate,
         responsible: data.EventResponsible,
         body: [{
             tag: 'h3',

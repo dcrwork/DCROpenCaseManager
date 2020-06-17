@@ -39,7 +39,7 @@ BEGIN
 		    FETCH xyz INTO @role
 		    WHILE @@FETCH_STATUS = 0
 		    BEGIN
-		        INSERT INTO InstanceRole
+		        INSERT INTO InstanceRole (InstanceId, Role, UserId)
 		        VALUES
 		          (
 		            @InstanceId,

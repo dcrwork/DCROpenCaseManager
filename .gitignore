@@ -3,6 +3,7 @@
 
 # Secret Stuff
 OpenCaseManager/Dependencies/
+OpenCaseManager/Properties/PublishProfiles/
 
 # User-specific files
 *.suo

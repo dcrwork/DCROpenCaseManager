@@ -114,7 +114,8 @@ BEGIN
 		                                   DATEDIFF(mi, GETUTCDATE(), GETDATE()),
 		                                   CAST(@eventDeadline AS DATETIME2)
 		                               )
-		                     END
+		                     END,
+							 Roles=@role
 		        WHERE  InstanceId        = @instanceId
 		               AND EventId       = @Id
 		    ELSE 
@@ -134,7 +135,8 @@ BEGIN
 		            EventType,
 		            [Description],
 		            [TYPE],
-		            ParentId
+		            ParentId,
+					Roles
 		          )
 		        VALUES
 		          (
@@ -173,7 +175,8 @@ BEGIN
 		            END,
 		            @description,
 		            @type,
-		            @ParentEvent
+		            @ParentEvent,
+					@role
 		          )
 		    
 		    FETCH ABC INTO @Id,@Title,@Included,@Enabled,@Pending,@Executed,@eventType,

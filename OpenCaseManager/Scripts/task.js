@@ -8,7 +8,7 @@
         var query = {
             "type": "SELECT",
             "entity": entityName,
-            "resultSet": ["EventId", "TrueEventId", "Responsible", "InstanceId", "EventTitle", "Due", "SimulationId", "GraphId", "IsPending", "IsExecuted", "CanExecute", "ResponsibleName", "[Description]", "IsUIEvent", "UIEventValue", "EventType", "[Type]", "[Case]", "CaseLink", "CaseTitle", "IsOverDue", "DaysPassedDue", "Modified", "NotApplicable", "ParentId"],
+            "resultSet": ["EventId", "TrueEventId", "Responsible", "InstanceId", "EventTitle", "Due", "SimulationId", "GraphId", "IsPending", "IsExecuted", "CanExecute", "ResponsibleName", "[Description]", "IsUIEvent", "UIEventValue", "EventType", "[Type]", "[Case]", "CaseLink", "CaseTitle", "IsOverDue", "DaysPassedDue", "Modified", "NotApplicable", "ParentId", "Roles"],
             "filters": new Array(),
             "order": [
                 { "column": "NotApplicable", "descending": false },
@@ -401,7 +401,7 @@
 
         returnHtml = '<tr isfrontPage="' + isFrontPage + '" name="description" class="trStyleClass">' +
             '<td class="' + taskStatusCssClass + '"></td >' +
-            '<td><a href="' + instanceLink + '">' + item.Title + '</a></td>' +
+            '<td style="cursor:default">' + item.Title + '</td>' +
             '<td>' + item.ResponsibleName.substr(0, 1).toUpperCase() + item.ResponsibleName.substr(1) + '</td>' +
             '<td>' + moment(new Date(item.EventDate)).format('L LT') + '</td></tr>';
 
@@ -418,7 +418,7 @@
         var returnHtml = '';
         var taskStatusCssClass = 'includedTask';
         var taskStatus = (item.IsPending) ? "<img src='../Content/Images/priorityicon.svg' height='16' width='16'/>" : '&nbsp;';
-
+        var taskTitle = (item.IsPending) ? "Afventende" : '&nbsp;';
         var caseTitle = item.CaseTitle;
         var caseLink = '#';
 
@@ -435,7 +435,7 @@
 
         returnHtml = '<tr isfrontPage="' + isFrontPage + '" name="description" class="trStyleClass' + (item.NotApplicable === true ? ' notapplicable' : '') + ' ">' +
             '<td class="' + taskStatusCssClass + '">' + taskStatus + '</td >' +
-            '<td><a href="' + instanceLink + '">' + item.EventTitle + '</a></td>' +
+            '<td style="cursor:default">' + item.EventTitle + '</td>' +
             '<td>' + (item.Due === null ? '&nbsp;' : moment(new Date(item.Due)).format('L LT')) + '</td>' +
             '<td><a href="#" class="linkStyling responsibleSelectOptions" itemResponsible="' + item.ResponsibleName + '" itemTitle="' + item.EventTitle + '" itemInstanceId="' + item.InstanceId + '" itemEventId="' + item.TrueEventId + '" changeResponsibleFor="activity">' + item.ResponsibleName.substr(0, 1).toUpperCase() + item.ResponsibleName.substr(1) + '</a></td></tr>';
             
@@ -453,12 +453,16 @@
     function getTaskHtml(item, showCaseInfo) {
         var returnHtml = '';
         var taskStatusCssClass = 'includedTask';
-        var taskStatus = '&nbsp;';
+        var taskStatus = '&nbsp;'; 
+        var taskTitle = '&nbsp;';
+        
         if (item.IsPending) {
-            taskStatus = '<i class="fas fa-exclamation-circle pending-icon"></i>';
+            taskStatus = "<img src='../Content/Images/priorityicon.svg' height='16' width='16'/>";
+            taskTitle = 'Afventende';
         } else if (item.IsExecuted) {
             taskStatus = "<img src='../Content/Images/check.png' />";;
             taskStatusCssClass = 'executedTask';
+            taskTitle = 'Udført';
         }
         var caseTitle = item.CaseTitle;
         var caseLink = '#';
@@ -480,11 +484,12 @@
             }
         }
         returnHtml = '<tr name="description" class="trStyleClass' + (item.NotApplicable === true ? ' notapplicable' : '') + ' ">' +
-            '<td class="' + taskStatusCssClass + '">' + taskStatus + '</td >' +
-            '<td><a class="' + overDueCssClass + (item.ParentId !== null ? 'subprocess-child' : '') + '" href="../Instance?id=' + item.InstanceId + '">' +
+            '<td class="' + taskStatusCssClass + '" title="' + taskTitle + '" > ' + taskStatus + '</td > ' +
+            '<td style="cursor:default" class="' + overDueCssClass + (item.ParentId !== null ? 'subprocess-child' : '') + '" >' +
             item.EventTitle +
-            '</a></td>' +
+            '</td>' +
             '<td  class="' + overDueCssClass + '" >' + (item.Due === null ? '&nbsp;' : moment(new Date(item.Due)).format('L LT')) + '</td>' +
+            '<td>' + item.Roles + '</td>' +
             '<td><a href="#" class="linkStyling responsibleSelectOptions" itemResponsible="' + item.ResponsibleName + '" itemTitle="' + item.EventTitle + '" itemInstanceId="' + item.InstanceId + '" itemEventId="' + item.TrueEventId + '" changeResponsibleFor="activity">' + item.ResponsibleName + '</a></td>' +
             '<td>';
         if (item.CanExecute && item.Type.toLowerCase() !== "form" && item.Type.toLowerCase() !== "subprocess") {

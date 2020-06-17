@@ -1,11 +1,4 @@
-﻿/****** Object:  Table [dbo].[Adjunkt]    Script Date: 15-04-2020 13:34:38 ******/
-SET ANSI_NULLS ON
-GO
-
-SET QUOTED_IDENTIFIER ON
-GO
-
-CREATE TABLE [dbo].[Adjunkt](
+﻿CREATE TABLE [dbo].[Adjunkt](
 	[Id] [int] IDENTITY(1,1) NOT NULL,
 	[Responsible] [int] NOT NULL,
 	[Name] [nvarchar](100) NULL,

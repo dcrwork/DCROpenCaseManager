@@ -52,7 +52,7 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    margin: 40px 60px 0px 60px;
+    margin: 20px 60px 0px 60px;
 }
 
 .table > thead > tr > th,

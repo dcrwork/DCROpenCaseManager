@@ -54,7 +54,29 @@ namespace OpenCaseManager.Controllers.ApiControllers
         /// <returns></returns>
         [HttpPost]
         [Route("InitializeGraph")]
-        public IHttpActionResult InitializeGraph(dynamic input)
+        public IHttpActionResult InitializeGraphAPI(dynamic input)
+        {
+            try
+            {
+
+                var result = InitializeGraph(input, out string output);
+
+                if (result)
+                {
+                    return Ok(output);
+                }
+                return BadRequest("No Instance is created.");
+            }
+            catch (Exception ex)
+            {
+                Common.LogInfo(_manager, _dataModelManager, "InitializeGraph - Failed. - " + Common.ToJson(input));
+                Common.LogError(ex);
+                return InternalServerError(ex);
+            }
+        }
+
+
+        public bool InitializeGraph(dynamic input, out string output)
         {
             try
             {
@@ -69,15 +91,18 @@ namespace OpenCaseManager.Controllers.ApiControllers
                     Common.SyncEvents(instanceId, model.EventsXML, responsibleId, _manager, _dataModelManager);
                     Common.UpdateEventTypeData(instanceId, _manager, _dataModelManager);
                     AutomaticEvents(instanceId, graphId, model.SimulationId, responsibleId);
-                    return Ok(model.EventsXML);
+                    output = model.EventsXML;
+                    return true;
                 }
-                return BadRequest("No Instance is created.");
+                output = "";
+                return false;
             }
             catch (Exception ex)
             {
                 Common.LogInfo(_manager, _dataModelManager, "InitializeGraph - Failed. - " + Common.ToJson(input));
                 Common.LogError(ex);
-                return InternalServerError(ex);
+                output = "";
+                return false;
             }
         }
 

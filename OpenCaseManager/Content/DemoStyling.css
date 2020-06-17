@@ -10,7 +10,7 @@
     --partial-views-background-color: #EFEFEF;
     --partial-views-button-background-color: #EFEFEF;
 }
-/* These colours are based on Syddjurs municipality*/
+/* These colours are based on DIKU*/
 
 body {
     font-family: Arial,'Source Sans Pro',sans-serif;
@@ -42,16 +42,16 @@ div.footer div.footer-content {
 .left-footer-img {
     max-width: 200px;
     max-height: 90px;
-    filter: brightness(0) invert(1);
 }
 
 .right-footer-img {
-    width: 140px;
-    height: 50px;
+    width: 70px;
+    height: 25px;
     background: url(../content/images/dcrLogo.png);
     background-repeat: no-repeat;
     filter: brightness(0) invert(1);
     background-size: cover;
+    margin: 7px 0px;
 }
 
 a {
