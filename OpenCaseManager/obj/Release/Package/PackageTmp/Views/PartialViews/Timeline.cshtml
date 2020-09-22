@@ -1,0 +1,37 @@
+﻿
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/animatecss/3.5.2/animate.min.css" />
+<link rel="stylesheet" href="../../Scripts/plugins/Albe_Timeline/style-albe-timeline.css" />
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="../../Scripts/plugins/Albe_Timeline/jquery-albe-timeline.js"></script>
+<script src="../../Scripts/plugins/Albe_Timeline/data-albe-timeline.js"></script>
+<script src="../../Scripts/timeline.js"></script>
+
+
+
+<div class="timeline">
+
+    <!--timeline-->
+    <!--    <div id="filterButton"><span class="glyphicon glyphicon-plus"></span><span data-locale data-apply="text" data-key="Filter"></span></div>-->
+    <div class="filterTypeWrapper" style="display: block;">
+        <label>
+            Aktivitet
+            <input checked type="checkbox" id="activityCheckbox" value="activity">
+            <span id="activitySpan"></span>
+        </label>
+        <label>
+            Journalnotat
+            <input checked type="checkbox" id="journalnoteCheckbox" value="journalnote">
+            <span id="journalnoteSpan"></span>
+        </label>
+        <label>
+            Dokument
+            <input checked type="checkbox" id="documentCheckbox" value="document">
+            <span id="documentSpan"></span>
+        </label>
+    </div>
+    <div id="myTimeline" class="timeline-container">
+    </div>
+
+
+</div>
+

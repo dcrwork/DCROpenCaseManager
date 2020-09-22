@@ -1,0 +1,76 @@
+﻿
+@{
+    ViewBag.Title = "SearchProcess";
+}
+
+
+<!-- <h3 class="searchFieldHeading">Search Instances</h3> -->
+<form class="searchPageForm">
+    <!-- <input type="text" name="search" placeholder="Search Instances.." class="searchField"> -->
+    <div class="search-field col-md-12">
+        <input type="text" placeholder="Search Graphs.." data-locale data-apply="attribute" data-attribute="placeholder" data-key="Search" id="processSearchText">
+        <i id="searchProcess" class="glyphicon glyphicon-search"></i>
+    </div>
+</form>
+<div class="row tableDataRow">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <!-- Trigger the modal with a button -->
+        <h4 class="tasksHeading"><span data-locale data-apply="text" data-key="SearchProcess"></span></h4>
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr class="trStyleClass">
+                        <th class="selectBox"><input type="checkbox" id="selectAll"></th>
+                        <th><span data-locale data-apply="text" data-key="GraphId">Id</span></th>
+                        <th><span data-locale data-apply="text" data-key="Title">Title</span></th>
+                    </tr>
+                </thead>
+                <tbody id="processes"></tbody>
+            </table>
+            <button id="addProcess" class="btn submitBtn pull-right">Submit</button>
+            <div style="clear:both" >&nbsp;</div>
+        </div>
+    </div><!-- Cols Div End -->
+</div><!-- Row End -->
+<script>
+    //todo:mytasks-Move to Script file
+
+    $(document).ready(function () {
+        $('#processSearchText').keypress(function (e) {
+            if (e.which == 13) {
+                searchProcesses(e);
+            }
+        })
+
+        $('#searchProcess').on('click', function (e) {
+            searchProcesses(e);
+        })
+
+        $('#addProcess').on('click', function (e) {
+            App.addProcesses();
+            e.preventDefault();
+        })
+
+        $('#selectAll').change(function () {
+            if (this.checked) {
+                $('input[type="checkbox"]').prop('checked', true);
+            }
+            else {
+                $('input[type="checkbox"]').prop('checked', false);
+            }
+        });
+
+        function searchProcesses(e) {
+            var searchText = $('#processSearchText').val();
+            if (searchText != '') {
+                App.searchProcess(searchText);
+            } else {
+                App.searchProcess();
+            }
+            e.preventDefault();
+        }
+        App.searchProcess('');
+    });
+</script>
+
+<script src="~/Scripts/process.js"></script>

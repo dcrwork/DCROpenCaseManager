@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<discovery xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.xmlsoap.org/disco/">
+  <contractRef ref="http://esdhtest2/acadre/Acadre.CM.PublicServices/soapAuth/AcadreServiceV4.asmx?wsdl" docRef="http://esdhtest2/acadre/Acadre.CM.PublicServices/soapAuth/AcadreServiceV4.asmx" xmlns="http://schemas.xmlsoap.org/disco/scl/" />
+  <soap address="http://esdhtest2/acadre/Acadre.CM.PublicServices/soapAuth/AcadreServiceV4.asmx" xmlns:q1="http://www.traen.com/2007/09/06" binding="q1:ContactService4" xmlns="http://schemas.xmlsoap.org/disco/soap/" />
+  <soap address="http://esdhtest2/acadre/Acadre.CM.PublicServices/soapAuth/AcadreServiceV4.asmx" xmlns:q2="http://www.traen.com/2007/09/06" binding="q2:MainDocumentService4" xmlns="http://schemas.xmlsoap.org/disco/soap/" />
+  <soap address="http://esdhtest2/acadre/Acadre.CM.PublicServices/soapAuth/AcadreServiceV4.asmx" xmlns:q3="http://www.traen.com/2007/11/02" binding="q3:ContactService5" xmlns="http://schemas.xmlsoap.org/disco/soap/" />
+  <soap address="http://esdhtest2/acadre/Acadre.CM.PublicServices/soapAuth/AcadreServiceV4.asmx" xmlns:q4="http://www.traen.com/2007/09/06" binding="q4:SupplementService4" xmlns="http://schemas.xmlsoap.org/disco/soap/" />
+  <soap address="http://esdhtest2/acadre/Acadre.CM.PublicServices/soapAuth/AcadreServiceV4.asmx" xmlns:q5="http://www.traen.com/2007/09/06" binding="q5:CaseService4" xmlns="http://schemas.xmlsoap.org/disco/soap/" />
+  <soap address="http://esdhtest2/acadre/Acadre.CM.PublicServices/soapAuth/AcadreServiceV4.asmx" xmlns:q6="http://www.traen.com/2007/09/06" binding="q6:DocumentService4" xmlns="http://schemas.xmlsoap.org/disco/soap/" />
+  <soap address="http://esdhtest2/acadre/Acadre.CM.PublicServices/soapAuth/AcadreServiceV4.asmx" xmlns:q7="http://www.traen.com/2007/09/06" binding="q7:MemoService4" xmlns="http://schemas.xmlsoap.org/disco/soap/" />
+  <soap address="http://esdhtest2/acadre/Acadre.CM.PublicServices/soapAuth/AcadreServiceV4.asmx" xmlns:q8="http://www.traen.com/2007/09/06" binding="q8:ContactService41" xmlns="http://schemas.xmlsoap.org/disco/soap/" />
+  <soap address="http://esdhtest2/acadre/Acadre.CM.PublicServices/soapAuth/AcadreServiceV4.asmx" xmlns:q9="http://www.traen.com/2007/09/06" binding="q9:MainDocumentService41" xmlns="http://schemas.xmlsoap.org/disco/soap/" />
+  <soap address="http://esdhtest2/acadre/Acadre.CM.PublicServices/soapAuth/AcadreServiceV4.asmx" xmlns:q10="http://www.traen.com/2007/11/02" binding="q10:ContactService51" xmlns="http://schemas.xmlsoap.org/disco/soap/" />
+  <soap address="http://esdhtest2/acadre/Acadre.CM.PublicServices/soapAuth/AcadreServiceV4.asmx" xmlns:q11="http://www.traen.com/2007/09/06" binding="q11:SupplementService41" xmlns="http://schemas.xmlsoap.org/disco/soap/" />
+  <soap address="http://esdhtest2/acadre/Acadre.CM.PublicServices/soapAuth/AcadreServiceV4.asmx" xmlns:q12="http://www.traen.com/2007/09/06" binding="q12:CaseService41" xmlns="http://schemas.xmlsoap.org/disco/soap/" />
+  <soap address="http://esdhtest2/acadre/Acadre.CM.PublicServices/soapAuth/AcadreServiceV4.asmx" xmlns:q13="http://www.traen.com/2007/09/06" binding="q13:DocumentService41" xmlns="http://schemas.xmlsoap.org/disco/soap/" />
+  <soap address="http://esdhtest2/acadre/Acadre.CM.PublicServices/soapAuth/AcadreServiceV4.asmx" xmlns:q14="http://www.traen.com/2007/09/06" binding="q14:MemoService41" xmlns="http://schemas.xmlsoap.org/disco/soap/" />
+</discovery>

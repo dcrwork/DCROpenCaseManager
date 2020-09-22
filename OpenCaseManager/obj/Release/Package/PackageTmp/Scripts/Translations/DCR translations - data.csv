@@ -1,0 +1,173 @@
+﻿token,en-US,da-DK,it-IT
+Search,Search,Søg,Cerca
+Instances,Cases,Sager,Casi
+Instance,Case,Sag,Caso
+Tasks,Tasks,Opgaver,Compiti
+Title,Title,Titel,Titolo
+Status,Status,Status,Stato
+DueDate,Due Date,Deadline,Data di Scadenza
+AddInstance,Add Case,Tilføj sag,Aggiungi caso
+Processes,Processes,Processer,Processi
+Add,Add,Tilføj,Aggiungi
+Phase,Phase,Fase,Fase
+InstanceDetail,Case,Sagsdetaljer,Caso
+CaseNo,Case #,Id,Caso No
+CaseLink,Case Link,Link,Collegamento al caso
+InstanceTasks,Case Tasks,Sagsopgaver,Compiti per questo caso
+Responsible,Responsible,Ansvarlig,Responsabile
+NoRecordFound,No Record Found,Ingen rækker fundet,Nessuna informazione trovata
+MUSDetails,MUS Details,MUS Detaljer,!!MUS Details
+Name,Name,Navn,"Action"":""Azione"
+Action,Action,Handling,Azione
+Description,Description,Beskrivelse,Descrizione
+Home,Home,Hjem,Pagina principale
+MUS,MUS,MUS,!!MUS
+History,History,Historik,Cronologia
+EventsId,EventId,Handling,Identificativo Evento
+Edit,Edit,Redigere,Modifica
+Update,Update,Opdatering,Aggiorna
+Cancel,Cancel,Afbryd,Cancella
+Delete,Delete,Slet,Elimina
+Open,Open,Åben,Apri
+Close,Close,Lukket,Chiudi
+ProcessDeleteMessage,Press Yes to delete process.,Tryk på Ja for at slette proces.,Clicca Yes per cancellare il processo
+Processes,Processes,Processer,
+SearchProcess,Search Process,Søg proces,Cerca processo
+Welcome,Welcome,Velkommen,Benvenuto
+ProcessPhasesUpdatedMessage,DCR Graph XML and its phases are updated.,DCR Graph XML og dets faser opdateres.,Il grafico DCR XML e le sue fasi sono aggiornati
+BlankForm,Blank Form,Blank formular,Modulo vuoto
+ChooseFromTemplate,Choose From Template,Vælg fra formular,Scegli da modello
+ShowMyForms,Show My Forms,Vis mine formularer,Mostra i miei moduli
+IsTemplate,Is Template,Er skabelon,Modello IS
+NewItem,New Item,Nyt objekt,Nuovo elemento
+FormTemplates,Form Templates,Formular skabelon,Modelli di moduli
+MyForms,My Forms,Mine formularer,I miei moduli
+Form,Form,Formular,Modulo
+FormFromTemplate,Do you want to create form from selected template?,Vil du oprette formular fra valgt skabelon?,Crea modulo da modello selezionato?
+Download,Download,Hent,Scarica
+ExportAsPDF,Export As PDF,Eksporter som PDF,Esporta in PDF
+NoGraphFound,No Graph Found.,Ingen graf fundet.,Nessun grafico trovato
+NoUserDetails,No User Details,Ingen detaljer om bruger,Nessun dato utente
+ProcessAdded,Process added,Proces tilføjet,Processo aggiunto
+ProcessesAdded,Processes added,Processer tilføjet,Processi aggiunti
+ProcessAlreadyAdded,Process already added,Processen er allerede tilføjet,Processi già aggiunti
+Yes,Yes,Ja,Si
+No,No,Nej,No
+SelectResponsible,Select Responsible,Vælg Ansvarlig,Seleziona Responsabile
+InstanceCreateError,Something is missing to create instance,Der mangler noget for at skabe en indsats,Manca qualcoa per la creazione dell'istanza
+CreateTemplate,Create Template,Opret skabelon,Crea modello
+AllResponsibles,All Responsibles,Alle Ansvarlige,Tutti i responsabili
+Default,Default,Default,Default
+OnlyEnabled,Only Enabled,Kun Aktive,Solo abilitato
+MyTasks,My Tasks,Mine Opgaver,I miei compiti
+GotoGraph,Go to graph,Gå til graph,Vai al grafico
+OnFrontPage,On Front Page,På forsiden,Su pagina iniziale
+On,on,tænde,Acceso
+Off,off,af,Spento
+Create,Create,Opret,Crea
+Documents,Documents,Dokumenter,Documenti
+DeleteDocument,Delete Document,Slet Dokument,Elimina documento
+DeleteDocumentMessage,Document will no longer be available after delete.<br/>Do you want to continue?,Dokumentet vil ikke være tilgængeligt når det er slettet?<br/>Vil du fortsætte?,Il documento non sarà più disponibile dopo l'eliminazione. Vuoi continuare?
+DragorSelect,Drag a file or Select Here,Træk en fil eller vælg her,Trascina un file  o seleziona qui
+Document,Document,Dokument,Documento
+AddDocument,Add Document,Tilføj Dokument,Aggiungi documento
+EditDocument,Edit Document,Rediger Dokument,Modifica documento
+Actions,Actions,Handlinger,Azioni
+Department,Department,Afdeling,Dipartimento
+Instructions,Instructions,Instruktioner,Istruzioni
+GraphId,Graph Id,Graf Id,Identificativo del Grafo
+Export,Export,Eksport,Esporta
+Select,Select,Vælg,Seleziona
+SaveToPersonalFolder,To Personal Folder,Til Personlig Mappe,Nella cartella personale
+UploadedToPersonalFolder,Document uploaded to Personal folder.,Dokument uploadet til Personlig mappe.,Documento caricato in cartella personale
+Comment,Comment,Kommentar,Commento
+Execute,Execute,Udfør,Esegui
+PersonalDocument,Personal Documents,Personlige Dokumenter,Documenti Personali
+DownloadAsPDF,Download as pdf,Download som pdf,Scarica come PDF
+DownloadAsWord,Download as word,Download som word,Scarica come Word
+SavePDFToPersonalFolder,PDF To Personal Folder,PDF Til Personlig Mappe,Salva in PDF nella cartella personale
+SaveWordToPersonalFolder,Word To Personal Folder,Word Til Personlig Mappe,Salva in Word nella cartella personale
+MyChildren,My cases, Mine sager,
+NoChildName,No Child Name,Intet navn på barn,
+AddChild,Add child,Tilføj barn,
+ChildName,Name of child,Navn på barn,
+NoChild,No child found,Intet barn at finde,
+NumberOfActivities,No of activities,Antal aktiviteter,
+CPR,Social Security ID,CPR-nr,
+NextDeadline,Next deadline,Næste frist,
+NoDeadline,No deadline,Ingen frist,
+PendingActivities,Activities needing your attention,Aktiviteter der har behov for din opmærksomhed,
+Timeline,Timeline,Tidslinje,
+DCRProcess,Process,Proces,
+Opdated,Updated,Opdateret,
+AddProcess,Add process,Tilføj indsats,
+Closed,Closed,Lukket,
+NothingDone,Nothing done,Intet gjort,
+Stamdata,Basic data,Stamdata,
+ExpandedStamdata,Expand Basic Data,Udvid Stamdata,
+CaseNumber,Case No,Sagsnummer,
+Address,Address,Adresse,
+Custody,Custody,Forældremyndighed,
+School,School,Skole,
+Age,Age,Alder,
+SeeExpandedStamdata,See expanded basic data,Se udvidet stamdata,
+SeeLess,See less,Se mindre,
+Filter,Filter,Filtrer,
+Activity,Activity,Aktivitet,
+PendingFromOthers,Pending,Afventende,
+CompletedActivities,Completed activities,Afsluttede aktiviteter,
+CompletedDate,Date done,Dato for udførsel,
+AddProcess,Add process,Tilføj indsats,
+AddJournalNote,Add journal,Tilføj Journalnotat,
+CreateJournalNote,Create Journal note,Opret journalnotat,
+CloseJournalNote,Close Journal Note,Luk journalnote,
+UpdateJournalNote,Journal note updated,Journalnotet opdateret,
+NameOfChild,Name of child,Barnets navn,
+AddTitle,Add title,Tilføj titel,
+Activities,Activities,Aktiviteter,
+Find,Find,Find,
+Added,Added,Tilføjet,
+Save,Save,Gem,
+SaveAsDraft,Save as draft,Gem som kladdde,
+SaveAndClose,Save and close,Gem og luk,
+Opdate,Update,Opdater <-- Update,
+Next,Next,Næste,
+Previous,Previous,Forrige,
+OccurrenceDate,Occurrence Date,Hændelsesdato,
+OccurrenceTime,Occurrence time,Hændelsestidspunkt,
+DraftSaved,Draft saved,Kladde gemt,
+NoValidInstance,No valid instance,Ingen gyldig indsats med dette id,
+NothingFound,Nothing Found,Intet fundet,
+AddImportantInfo,Add Important Information,Tilføj vigtig information...,
+NoDataTimeLine,No data found,Der er ikke noget data at finde.,
+Role,Role,Rolle,Ruolo
+Roles,Roles,Roller,
+CreateNewTask,Create new task,Opret ny opgave,Crea nuovo compito
+MyActivities,My Activities,Mine aktiviteter,le mie attività
+Pending,Pending,Afventende,in attesa di
+PendingOnOthers,Activities you wait for others to do.,Aktiviteter du afventer at andre udfører.,Attività che aspetti che altri facciano.
+SocialSecurityID,CPR,CPR,CPR
+ChangeResponsible,Change Responsible,Ændr ansvarlig,
+ChangeResponsibleTo,Change Responsible To,Ændr ansvarlig til,
+CurrentResponsible,Current Responsible,Nuværende ansvarlige,
+ChangeResponsibleOfActivities,Change responsible of instance and activities,Ændr ansvarlig for indsats og aktiviteter
+ChangeResponsibleOfActivity,Change responsible of activity,Ændr ansvarlig for indsats
+ChangeResponsibleOfChild,Change responsible of Child Instances and Activities,Ændr ansvarlig for barn Indsatser og aktiviteer,
+NotApplicable,Not Applicable,Ikke relevant,
+ExportDCRXML, Export DCR XML, Eksporter DCR XML,
+StartFrom, Start From, Start fra,
+EndTo, End To, Slut til,
+IsAccepting, Is Accepting,er accepterende,
+ToXES, To XES, Til XES,
+SaveChangesToGraphXML,Do you want to save changes?,Vil du gemme ændringer?,
+UpdateInstanceTitle,Update Instance Title,Opdater titel,
+RevisionTitle,Revision Title,Revisionstitel,
+RevisionDate,Revision Date,Revisionsdato,
+ProcessOwner,Process Owner,Procesejer,
+InApproval,In Approval,I godkendelse,
+ProcessInstance,Process Instance,Processforekomst,
+ProcessHistory,Process History,Proceshistorik,
+ReleaseDate,Release Date,Udgivelses dato,
+UpdateProcess,Update Process With New Version,Opdateringsproces med ny version,
+DoUpdateProcess,You are going to update process with a new major version '$MajorRevisionTitle'. </br>Press Yes to continue,Du vil opdatere processen med en ny større version '$MajorRevisionTitle'. </br>Tryk på Ja for at fortsætte,
+NewVersionAvailable,New Version Available,Ny version tilgængelig,

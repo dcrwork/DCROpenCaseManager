@@ -1,0 +1,38 @@
+﻿ <!-- Modal -->
+<div class="modal fade" id="responsible-modal" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 id="chanageResponsibleTitle" class="modal-title TasksWNoteheading" data-locale data-apply="text" data-key="ChangeResponsibleOfActivity"></h4>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label id="instanceActivityTitle"></label>
+                    </div>
+                    <div class="form-group">
+                        <label for="curResponsible" data-locale data-apply="text" data-key="CurrentResponsible"></label>
+                        <input type="text" class="form-control" id="curResponsible" placeholder="" readonly>
+                    </div>
+                    <div class="form-group" id="">
+                        <label for="changeResponsible" data-locale data-apply="text" data-key="ChangeResponsibleTo"></label>
+                        <select class="form-control" id="changeResponsibleOptions"></select>
+                        <input type="hidden" id="eventIdChangeResponsible" />
+                        <input type="hidden" id="instanceIdChangeResponsible" />
+                        <input type="hidden" id="childIdChangeResponsible" />
+                        <input type="hidden" id="changeResponsibleFor" />
+                        <input type="hidden" id="oldResponsible" />
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <a class="linkStyling floatLeftPro" id="cancelChangeResponsibleModal"><strong><span class="entityLink" data-locale data-apply="text" data-key="Cancel"></span></strong></a>
+                <button type="button" id="changeResponsible" class="instanceAdd" data-locale data-apply="text" data-key="ChangeResponsible"></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/Scripts/changeResponsible.js"></script>

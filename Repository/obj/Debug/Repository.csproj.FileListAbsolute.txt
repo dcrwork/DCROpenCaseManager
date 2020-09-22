@@ -1,0 +1,6 @@
+D:\olive\Documents\DCR\OpenCaseManager\Repository\bin\Debug\Repository.dll
+D:\olive\Documents\DCR\OpenCaseManager\Repository\bin\Debug\Repository.pdb
+D:\olive\Documents\DCR\OpenCaseManager\Repository\obj\Debug\Repository.csproj.CoreCompileInputs.cache
+D:\olive\Documents\DCR\OpenCaseManager\Repository\obj\Debug\Repository.dll
+D:\olive\Documents\DCR\OpenCaseManager\Repository\obj\Debug\Repository.pdb
+D:\olive\Documents\DCR\OpenCaseManager\Repository\obj\Debug\Repository.csprojAssemblyReference.cache

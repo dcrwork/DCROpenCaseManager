@@ -1,0 +1,44 @@
+﻿ <!-- Modal -->
+<div class="modal fade" id="exportDCRXMLLOGFileModal" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 id="chanageResponsibleTitle" class="modal-title TasksWNoteheading" data-locale data-apply="text" data-key="ExportDCRXML"></h4>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label for="startFrom" data-locale data-apply="text" data-key="Period">Period</label>
+                        <div style="clear:both"></div>
+                        <input type="date" class="form-control" id="startFrom" style="width:35%;float:left;" />                        
+                        <input type="date" class="form-control" id="endTo" style="width:35%;float:left;margin-left:5%" />
+                        <div style="clear:both"></div>
+                    </div>
+
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="isAccepting">
+                        <label for="isAccepting" class="form-check-label" data-locale data-apply="text" data-key="IsAccepting"></label>
+                    </div>
+                    <div class="marginBottom10"></div>
+
+                    <div class="custom-control custom-checkbox my-1 mr-sm-2">
+                        <input type="checkbox" class="custom-control-input" id="toXES">
+                        <label class="custom-control-label" for="toXES" data-locale data-apply="text" data-key="ToXES"></label>
+                    </div>
+
+                    <div class="form-group" id="">
+                        <input type="hidden" id="graphId" />
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <a class="linkStyling floatLeftPro" id=""><strong><span class="entityLink" data-locale data-apply="text" data-key="Cancel"></span></strong></a>
+                <button type="button" id="exportDCRXMLLog" class="instanceAdd" data-locale data-apply="text" data-key="ExportDCRXML"></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/Scripts/export-dcrxml-log.js"></script>

@@ -1,0 +1,6 @@
+D:\olive\Documents\DCR\OpenCaseManager\OpenCaseManager.Database\bin\Debug\OpenCaseManager.Database.dacpac
+D:\olive\Documents\DCR\OpenCaseManager\OpenCaseManager.Database\bin\Debug\OpenCaseManager.Database.dll
+D:\olive\Documents\DCR\OpenCaseManager\OpenCaseManager.Database\bin\Debug\OpenCaseManager.Database.pdb
+D:\olive\Documents\DCR\OpenCaseManager\OpenCaseManager.Database\obj\Debug\OpenCaseManager.Database.dll
+D:\olive\Documents\DCR\OpenCaseManager\OpenCaseManager.Database\obj\Debug\OpenCaseManager.Database.pdb
+D:\olive\Documents\DCR\OpenCaseManager\OpenCaseManager.Database\obj\Debug\OpenCaseManager.Database.sqlprojAssemblyReference.cache

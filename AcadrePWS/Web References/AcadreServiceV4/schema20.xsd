@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://www.traen.com/2006/08/01/case" elementFormDefault="qualified" targetNamespace="http://www.traen.com/2006/08/01/case" id="schema20" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:complexType name="DocumentType">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="1" name="DocumentIdentifier" type="xs:nonNegativeInteger" />
+      <xs:element minOccurs="0" maxOccurs="1" name="DocumentCategoryCode" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="DocumentTitleText" type="xs:string" />
+      <xs:element minOccurs="1" maxOccurs="1" name="DocumentPaperStorageIndicator" type="xs:boolean" />
+      <xs:element minOccurs="0" maxOccurs="1" name="PaperStorageLocation" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="CreatorReference" type="xs:nonNegativeInteger" />
+      <xs:element minOccurs="0" maxOccurs="1" name="NonDisclosureDiscriptionText" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Comment" type="tns:CommentType" />
+      <xs:element minOccurs="0" maxOccurs="1" name="DocumentStatusCode" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="CommentType">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="1" name="CommentIdentifier" type="xs:nonNegativeInteger" />
+      <xs:choice minOccurs="1" maxOccurs="1">
+        <xs:element minOccurs="0" maxOccurs="1" name="CommentText" type="xs:string" />
+        <xs:element minOccurs="0" maxOccurs="1" name="CommentDocumentReference" type="xs:nonNegativeInteger" />
+      </xs:choice>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element minOccurs="0" maxOccurs="1" name="DocumentVersionReference" type="xs:nonNegativeInteger" />
+        <xs:element minOccurs="0" maxOccurs="1" name="DocumentReference" type="xs:nonNegativeInteger" />
+        <xs:element minOccurs="0" maxOccurs="1" name="VariantTypeCode" type="xs:string" />
+        <xs:element minOccurs="0" maxOccurs="1" name="RecordReference" type="xs:nonNegativeInteger" />
+        <xs:element minOccurs="0" maxOccurs="1" name="CaseFileReference" type="xs:nonNegativeInteger" />
+      </xs:choice>
+      <xs:element minOccurs="0" maxOccurs="1" name="SequenceNumber" type="xs:int" />
+      <xs:element minOccurs="0" maxOccurs="1" name="InformationTypeCode" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="DeletionDate" type="xs:date" />
+      <xs:element minOccurs="0" maxOccurs="1" name="CreationDate" type="xs:date" />
+      <xs:element minOccurs="0" maxOccurs="1" name="CreationTime" type="xs:time" />
+      <xs:element minOccurs="0" maxOccurs="1" name="CreatorReference" type="xs:nonNegativeInteger" />
+      <xs:element minOccurs="0" maxOccurs="1" name="CommentResponsibleReference" type="xs:nonNegativeInteger" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="DocumentLinkType">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="1" name="DocumentLinkIdentifier" type="xs:nonNegativeInteger" />
+      <xs:element minOccurs="0" maxOccurs="1" name="DocumentLinkTypeCode" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="RecordReference" type="xs:nonNegativeInteger" />
+      <xs:element minOccurs="0" maxOccurs="1" name="DocumentReference" type="xs:nonNegativeInteger" />
+      <xs:element minOccurs="1" maxOccurs="1" name="LinkDate" type="xs:date" />
+      <xs:element minOccurs="0" maxOccurs="1" name="LinkCreatorReference" type="xs:nonNegativeInteger" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="RecordType">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="1" name="RecordIdentifier" type="xs:nonNegativeInteger" />
+      <xs:element minOccurs="0" maxOccurs="1" name="CreationYear" type="xs:nonNegativeInteger" />
+      <xs:element minOccurs="0" maxOccurs="1" name="RecordSerialNumber" type="xs:nonNegativeInteger" />
+      <xs:element minOccurs="0" maxOccurs="1" name="CaseFileReference" type="xs:nonNegativeInteger" />
+      <xs:element minOccurs="0" maxOccurs="1" name="RecordSequenceNumber" type="xs:nonNegativeInteger" />
+      <xs:element minOccurs="1" maxOccurs="1" name="RegistrationDate" type="xs:date" />
+      <xs:element minOccurs="0" maxOccurs="1" name="DocumentDate" type="xs:date" />
+      <xs:element minOccurs="1" maxOccurs="1" name="DocumentDateUnknownIndicator" type="xs:boolean" />
+      <xs:element minOccurs="0" maxOccurs="1" name="DescriptionText" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="DescriptionUnofficialIndicator" type="xs:boolean" />
+      <xs:element minOccurs="0" maxOccurs="1" name="AlternativeDescriptionText" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="DepricationDate" type="xs:date" />
+      <xs:element minOccurs="0" maxOccurs="1" name="ResponseDate" type="xs:date" />
+      <xs:element minOccurs="0" maxOccurs="1" name="ResponseDeadlineDate" type="xs:date" />
+      <xs:element minOccurs="0" maxOccurs="1" name="PublicationIndicator" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="PublicationEvaluationDate" type="xs:date" />
+      <xs:element minOccurs="1" maxOccurs="1" name="RecordPaperStorageIndicator" type="xs:boolean" />
+      <xs:element minOccurs="0" maxOccurs="1" name="RecordLoanDate" type="xs:date" />
+      <xs:element minOccurs="0" maxOccurs="1" name="BorrowerReference" type="xs:nonNegativeInteger" />
+      <xs:element minOccurs="0" maxOccurs="1" name="CreatorReference" type="xs:nonNegativeInteger" />
+      <xs:element minOccurs="0" maxOccurs="1" name="RecordLatestUpdateDate" type="xs:date" />
+      <xs:element minOccurs="0" maxOccurs="1" name="LatestEditorReference" type="xs:nonNegativeInteger" />
+      <xs:element minOccurs="0" maxOccurs="1" name="CaseFileManagerReference" type="xs:nonNegativeInteger" />
+      <xs:element minOccurs="0" maxOccurs="1" name="DocumentTypeCode" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Comment" type="tns:CommentType" />
+      <xs:element minOccurs="0" maxOccurs="1" name="RecordStatusCode" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="AccessCode" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="DocumentResponseType">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="1" name="Document" type="tns:DocumentType" />
+      <xs:element minOccurs="0" maxOccurs="1" name="DocumentLink" type="tns:DocumentLinkType" />
+      <xs:element minOccurs="0" maxOccurs="1" name="DocumentVersion" type="tns:DocumentVersionType" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Record" type="tns:RecordType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="DocumentVersionType">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="1" name="DocumentVersionIdentifier" type="xs:nonNegativeInteger" />
+      <xs:element minOccurs="0" maxOccurs="1" name="DocumentReference" type="xs:nonNegativeInteger" />
+      <xs:element minOccurs="0" maxOccurs="1" name="DocumentFileReference" type="xs:nonNegativeInteger" />
+      <xs:element minOccurs="0" maxOccurs="1" name="VersionNumber" type="xs:nonNegativeInteger" />
+      <xs:element minOccurs="1" maxOccurs="1" name="ActiveIndicator" type="xs:boolean" />
+      <xs:element minOccurs="0" maxOccurs="1" name="RegisteringOfficerReference" type="xs:nonNegativeInteger" />
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Comment" type="tns:CommentType" />
+      <xs:element minOccurs="0" maxOccurs="1" name="StorageFormatCode" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="VariantTypeCode" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="VersionURL" type="xs:anyURI" />
+      <xs:element minOccurs="0" maxOccurs="1" name="VersionComment" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ArrayOfDocumentResponseType">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="DocumentOutput" type="tns:DocumentResponseType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="Document" type="tns:DocumentType" />
+  <xs:element name="DocumentLink" type="tns:DocumentLinkType" />
+  <xs:element name="DocumentVersion" type="tns:DocumentVersionType" />
+  <xs:complexType name="CaseFileType">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="1" name="CaseFileIdentifier" type="xs:nonNegativeInteger" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Year" type="xs:nonNegativeInteger" />
+      <xs:element minOccurs="0" maxOccurs="1" name="CaseFileSequenceNumber" type="xs:nonNegativeInteger" />
+      <xs:element minOccurs="0" maxOccurs="1" name="CaseFilePaperStorageIndicator" type="xs:boolean" />
+      <xs:element minOccurs="1" maxOccurs="1" name="CreationDate" type="xs:date" />
+      <xs:element minOccurs="0" maxOccurs="1" name="CaseFileTitleText" type="xs:string" />
+      <xs:element minOccurs="1" maxOccurs="1" name="TitleUnofficialIndicator" type="xs:boolean" />
+      <xs:element minOccurs="0" maxOccurs="1" name="TitleAlternativeText" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="CaseFileManagerReference" type="xs:nonNegativeInteger" />
+      <xs:element minOccurs="0" maxOccurs="1" name="RestrictedFromPublicText" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="LatestRecordDate" type="xs:date" />
+      <xs:element minOccurs="0" maxOccurs="1" name="RetentionTimeYear" type="xs:nonNegativeInteger" />
+      <xs:element minOccurs="0" maxOccurs="1" name="DisposalDate" type="xs:date" />
+      <xs:choice minOccurs="1" maxOccurs="1">
+        <xs:element minOccurs="0" maxOccurs="1" name="AuthorizingPrecedentReference" type="xs:nonNegativeInteger" />
+        <xs:element minOccurs="0" maxOccurs="1" name="AuthorizingPrecedentText" type="xs:string" />
+      </xs:choice>
+      <xs:element minOccurs="0" maxOccurs="1" name="CaseFileLoanDate" type="xs:date" />
+      <xs:element minOccurs="0" maxOccurs="1" name="BorrowerReference" type="xs:nonNegativeInteger" />
+      <xs:element minOccurs="0" maxOccurs="1" name="CaseFileNumberIdentifier" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="CaseFileNumberHistoricIdentifier" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="CreatorReference" type="xs:nonNegativeInteger" />
+      <xs:element minOccurs="0" maxOccurs="1" name="LatestEditorReference" type="xs:nonNegativeInteger" />
+      <xs:element minOccurs="0" maxOccurs="1" name="CaseFileLatestUpdateDate" type="xs:date" />
+      <xs:element minOccurs="0" maxOccurs="1" name="CaseFileStatusCode" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="CaseFileTypeCode" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Comment" type="tns:CommentType" />
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Record" type="tns:RecordType" />
+      <xs:element minOccurs="0" maxOccurs="1" name="CaseFileDisposalCode" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="CustomFields" type="tns:CustomFieldsType" />
+      <xs:element minOccurs="0" maxOccurs="1" name="AccessCode" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="CustomFieldsType">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="1" name="df1" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="df2" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="df3" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="df4" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="df5" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="df6" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="df7" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="df8" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="df9" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="df10" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="df11" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="df12" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="df13" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="df14" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="df15" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="df16" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="df17" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="df18" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="df19" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="df20" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="df21" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="df22" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="df23" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="df24" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="df25" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="CreatorReference" type="xs:nonNegativeInteger" />
+  <xs:element name="CreationDate" type="xs:date" />
+  <xs:element name="CaseFileTitleText" type="xs:string" />
+  <xs:element name="CaseFileTypeCode" type="xs:string" />
+  <xs:element name="CaseFileManagerReference" type="xs:nonNegativeInteger" />
+  <xs:element name="CaseFileReference" type="xs:nonNegativeInteger" />
+  <xs:element name="AccessCode" type="xs:string" />
+</xs:schema>

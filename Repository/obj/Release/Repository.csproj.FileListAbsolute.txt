@@ -1,0 +1,6 @@
+D:\olive\Documents\DCR\OpenCaseManager\Repository\bin\Release\Repository.dll
+D:\olive\Documents\DCR\OpenCaseManager\Repository\bin\Release\Repository.pdb
+D:\olive\Documents\DCR\OpenCaseManager\Repository\obj\Release\Repository.csprojAssemblyReference.cache
+D:\olive\Documents\DCR\OpenCaseManager\Repository\obj\Release\Repository.csproj.CoreCompileInputs.cache
+D:\olive\Documents\DCR\OpenCaseManager\Repository\obj\Release\Repository.dll
+D:\olive\Documents\DCR\OpenCaseManager\Repository\obj\Release\Repository.pdb

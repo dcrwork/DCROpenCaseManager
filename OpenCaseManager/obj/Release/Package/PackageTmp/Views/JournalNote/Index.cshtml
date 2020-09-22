@@ -1,0 +1,121 @@
+﻿<script language="javascript" type="text/javascript">
+    function windowClose() {
+        window.close();
+    }
+</script>
+
+
+@{
+    /// <summary>
+    /// Return the content of a journalnote.rtf
+    /// </summary>
+    /// <param name="instanceId"></param>
+    /// <param name="documentLink"></param>
+    /// <param name="documentTitle"></param>
+    /// <param name="documentAuthor"></param>
+    /// <returns> </returns>
+    var errorMessage = "";
+    Array Data = null;
+
+    var instanceId = Request.QueryString["instanceId"];
+    var documentLink = Request.QueryString["documentLink"];
+    var documentTitle = Request.QueryString["documentTitle"];
+    var documentAuthor = Request.QueryString["documentAuthor"];
+    var document = Request.QueryString["documentTitle"];
+    var dataFile = Server.MapPath($"~/App_Data/JournalNotes/{instanceId}/{documentLink}");
+
+    if (File.Exists(dataFile))
+    {
+        Data = File.ReadAllLines(dataFile);
+        if (Data == null) // If the file is empty
+        {
+            // Empty file.
+            errorMessage = "The file is empty.";
+        }
+    }
+    else
+    {
+        // File does not exist.
+        errorMessage = "The file does not exist. This might be due to it being recently changed.";
+    }
+}
+<style>
+    .author {
+        margin-bottom: 20px;
+    }
+
+    .pre-scrollable {
+        max-height: 55vh;
+        margin-bottom: 20px;
+    }
+</style>
+
+<div class="container">
+
+    @errorMessage
+    @if (errorMessage == "")
+    {
+        <h1 class="title"> @documentTitle</h1>
+        <h2 class="author"> @documentAuthor</h2>
+        <div class="pre-scrollable">
+            <div class="content">
+                @foreach (string dataLine in Data)
+                {
+                    @Html.Raw(@dataLine)
+                }
+            </div>
+        </div>
+    }
+    <div class="journalNotatButtons">
+        <a href="javascript:windowClose();"> Luk journal notat</a>
+        <button class="open-journal-note-button" onclick="CreateJournalNoteViewWithLink();" style="display: none">Rediger</button>
+    </div>
+    <input type="hidden" id="documentLink">
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var documentLink = App.getParameterByName("documentLink", window.location.href);
+        $(".content").find("div").each(function () {
+            if ($.trim($(this).text()) == ""){
+                $(this).remove();
+            }
+        });
+        $('head title', window.parent.document).text(documentTitle);
+        $('#documentLink').val(documentLink);
+        checkIfDocumentIsLocked(documentLink);
+    });
+
+    function checkIfDocumentIsLocked(link) {
+        var query = {
+            "type": "SELECT",
+            "entity": "DocumentTimes",
+            "filters": [
+                {
+                    "column": "Type",
+                    "operator": "equal",
+                    "value": "JournalNoteBig",
+                    "valueType": "string",
+                    "logicalOperator": "and"
+                }
+            ],
+            "resultSet": ["Id", "Title", "EventDate", "IsLocked"],
+            "order": [{ "column": "Id", "descending": false }]
+        }
+        query.filters.push({
+            "column": "Link",
+            "operator": "equal",
+            "value": link,
+            "valueType": "string"
+
+        });
+        API.service('records', query)
+            .done(function (response) {
+                var documentInfo = $.parseJSON(response)[0];
+                if (!documentInfo.IsLocked) {
+                    $(".open-journal-note-button").show();
+                }
+            });
+    }
+</script>
+<script src="~/Scripts/journalNote.js" type="text/javascript"></script>

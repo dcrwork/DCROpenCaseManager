@@ -1,0 +1,41 @@
+﻿
+@{
+    ViewBag.Title = "Processes";
+}
+
+<div class="row tableDataRow">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <h4 class="tasksHeading">
+            <span data-locale data-apply="text" data-key="Processes"></span>
+            <img src="~/Content/Images/Standard/update.png" id="checkMajorVersions" style="cursor:pointer" />
+        </h4>
+        <div class="table-responsive" style="border:none">
+            <table class="table tasksTable table-striped">
+                <thead>
+                    <tr class="trStyleClass">
+                        <th style="display:none;"><span data-locale data-apply="text" data-key="ProcessId">ProcessId</span></th>
+                        <th width="15%"><span data-locale data-apply="text" data-key="GraphId">Graph Id</span></th>
+                        <th width=""><span data-locale data-apply="text" data-key="Title">Title</span></th>
+
+                        <th width=""><span data-locale data-apply="text" data-key="RevisionTitle">Revision Title</span></th>
+                        <th width=""><span data-locale data-apply="text" data-key="RevisionDate">Revision Date</span></th>
+                        <th width=""><span data-locale data-apply="text" data-key="ProcessOwner">Process Owner</span></th>
+
+                        <th width="10%"><span data-locale data-apply="text" data-key="OnFrontPage">On Front Page</span></th>
+                        <th width="12%"><span data-locale data-apply="text" data-key="Action">Action</span></th>
+                    </tr>
+                </thead>
+                <tbody id="processes"></tbody>
+            </table>
+        </div>
+    </div><!-- Cols Div End -->
+</div><!-- Row Div End -->
+<link href="~/Content/Styles/Bootstrap/bootstrap-toggle.min.css" rel="stylesheet" />
+<script src="~/Scripts/bootstrap-toggle.min.js"></script>
+@Html.Partial("~/Views/PartialViews/ExportModal.cshtml")
+<script type="text/javascript">
+    $(document).ready(function () {
+        App.getAllProcesses();
+    });
+</script>
+<script src="~/Scripts/process.js"></script>

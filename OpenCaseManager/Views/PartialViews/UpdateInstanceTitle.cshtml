@@ -1,0 +1,32 @@
+﻿ <!--Modal For Commenting -->
+<div class="modal fade" id="updateInstanceTitleDialog" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title TasksWNoteheading">
+                    <span data-locale data-apply="text" data-key="UpdateInstanceTitle">Update Instance Title</span>
+                </h4>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label for="taskCaseLabel"><span data-locale data-apply="text" data-key="Title"></span></label>
+                        <input type="text" class="form-control" id="updateInstanceTitle" autofocus>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="btnUpdateInstanceTitle" class="instanceAdd"><span data-locale data-apply="text" data-key="Update"></span></button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Modal Commenting-->
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        Task.addTaskHtml();
+    })
+</script>

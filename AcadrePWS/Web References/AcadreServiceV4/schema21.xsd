@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://www.traen.com/2008/08/20" elementFormDefault="qualified" targetNamespace="http://www.traen.com/2008/08/20" id="schema21" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import namespace="http://www.traen.com/2006/08/01/case" />
+  <xs:import namespace="http://www.traen.com/2007/04/01" />
+  <xs:complexType name="RecordType1">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q1="http://www.traen.com/2006/08/01/case" base="q1:RecordType">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="1" name="Deadline" type="tns:DeadlineType" />
+          <xs:element minOccurs="0" maxOccurs="1" name="EvenOutRequired" type="xs:boolean" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="DeadlineType">
+    <xs:sequence>
+      <xs:element minOccurs="1" maxOccurs="1" name="CreationDate" type="xs:date" />
+      <xs:element minOccurs="0" maxOccurs="1" name="CreatorID" type="xs:nonNegativeInteger" />
+      <xs:element minOccurs="1" maxOccurs="1" name="DeadlineDate" type="xs:date" />
+      <xs:element minOccurs="1" maxOccurs="1" name="Note" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="CaseFileType2">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q2="http://www.traen.com/2007/04/01" base="q2:CaseFileType1">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="1" name="Deadline" type="tns:DeadlineType" />
+          <xs:element minOccurs="0" maxOccurs="1" name="OBSDate" type="tns:CaseOBSDateType" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="CaseOBSDateType">
+    <xs:sequence>
+      <xs:element minOccurs="1" maxOccurs="1" name="CreationDate" type="xs:date" />
+      <xs:element minOccurs="0" maxOccurs="1" name="CreatorID" type="xs:nonNegativeInteger" />
+      <xs:element minOccurs="1" maxOccurs="1" name="OBSDate" type="xs:date" />
+      <xs:element minOccurs="1" maxOccurs="1" name="Note" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="AdvancedSearchCaseCriterionType">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q3="http://www.traen.com/2007/04/01" base="q3:SearchCaseCriterionType">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="ClassificationCriterion" type="tns:ClassificationCriterionType" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="ClassificationCriterionType">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="1" name="PrincipleLiteral" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="ClassificationLiteral" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>

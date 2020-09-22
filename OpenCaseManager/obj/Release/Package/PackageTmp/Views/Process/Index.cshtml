@@ -1,0 +1,23 @@
+﻿
+@{
+    ViewBag.Title = "Process Overview";
+}
+
+<div class="row tableDataRow">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <h4 id="ProcessName" class="tasksHeading">Insstance Tasks</h4>
+        <div class="col-lg-12">
+            <label for="multi-select"><span data-locale data-apply="text" data-key="SelectResponsible">Select Responsible</span></label>
+            <div class="col-lg-12">
+                <select name="multi-select" class="form-control" userid="Leder" id="multi-select-Leder" style="width:30%"></select>
+            </div>
+            <div class="col-lg-12">&nbsp; </div>
+            <div class="col-lg-12">&nbsp; </div>
+        </div>
+        <div class="row phases-blocks" id="phaseInstances">
+        </div>
+    </div>
+</div>
+
+
+<script src="~/Scripts/proces-overview.js"></script>

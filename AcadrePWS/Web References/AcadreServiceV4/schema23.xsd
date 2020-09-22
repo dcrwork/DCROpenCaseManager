@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://www.traen.com/2007/06/01" elementFormDefault="qualified" targetNamespace="http://www.traen.com/2007/06/01" id="schema23" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import namespace="http://www.traen.com/2006/08/01/case" />
+  <xs:complexType name="ArrayOfSupplementResponseType">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="SupplementResponse" type="tns:SupplementResponseType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="SupplementResponseType">
+    <xs:sequence>
+      <xs:element xmlns:q1="http://www.traen.com/2006/08/01/case" minOccurs="0" maxOccurs="1" ref="q1:Document" />
+      <xs:element xmlns:q2="http://www.traen.com/2006/08/01/case" minOccurs="0" maxOccurs="1" ref="q2:DocumentLink" />
+      <xs:element xmlns:q3="http://www.traen.com/2006/08/01/case" minOccurs="0" maxOccurs="1" ref="q3:DocumentVersion" />
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>

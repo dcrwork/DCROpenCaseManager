@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://rep.oio.dk/fesd.dk/xml/schemas/2005/10/26/" elementFormDefault="qualified" targetNamespace="http://rep.oio.dk/fesd.dk/xml/schemas/2005/10/26/" id="schema2" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import namespace="http://rep.oio.dk/xkom.dk/xml/schemas/2005/05/13/" />
+  <xs:import namespace="http://rep.oio.dk/itst.dk/xml/schemas/2005/09/01/" />
+  <xs:import namespace="http://rep.oio.dk/xkom.dk/xml/schemas/2005/03/15/" />
+  <xs:import namespace="http://rep.oio.dk/ebxml/xml/schemas/dkcc/2003/02/13/" />
+  <xs:import namespace="http://rep.oio.dk/cpr.dk/xml/schemas/core/2005/10/31/" />
+  <xs:import namespace="http://rep.oio.dk/cvr.dk/xml/schemas/2005/03/22/" />
+  <xs:import namespace="http://rep.oio.dk/cpr.dk/xml/schemas/core/2005/03/18/" />
+  <xs:import namespace="http://rep.oio.dk/itst.dk/xml/schemas/2005/02/22/" />
+  <xs:import namespace="http://rep.oio.dk/ebxml/xml/schemas/dkcc/2005/03/15/" />
+  <xs:complexType name="ContactType" abstract="true">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="1" name="UniqueIdentifier" type="xs:nonNegativeInteger" />
+      <xs:element minOccurs="1" maxOccurs="1" name="AdvertisementProtectionIndicator" type="xs:boolean" />
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="SituationAddressStructure" type="tns:AddressStructureType" />
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="TelephoneStructure" type="tns:TelephoneStructureType" />
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="EmailAddressStructure" type="tns:EmailAddressStructureType" />
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="ForeignAddressStructure" type="tns:ForeignAddressStructureType" />
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="MailDeliveryAddressStructure" type="tns:AddressStructureType" />
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Role" type="tns:RoleType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="AddressStructureType">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q1="http://rep.oio.dk/xkom.dk/xml/schemas/2005/05/13/" base="q1:AddressCompleteType">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="1" name="UniqueIdentifier" type="xs:nonNegativeInteger" />
+          <xs:element minOccurs="0" maxOccurs="1" name="AddressLocation" type="tns:AddressLocationType" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="AddressLocationType">
+    <xs:sequence>
+      <xs:element minOccurs="1" maxOccurs="1" name="XCoordinate" type="xs:decimal" />
+      <xs:element minOccurs="1" maxOccurs="1" name="YCoordinate" type="xs:decimal" />
+    </xs:sequence>
+    <xs:attribute name="coordinateSystemCode" type="tns:CoordinateSystemCodeType" />
+  </xs:complexType>
+  <xs:simpleType name="CoordinateSystemCodeType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="system34" />
+      <xs:enumeration value="system45" />
+      <xs:enumeration value="KP2000" />
+      <xs:enumeration value="utmED50" />
+      <xs:enumeration value="utmEuref89" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:complexType name="TelephoneStructureType">
+    <xs:sequence>
+      <xs:element xmlns:q2="http://rep.oio.dk/itst.dk/xml/schemas/2005/09/01/" minOccurs="0" maxOccurs="1" ref="q2:TelephoneNumberStructure" />
+      <xs:element minOccurs="1" maxOccurs="1" name="PrivateTelephoneIndicator" type="xs:boolean" />
+      <xs:element minOccurs="1" maxOccurs="1" name="FaxIndicator" type="xs:boolean" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="EmailAddressStructureType">
+    <xs:sequence>
+      <xs:element xmlns:q3="http://rep.oio.dk/xkom.dk/xml/schemas/2005/03/15/" minOccurs="0" maxOccurs="1" ref="q3:EmailAddressIdentifier" />
+      <xs:element minOccurs="1" maxOccurs="1" name="PrivateEmailIndicator" type="xs:boolean" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ForeignAddressStructureType">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="1" name="UniqueIdentifier" type="xs:nonNegativeInteger" />
+      <xs:element xmlns:q4="http://rep.oio.dk/ebxml/xml/schemas/dkcc/2003/02/13/" minOccurs="0" maxOccurs="1" ref="q4:CountryIdentificationCode" />
+      <xs:element xmlns:q5="http://rep.oio.dk/cpr.dk/xml/schemas/core/2005/10/31/" minOccurs="0" maxOccurs="1" ref="q5:SecondaryPostalLabel" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="RoleType">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="1" name="RoleName" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="RoleDescriptionText" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="RoleOwner" type="tns:RoleOwnerType" />
+      <xs:element minOccurs="0" maxOccurs="1" name="RoleRelation" type="tns:RoleRelationType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="RoleOwnerType">
+    <xs:sequence>
+      <xs:choice minOccurs="1" maxOccurs="1">
+        <xs:element minOccurs="0" maxOccurs="1" name="OrganizationalUnit" type="tns:OrganizationalUnitType" />
+        <xs:element minOccurs="0" maxOccurs="1" name="Organization" type="tns:OrganizationType" />
+        <xs:element minOccurs="0" maxOccurs="1" name="Person" type="tns:PersonType" />
+        <xs:element minOccurs="0" maxOccurs="1" name="Group" type="tns:GroupType" />
+      </xs:choice>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="OrganizationalUnitType">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:ContactType">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="1" name="OrganizationalUnitName" type="xs:string" />
+          <xs:element xmlns:q6="http://rep.oio.dk/cvr.dk/xml/schemas/2005/03/22/" minOccurs="0" maxOccurs="1" ref="q6:ProductionUnitIdentifier" />
+          <xs:element minOccurs="0" maxOccurs="1" name="BusinessActivity" type="tns:BusinessActivityType" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="BusinessSideActivity" type="tns:BusinessActivityType" />
+          <xs:element minOccurs="0" maxOccurs="1" name="UnitStartDate" type="xs:date" />
+          <xs:element minOccurs="0" maxOccurs="1" name="UnitEndDate" type="xs:date" />
+          <xs:element minOccurs="0" maxOccurs="1" name="ParentUnit" type="tns:OrganizationalUnitType" />
+        </xs:sequence>
+        <xs:attribute name="unitTypeCode" type="tns:UnitTypeCodeType" />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="BusinessActivityType">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="1" name="BusinessActivityCode" type="xs:nonNegativeInteger" />
+      <xs:element minOccurs="0" maxOccurs="1" name="BusinessActivityName" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:simpleType name="UnitTypeCodeType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="legalUnit" />
+      <xs:enumeration value="productionUnit" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:complexType name="GroupType">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:ContactType">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="1" name="GroupName" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="GroupStartDate" type="xs:date" />
+          <xs:element minOccurs="0" maxOccurs="1" name="GroupEndDate" type="xs:date" />
+          <xs:element minOccurs="0" maxOccurs="1" name="ParentGroup" type="tns:GroupType" />
+          <xs:element minOccurs="0" maxOccurs="1" name="OrganizationalUnit" type="tns:OrganizationalUnitType" />
+          <xs:element minOccurs="0" maxOccurs="1" name="Organization" type="tns:OrganizationType" />
+          <xs:element minOccurs="0" maxOccurs="1" name="GroupMember" type="tns:PersonType" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="OrganizationType">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:ContactType">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="1" name="OrganizationName" type="xs:string" />
+          <xs:element xmlns:q7="http://rep.oio.dk/cvr.dk/xml/schemas/2005/03/22/" minOccurs="0" maxOccurs="1" ref="q7:CVRnumberIdentifier" />
+          <xs:element minOccurs="0" maxOccurs="1" name="BusinessActivity" type="tns:BusinessActivityType" />
+          <xs:element minOccurs="0" maxOccurs="1" name="CompanyCategory" type="tns:CompanyCategoryType" />
+          <xs:element minOccurs="0" maxOccurs="1" name="OrganizationStartDate" type="xs:date" />
+          <xs:element minOccurs="0" maxOccurs="1" name="OrganizationEndDate" type="xs:date" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="OrganizationalUnit" type="tns:OrganizationalUnitType" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="CompanyCategoryType">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="1" name="CompanyCategoryCode" type="xs:nonNegativeInteger" />
+      <xs:element minOccurs="0" maxOccurs="1" name="CompanyCategoryName" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="MunicipalityType">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:OrganizationType">
+        <xs:sequence>
+          <xs:element xmlns:q8="http://rep.oio.dk/cpr.dk/xml/schemas/core/2005/03/18/" minOccurs="0" maxOccurs="1" ref="q8:MunicipalityCode" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="PersonType">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:ContactType">
+        <xs:sequence>
+          <xs:element xmlns:q9="http://rep.oio.dk/itst.dk/xml/schemas/2005/02/22/" minOccurs="0" maxOccurs="1" ref="q9:PersonNameStructure" />
+          <xs:element xmlns:q10="http://rep.oio.dk/itst.dk/xml/schemas/2005/02/22/" minOccurs="0" maxOccurs="1" ref="q10:PersonNameForAddressingName" />
+          <xs:element xmlns:q11="http://rep.oio.dk/ebxml/xml/schemas/dkcc/2005/03/15/" minOccurs="0" maxOccurs="1" ref="q11:BirthDate" />
+          <xs:element minOccurs="1" maxOccurs="1" name="BirthDateUncertaintyIndicator" type="xs:boolean" />
+          <xs:element xmlns:q12="http://rep.oio.dk/ebxml/xml/schemas/dkcc/2003/02/13/" minOccurs="1" maxOccurs="1" ref="q12:PersonGenderCode" />
+          <xs:element xmlns:q13="http://rep.oio.dk/cpr.dk/xml/schemas/core/2005/03/18/" minOccurs="0" maxOccurs="1" ref="q13:PersonCivilRegistrationIdentifier" />
+          <xs:element minOccurs="0" maxOccurs="1" name="PersonCivilRegistrationIdentifierStatusCode" type="xs:nonNegativeInteger" />
+          <xs:element minOccurs="1" maxOccurs="1" name="NameAddressProtectionIndicator" type="xs:boolean" />
+          <xs:element minOccurs="0" maxOccurs="1" name="NameAddressProtectionEndDate" type="xs:date" />
+          <xs:element minOccurs="0" maxOccurs="1" name="CareOf" type="tns:PersonType" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="LandParcelMunicipalPartIdentifier" type="xs:nonNegativeInteger" />
+  <xs:element name="CadastralDistrictMunicipalIdentifier" type="xs:nonNegativeInteger" />
+  <xs:element name="CadastralDistrictMunicipalName" type="xs:string" />
+  <xs:element name="BBRIdentifier" type="xs:string" />
+  <xs:complexType name="RoleRelationType">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="1" name="RoleForumReference" type="xs:nonNegativeInteger" />
+      <xs:element minOccurs="0" maxOccurs="1" name="RoleForumClassCode" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="RepresentingReference" type="xs:nonNegativeInteger" />
+      <xs:element minOccurs="0" maxOccurs="1" name="RepresentingClassCode" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="RoleStartDate" type="xs:date" />
+      <xs:element minOccurs="0" maxOccurs="1" name="RoleEndDate" type="xs:date" />
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="EmailAddressStructure" type="tns:EmailAddressStructureType" />
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="TelephoneStructure" type="tns:TelephoneStructureType" />
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://rep.oio.dk/ebxml/xml/schemas/dkcc/2005/09/01/" elementFormDefault="qualified" targetNamespace="http://rep.oio.dk/ebxml/xml/schemas/dkcc/2005/09/01/" id="schema12" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="TelephoneCountryIdentifier" type="xs:string" />
+  <xs:element name="TelephoneAreaIdentifier" type="xs:string" />
+  <xs:element name="TelephoneSubscriberIdentifier" type="xs:string" />
+  <xs:element name="TelephoneExtensionIdentifier" type="xs:string" />
+</xs:schema>

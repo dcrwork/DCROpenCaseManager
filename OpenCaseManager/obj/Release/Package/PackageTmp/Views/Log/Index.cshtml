@@ -1,0 +1,36 @@
+﻿@{
+    ViewBag.Title = "Logs";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row tableDataRow" style="margin: 5px 0 5px 0">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <h4 class="tasksHeading">
+            <span data-locale data-apply="text" data-key="Logs">Logs</span>
+        </h4>
+    
+    <table id="logTable" class="display" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Log Date</th>
+                        <th>Message</th>
+                        <th>Exception</th>
+                        <th>XML</th>
+                    </tr>
+                </thead>
+                <tbody id="logs"></tbody>
+        </table>
+    </div><!-- Cols Div End -->
+</div><!-- Row Div End -->
+
+<script src="~/Scripts/Log.js"></script>
+<link href="@Url.Content("~/Scripts/DataTables/DataTables-1.10.20/css/jquery.dataTables.min.css")" rel="stylesheet" type="text/css" />
+<script src="@Url.Content("~/Scripts/DataTables/jQuery-3.3.1/jquery-3.3.1.min.js")"></script>
+<script src="@Url.Content("~/Scripts/DataTables/DataTables-1.10.20/js/jquery.dataTables.min.js")"></script>
+<script src="~/Scripts/jquery.shorten.1.0.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        logs.getLogs();
+    });
+</script>

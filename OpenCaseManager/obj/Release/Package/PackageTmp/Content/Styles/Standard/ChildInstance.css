@@ -1,0 +1,11 @@
+﻿#instanceTitle {
+    text-decoration: underline;
+    color: var(--case-text-color);
+    cursor: pointer;
+}
+
+    #instanceTitle .dot {
+        margin-left: 20px;
+        height: 25px;
+        width: 25px;
+    }

@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://www.traen.com/2007/11/01" elementFormDefault="qualified" targetNamespace="http://www.traen.com/2007/11/01" id="schema9" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import namespace="http://rep.oio.dk/fesd.dk/xml/schemas/2005/10/26/" />
+  <xs:import namespace="http://www.traen.com/2007/04/01" />
+  <xs:import namespace="http://rep.oio.dk/cpr.dk/xml/schemas/core/2005/03/18/" />
+  <xs:import namespace="http://rep.oio.dk/kms.dk/xml/schemas/2005/03/11/" />
+  <xs:import namespace="http://rep.oio.dk/ebxml/xml/schemas/dkcc/2005/05/09/" />
+  <xs:complexType name="AddressStructureType2">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q1="http://rep.oio.dk/fesd.dk/xml/schemas/2005/10/26/" base="q1:AddressStructureType">
+        <xs:sequence>
+          <xs:element xmlns:q2="http://www.traen.com/2007/04/01" minOccurs="0" maxOccurs="1" ref="q2:GUID" />
+          <xs:element minOccurs="1" maxOccurs="1" name="IsPrimary" type="xs:boolean" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="TelephoneStructureType2">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q3="http://rep.oio.dk/fesd.dk/xml/schemas/2005/10/26/" base="q3:TelephoneStructureType">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="1" name="NumberProtectionIndicator" type="xs:boolean" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="ForeignAddressStructureType2">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q4="http://rep.oio.dk/fesd.dk/xml/schemas/2005/10/26/" base="q4:ForeignAddressStructureType">
+        <xs:sequence>
+          <xs:element xmlns:q5="http://www.traen.com/2007/04/01" minOccurs="0" maxOccurs="1" ref="q5:GUID" />
+          <xs:element minOccurs="0" maxOccurs="1" name="CountryName" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="IsPrimary" type="xs:boolean" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="OrganizationalUnitType2">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q6="http://rep.oio.dk/fesd.dk/xml/schemas/2005/10/26/" base="q6:OrganizationalUnitType">
+        <xs:sequence>
+          <xs:element xmlns:q7="http://www.traen.com/2007/04/01" minOccurs="0" maxOccurs="1" ref="q7:GUID" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="TelephoneStructure1" type="tns:TelephoneStructureType2" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="SituationAddressStructure1" type="tns:AddressStructureType2" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="ForeignAddressStructure1" type="tns:ForeignAddressStructureType2" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="CustomData" type="tns:CustomDataType2" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="Role1" type="tns:RoleType2" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="CustomDataType2">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="1" name="Name" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Value" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="RoleType2">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q8="http://rep.oio.dk/fesd.dk/xml/schemas/2005/10/26/" base="q8:RoleType">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="1" name="RoleId" type="xs:nonNegativeInteger" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="RoleOwner1" type="tns:RoleOwnerType2" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="RoleOwnerType2">
+    <xs:sequence>
+      <xs:choice minOccurs="1" maxOccurs="1">
+        <xs:element minOccurs="0" maxOccurs="1" name="Group" type="tns:GroupType2" />
+        <xs:element minOccurs="0" maxOccurs="1" name="LandParcel" type="tns:LandParcelType2" />
+        <xs:element minOccurs="0" maxOccurs="1" name="Building" type="tns:BuildingType2" />
+        <xs:element minOccurs="0" maxOccurs="1" name="Person" type="tns:PersonType2" />
+        <xs:element minOccurs="0" maxOccurs="1" name="Property" type="tns:PropertyType2" />
+        <xs:element minOccurs="0" maxOccurs="1" name="Organization" type="tns:OrganizationType2" />
+        <xs:element minOccurs="0" maxOccurs="1" name="OrganizationalUnit" type="tns:OrganizationalUnitType2" />
+      </xs:choice>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="GroupType2">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q9="http://rep.oio.dk/fesd.dk/xml/schemas/2005/10/26/" base="q9:GroupType">
+        <xs:sequence>
+          <xs:element xmlns:q10="http://www.traen.com/2007/04/01" minOccurs="0" maxOccurs="1" ref="q10:GUID" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="TelephoneStructure1" type="tns:TelephoneStructureType2" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="SituationAddressStructure1" type="tns:AddressStructureType2" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="ForeignAddressStructure1" type="tns:ForeignAddressStructureType2" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="CustomData" type="tns:CustomDataType2" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="Role1" type="tns:RoleType2" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="PersonType2">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q11="http://rep.oio.dk/fesd.dk/xml/schemas/2005/10/26/" base="q11:PersonType">
+        <xs:sequence>
+          <xs:element xmlns:q12="http://www.traen.com/2007/04/01" minOccurs="0" maxOccurs="1" ref="q12:GUID" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="TelephoneStructure1" type="tns:TelephoneStructureType2" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="SituationAddressStructure1" type="tns:AddressStructureType2" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="ForeignAddressStructure1" type="tns:ForeignAddressStructureType2" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="CustomData" type="tns:CustomDataType2" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="Role1" type="tns:RoleType2" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="OrganizationType2">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q13="http://rep.oio.dk/fesd.dk/xml/schemas/2005/10/26/" base="q13:OrganizationType">
+        <xs:sequence>
+          <xs:element xmlns:q14="http://www.traen.com/2007/04/01" minOccurs="0" maxOccurs="1" ref="q14:GUID" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="TelephoneStructure1" type="tns:TelephoneStructureType2" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="SituationAddressStructure1" type="tns:AddressStructureType2" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="ForeignAddressStructure1" type="tns:ForeignAddressStructureType2" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="CustomData" type="tns:CustomDataType2" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="Role1" type="tns:RoleType2" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="LandParcelType2">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q15="http://rep.oio.dk/fesd.dk/xml/schemas/2005/10/26/" base="q15:ContactType">
+        <xs:sequence>
+          <xs:element xmlns:q16="http://www.traen.com/2007/04/01" minOccurs="0" maxOccurs="1" ref="q16:GUID" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="TelephoneStructure1" type="tns:TelephoneStructureType2" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="SituationAddressStructure1" type="tns:AddressStructureType2" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="ForeignAddressStructure1" type="tns:ForeignAddressStructureType2" />
+          <xs:element xmlns:q17="http://rep.oio.dk/cpr.dk/xml/schemas/core/2005/03/18/" minOccurs="0" maxOccurs="1" ref="q17:MunicipalityCode" />
+          <xs:element xmlns:q18="http://rep.oio.dk/cpr.dk/xml/schemas/core/2005/03/18/" minOccurs="0" maxOccurs="1" ref="q18:MunicipalityName" />
+          <xs:element minOccurs="0" maxOccurs="1" ref="q15:LandParcelMunicipalPartIdentifier" />
+          <xs:element xmlns:q19="http://rep.oio.dk/kms.dk/xml/schemas/2005/03/11/" minOccurs="0" maxOccurs="1" ref="q19:LandParcelIdentifier" />
+          <xs:element xmlns:q20="http://rep.oio.dk/kms.dk/xml/schemas/2005/03/11/" minOccurs="0" maxOccurs="1" ref="q20:CadastralDistrictIdentifier" />
+          <xs:element xmlns:q21="http://rep.oio.dk/kms.dk/xml/schemas/2005/03/11/" minOccurs="0" maxOccurs="1" ref="q21:CadastralDistrictName" />
+          <xs:element minOccurs="0" maxOccurs="1" ref="q15:CadastralDistrictMunicipalIdentifier" />
+          <xs:element minOccurs="0" maxOccurs="1" ref="q15:CadastralDistrictMunicipalName" />
+          <xs:element minOccurs="0" maxOccurs="1" name="CadastralDistrictMunicipalityCode" type="xs:string" />
+          <xs:element minOccurs="0" maxOccurs="1" name="CadastralDistrictMunicipalityName" type="xs:string" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="CustomData" type="tns:CustomDataType2" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="Role1" type="tns:RoleType2" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="BuildingType2">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q22="http://rep.oio.dk/fesd.dk/xml/schemas/2005/10/26/" base="q22:ContactType">
+        <xs:sequence>
+          <xs:element xmlns:q23="http://www.traen.com/2007/04/01" minOccurs="0" maxOccurs="1" ref="q23:GUID" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="TelephoneStructure1" type="tns:TelephoneStructureType2" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="SituationAddressStructure1" type="tns:AddressStructureType2" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="ForeignAddressStructure1" type="tns:ForeignAddressStructureType2" />
+          <xs:element minOccurs="0" maxOccurs="1" ref="q22:BBRIdentifier" />
+          <xs:element xmlns:q24="http://rep.oio.dk/ebxml/xml/schemas/dkcc/2005/05/09/" minOccurs="0" maxOccurs="1" ref="q24:BuildingIdentifier" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="CustomData" type="tns:CustomDataType2" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="Role1" type="tns:RoleType2" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="PropertyType2">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q25="http://rep.oio.dk/fesd.dk/xml/schemas/2005/10/26/" base="q25:ContactType">
+        <xs:sequence>
+          <xs:element xmlns:q26="http://www.traen.com/2007/04/01" minOccurs="0" maxOccurs="1" ref="q26:GUID" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="TelephoneStructure1" type="tns:TelephoneStructureType2" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="SituationAddressStructure1" type="tns:AddressStructureType2" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="ForeignAddressStructure1" type="tns:ForeignAddressStructureType2" />
+          <xs:element minOccurs="0" maxOccurs="1" name="PropertyNumber" type="xs:string" />
+          <xs:element xmlns:q27="http://rep.oio.dk/cpr.dk/xml/schemas/core/2005/03/18/" minOccurs="0" maxOccurs="1" ref="q27:MunicipalityName" />
+          <xs:element xmlns:q28="http://rep.oio.dk/cpr.dk/xml/schemas/core/2005/03/18/" minOccurs="0" maxOccurs="1" ref="q28:MunicipalityCode" />
+          <xs:element minOccurs="0" maxOccurs="1" name="TitleNumber" type="xs:string" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="CustomData" type="tns:CustomDataType2" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="Role1" type="tns:RoleType2" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element xmlns:q29="http://rep.oio.dk/fesd.dk/xml/schemas/2005/10/26/" name="ContactObject" type="q29:ContactType" />
+</xs:schema>

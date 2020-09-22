@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://rep.oio.dk/kms.dk/xml/schemas/2005/03/11/" elementFormDefault="qualified" targetNamespace="http://rep.oio.dk/kms.dk/xml/schemas/2005/03/11/" id="schema18" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="LandParcelIdentifier" type="xs:string" />
+  <xs:element name="CadastralDistrictIdentifier" type="xs:nonNegativeInteger" />
+  <xs:element name="CadastralDistrictName" type="xs:string" />
+</xs:schema>

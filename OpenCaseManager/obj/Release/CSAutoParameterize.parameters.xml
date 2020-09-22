@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<parameters>
+  <parameter name="Default-Web.config Connection String" description="Default Connection String used in web.config by the application to access the database." defaultValue="Server=tcp:ocmdiku.database.windows.net,1433;Initial Catalog=OCMDiku;Persist Security Info=False;User ID=administrator_ocmdiku;Password=P@$sw0rd2020;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;" tags="SqlConnectionString">
+    <parameterEntry kind="XmlFile" scope="D:\\olive\\Documents\\DCR\\OpenCaseManager\\OpenCaseManager\\obj\\Release\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='Default']/@connectionString" />
+  </parameter>
+</parameters>

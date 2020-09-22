@@ -1,0 +1,202 @@
+﻿
+@{
+    ViewBag.Title = "Digital Assistant";
+}
+
+
+<div class="row tableDataRow">
+
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <h4 class="tasksHeading"><span data-locale data-apply="text" data-key="Cases">Cases</span></h4>
+        <div class="table-responsive">
+            <table class="table tasksTable table-striped case-table">
+                <thead>
+                    <tr class="trStyleClass">
+                        <th width=5%><span data-locale data-apply="text" data-key="Status">Status</span></th>
+                        <th width=""><span data-locale data-apply="text" data-key="Title">Title</span></th>
+                        <th width=15%><span data-locale data-apply="text" data-key="CaseNo">Case #</span></th>
+                    </tr>
+                </thead>
+                <tbody id="cases"></tbody>
+            </table>
+        </div>
+    </div><!-- Cols Div End -->
+</div><!-- Row End -->
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        var query = {
+            "type": "SELECT",
+            "entity": "InstanceEventHistory",
+            "resultSet": ["Id", "CaseId", "CaseStatus", "EventId", "Sequence", "Description", "Status", "CaseTitle", "GraphId"]
+        }
+
+        API.service('records', query)
+            .done(function (response) {
+                var data = JSON.parse(response);
+
+                var instanceIds = data.map(item => item.Id)
+                    .filter((value, index, self) => self.indexOf(value) === index);
+
+                var cases = [];
+                $.each(instanceIds, function (index, instanceId) {
+
+                    var instanceDetails = $.grep(data, function (item) {
+                        return item.Id === instanceId;
+                    })[0];
+
+                    var instance = { Id: instanceDetails.Id, CaseId: instanceDetails.CaseId, CaseTitle: instanceDetails.CaseTitle, CaseStatus: instanceDetails.CaseStatus, GraphId: instanceDetails.GraphId, Events: [] }
+
+                    var events = $.grep(data, function (item) {
+                        return item.Id === instanceId;
+                    }).map(item => { return { Id: item.EventId, Sequence: item.Sequence, Description: item.Description, Status: item.Status } })
+                        .forEach(function (item, index) { instance.Events.push(item) });
+
+                    cases.push(instance);
+                })
+
+                loadData(cases);
+            })
+            .fail(function (e) {
+                App.showExceptionErrorMessage(e);
+            });
+
+    });
+
+    function loadData(cases) {
+        var returnHtml = "";
+        $.each(cases, function (index, item) {
+            returnHtml += '<tr name="cases" class="trStyleClass"><td class="includedTask check" graphId="' + item.GraphId + '" id="' + item.Id + '">';
+            if (item.CaseStatus)
+                returnHtml += '<img caseId="' + item.Id + '" src="../content/images/standard/check.png">';
+            else
+                returnHtml += '<img caseId="' + item.Id + '" src="../content/images/standard/cross.png">';
+
+            returnHtml += '</td><td><a href="../DigitalAssistant/Details?caseId=' + item.Id + '">' + item.CaseTitle + '</a></td> <td>' + item.CaseId + '</td></tr > ';
+
+            returnHtml += '<tr caseId="' + item.Id + '" class="displayEvents"  style="display:none">' +
+                '<td colspan="4" style="padding:0px; border-top:none">' +
+                '<ul class="events-log-ul" caseId="' + item.Id + '">';
+
+            $.each(item.Events, function (index, event) {
+                var description = '';
+                if (event.Description != null && event.Description != '')
+                    description = " - " + event.Description;
+                returnHtml += '<li><a href="#" class="" data-toggle="tooltip" data-placement="top" title="' + event.Id + description + '">';
+                if (event.Status)
+                    returnHtml += '<div class="circle green"></div>';
+                else
+                    returnHtml += '<div class="circle red"></div>';
+                returnHtml += '</a></li>';
+
+            })
+
+            returnHtml += '</td>' + '</tr>';
+        });
+        $('#cases').html(returnHtml);
+
+
+        $('tr[name="cases"]').click(function (e) {
+            if (e.target.localName !== 'a') {
+                var id = $(this).children().first().attr('id');
+                var graphId = $(this).children().first().attr('graphId');
+                if ($('tr[class="displayEvents"][caseId="' + id + '"]').length > 0 && $('tr[class="displayEvents"][caseId="' + id + '"]')[0].style.display === "none")
+                    updateEventLog(id, graphId);
+                $('tr[class="displayEvents"][caseId="' + id + '"]').toggle();
+            }
+        });
+    }
+
+    function updateEventLog(instanceId, graphId) {
+        $('ul[caseId="' + instanceId + '"]').html('');
+        var query = {
+            instanceId: instanceId,
+            graphId: graphId
+        }
+
+        API.service('records/daa', query)
+            .done(function (response) {
+                updateEventLogHtml(instanceId);
+            })
+            .fail(function (e) {
+                App.showExceptionErrorMessage(e);
+            });
+    }
+
+    function updateEventLogHtml(id) {
+        var query = {
+            "type": "SELECT",
+            "entity": "InstanceEventHistory",
+            "filters": [
+                {
+                    "column": "Id",
+                    "operator": "equal",
+                    "value": id,
+                    "valueType": "int",
+                    "logicalOperator": "and"
+                }
+            ],
+            "resultSet": ["Id", "CaseId", "CaseStatus", "EventId", "Sequence", "Description", "Status", "CaseTitle", "GraphId"]
+        }
+
+        API.service('records', query)
+            .done(function (response) {
+                var data = JSON.parse(response);
+
+                var instanceIds = data.map(item => item.Id)
+                    .filter((value, index, self) => self.indexOf(value) === index);
+
+                var cases = [];
+                $.each(instanceIds, function (index, instanceId) {
+
+                    var instanceDetails = $.grep(data, function (item) {
+                        return item.Id === instanceId;
+                    })[0];
+
+                    var instance = { Id: instanceDetails.Id, CaseId: instanceDetails.CaseId, CaseTitle: instanceDetails.CaseTitle, CaseStatus: instanceDetails.CaseStatus, GraphId: instanceDetails.GraphId, Events: [] }
+
+                    var events = $.grep(data, function (item) {
+                        return item.Id === instanceId;
+                    }).map(item => { return { Id: item.EventId, Sequence: item.Sequence, Description: item.Description, Status: item.Status } })
+                        .forEach(function (item, index) { instance.Events.push(item) });
+
+                    cases.push(instance);
+                })
+
+
+                var returnHtml = "";
+                $.each(cases, function (index, item) {
+
+                    if (item.CaseStatus)
+                        $('img[caseId="' + id + '"]').attr('src', '../content/images/standard/check.png');
+                    else
+                        $('img[caseId="' + id + '"]').attr('src', '../content/images/standard/cross.png');
+
+                    $.each(item.Events, function (index, event) {
+                        var description = '';
+                        if (event.Description != null && event.Description != '')
+                            description = " - " + event.Description;
+                        returnHtml += '<li><a href="#" class="" data-toggle="tooltip" data-placement="top" title="' + event.Id + description + '">';
+                        if (event.Status)
+                            returnHtml += '<div class="circle green"></div>';
+                        else
+                            returnHtml += '<div class="circle red"></div>';
+                        returnHtml += '</a></li>';
+
+                    })
+
+                    returnHtml += '</td>' + '</tr>';
+                });
+
+                $('ul[caseId="' + id + '"]').html(returnHtml);
+            })
+            .fail(function (e) {
+                App.showExceptionErrorMessage(e);
+            });
+
+    }
+
+    //todo:mytasks-Move to Script file
+
+</script>

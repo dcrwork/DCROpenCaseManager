@@ -1,0 +1,271 @@
+﻿
+@{
+    ViewBag.Title = "Details";
+}
+
+
+<div class="row tableDataRow">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <table class="table table-responsive entityDetailTable">
+            <tr>
+                <th class="caseTitle"><span id="caseTitle"></span></th>
+                <td><span style="float:right" class="caseNum"><span id="caseNo"></span></span><span style="float:right;display:none;" class="caseLink"><a target="_blank" id="caseLink" href="#"><img width="12px" src="../content/images/standard/caseLink.png"></a></span></td>
+            </tr>
+        </table>
+    </div>
+</div><!-- Row End -->
+<div class="row tableDataRow">
+    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+        <h4 class="tasksHeading"><span data-locale data-apply="text" data-key="Tasks">Tasks</span></h4>
+        <div class="table-responsive" style="border:none">
+            <table class="table tasksTable table-striped">
+                <thead>
+                    <tr class="trStyleClass">
+                        <th width="10%"><span data-locale data-apply="text" data-key="Status">Status</span></th>
+                        <th width=""><span data-locale data-apply="text" data-key="Title">Title</span></th>
+                        <th width=""><span data-locale data-apply="text" data-key="Responsible">Responsible</span></th>
+                        <th width="15%"><span data-locale data-apply="text" data-key="DueDate">Due Date</span></th>
+                        <th style="display:none" width="9%"><span data-locale data-apply="text" data-key="Action">Action</span></th>
+                    </tr>
+                </thead>
+                <tbody id="logEvent"></tbody>
+            </table>
+        </div>
+    </div><!-- Cols Div End -->
+    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+        <h4 class="tasksHeading"><span data-locale data-apply="text" data-key="History">History</span></h4>
+        <div class="table-responsive" style="border:none">
+            <table class="table tasksTable table-striped">
+                <thead>
+                    <tr class="trStyleClass">
+                        <th width=""><span data-locale data-apply="text" data-key="Status">Status</span></th>
+                        <th width=""><span data-locale data-apply="text" data-key="EventsId">EventsId</span></th>
+                        <th width=""><span data-locale data-apply="text" data-key="Description">Description</span></th>
+                    </tr>
+                </thead>
+                <tbody id="logEventHistory"></tbody>
+            </table>
+        </div>
+    </div><!-- Cols Div End -->
+</div><!-- Row Div End -->
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        var caseId = App.getParameterByName("caseId", window.location.href);
+
+        var query = {
+            "type": "SELECT",
+            "entity": "Instance",
+            "resultSet": ["Id", "Title", "CaseNoForeign", "CaseLink"],
+            "filters": [
+                {
+                    "column": "Id",
+                    "operator": "equal",
+                    "value": caseId,
+                    "valueType": "int"
+                }
+            ]
+        }
+
+        API.service('records', query)
+            .done(function (response) {
+                var data = JSON.parse(response);
+
+                if (data.length > 0) {
+                    $('#caseTitle').text(data[0].Title);
+                    if (data[0].CaseNoForeign !== null) {
+                        $('.caseNum').toggle();
+                        $('#caseNo').text(data[0].CaseNoForeign);
+                    }
+                    if (data[0].CaseLink !== null) {
+                        $('.caseLink').toggle();
+                        $('#caseLink').attr('href', data[0].CaseLink);
+                    }
+                }
+                console.log(data);
+            })
+            .fail(function (e) {
+                App.showExceptionErrorMessage(e);
+            });
+
+        query = {
+            "type": "SELECT",
+            "entity": "InstanceEventHistory",
+            "resultSet": ["Id", "CaseId", "CaseStatus", "EventId", "Sequence", "Description", "Status", "CaseTitle", "Details"],
+            "filters": [
+                {
+                    "column": "Id",
+                    "operator": "equal",
+                    "value": caseId,
+                    "valueType": "int"
+                }
+            ]
+        }
+
+        API.service('records', query)
+            .done(function (response) {
+                var data = JSON.parse(response);
+
+                loadEventLogData(data);
+                console.log(data);
+            })
+            .fail(function (e) {
+                App.showExceptionErrorMessage(e);
+            });
+
+
+        query = {
+            "type": "SELECT",
+            "entity": "Event",
+            "resultSet": ["Id", "EventId", "Title", "Responsible", "Due", "IsPending", "IsExecuted", "Description", "InstanceId"],
+            "filters": [
+                {
+                    "column": "InstanceId",
+                    "operator": "equal",
+                    "value": caseId,
+                    "valueType": "int"
+                }
+            ],
+            "order": [{ "column": "IsPending", "descending": true }, { "column": "IsEnabled", "descending": true }]
+        }
+
+        API.service('records', query)
+            .done(function (response) {
+                var data = JSON.parse(response);
+
+                loadEventData(data);
+                console.log(data);
+            })
+            .fail(function (e) {
+                App.showExceptionErrorMessage(e);
+            });
+
+    });
+
+    function loadEventLogData(cases) {
+        var returnHtml = "";
+        $.each(cases, function (index, item) {
+
+            returnHtml += '<tr ';
+            if (item.Details != null && item.Details != '')
+                returnHtml += ' name = "elDescription" ';
+            returnHtml += 'class="trStyleClass" > <td class="includedTask check" > ';
+            if (item.Status)
+                returnHtml += '<div class="circle green log-status"></div>';
+            else
+                returnHtml += '<div class="circle red log-status"></div>';
+            returnHtml += '</td> <td>' + item.EventId + '</td> <td>' + (item.Description === null ? '' : item.Description) + '</td></tr > ';
+            if (item.Details !== "")
+                returnHtml += '<tr class="showMe" style="display:none"><td></td><td colspan="100%">' + item.Details + '</td></tr>';
+
+        });
+        $('#logEventHistory').html(returnHtml);
+        registerShowDetailsEvent();
+    }
+
+    function loadEventData(cases) {
+        var returnHtml = "";
+        $.each(cases, function (index, item) {
+            if (item.IsPending) {
+                returnHtml += '<tr';
+                if (item.Description !== "")
+                    returnHtml += ' name = "description"';
+                returnHtml += ' class="trStyleClass" > ' +
+                    '<td class="includedTask">a</td >' +
+                    '<td><a href="#">' +
+                    item.Title +
+                    '</a></td>' +
+                    '<td>' + item.Responsible + '</td>' +
+                    '<td>' + moment(new Date(item.Due)).format('L') + '</td>' +
+                    '<td  style="display:none">';
+                returnHtml += '<button type="button" taskid="' + item.EventId + '" graphid="' + item.GraphId + '" simulationid="' + item.InstanceId + '" instanceid="'
+                    + item.InstanceId + '" id="' + item.EventId + '" name="execute" value="execute" class="btn btn-info taskExecutionBtn"><img src="../Content/Images/standard/execute.png" /></button> ';
+                returnHtml += '</td>' + '</tr>';
+            }
+            else if (item.IsExecuted) {
+                returnHtml += '<tr';
+                if (item.Description !== "")
+                    returnHtml += ' name = "description"';
+                returnHtml += ' class="trStyleClass" > ' +
+                    '<td class="executedTask">b</td >' +
+                    '<td><a href="#">' +
+                    item.Title +
+                    '</a></td>' +
+                    '<td>' + item.Responsible + '</td>' +
+                    '<td>' + moment(new Date(item.Due)).format('L') + '</td>' +
+                    '<td  style="display:none">';
+                returnHtml += '<button type="button" taskid="' + item.EventId + '" graphid="' + item.GraphId + '" simulationid="' + item.InstanceId + '" instanceid="'
+                    + item.InstanceId + '" id="' + item.EventId + '" name="execute" value="execute" class="btn btn-info taskExecutionBtn"><img src="../Content/Images/standard/execute.png" /></button> ';
+                returnHtml += '</td>' + '</tr>';
+
+            }
+            else {
+                returnHtml += '<tr';
+                if (item.Description !== "")
+                    returnHtml += ' name = "description"';
+                returnHtml += ' class="trStyleClass" > ' +
+                    '<td class="includedTask">&nbsp;</td >' +
+                    '<td><a href="#">' +
+                    item.Title +
+                    '</a></td>' +
+                    '<td>' + item.Responsible + '</td>' +
+                    '<td>' + moment(new Date(item.Due)).format('L') + '</td>' +
+                    '<td  style="display:none">';
+                returnHtml += '<button type="button" taskid="' + item.EventId + '" graphid="' + item.GraphId + '" simulationid="' + item.InstanceId + '" instanceid="'
+                    + item.InstanceId + '" id="' + item.EventId + '" name="execute" value="execute" class="btn btn-info taskExecutionBtn"><img src="../Content/Images/standard/execute.png" /></button> ';
+                returnHtml += '</td>' + '</tr>';
+            }
+            if (item.Description !== "")
+                returnHtml += '<tr class="showMe" style="display:none"><td></td><td colspan="100%">' + item.Description + '</td></tr>';
+        });
+        $('#logEvent').html(returnHtml);
+        registerShowDescriptionEvent();
+
+        $('button[name="execute"]').on('click', function (e) {
+            var eventId = e.currentTarget.attributes.id.value;
+            var taskId = e.currentTarget.attributes.taskId.value;
+            var instanceId = e.currentTarget.attributes.instanceId.value;
+            var data = { taskId: taskId, instanceId: instanceId, graphId: graphId, simulationId: simulationId, eventId: eventId };
+            executeEvent(data);
+            e.preventDefault();
+        });
+    }
+
+    function registerShowDetailsEvent() {
+        $('tr[name="elDescription"]').on('click', function () {
+            $(this).next('.showMe').toggle();
+        });
+    }
+
+    function registerShowDescriptionEvent() {
+        $('tr[name="description"]').on('click', function () {
+            $(this).next('.showMe').toggle();
+        });
+    }
+
+    function getParameterByName(name, url) {
+        if (!url) url = window.location.href;
+        url = url.toLowerCase();
+        name = name.toLowerCase();
+        name = name.replace(/[\[\]]/g, "\\$&");
+        var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+            results = regex.exec(url);
+        if (!results) return null;
+        if (!results[2]) return '';
+        return decodeURIComponent(results[2].replace(/\+/g, " "));
+    }
+
+    function executeEvent(data) {
+        API.service('services/ExecuteEvent', { taskId: data.taskId, instanceId: data.instanceId, eventId: data.eventId, responsibleId: Responsible.Id })
+            .done(function (response) {
+            })
+            .fail(function (e) {
+                App.showExceptionErrorMessage(e);
+            });
+    }
+
+    //todo:mytasks-Move to Script file
+
+</script>

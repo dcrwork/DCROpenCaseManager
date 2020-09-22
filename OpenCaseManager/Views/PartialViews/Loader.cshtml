@@ -1,0 +1,29 @@
+﻿<style>
+    .loader {
+        position: relative;
+        margin: 400px auto 35px auto;
+        border: 16px solid #f3f3f3;
+        border-radius: 50%;
+        border-top: 16px solid #9C1A5E;
+        width: 80px;
+        height: 80px;
+        -webkit-animation: spin 2s linear infinite; /* Safari */
+        animation: spin 2s linear infinite;
+    }
+
+    #loadMe {
+        z-index: 999999;
+    }
+</style>
+
+
+<!-- Modal -->
+<div class="modal-backdrop fade in" id="loadMe">
+    <div class="">
+        <div class="text-center">
+            <div class="loader"></div>
+            <div clas="loader-txt">
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,59 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>@ViewBag.Title</title>
+    @Styles.Render("~/Content/cssbundle")
+    <link href="~/Content/FontAwsome/css/all.min.css" rel="stylesheet" />
+</head>
+<body>
+    @Scripts.Render("~/bundles/jquery")
+
+    <div class="wrapper">
+        <header>
+            <div class="container inner-block">
+                <div class="main-menu-top">
+                    <div class="container">
+                        <ul class="menu-header-ul">
+                            <li><a href="~/"><span data-locale data-apply="text" data-key="Sign In">Sign In</span></a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="page-header clearfix">
+                    <div class="pull-left">
+                        <a href="../">
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <main>
+            <div class="container inner-block">
+                @RenderBody()
+            </div>
+        </main>
+        <footer>
+            <div class="container inner-block">
+                <div class="footer">
+                    <div class="footer-content clearfix">
+                        <div class="col-lg-3 col-md-3 col-sm-3 pull-left">
+                            <div class="left-footer-img pull-left"></div>
+                        </div>
+                        <span class="col-lg-6 col-md-6 col-sm-6 allrights"></span>
+                        <div class="col-lg-3 col-md-3 col-sm-3 pull-right">
+                            <div class="right-footer-img pull-right"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div> <!-- Container End -->
+
+    @RenderSection("scripts", required: false)
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/bluebird")
+    @Scripts.Render("~/bundles/moment")
+</body>
+</html>

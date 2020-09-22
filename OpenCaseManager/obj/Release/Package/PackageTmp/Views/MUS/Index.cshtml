@@ -1,0 +1,49 @@
+﻿
+@{
+    ViewBag.Title = "MUS Details";
+}
+
+@Html.Partial("~/Views/PartialViews/Instruction.cshtml")
+@Html.Partial("~/Views/PartialViews/TasksWithNote.cshtml")
+@Html.Partial("~/Views/PartialViews/dcrform.cshtml")
+
+<div class="row tableDataRow">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="tasksHeading">
+            <h4 class="tasksHeading" style="">
+                <span data-locale data-apply="text" data-key="MUSDetails">MUS Details</span>
+            </h4>
+            <select style="" name="multi-select" class="form-control formFieldStyling multi-select-year-styling" id="multi-select-year"></select>
+            @*<div style="clear:both"></div>*@
+        </div>
+        <div class="" style="border:none">
+            <table class="table tasksTable table-striped" id="mus-table">
+                <thead>
+                    <tr class="trStyleClass musTableHeadTr" style="">
+                        <th width="1%">&nbsp;</th>
+                        <th width="10%" id="one">
+                            <a href="#" sort-on="Department" sort-direction="asc"><span data-locale data-apply="text" data-key="Department">Department</span><span class="sort-arrow-head">&#9650;</span></a>
+                        </th>
+                        <th width="15%"><a sort-on="FullName" href="#"><span data-locale data-apply="text" data-key="Name">Name</span></a></th>
+                        <th width="20%"><div style=""><span data-locale data-apply="text" data-key="Status">Status</span></div></th>
+                        <th width="15%"><span data-locale data-apply="text" data-key="Actions">Actions</span></th>
+                        <th width="12%" id="two"><a sort-on="InstanceTitle" href="#"><span data-locale data-apply="text" data-key="MUS">MUS</span></a></th>
+                    </tr>
+                </thead>
+                <tbody id="mus" style=""></tbody>
+            </table>
+        </div>
+    </div><!-- Cols Div End -->
+</div><!-- Row End -->
+
+<link href="~/Scripts/plugins/slick/slick.css" rel="stylesheet" />
+<link href="~/Scripts/plugins/slick/slick-theme.css" rel="stylesheet" />
+<script src="~/Scripts/plugins/slick/slick.min.js"></script>
+<script src="~/Scripts/task.js"></script>
+<script src="~/Scripts/mus.js"></script>
+
+<script type="text/javascript">
+    var webPortalType = "Personal";
+    var instanceId = "";
+</script>
+@Html.Partial("~/Views/PartialViews/Document.cshtml")

@@ -1,0 +1,70 @@
+﻿
+@{
+    ViewBag.Title = "Form";
+}
+
+@Html.Partial("~/Views/PartialViews/Instruction.cshtml")
+
+<div class="">
+    <div class="create-form-groupedBtn-block">
+        <div class="btn-group" name="create-form-label">
+            <button id="buttonNewForm" type="button" class="btn groupedBtnStyling"><img src="../content/images/standard/addNewForm.png" class="newFormAddIcon" /><span data-locale data-apply="text" data-key="BlankForm">Blank Form</span> </button>
+            <button type="button" class="btn dropdown-toggle groupedBtnStyling" data-toggle="dropdown">
+                <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" role="menu">
+                <li><a id="buttonFromTemplate" href="#"><span data-locale data-apply="text" data-key="ChooseFromTemplate">Choose From Template</span></a></li>
+            </ul>
+        </div>
+        <div class="btn-group" name="create-form-label">
+            <button id="buttonShowMyForms" type="button" class="btn groupedBtnStyling" style="display:none"><span data-locale data-apply="text" data-key="ShowMyForms">Show My Forms</span></button>
+        </div>
+    </div>
+
+    <div id="myFormLists" class="forms-listing-display-block">
+        <h4 class="tasksHeading"><span data-locale data-apply="text" data-key="MyForms">My Forms</span></h4>
+        <table class="table table-striped forms-listing-table">
+            <thead>
+                <tr>
+                    <th><span data-locale data-apply="text" data-key="Title">Title</span> </th>
+                    <th style="width:15%;"><span data-locale data-apply="text" data-key="Export">Export</span></th>
+                </tr>
+            </thead>
+            <tbody id="myForms"></tbody>
+        </table>
+    </div>
+
+    <div id="templateForms" class="forms-listing-display-block" style="display:none;">
+        <h4 class="tasksHeading"><span data-locale data-apply="text" data-key="FormTemplates">Form Templates</span></h4>
+        <input id="searchTemplate" class="search-form-listing-input" type="text" name="" placeholder="Search Form" data-locale data-apply="attribute" data-attribute="placeholder" data-key="Search" />
+        <table class="table table-striped forms-listing-table">
+            <thead>
+                <tr>
+                    <th><span data-locale data-apply="text" data-key="Title">Title</span> </th>
+                </tr>
+            </thead>
+            <tbody id="templateFormsTableBody"></tbody>
+        </table>
+    </div>
+
+    <div id="formQuestions" style="display:none;">
+        <div class="ocm-form-block">
+            <input id="formName" type="text" name="" class="ocm-form-title-input" />
+            <div class="is-template-block">
+                <input type="checkbox" id="formIsTemplate" name="template-">
+                <div class="is-template-innerblock"><label for="demo"><span data-locale data-apply="text" data-key="IsTemplate">Is Template</span></label></div>
+            </div>
+        </div>
+        <!-- <div class="add-new-question-block"><img class="add-question-plus-icon" src="images/standard/addQuestion.png"><span class="add-new-question-text">Add Question</span></div> -->
+        <button type="btn" class="add-question-btn"><div class="add-new-question-img backgroundImagesCss"></div> <span data-locale data-apply="text" data-key="NewItem">New Item</span></button>
+        <div class="question-table-block">
+            <table class="table table-bordered questions-table">
+                <tbody id="treegrid-body"></tbody>
+            </table>
+
+        </div>
+    </div>
+</div>
+
+<script src="~/Scripts/jquery.treegrid.min.js"></script>
+<script src="~/Scripts/hr.js"></script>

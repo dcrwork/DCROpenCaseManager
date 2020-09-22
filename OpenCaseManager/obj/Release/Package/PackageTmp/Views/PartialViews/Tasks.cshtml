@@ -1,0 +1,65 @@
+﻿<!-- CSS is defined in ~/Content/PartialViews.css and bundled in App_Start/BundleConfig.cs -->
+
+<div class="activitiesBox">
+    <h4 class="instancesHeading instancesHeadingTop">
+        <span data-locale data-apply="text" data-key="MyActivities"></span><span class="hoverInfo"><img src='../Content/Images/Standard/InfoIconV2.svg' class="info-icon" /><span class="hoverInfoText"><span data-locale data-apply="text" data-key="PendingActivities"></span></span></span>
+        <button type="button" class="btn AddNewTaskCase" data-toggle="modal" data-target="#addNewCaseTask" id="addTasks">
+            <span><img src="~/Content/Images/Standard/addicon.png"></span>
+        </button>
+    </h4>
+    <div class="scrollTable1">
+        <table class="table tasksTable table-striped" id="tasksTable">
+            <thead>
+                <tr id="trTasksWarning" style="display:none"><td colspan="4"><font color="red">Advarsel - Opgavelisten er gammel. Tryk F5 for at opfriske listen og se de nyeste data</font></td></tr>
+                <tr class="trStyleClass">
+                    <th width="5%"></th>
+                    <th width="30%"><span data-locale data-apply="text" data-key="Title"></span></th>
+                    <th width="20%"><span data-locale data-apply="text" data-key="DueDate"></span></th>
+                    <th width="20%"><span data-locale data-apply="text" data-key="Responsible"></span></th>
+                    <th width="15%"><span data-locale data-apply="text" data-key="CaseWorker"></span></th>
+                    <th width="15%"><span data-locale data-apply="text" data-key="Action"></span></th>
+                </tr>
+                <tr class="trStyleClass" id="singleInstanceFilters" style="display:none;">
+                    <th width="15%">
+                    </th>
+                    <th width=""></th>
+                    <th width=""></th>
+                    <th width="">
+                        <select id="responsibleDropdown">
+                            <option data-locale data-apply="text" data-key="Default" selected value="0">Default</option>
+                            <option data-locale data-apply="text" data-key="MyTasks" value="1">My Tasks</option>
+                        </select>
+                    </th>
+                    <th width="9%"></th>
+                </tr>
+
+            </thead>
+            <tbody id="tasks"></tbody>
+        </table>
+    </div>
+</div>
+
+
+<script>
+    $(document).ready(function () {
+        var table = $('.hiddenTaskTable');
+        table.hide();
+    });
+
+    $(document).on('click', '.fold-down-headline', function () {
+        var table = $(this).next('.scrollTable2').find('table');
+        var icon = $(this).find('.glyphicon');
+        if (table.is(':visible')) {
+            table.hide();
+            icon.removeClass('glyphicon-chevron-down');
+            icon.addClass('glyphicon-chevron-right');
+        } else {
+            table.show();
+            icon.removeClass('glyphicon-chevron-right');
+            icon.addClass('glyphicon-chevron-down');
+        }
+    });
+</script>
+@Html.Partial("~/Views/PartialViews/ResponsibleModal.cshtml")
+@Html.Partial("~/Views/PartialViews/NotApplicableModal.cshtml")
+<script src="~/Scripts/task.js"></script>

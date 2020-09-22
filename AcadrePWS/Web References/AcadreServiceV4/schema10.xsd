@@ -1,0 +1,365 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://www.traen.com/2007/04/01" elementFormDefault="qualified" targetNamespace="http://www.traen.com/2007/04/01" id="schema10" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import namespace="http://rep.oio.dk/fesd.dk/xml/schemas/2005/10/26/" />
+  <xs:import namespace="http://rep.oio.dk/cpr.dk/xml/schemas/core/2005/03/18/" />
+  <xs:import namespace="http://rep.oio.dk/kms.dk/xml/schemas/2005/03/11/" />
+  <xs:import namespace="http://rep.oio.dk/ebxml/xml/schemas/dkcc/2005/05/09/" />
+  <xs:import namespace="http://www.traen.com/2006/08/01/case" />
+  <xs:element name="GUID" type="xs:string" />
+  <xs:complexType name="AddressStructureType1">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q1="http://rep.oio.dk/fesd.dk/xml/schemas/2005/10/26/" base="q1:AddressStructureType">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="1" name="GUID" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="TelephoneStructureType">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q2="http://rep.oio.dk/fesd.dk/xml/schemas/2005/10/26/" base="q2:TelephoneStructureType">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="1" name="NumberProtectionIndicator" type="xs:boolean" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="ForeignAddressStructureType">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q3="http://rep.oio.dk/fesd.dk/xml/schemas/2005/10/26/" base="q3:ForeignAddressStructureType">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="1" name="GUID" type="xs:string" />
+          <xs:element minOccurs="0" maxOccurs="1" name="CountryName" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="OrganizationType1">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q4="http://rep.oio.dk/fesd.dk/xml/schemas/2005/10/26/" base="q4:OrganizationType">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="1" name="GUID" type="xs:string" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="TelephoneStructure1" type="tns:TelephoneStructureType" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="SituationAddressStructure1" type="tns:AddressStructureType1" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="ForeignAddressStructure1" type="tns:ForeignAddressStructureType" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="CustomData" type="tns:CustomDataType" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="Role1" type="tns:RoleType1" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="CustomDataType">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="1" name="Name" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Value" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="RoleType1">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q5="http://rep.oio.dk/fesd.dk/xml/schemas/2005/10/26/" base="q5:RoleType">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="1" name="RoleId" type="xs:nonNegativeInteger" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="RoleOwner1" type="tns:RoleOwnerType1" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="RoleOwnerType1">
+    <xs:sequence>
+      <xs:choice minOccurs="1" maxOccurs="1">
+        <xs:element minOccurs="0" maxOccurs="1" name="Group" type="tns:GroupType1" />
+        <xs:element minOccurs="0" maxOccurs="1" name="Organization" type="tns:OrganizationType1" />
+        <xs:element minOccurs="0" maxOccurs="1" name="OrganizationalUnit" type="tns:OrganizationalUnitType1" />
+        <xs:element minOccurs="0" maxOccurs="1" name="Property" type="tns:PropertyType1" />
+        <xs:element minOccurs="0" maxOccurs="1" name="Person" type="tns:PersonType1" />
+        <xs:element minOccurs="0" maxOccurs="1" name="LandParcel" type="tns:LandParcelType1" />
+        <xs:element minOccurs="0" maxOccurs="1" name="Building" type="tns:BuildingType1" />
+      </xs:choice>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="GroupType1">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q6="http://rep.oio.dk/fesd.dk/xml/schemas/2005/10/26/" base="q6:GroupType">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="1" name="GUID" type="xs:string" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="TelephoneStructure1" type="tns:TelephoneStructureType" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="SituationAddressStructure1" type="tns:AddressStructureType1" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="ForeignAddressStructure1" type="tns:ForeignAddressStructureType" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="CustomData" type="tns:CustomDataType" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="Role1" type="tns:RoleType1" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="OrganizationalUnitType1">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q7="http://rep.oio.dk/fesd.dk/xml/schemas/2005/10/26/" base="q7:OrganizationalUnitType">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="1" name="GUID" type="xs:string" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="TelephoneStructure1" type="tns:TelephoneStructureType" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="SituationAddressStructure1" type="tns:AddressStructureType1" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="ForeignAddressStructure1" type="tns:ForeignAddressStructureType" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="CustomData" type="tns:CustomDataType" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="Role1" type="tns:RoleType1" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="PropertyType1">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q8="http://rep.oio.dk/fesd.dk/xml/schemas/2005/10/26/" base="q8:ContactType">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="1" name="GUID" type="xs:string" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="TelephoneStructure1" type="tns:TelephoneStructureType" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="SituationAddressStructure1" type="tns:AddressStructureType1" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="ForeignAddressStructure1" type="tns:ForeignAddressStructureType" />
+          <xs:element minOccurs="0" maxOccurs="1" name="PropertyNumber" type="xs:string" />
+          <xs:element xmlns:q9="http://rep.oio.dk/cpr.dk/xml/schemas/core/2005/03/18/" minOccurs="0" maxOccurs="1" ref="q9:MunicipalityName" />
+          <xs:element xmlns:q10="http://rep.oio.dk/cpr.dk/xml/schemas/core/2005/03/18/" minOccurs="0" maxOccurs="1" ref="q10:MunicipalityCode" />
+          <xs:element minOccurs="0" maxOccurs="1" name="TitleNumber" type="xs:string" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="CustomData" type="tns:CustomDataType" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="Role1" type="tns:RoleType1" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="PersonType1">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q11="http://rep.oio.dk/fesd.dk/xml/schemas/2005/10/26/" base="q11:PersonType">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="1" name="GUID" type="xs:string" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="TelephoneStructure1" type="tns:TelephoneStructureType" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="SituationAddressStructure1" type="tns:AddressStructureType1" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="ForeignAddressStructure1" type="tns:ForeignAddressStructureType" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="CustomData" type="tns:CustomDataType" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="Role1" type="tns:RoleType1" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="LandParcelType1">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q12="http://rep.oio.dk/fesd.dk/xml/schemas/2005/10/26/" base="q12:ContactType">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="1" name="GUID" type="xs:string" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="TelephoneStructure1" type="tns:TelephoneStructureType" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="SituationAddressStructure1" type="tns:AddressStructureType1" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="ForeignAddressStructure1" type="tns:ForeignAddressStructureType" />
+          <xs:element xmlns:q13="http://rep.oio.dk/cpr.dk/xml/schemas/core/2005/03/18/" minOccurs="0" maxOccurs="1" ref="q13:MunicipalityCode" />
+          <xs:element xmlns:q14="http://rep.oio.dk/cpr.dk/xml/schemas/core/2005/03/18/" minOccurs="0" maxOccurs="1" ref="q14:MunicipalityName" />
+          <xs:element minOccurs="0" maxOccurs="1" ref="q12:LandParcelMunicipalPartIdentifier" />
+          <xs:element xmlns:q15="http://rep.oio.dk/kms.dk/xml/schemas/2005/03/11/" minOccurs="0" maxOccurs="1" ref="q15:LandParcelIdentifier" />
+          <xs:element xmlns:q16="http://rep.oio.dk/kms.dk/xml/schemas/2005/03/11/" minOccurs="0" maxOccurs="1" ref="q16:CadastralDistrictIdentifier" />
+          <xs:element xmlns:q17="http://rep.oio.dk/kms.dk/xml/schemas/2005/03/11/" minOccurs="0" maxOccurs="1" ref="q17:CadastralDistrictName" />
+          <xs:element minOccurs="0" maxOccurs="1" ref="q12:CadastralDistrictMunicipalIdentifier" />
+          <xs:element minOccurs="0" maxOccurs="1" ref="q12:CadastralDistrictMunicipalName" />
+          <xs:element minOccurs="0" maxOccurs="1" name="CadastralDistrictMunicipalityCode" type="xs:string" />
+          <xs:element minOccurs="0" maxOccurs="1" name="CadastralDistrictMunicipalityName" type="xs:string" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="CustomData" type="tns:CustomDataType" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="Role1" type="tns:RoleType1" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="BuildingType1">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q18="http://rep.oio.dk/fesd.dk/xml/schemas/2005/10/26/" base="q18:ContactType">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="1" name="GUID" type="xs:string" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="TelephoneStructure1" type="tns:TelephoneStructureType" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="SituationAddressStructure1" type="tns:AddressStructureType1" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="ForeignAddressStructure1" type="tns:ForeignAddressStructureType" />
+          <xs:element minOccurs="0" maxOccurs="1" ref="q18:BBRIdentifier" />
+          <xs:element xmlns:q19="http://rep.oio.dk/ebxml/xml/schemas/dkcc/2005/05/09/" minOccurs="0" maxOccurs="1" ref="q19:BuildingIdentifier" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="CustomData" type="tns:CustomDataType" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="Role1" type="tns:RoleType1" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="SearchContactCriterionType">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="1" name="SearchTerm" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="ContactTypeName" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ArrayOfContactSearchResponseType">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="ContactSearchResponse" type="tns:ContactSearchResponseType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ContactSearchResponseType">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="1" name="GUID" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="ContactTypeName" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="ContactTitle" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ContactTypeName" type="xs:string" />
+  <xs:complexType name="CaseFileType1">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q20="http://www.traen.com/2006/08/01/case" base="q20:CaseFileType">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="AdministrativeUnit" type="tns:AdministrativeUnitType" />
+          <xs:element minOccurs="0" maxOccurs="1" name="Classification" type="tns:ClassificationType" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="Party" type="tns:PartyType" />
+          <xs:element minOccurs="0" maxOccurs="1" name="ClosedDate" type="xs:date" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="AdministrativeUnitType">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="1" name="AdministrativeUnitReference" type="xs:nonNegativeInteger" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ClassificationType">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="1" name="Keyword" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Category" type="tns:CategoryType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="CategoryType">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="1" name="Principle" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Literal" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="PartyType">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="1" name="ContactReference" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="ContactVersionReference" type="xs:nonNegativeInteger" />
+      <xs:element xmlns:q21="http://www.traen.com/2006/08/01/case" minOccurs="0" maxOccurs="1" ref="q21:CreatorReference" />
+      <xs:element xmlns:q22="http://www.traen.com/2006/08/01/case" minOccurs="1" maxOccurs="1" ref="q22:CreationDate" />
+      <xs:element minOccurs="0" maxOccurs="1" name="PublicAccessLevelReference" type="xs:nonNegativeInteger" />
+      <xs:element minOccurs="0" maxOccurs="1" name="PartyComment" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="PartyRelationTypeLiteral" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="IsPrimary" type="xs:boolean" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="SearchCaseCriterionType">
+    <xs:sequence>
+      <xs:element xmlns:q23="http://www.traen.com/2006/08/01/case" minOccurs="0" maxOccurs="1" ref="q23:CaseFileTitleText" />
+      <xs:element xmlns:q24="http://www.traen.com/2006/08/01/case" minOccurs="0" maxOccurs="1" ref="q24:CaseFileTypeCode" />
+      <xs:element xmlns:q25="http://www.traen.com/2006/08/01/case" minOccurs="0" maxOccurs="1" ref="q25:CaseFileManagerReference" />
+      <xs:element minOccurs="0" maxOccurs="1" name="AdministrativeUnit" type="tns:AdministrativeUnitType" />
+      <xs:element minOccurs="0" maxOccurs="1" name="PublicAccessLevelReference" type="xs:nonNegativeInteger" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ArrayOfCaseSearchResponseType">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="CaseSearchResponse" type="tns:CaseSearchResponseType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="CaseSearchResponseType">
+    <xs:sequence>
+      <xs:element xmlns:q26="http://www.traen.com/2006/08/01/case" minOccurs="0" maxOccurs="1" ref="q26:CaseFileReference" />
+      <xs:element xmlns:q27="http://www.traen.com/2006/08/01/case" minOccurs="0" maxOccurs="1" ref="q27:CaseFileTitleText" />
+      <xs:element xmlns:q28="http://www.traen.com/2006/08/01/case" minOccurs="0" maxOccurs="1" ref="q28:CaseFileTypeCode" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:simpleType name="ErrorListEnum">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="System_ApplicationException" />
+      <xs:enumeration value="System_ArgumentException" />
+      <xs:enumeration value="System_ArgumentNullException" />
+      <xs:enumeration value="System_ArgumentOutOfRangeException" />
+      <xs:enumeration value="System_ArithmeticException" />
+      <xs:enumeration value="System_Collections_Generic_KeyNotFoundException" />
+      <xs:enumeration value="System_Data_ConstraintException" />
+      <xs:enumeration value="System_Data_DataException" />
+      <xs:enumeration value="System_Data_DuplicateNameException" />
+      <xs:enumeration value="System_Data_EvaluateException" />
+      <xs:enumeration value="System_DivideByZeroException" />
+      <xs:enumeration value="System_FormatException" />
+      <xs:enumeration value="System_IndexOutOfRangeException" />
+      <xs:enumeration value="System_InvalidCastException" />
+      <xs:enumeration value="System_InvalidProgramException" />
+      <xs:enumeration value="System_MemberAccessException" />
+      <xs:enumeration value="System_MethodAccessException" />
+      <xs:enumeration value="System_MissingFieldException" />
+      <xs:enumeration value="System_MissingMemberException" />
+      <xs:enumeration value="System_MissingMethodException" />
+      <xs:enumeration value="System_MulticastNotSupportedException" />
+      <xs:enumeration value="System_NotFiniteNumberException" />
+      <xs:enumeration value="System_NotImplementedException" />
+      <xs:enumeration value="System_NotSupportedException" />
+      <xs:enumeration value="System_NullReferenceException" />
+      <xs:enumeration value="System_OperationCanceledException" />
+      <xs:enumeration value="System_OutOfMemoryException" />
+      <xs:enumeration value="System_OverflowException" />
+      <xs:enumeration value="System_Runtime_Serialization_SerializationException" />
+      <xs:enumeration value="System_Security_Policy_PolicyException" />
+      <xs:enumeration value="System_Security_SecurityException" />
+      <xs:enumeration value="System_StackOverflowException" />
+      <xs:enumeration value="System_TimeoutException" />
+      <xs:enumeration value="System_UnauthorizedAccessException" />
+      <xs:enumeration value="System_Xml_XmlException" />
+      <xs:enumeration value="System_Xml_XPath_XPathException" />
+      <xs:enumeration value="System_Xml_Xsl_XsltException" />
+      <xs:enumeration value="System_Xml_Schema_XmlSchemaException" />
+      <xs:enumeration value="System_Xml_Schema_XmlSchemaValidationException" />
+      <xs:enumeration value="Acadre_CM_Framework_Security_AcadreSecurityException" />
+      <xs:enumeration value="Acadre_CM_Framework_Security_Authentication_AuthenticationException" />
+      <xs:enumeration value="Acadre_CM_Framework_Security_InvalidRolePermissionValueException" />
+      <xs:enumeration value="Acadre_CM_Framework_Security_NoCreatePermissionException" />
+      <xs:enumeration value="Acadre_CM_Framework_Security_NoGeneralPermissionException" />
+      <xs:enumeration value="Acadre_CM_Framework_Security_NoPublishingPermissionException" />
+      <xs:enumeration value="Acadre_CM_Framework_Security_NoReadPermissionException" />
+      <xs:enumeration value="Acadre_CM_Framework_Security_NotAuthorizedToAccessCodeException" />
+      <xs:enumeration value="Acadre_CM_Framework_Security_NotAuthorizedToSaveException" />
+      <xs:enumeration value="Acadre_CM_Framework_Security_SecurityInfoNotFoundException" />
+      <xs:enumeration value="Acadre_CM_Framework_Utility_IntegrationException" />
+      <xs:enumeration value="Acadre_CM_Model_CaseNotFoundException" />
+      <xs:enumeration value="Acadre_CM_Model_CasePolicyException" />
+      <xs:enumeration value="Acadre_CM_Model_Classification_ClassificationException" />
+      <xs:enumeration value="Acadre_CM_Model_Contacts_InvalidIdentityTypeException" />
+      <xs:enumeration value="Acadre_CM_Model_Contacts_InvalidAddressCollectionException" />
+      <xs:enumeration value="Acadre_CM_Model_Contacts_InvalidPhoneCollectionException" />
+      <xs:enumeration value="Acadre_CM_Model_Contacts_InvalidEmailCollectionException" />
+      <xs:enumeration value="Acadre_CM_Model_Contacts_InvalidRelationCollectionException" />
+      <xs:enumeration value="Acadre_CM_Model_Documents_DocumentException" />
+      <xs:enumeration value="Acadre_CM_Model_Documents_DocumentIsCheckedOutException" />
+      <xs:enumeration value="Acadre_CM_Model_Documents_DocumentIsLockedException" />
+      <xs:enumeration value="Acadre_CM_Model_Documents_DocumentIsNotCheckedOutException" />
+      <xs:enumeration value="Acadre_CM_Model_Documents_DocumentIsNotLockedException" />
+      <xs:enumeration value="Acadre_CM_Model_Documents_MissingMainDocumentStatusException" />
+      <xs:enumeration value="Acadre_CM_Model_Documents_MissingMainDocumentTypeException" />
+      <xs:enumeration value="Acadre_CM_Model_Documents_NoActiveDocumentVersionException" />
+      <xs:enumeration value="Acadre_CM_Model_Documents_NoDocumentVersionFoundException" />
+      <xs:enumeration value="Acadre_CM_Model_Memos_MemoException" />
+      <xs:enumeration value="Acadre_CM_Model_Memos_MemoFileIsCheckedOutException" />
+      <xs:enumeration value="Acadre_CM_Model_Memos_MemoFileIsLockedException" />
+      <xs:enumeration value="Acadre_CM_Model_Memos_MemoFileIsNotCheckedOutException" />
+      <xs:enumeration value="Acadre_CM_Model_Memos_MemoFileIsNotLockedException" />
+      <xs:enumeration value="Acadre_CM_Model_MultiCases_MultiCaseNotFoundException" />
+      <xs:enumeration value="Acadre_CM_Model_MultiCases_SomeMultiCasesFoundException" />
+      <xs:enumeration value="Acadre_CM_Framework_Security_CaseClosedException" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:complexType name="MemoType">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="1" name="MemoIdentifier" type="xs:nonNegativeInteger" />
+      <xs:element xmlns:q29="http://www.traen.com/2006/08/01/case" minOccurs="0" maxOccurs="1" ref="q29:CaseFileReference" />
+      <xs:element xmlns:q30="http://www.traen.com/2006/08/01/case" minOccurs="0" maxOccurs="1" ref="q30:AccessCode" />
+      <xs:element minOccurs="0" maxOccurs="1" name="AccessGroupReference" type="xs:nonNegativeInteger" />
+      <xs:element minOccurs="0" maxOccurs="1" name="PublicAccessLevelReference" type="xs:nonNegativeInteger" />
+      <xs:element minOccurs="0" maxOccurs="1" name="MemoTitleText" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="MemoAmount" type="xs:decimal" />
+      <xs:element minOccurs="0" maxOccurs="1" name="MemoFileReference" type="xs:nonNegativeInteger" />
+      <xs:element minOccurs="0" maxOccurs="1" name="FileFormat" type="xs:string" />
+      <xs:element xmlns:q31="http://www.traen.com/2006/08/01/case" minOccurs="0" maxOccurs="1" ref="q31:CreatorReference" />
+      <xs:element xmlns:q32="http://www.traen.com/2006/08/01/case" minOccurs="1" maxOccurs="1" ref="q32:CreationDate" />
+      <xs:element minOccurs="0" maxOccurs="1" name="AuthorizerReference" type="xs:nonNegativeInteger" />
+      <xs:element minOccurs="0" maxOccurs="1" name="MemoTypeReference" type="xs:nonNegativeInteger" />
+      <xs:element minOccurs="0" maxOccurs="1" name="MultiCaseReference" type="xs:nonNegativeInteger" />
+      <xs:element minOccurs="1" maxOccurs="1" name="MemoEventDate" type="xs:date" />
+      <xs:element minOccurs="0" maxOccurs="1" name="MemberSequenceNumber" type="xs:integer" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ArrayOfMemoType">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="MemoList" type="tns:MemoType" />
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>

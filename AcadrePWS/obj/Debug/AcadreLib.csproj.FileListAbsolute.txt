@@ -1,0 +1,7 @@
+D:\olive\Documents\DCR\OpenCaseManager\AcadrePWS\bin\Debug\AcadreLib.dll.config
+D:\olive\Documents\DCR\OpenCaseManager\AcadrePWS\bin\Debug\AcadreLib.dll
+D:\olive\Documents\DCR\OpenCaseManager\AcadrePWS\bin\Debug\AcadreLib.pdb
+D:\olive\Documents\DCR\OpenCaseManager\AcadrePWS\obj\Debug\AcadreLib.csprojAssemblyReference.cache
+D:\olive\Documents\DCR\OpenCaseManager\AcadrePWS\obj\Debug\AcadreLib.csproj.CoreCompileInputs.cache
+D:\olive\Documents\DCR\OpenCaseManager\AcadrePWS\obj\Debug\AcadreLib.dll
+D:\olive\Documents\DCR\OpenCaseManager\AcadrePWS\obj\Debug\AcadreLib.pdb

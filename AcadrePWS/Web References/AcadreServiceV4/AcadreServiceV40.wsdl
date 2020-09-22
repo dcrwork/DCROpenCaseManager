@@ -1,0 +1,515 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://www.traen.com/2007/11/02" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://www.traen.com/2007/11/02" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema targetNamespace="http://www.traen.com/2007/11/02">
+      <s:import schemaLocation="http://esdhtest2/acadre/Acadre.CM.PublicServices/soapAuth/AcadreServiceV4.asmx?schema=schema1" namespace="http://www.traen.com/2007/09/06/schema" />
+      <s:import schemaLocation="http://esdhtest2/acadre/Acadre.CM.PublicServices/soapAuth/AcadreServiceV4.asmx?schema=schema2" namespace="http://rep.oio.dk/fesd.dk/xml/schemas/2005/10/26/" />
+      <s:import schemaLocation="http://esdhtest2/acadre/Acadre.CM.PublicServices/soapAuth/AcadreServiceV4.asmx?schema=schema3" namespace="http://rep.oio.dk/xkom.dk/xml/schemas/2005/05/13/" />
+      <s:import schemaLocation="http://esdhtest2/acadre/Acadre.CM.PublicServices/soapAuth/AcadreServiceV4.asmx?schema=schema4" namespace="http://rep.oio.dk/xkom.dk/xml/schemas/2005/03/15/" />
+      <s:import schemaLocation="http://esdhtest2/acadre/Acadre.CM.PublicServices/soapAuth/AcadreServiceV4.asmx?schema=schema5" namespace="http://rep.oio.dk/cpr.dk/xml/schemas/core/2005/03/18/" />
+      <s:import schemaLocation="http://esdhtest2/acadre/Acadre.CM.PublicServices/soapAuth/AcadreServiceV4.asmx?schema=schema6" namespace="http://rep.oio.dk/ebxml/xml/schemas/dkcc/2003/02/13/" />
+      <s:import schemaLocation="http://esdhtest2/acadre/Acadre.CM.PublicServices/soapAuth/AcadreServiceV4.asmx?schema=schema7" namespace="http://rep.oio.dk/ebxml/xml/schemas/dkcc/2005/03/15/" />
+      <s:import schemaLocation="http://esdhtest2/acadre/Acadre.CM.PublicServices/soapAuth/AcadreServiceV4.asmx?schema=schema8" namespace="http://rep.oio.dk/ebxml/xml/schemas/dkcc/2005/05/13/" />
+      <s:import schemaLocation="http://esdhtest2/acadre/Acadre.CM.PublicServices/soapAuth/AcadreServiceV4.asmx?schema=schema9" namespace="http://www.traen.com/2007/11/01" />
+      <s:import schemaLocation="http://esdhtest2/acadre/Acadre.CM.PublicServices/soapAuth/AcadreServiceV4.asmx?schema=schema10" namespace="http://www.traen.com/2007/04/01" />
+      <s:import schemaLocation="http://esdhtest2/acadre/Acadre.CM.PublicServices/soapAuth/AcadreServiceV4.asmx?schema=schema11" namespace="http://rep.oio.dk/itst.dk/xml/schemas/2005/09/01/" />
+      <s:import schemaLocation="http://esdhtest2/acadre/Acadre.CM.PublicServices/soapAuth/AcadreServiceV4.asmx?schema=schema12" namespace="http://rep.oio.dk/ebxml/xml/schemas/dkcc/2005/09/01/" />
+      <s:import schemaLocation="http://esdhtest2/acadre/Acadre.CM.PublicServices/soapAuth/AcadreServiceV4.asmx?schema=schema13" namespace="http://rep.oio.dk/cpr.dk/xml/schemas/core/2005/10/31/" />
+      <s:import schemaLocation="http://esdhtest2/acadre/Acadre.CM.PublicServices/soapAuth/AcadreServiceV4.asmx?schema=schema14" namespace="http://rep.oio.dk/ebxml/xml/schemas/dkcc/2005/05/19/" />
+      <s:import schemaLocation="http://esdhtest2/acadre/Acadre.CM.PublicServices/soapAuth/AcadreServiceV4.asmx?schema=schema15" namespace="http://rep.oio.dk/cvr.dk/xml/schemas/2005/03/22/" />
+      <s:import schemaLocation="http://esdhtest2/acadre/Acadre.CM.PublicServices/soapAuth/AcadreServiceV4.asmx?schema=schema16" namespace="http://rep.oio.dk/itst.dk/xml/schemas/2005/02/22/" />
+      <s:import schemaLocation="http://esdhtest2/acadre/Acadre.CM.PublicServices/soapAuth/AcadreServiceV4.asmx?schema=schema17" namespace="http://www.traen.com/2010/06/01" />
+      <s:import schemaLocation="http://esdhtest2/acadre/Acadre.CM.PublicServices/soapAuth/AcadreServiceV4.asmx?schema=schema18" namespace="http://rep.oio.dk/kms.dk/xml/schemas/2005/03/11/" />
+      <s:import schemaLocation="http://esdhtest2/acadre/Acadre.CM.PublicServices/soapAuth/AcadreServiceV4.asmx?schema=schema19" namespace="http://rep.oio.dk/ebxml/xml/schemas/dkcc/2005/05/09/" />
+      <s:import schemaLocation="http://esdhtest2/acadre/Acadre.CM.PublicServices/soapAuth/AcadreServiceV4.asmx?schema=schema20" namespace="http://www.traen.com/2006/08/01/case" />
+      <s:import schemaLocation="http://esdhtest2/acadre/Acadre.CM.PublicServices/soapAuth/AcadreServiceV4.asmx?schema=schema21" namespace="http://www.traen.com/2008/08/20" />
+      <s:import schemaLocation="http://esdhtest2/acadre/Acadre.CM.PublicServices/soapAuth/AcadreServiceV4.asmx?schema=schema22" namespace="http://www.traen.com/2007/11/02/schema" />
+      <s:import schemaLocation="http://esdhtest2/acadre/Acadre.CM.PublicServices/soapAuth/AcadreServiceV4.asmx?schema=schema23" namespace="http://www.traen.com/2007/06/01" />
+      <s:import schemaLocation="http://esdhtest2/acadre/Acadre.CM.PublicServices/soapAuth/AcadreServiceV4.asmx?schema=schema24" namespace="http://www.traen.com/2008/01/30" />
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="CreateContactSoapIn">
+    <wsdl:part xmlns:q1="http://www.traen.com/2007/11/01" name="ContactObject" element="q1:ContactObject" />
+  </wsdl:message>
+  <wsdl:message name="CreateContactSoapOut">
+    <wsdl:part xmlns:q2="http://www.traen.com/2007/04/01" name="CreateContactResult" element="q2:GUID" />
+  </wsdl:message>
+  <wsdl:message name="UpdateContactSoapIn">
+    <wsdl:part xmlns:q3="http://www.traen.com/2007/11/02/schema" name="UpdateContactRequest" element="q3:UpdateContactRequest" />
+  </wsdl:message>
+  <wsdl:message name="UpdateContactSoapOut">
+    <wsdl:part xmlns:q4="http://www.traen.com/2007/04/01" name="UpdateContactResult" element="q4:GUID" />
+  </wsdl:message>
+  <wsdl:message name="GetContactSoapIn">
+    <wsdl:part xmlns:q5="http://www.traen.com/2007/04/01" name="GUID" element="q5:GUID" />
+  </wsdl:message>
+  <wsdl:message name="GetContactSoapOut">
+    <wsdl:part xmlns:q6="http://www.traen.com/2007/11/01" name="GetContactResult" element="q6:ContactObject" />
+  </wsdl:message>
+  <wsdl:message name="SearchContactsSoapIn">
+    <wsdl:part xmlns:q7="http://www.traen.com/2007/11/02/schema" name="SearchContactCriterion" element="q7:SearchContactCriterion" />
+  </wsdl:message>
+  <wsdl:message name="SearchContactsSoapOut">
+    <wsdl:part xmlns:q8="http://www.traen.com/2007/11/02/schema" name="SearchContactsResult" element="q8:ArrayOfContacts" />
+  </wsdl:message>
+  <wsdl:message name="CreatePersonSoapIn">
+    <wsdl:part xmlns:q9="http://www.traen.com/2007/11/02/schema" name="Person" element="q9:Person" />
+  </wsdl:message>
+  <wsdl:message name="CreatePersonSoapOut">
+    <wsdl:part xmlns:q10="http://www.traen.com/2007/04/01" name="CreatePersonResult" element="q10:GUID" />
+  </wsdl:message>
+  <wsdl:message name="CreateOrganizationSoapIn">
+    <wsdl:part xmlns:q11="http://www.traen.com/2007/11/02/schema" name="Organization" element="q11:Organization" />
+  </wsdl:message>
+  <wsdl:message name="CreateOrganizationSoapOut">
+    <wsdl:part xmlns:q12="http://www.traen.com/2007/04/01" name="CreateOrganizationResult" element="q12:GUID" />
+  </wsdl:message>
+  <wsdl:message name="CreatePropertySoapIn">
+    <wsdl:part xmlns:q13="http://www.traen.com/2007/11/02/schema" name="Property" element="q13:Property" />
+  </wsdl:message>
+  <wsdl:message name="CreatePropertySoapOut">
+    <wsdl:part xmlns:q14="http://www.traen.com/2007/04/01" name="CreatePropertyResult" element="q14:GUID" />
+  </wsdl:message>
+  <wsdl:message name="CreateGroupSoapIn">
+    <wsdl:part xmlns:q15="http://www.traen.com/2007/11/02/schema" name="Group" element="q15:Group" />
+  </wsdl:message>
+  <wsdl:message name="CreateGroupSoapOut">
+    <wsdl:part xmlns:q16="http://www.traen.com/2007/04/01" name="CreateGroupResult" element="q16:GUID" />
+  </wsdl:message>
+  <wsdl:message name="UpdatePersonSoapIn">
+    <wsdl:part xmlns:q17="http://www.traen.com/2007/11/02/schema" name="UpdatePersonRequest" element="q17:UpdatePersonRequest" />
+  </wsdl:message>
+  <wsdl:message name="UpdatePersonSoapOut">
+    <wsdl:part xmlns:q18="http://www.traen.com/2007/04/01" name="UpdatePersonResult" element="q18:GUID" />
+  </wsdl:message>
+  <wsdl:message name="UpdateOrganizationSoapIn">
+    <wsdl:part xmlns:q19="http://www.traen.com/2007/11/02/schema" name="UpdateOrganizationRequest" element="q19:UpdateOrganizationRequest" />
+  </wsdl:message>
+  <wsdl:message name="UpdateOrganizationSoapOut">
+    <wsdl:part xmlns:q20="http://www.traen.com/2007/04/01" name="UpdateOrganizationResult" element="q20:GUID" />
+  </wsdl:message>
+  <wsdl:message name="UpdatePropertySoapIn">
+    <wsdl:part xmlns:q21="http://www.traen.com/2007/11/02/schema" name="UpdatePropertyRequest" element="q21:UpdatePropertyRequest" />
+  </wsdl:message>
+  <wsdl:message name="UpdatePropertySoapOut">
+    <wsdl:part xmlns:q22="http://www.traen.com/2007/04/01" name="UpdatePropertyResult" element="q22:GUID" />
+  </wsdl:message>
+  <wsdl:message name="UpdateGroupSoapIn">
+    <wsdl:part xmlns:q23="http://www.traen.com/2007/11/02/schema" name="UpdateGroupRequest" element="q23:UpdateGroupRequest" />
+  </wsdl:message>
+  <wsdl:message name="UpdateGroupSoapOut">
+    <wsdl:part xmlns:q24="http://www.traen.com/2007/04/01" name="UpdateGroupResult" element="q24:GUID" />
+  </wsdl:message>
+  <wsdl:message name="GetPersonSoapIn">
+    <wsdl:part xmlns:q25="http://www.traen.com/2007/11/02/schema" name="PersonId" element="q25:PersonId" />
+  </wsdl:message>
+  <wsdl:message name="GetPersonSoapOut">
+    <wsdl:part xmlns:q26="http://www.traen.com/2007/11/02/schema" name="GetPersonResult" element="q26:Person" />
+  </wsdl:message>
+  <wsdl:message name="GetOrganizationSoapIn">
+    <wsdl:part xmlns:q27="http://www.traen.com/2007/11/02/schema" name="OrganizationId" element="q27:OrganizationId" />
+  </wsdl:message>
+  <wsdl:message name="GetOrganizationSoapOut">
+    <wsdl:part xmlns:q28="http://www.traen.com/2007/11/02/schema" name="GetOrganizationResult" element="q28:Organization" />
+  </wsdl:message>
+  <wsdl:message name="GetPropertySoapIn">
+    <wsdl:part xmlns:q29="http://www.traen.com/2007/11/02/schema" name="PropertyId" element="q29:PropertyId" />
+  </wsdl:message>
+  <wsdl:message name="GetPropertySoapOut">
+    <wsdl:part xmlns:q30="http://www.traen.com/2007/11/02/schema" name="GetPropertyResult" element="q30:Property" />
+  </wsdl:message>
+  <wsdl:message name="GetGroupSoapIn">
+    <wsdl:part xmlns:q31="http://www.traen.com/2007/11/02/schema" name="GroupId" element="q31:GroupId" />
+  </wsdl:message>
+  <wsdl:message name="GetGroupSoapOut">
+    <wsdl:part xmlns:q32="http://www.traen.com/2007/11/02/schema" name="GetGroupResult" element="q32:Group" />
+  </wsdl:message>
+  <wsdl:message name="GetContactByPublicIdSoapIn">
+    <wsdl:part xmlns:q33="http://www.traen.com/2007/11/02/schema" name="SearchContactByPublicIdRequest" element="q33:SearchContactByPublicIdRequest" />
+  </wsdl:message>
+  <wsdl:message name="GetContactByPublicIdSoapOut">
+    <wsdl:part xmlns:q34="http://www.traen.com/2007/11/01" name="GetContactByPublicIdResult" element="q34:ContactObject" />
+  </wsdl:message>
+  <wsdl:portType name="ContactService5">
+    <wsdl:operation name="CreateContact">
+      <wsdl:input message="tns:CreateContactSoapIn" />
+      <wsdl:output message="tns:CreateContactSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateContact">
+      <wsdl:input message="tns:UpdateContactSoapIn" />
+      <wsdl:output message="tns:UpdateContactSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetContact">
+      <wsdl:input message="tns:GetContactSoapIn" />
+      <wsdl:output message="tns:GetContactSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SearchContacts">
+      <wsdl:input message="tns:SearchContactsSoapIn" />
+      <wsdl:output message="tns:SearchContactsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="CreatePerson">
+      <wsdl:input message="tns:CreatePersonSoapIn" />
+      <wsdl:output message="tns:CreatePersonSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="CreateOrganization">
+      <wsdl:input message="tns:CreateOrganizationSoapIn" />
+      <wsdl:output message="tns:CreateOrganizationSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="CreateProperty">
+      <wsdl:input message="tns:CreatePropertySoapIn" />
+      <wsdl:output message="tns:CreatePropertySoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="CreateGroup">
+      <wsdl:input message="tns:CreateGroupSoapIn" />
+      <wsdl:output message="tns:CreateGroupSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdatePerson">
+      <wsdl:input message="tns:UpdatePersonSoapIn" />
+      <wsdl:output message="tns:UpdatePersonSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateOrganization">
+      <wsdl:input message="tns:UpdateOrganizationSoapIn" />
+      <wsdl:output message="tns:UpdateOrganizationSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateProperty">
+      <wsdl:input message="tns:UpdatePropertySoapIn" />
+      <wsdl:output message="tns:UpdatePropertySoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateGroup">
+      <wsdl:input message="tns:UpdateGroupSoapIn" />
+      <wsdl:output message="tns:UpdateGroupSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetPerson">
+      <wsdl:input message="tns:GetPersonSoapIn" />
+      <wsdl:output message="tns:GetPersonSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetOrganization">
+      <wsdl:input message="tns:GetOrganizationSoapIn" />
+      <wsdl:output message="tns:GetOrganizationSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetProperty">
+      <wsdl:input message="tns:GetPropertySoapIn" />
+      <wsdl:output message="tns:GetPropertySoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetGroup">
+      <wsdl:input message="tns:GetGroupSoapIn" />
+      <wsdl:output message="tns:GetGroupSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetContactByPublicId">
+      <wsdl:input message="tns:GetContactByPublicIdSoapIn" />
+      <wsdl:output message="tns:GetContactByPublicIdSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="ContactService5" type="tns:ContactService5">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="CreateContact">
+      <soap:operation soapAction="http://www.traen.com/2007/11/01/CreateContact" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateContact">
+      <soap:operation soapAction="http://www.traen.com/2007/11/01/UpdateContact" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetContact">
+      <soap:operation soapAction="http://www.traen.com/2007/11/01/GetContact" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SearchContacts">
+      <soap:operation soapAction="http://www.traen.com/2007/11/01/SearchContacts" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CreatePerson">
+      <soap:operation soapAction="http://www.traen.com/2007/11/01/CreatePerson" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CreateOrganization">
+      <soap:operation soapAction="http://www.traen.com/2007/11/01/CreateOrganization" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CreateProperty">
+      <soap:operation soapAction="http://www.traen.com/2007/11/01/CreateProperty" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CreateGroup">
+      <soap:operation soapAction="http://www.traen.com/2007/11/01/CreateGroup" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdatePerson">
+      <soap:operation soapAction="http://www.traen.com/2007/11/01/UpdatePerson" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateOrganization">
+      <soap:operation soapAction="http://www.traen.com/2007/11/01/UpdateOrganization" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateProperty">
+      <soap:operation soapAction="http://www.traen.com/2007/11/01/UpdateProperty" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateGroup">
+      <soap:operation soapAction="http://www.traen.com/2007/11/01/UpdateGroup" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetPerson">
+      <soap:operation soapAction="http://www.traen.com/2007/11/01/GetPerson" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetOrganization">
+      <soap:operation soapAction="http://www.traen.com/2007/11/01/GetOrganization" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetProperty">
+      <soap:operation soapAction="http://www.traen.com/2007/11/01/GetProperty" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetGroup">
+      <soap:operation soapAction="http://www.traen.com/2007/11/01/GetGroup" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetContactByPublicId">
+      <soap:operation soapAction="http://www.traen.com/2007/11/01/GetContactByPublicId" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="ContactService51" type="tns:ContactService5">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="CreateContact">
+      <soap12:operation soapAction="http://www.traen.com/2007/11/01/CreateContact" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateContact">
+      <soap12:operation soapAction="http://www.traen.com/2007/11/01/UpdateContact" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetContact">
+      <soap12:operation soapAction="http://www.traen.com/2007/11/01/GetContact" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SearchContacts">
+      <soap12:operation soapAction="http://www.traen.com/2007/11/01/SearchContacts" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CreatePerson">
+      <soap12:operation soapAction="http://www.traen.com/2007/11/01/CreatePerson" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CreateOrganization">
+      <soap12:operation soapAction="http://www.traen.com/2007/11/01/CreateOrganization" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CreateProperty">
+      <soap12:operation soapAction="http://www.traen.com/2007/11/01/CreateProperty" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CreateGroup">
+      <soap12:operation soapAction="http://www.traen.com/2007/11/01/CreateGroup" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdatePerson">
+      <soap12:operation soapAction="http://www.traen.com/2007/11/01/UpdatePerson" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateOrganization">
+      <soap12:operation soapAction="http://www.traen.com/2007/11/01/UpdateOrganization" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateProperty">
+      <soap12:operation soapAction="http://www.traen.com/2007/11/01/UpdateProperty" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateGroup">
+      <soap12:operation soapAction="http://www.traen.com/2007/11/01/UpdateGroup" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetPerson">
+      <soap12:operation soapAction="http://www.traen.com/2007/11/01/GetPerson" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetOrganization">
+      <soap12:operation soapAction="http://www.traen.com/2007/11/01/GetOrganization" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetProperty">
+      <soap12:operation soapAction="http://www.traen.com/2007/11/01/GetProperty" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetGroup">
+      <soap12:operation soapAction="http://www.traen.com/2007/11/01/GetGroup" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetContactByPublicId">
+      <soap12:operation soapAction="http://www.traen.com/2007/11/01/GetContactByPublicId" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+</wsdl:definitions>
