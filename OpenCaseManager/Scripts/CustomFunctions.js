@@ -103,6 +103,33 @@
         }
     }
 
+    function NewDocument(template, strDefSave) {
+        if (typeof (strDefSave) == 'undefined') strDefSave = '';
+        var sMessage = '';
+        try {
+            //template = 'G:\\__FAMILIE_INSTITUTIONER\\Skabeloner OCM\\Template.dotx';
+            template = template.replace(/%20/g, ' ');
+            template = template.replace(/\\\\/g, '/');
+            template = template.replace(/\\/g, '/');
+            var urlToLaunch = 'ms-word:nft|u|file:///' + template;
+            //alert(urlToLaunch);
+            console.log('NewDocument(...) - ' + urlToLaunch);
+            var i;
+            sMessage = 'navigator.msLaunchUri';
+            if (navigator.msLaunchUri) {
+                navigator.msLaunchUri(urlToLaunch);
+            } else {
+                var win = (window.parent) ? window.parent : window;
+                sMessage = 'win.location.assign';
+                win.location.assign(urlToLaunch);
+            }
+            Custom.resolvePromise();
+        }
+        catch (e) {
+            alert('NewDocument("' + template + '") exception - ' + sMessage + ' - ' + e.message);
+        }
+    }
+
     function resolvePromise() {
         return Custom.resolve();
     }
@@ -164,10 +191,17 @@
         }
     }
 
+    function OpenURL(link) {
+        window.open(link);
+        Custom.resolvePromise();
+    }
+
     var custom = function () {
         this.NewAppointment = NewAppointment;
         this.UploadDocument = UploadDocument;
+        this.NewDocument = NewDocument;
         this.eventData = data;
+        this.OpenURL = OpenURL;
         this.resolvePromise = resolvePromise;
         this.resolve = resolve;
     };

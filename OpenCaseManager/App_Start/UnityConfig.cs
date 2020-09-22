@@ -5,6 +5,8 @@ using System;
 using Unity;
 using Unity.Injection;
 using OpenCaseManager.Models;
+using OpenCaseManager.Commons;
+using OpenCaseManager.Custom.Syddjurs;
 
 namespace OpenCaseManager
 {
@@ -51,8 +53,13 @@ namespace OpenCaseManager
             container.RegisterType<IService, Service>();
             container.RegisterType<IDCRService, DCRService>();
             container.RegisterType<IActiveRepositoryService, ActiveRepositoryService>();
+            container.RegisterType<IProcessEngineService, ProcessEngineService>();
             container.RegisterType<IDataModelManager, DataModelManager>();
-            container.RegisterType<IDocumnentManager, DocumentManager>();
+            container.RegisterType<IDocumentManager, DocumentManager>();
+            container.RegisterType<IAutomaticEvents, AutomaticEvents>();
+            container.RegisterType<IMailRepository, MailRepository>();
+            container.RegisterType<ISyddjursWork, SyddjursWork>();
+            container.RegisterType<ICommons, Commons.Commons>();
         }
     }
 }

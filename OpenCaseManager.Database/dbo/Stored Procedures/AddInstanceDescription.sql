@@ -14,20 +14,39 @@ BEGIN
 	-- Insert statements for procedure here
 	SET NOCOUNT ON;
 	
-	DECLARE @description VARCHAR(MAX)
-	
-	SELECT @description = r.value('(graphDetails)[1]', 'varchar(max)')
-	FROM   Process AS p
-	       CROSS APPLY DCRXML.nodes('//specification/resources/custom') AS x(r)
-	WHERE  p.GraphId = @GraphId
-	
-	SELECT @description = REPLACE(
-	           REPLACE(@description, CHAR(13), '</br>'),
-	           CHAR(10),
-	           '</br>'
-	       )
-	
-	UPDATE Instance
-	SET    [Description]     = @description
-	WHERE  Id                = @InstanceId
+	BEGIN TRY
+		DECLARE @description VARCHAR(MAX)
+		
+		SELECT @description = r.value('(graphDetails)[1]', 'varchar(max)')
+		FROM   Process AS p
+		       CROSS APPLY DCRXML.nodes('//specification/resources/custom') AS x(r)
+		WHERE  p.GraphId = @GraphId
+		
+		SELECT @description = REPLACE(
+		           REPLACE(@description, CHAR(13), '</br>'),
+		           CHAR(10),
+		           '</br>'
+		       )
+		
+		UPDATE Instance
+		SET    [Description]     = @description
+		WHERE  Id                = @InstanceId
+	END TRY
+	BEGIN CATCH
+		INSERT INTO LOG
+		  (
+		    Logged,
+		    [LEVEL],
+		    [MESSAGE],
+		    Exception
+		  )
+		VALUES
+		  (
+		    GETDATE(),
+		    1,
+		    'AddInstanceDescription(' + CAST(@GraphId AS NVARCHAR) + ',' + CAST(@InstanceId AS NVARCHAR) 
+		    + ')',
+		    ERROR_MESSAGE()
+		  )
+	END CATCH
 END

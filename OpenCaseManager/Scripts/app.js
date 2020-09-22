@@ -1,8 +1,34 @@
-﻿var Responsible = null;
+﻿var debugMode = true;
+var Responsible = null;
 
 (function (window) {
 
-    function getProcessAsync(filters){
+    function getAllProcesses() {
+        var query = {
+            "type": "SELECT",
+            "entity": "Processes",
+            "resultSet": ["Id", "ProcessId", "GraphId", "Title", "OnFrontPage", "MajorVersionTitle", "MajorVerisonDate", "ProcessOwner", "InstanceId", "ProcessApprovalState"],
+            "order": [{ "column": "OnFrontPage", "descending": true }, { "column": "title", "descending": false }]
+        }
+
+        var result = API.service('records', query)
+            .done(function (response) {
+                renderProcesses(response);
+            })
+            .fail(function (e) {
+                showExceptionErrorMessage(e);
+            });
+    }
+
+    function getProcessAsync(filters) {
+        if (filters)
+            filters.push({
+                "column": "Status",
+                "operator": "equal",
+                "value": true,
+                "valueType": "boolean",
+                "logicalOperator": "and"
+            });
         var query = {
             "type": "SELECT",
             "entity": "Process",
@@ -13,10 +39,17 @@
                     "value": true,
                     "valueType": "boolean",
                     "logicalOperator": "and"
+                },
+                {
+                    "column": "OnFrontPage",
+                    "operator": "equal",
+                    "value": true,
+                    "valueType": "boolean",
+                    "logicalOperator": "and"
                 }
             ],
             "resultSet": ["Id", "GraphId", "Title", "OnFrontPage"],
-            "order": [{ "column": "title", "descending": false }]
+            "order": [{ "column": "OnFrontPage", "descending": true }, { "column": "title", "descending": false }]
         }
 
         var result = API.service('records', query)
@@ -34,36 +67,73 @@
         var filters;
 
         if (showOnFrontPage) {
-            filters = 
-                {
+            filters =
+                [{
                     "column": "OnFrontPage",
                     "operator": "equal",
                     "value": true,
                     "valueType": "boolean",
-                    "logicalOperator": "none"
-                }
+                    "logicalOperator": "and"
+                }]
         }
-
+        if ((window.location.pathname.toLowerCase() === "/process/processes")) {
+            filters =
+                [{
+                    "column": "Status",
+                    "operator": "equal",
+                    "value": true,
+                    "valueType": "boolean",
+                    "logicalOperator": "and"
+                }]
+        }
         getProcessAsync(filters).done(function (response) {
-                if (getRole) {
-                    renderData("instanceProcesses", response, getProcessHtml)
-                    var graphId = $('#instanceProcesses').find(":selected").val();
-                    getRoles(graphId);
-                }
-                else {
-                    renderData("processes", response, getProcessesHtml)
-                    registerEditProcessEvent();
-                    registerCancelProcessEvent();
-                    registerUpdateProcessEvent();
-                    registerDeleteProcessEvent();
-                    registerRefreshProcessEvent();
-                    registerGotoDCRGraphsEvent();
-                    registerCheckOnFrontPage();
-                }
-            })
-            .fail(function (e) {
-                showExceptionErrorMessage(e);
-            });
+            if (getRole) {
+                renderData("instanceProcesses", response, getProcessHtml)
+                var graphId = $('#instanceProcesses').find(":selected").val();
+                getRoles(graphId);
+            }
+            else {
+                renderProcesses(response);
+            }
+        }).fail(function (e) {
+            showExceptionErrorMessage(e);
+        });
+    }
+
+    function renderProcesses(response) {
+        renderData("processes", response, getProcessesHtml);
+        registerEditProcessEvent();
+        registerCancelProcessEvent();
+        registerUpdateProcessEvent();
+        registerDeleteProcessEvent();
+        registerRefreshProcessEvent();
+        registerGotoDCRGraphsEvent();
+        registerCheckOnFrontPage();
+        exportDCRXMLLog();
+    }
+
+    async function hideUpdateMajorRevision(graph) {
+        var revisionUpdate = await getMajorRevisions(graph);
+        for (var i = 0; i < revisionUpdate.length; i++) {
+            if (revisionUpdate[i].Error !== '') {
+                $('i[id="error_' + revisionUpdate[i].GraphId + '"]').removeClass('hide');
+                $('i[id="error_' + revisionUpdate[i].GraphId + '"]').attr('title', revisionUpdate[i].Error);
+            }
+            else {
+                $('button[name="updateMajorRevision"][graphId="' + revisionUpdate[i].GraphId + '"]').show();
+                $('button[name="updateMajorRevision"][graphId="' + revisionUpdate[i].GraphId + '"]').attr('revisionTitle', revisionUpdate[i].MajorRevisionTitle);
+            }
+        }
+    }
+
+    async function getMajorRevisions(graph) {
+        try {
+            var result = await API.service('services/GetProcessMajorRevisions', graph);
+            return result;
+        }
+        catch (e) {
+            showErrorMessage(e.responseJSON.ExceptionMessage);
+        }
     }
 
     function getMyInstances() {
@@ -97,13 +167,15 @@
             });
     }
 
-    function addInstance(title, graphId, userRoles, childId) {
+    function addInstance(title, graphId, userRoles, IsChild, childId, caseNumberIdentifier, caseId) {
 
         var data = {
             title: title,
             graphId: graphId,
             userRoles: userRoles,
-            childId: childId
+            childId: childId,
+            caseNumberIdentifier: caseNumberIdentifier,
+            caseId: caseId
         }
 
         API.service('records/addInstance', data)
@@ -113,9 +185,17 @@
 
                 API.service('services/InitializeGraph', { instanceId: instanceId, graphId: graphId })
                     .done(function (response) {
-                        window.location.replace(`/ChildInstance?id=${instanceId}`);
+
+                        getMyInstances();
+                        getTasks();
+                        if (!IsChild) {
+                            window.location.replace('/Instance?id=' + instanceId);
+                        }
+                        else {
+                            window.location.replace('/ChildInstance?id=' + instanceId + '&ChildId=' + childId);
+                        }
                     })
-                    .fail(function (e) { 
+                    .fail(function (e) {
                         showExceptionErrorMessage(e);
                     });
 
@@ -136,73 +216,188 @@
             .done(function (response) {
                 var result = JSON.parse(response);
                 var childId = result;
-                window.location.replace(`/Child?id=${childId}`);
+                window.location.replace('/Child?id=' + childId);
             })
             .fail(function (e) {
                 showExceptionErrorMessage(e);
             });
     }
 
-    function executeEvent(data, isFrontPage, uiEvent, isMUS) {
+    async function executeEvent(data, isFrontPage, uiEvent, isMUS, type) {
         if (uiEvent != null) {
-            var promise = new Promise(function (resolve, reject) {
-                API.service('records/ReplaceEventTypeParamsKeys', { instanceId: data.instanceId, eventTypeValue: uiEvent })
+            var globalEvents = [];
+            if (data.eventId.toLocaleLowerCase().startsWith("global")) {
+                globalEvents = await canExecuteGlobalEvents(data.eventId, data.instanceId);
+            }
+            else {
+                globalEvents = ["Not Global Event"];
+            }
+
+            if (globalEvents.length > 0) {
+                var promise = new Promise(function (resolve, reject) {
+                    API.service('records/ReplaceEventTypeParamsKeys', { instanceId: data.instanceId, eventTypeValue: uiEvent })
+                        .done(function (response) {
+                            getCustomCode(data, response, resolve);
+                        })
+                        .fail(function (e) {
+                            showExceptionErrorMessage(e);
+                        });
+                });
+                promise.then(function () {
+                    executeEvent(data, isFrontPage, null, isMUS);
+                }, function (e) {
+                    showExceptionErrorMessage(e);
+                });
+            }
+        }
+        else {
+            if (data.eventId.toLocaleLowerCase().startsWith("global")) {
+                globalEvents = await canExecuteGlobalEvents(data.eventId, data.instanceId);
+                if (globalEvents.length > 0) {
+                    await executeGlobalEvents(data.eventId, data.instanceId, globalEvents);
+                }
+            } else {
+                API.service('services/ExecuteEvent', { taskId: data.taskId, instanceId: data.instanceId, graphId: data.graphId, simulationId: data.simulationId, eventId: data.eventId, title: data.title, trueEventId: data.trueEventId })
                     .done(function (response) {
-                        getCustomCode(data, response, resolve);
+                        if (type === "tasksWNoteFull") {
+                            closeWindowWithoutAsking = null;
+                            window.close();
+                        }
+                        if (isMUS == null) {
+                            if (isFrontPage) {
+                                getMyInstances();
+                                getTasks();
+                            }
+                            else {
+                                getTasks(data.instanceId);
+                                getInstanceDetails(data.instanceId);
+                                getJournalHistoryForInstance(data.instanceId);
+                                getPhases(data.instanceId);
+                            }
+                        }
+                        else {
+                            MUS.musDetails(MUS.showMUS);
+                        }
                     })
                     .fail(function (e) {
                         showExceptionErrorMessage(e);
+                        if (isMUS == null) {
+                            if (isFrontPage) {
+                                getMyInstances();
+                                getTasks();
+                            }
+                            else {
+                                getTasks(data.instanceId);
+                                getInstanceDetails(data.instanceId);
+                                getJournalHistoryForInstance(data.instanceId);
+                                getPhases(data.instanceId);
+                            }
+                        } else {
+                            MUS.musDetails(MUS.showMUS);
+                        }
                     });
-            });
+            }
+        }
+    }
 
-            promise.then(function () {
-                executeEvent(data, isFrontPage, null, isMUS);
-            }, function (e) {
-                showExceptionErrorMessage(e);
-            });
+    async function canExecuteGlobalEvents(eventId, instanceId) {
+        var childId = 0;
+        if ((window.location.pathname.toLowerCase() === "/child")) {
+            childId = getParameterByName("id", window.location.href);
         }
         else {
-            API.service('services/ExecuteEvent', { taskId: data.taskId, instanceId: data.instanceId, graphId: data.graphId, simulationId: data.simulationId, eventId: data.eventId, title: data.title, trueEventId: data.trueEventId })
-                .done(function (response) {
-                    if (isMUS == null) {
-                        if (isFrontPage) {
-                            getMyInstances();
-                            getTasks();
-                        }
-                        else {
-                            getTasks(data.instanceId);
-                            getInstanceDetails(data.instanceId);
-                            getJournalHistoryForInstance(data.instanceId);
-                        }
-                    }
-                    else {
-                        MUS.musDetails(MUS.showMUS);
-                    }
-                })
-                .fail(function (e) {
-                    showExceptionErrorMessage(e);
-                    if (isMUS == null) {
-                        if (isFrontPage) {
-                            getMyInstances();
-                            getTasks();
-                        }
-                        else {
-                            getTasks(data.instanceId);
-                            getInstanceDetails(data.instanceId);
-                            getJournalHistoryForInstance(data.instanceId);
-                        }
-                    } else {
-                        MUS.musDetails(MUS.showMUS);
-                    }
-                });
+            childId = App.getParameterByName("ChildId", window.location.href);
+            if (childId === null) {
+                var Id = getParameterByName("id", window.location.href);
+                var query = {
+                    "type": "SELECT",
+                    "entity": "[InstanceExtension]",
+                    "resultSet": ["InstanceId", "ChildId"],
+                    "filters": new Array(),
+                    "order": []
+                };
+
+                var whereInstanceIdMatchesFilter = {
+                    "column": "Instanceid",
+                    "operator": "equal",
+                    "value": Id,
+                    "valueType": "int",
+                    "logicalOperator": "and"
+                };
+                query.filters.push(whereInstanceIdMatchesFilter);
+                var result2 = await window.API.service('records', query);
+                var instance2 = JSON.parse(result2);
+                childId = instance2[0].ChildId;
+            }
         }
+
+        var globalEventData = {
+            "eventId": eventId,
+            "childId": childId
+        };
+
+        var globalEventsJSON = await API.service('services/CanExecuteGlobalEvent', globalEventData);
+        var globalEvents = JSON.parse(globalEventsJSON);
+        if (globalEvents.length > 0) {
+            if (globalEvents[0].Message === '') {
+                return globalEvents;
+            }
+            else {
+                App.showErrorMessage(globalEvents[0].Message);
+                return [];
+            }
+        }
+        return [];
+    }
+
+    async function executeGlobalEvents(eventId, instanceId, globalEvents) {
+        var childId = 0;
+        if ((window.location.pathname.toLowerCase() === "/child")) {
+            childId = getParameterByName("id", window.location.href);
+        }
+        else {
+            childId = App.getParameterByName("ChildId", window.location.href);
+            if (childId === null) {
+                var Id = getParameterByName("id", window.location.href);
+                var query = {
+                    "type": "SELECT",
+                    "entity": "[InstanceExtension]",
+                    "resultSet": ["InstanceId", "ChildId"],
+                    "filters": new Array(),
+                    "order": []
+                }
+
+                var whereInstanceIdMatchesFilter = {
+                    "column": "Instanceid",
+                    "operator": "equal",
+                    "value": Id,
+                    "valueType": "int",
+                    "logicalOperator": "and"
+                };
+                query.filters.push(whereInstanceIdMatchesFilter);
+                var result2 = await window.API.service('records', query);
+                var instance2 = JSON.parse(result2);
+                childId = instance2[0].ChildId;
+            }
+        }
+
+        var globalEventData = {
+            "eventId": eventId,
+            "childId": childId
+        };
+
+        globalEventsJSON = await API.service('services/ExecuteGlobalEvents', globalEvents);
+        getTasks(instanceId);
+        getInstanceDetails(instanceId);
+        getJournalHistoryForInstance(instanceId);
+        getPhases(instanceId);
     }
 
     function getInstanceDetails(id) {
         var query = {
             "type": "SELECT",
-            "entity": "Instance",
-            "resultSet": ["Title", "CaseNoForeign", "CaseLink", "CurrentPhaseNo", "Description", "NextDeadline", "IsOpen"],
+            "entity": "AllInstances",
+            "resultSet": ["Id", "Title", "CaseNoForeign", "CaseLink", "CurrentPhaseNo", "Description", "GraphId", "NextDeadline", "IsOpen", "Responsible"],
             "filters": [
                 {
                     "column": "Id",
@@ -215,7 +410,40 @@
         }
         API.service('records', query)
             .done(function (response) {
-                renderData("instanceDetails", response, getInstanceHtml)
+                renderData("instanceDetails", response, getInstanceHtml);
+
+                var result = JSON.parse(response);
+                if (typeof (Instruction) == 'undefined') Instruction = null;
+                if (Instruction != null)
+                    Instruction.setInstanceIsAccepting(result[0].IsOpen);
+                //set workflow title
+                if (result.length > 0)
+                    if (result[0].GraphId != null) {
+                        query = {
+                            "type": "SELECT",
+                            "entity": "Process",
+                            "resultSet": ["Title"],
+                            "filters": [
+                                {
+                                    "column": "GraphId",
+                                    "operator": "equal",
+                                    "value": result[0].GraphId,
+                                    "valueType": "int"
+                                }
+                            ],
+                            "order": [{ "column": "Title", "descending": true }]
+                        };
+
+                        API.service('records', query)
+                            .done(function (response) {
+                                var result = JSON.parse(response)
+                                if (Instruction != null)
+                                    Instruction.setTitleText(result[0].Title);
+                            })
+                            .fail(function (e) {
+                                App.showExceptionErrorMessage(e);
+                            });
+                    }
             })
             .fail(function (e) {
                 showExceptionErrorMessage(e);
@@ -240,12 +468,14 @@
             });
     }
 
-    function getTasks(instanceId) {
+    function getTasks(instanceId, showOnlyMyTasks) {
         // get all tasks of all my instance
-        var entityName = "InstanceTasks('$(loggedInUserId)')";
+        var entityName = "dbo.InstanceTasks('$(loggedInUserId)')";
         var onlyMyTasks = false;
         var onlyTasksFromOpenInstances = false;
         var showCaseInfo = false;
+        if (showOnlyMyTasks)
+            onlyMyTasks = showOnlyMyTasks;
 
         if (instanceId == null) {
             onlyMyTasks = true;
@@ -254,11 +484,11 @@
             showCaseInfo = true;
         }
         else {
-            if (window.localStorage.getItem('taskStatusDD') == "1") {
-                entityName = "InstanceTasksAllEnabled('$(loggedInUserId)')";
-            }
             if (window.localStorage.getItem('responsibleDD') == "1") {
                 onlyMyTasks = true;
+            }
+            else if (window.localStorage.getItem('responsibleDD') == "0") {
+                onlyMyTasks = false;
             }
         }
 
@@ -266,12 +496,13 @@
             Task.getTasks(entityName, onlyMyTasks, onlyTasksFromOpenInstances, instanceId, resolve, reject);
         });
         promise.then(function (response) {
-            Task.tasksHtml('tasks', response, showCaseInfo);
+            Task.tasksHtml('tasks', response, showCaseInfo, onlyMyTasks);
             if (instanceId == 0) {
                 Task.hideTableColumns(['responsible']);
             }
             else {
-                Task.showSingleInstanceFilter();
+                if (window.location.href.toLocaleLowerCase().indexOf("MyActivities".toLocaleLowerCase()) > 0)
+                    Task.showSingleInstanceFilter();
             }
         }, function (e) {
             showExceptionErrorMessage(e);
@@ -312,20 +543,6 @@
                     showExceptionErrorMessage(e);
                 });
         }
-    }
-
-    function getTranslations(locale) {
-        var getUrl = window.location;
-        var baseUrl = getUrl.protocol + "//" + getUrl.host + "/";
-        var fileUrl = baseUrl + 'scripts/translations/' + locale + '.js';
-
-        API.getJSFile(fileUrl)
-            .done(function (response) {
-                setTexts();
-            })
-            .fail(function (e) {
-                showExceptionErrorMessage(e);
-            });
     }
 
     function getRoles(graphId, resolve, containerId) {
@@ -373,7 +590,7 @@
             });
     }
 
-    function addProcesses(searchText) {
+    async function addProcesses(searchText) {
         var selectedProcess = new Array();
         $('.process:checked').each(function (index, checkbox) {
             var id = $(this).attr('id');
@@ -383,42 +600,49 @@
         });
 
         if (selectedProcess.length > 0) {
-            API.service('records/addProcess', selectedProcess)
-                .done(function (response) {
-                    var count = JSON.parse(response);
-                    if (count == 1)
-                        showSuccessMessage(translations.ProcessAdded);
-                    else if (count > 1)
-                        showSuccessMessage(count + ' ' + translations.ProcessesAdded);
-                })
-                .fail(function (e) {
-                    if (e.status === 409) {
-                        showErrorMessage(translations.ProcessAlreadyAdded);
-                    }
-                    else
-                        showExceptionErrorMessage(e)
-                });
+            for (var i = 0; i < selectedProcess.length; i++) {
+                var instanceId = await API.service('services/AddProcessInstance', { graphId: selectedProcess[i].graphId });
+                var data = { graphId: selectedProcess[i].graphId, title: selectedProcess[i].title, instanceId: instanceId };
+                var process = new Array();
+                process.push(data);
+
+                API.service('records/addProcess', process)
+                    .done(function (response) {
+                        var count = JSON.parse(response);
+                        if (count === 1)
+                            showSuccessMessage(translations.ProcessAdded);
+                        else if (count > 1)
+                            showSuccessMessage(count + ' ' + translations.ProcessesAdded);
+                    })
+                    .fail(function (e) {
+                        if (e.status === 409) {
+                            showErrorMessage(translations.ProcessAlreadyAdded);
+                        }
+                        else
+                            showExceptionErrorMessage(e)
+                    });
+            }
         }
     }
 
-    function updateProcess(processId, processTitle, showOnFrontPage) {
-        var data = { processId: processId, processTitle: processTitle, processStatus: true, showOnFronPage: showOnFrontPage };
+    function updateProcess(graphId, processTitle, showOnFrontPage) {
+        var data = { graphId: graphId, processTitle: processTitle, processStatus: true, showOnFronPage: showOnFrontPage };
 
         API.service('records/updateProcess', data)
             .done(function (response) {
-                getProcess(false);
+                getAllProcesses();
             })
             .fail(function (e) {
                 showExceptionErrorMessage(e);
             });
     }
 
-    function deleteProcess(processId, processTitle, showOnFrontPage) {
-        var data = { processId: processId, processTitle: processTitle, processStatus: false, showOnFronPage: showOnFrontPage };
+    function deleteProcess(graphId, processTitle, showOnFrontPage) {
+        var data = { graphId: graphId, processTitle: processTitle, processStatus: false, showOnFronPage: showOnFrontPage };
 
         API.service('records/updateProcess', data)
             .done(function (response) {
-                getProcess(false);
+                getAllProcesses();
             })
             .fail(function (e) {
                 showExceptionErrorMessage(e);
@@ -478,7 +702,7 @@
                 var user = JSON.parse(response);
                 if (user.length > 0)
                     $('#userName').text(user[0].Name);
-                    window.App.user = user[0];
+                window.App.user = user[0];
             })
             .fail(function (e) {
                 showExceptionErrorMessage(e)
@@ -497,14 +721,10 @@
             });
     }
 
-    function openDCRGraphsURL(graphId) {
-        API.serviceGET('services/getDCRGraphsURL')
-            .done(function (response) {
-                window.open(response + '/Tool?id=' + graphId);
-            })
-            .fail(function (e) {
-                showExceptionErrorMessage(e)
-            });
+    async function openDCRGraphsURL(graphId) {
+        var key = "DCRPortalURL";
+        var response = await getKeyValue(key);
+        window.open(response + '/Tool?id=' + graphId);
     }
 
     function logJsError(message) {
@@ -543,9 +763,22 @@
         }
     }
 
+    async function getKeyValue(key) {
+        try {
+            var result = await API.serviceGET('services/GetKeyValue?key=' + key);
+            return result;
+        }
+        catch (e) {
+            // App.showErrorMessage(e.responseJSON.ExceptionMessage);
+            alert(e.Message);
+        }
+    }
+
     // public functions
     function getParameterByName(name, url) {
         if (!url) url = window.location.href;
+        url = url.toLowerCase();
+        name = name.toLowerCase();
         name = name.replace(/[\[\]]/g, "\\$&");
         var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
             results = regex.exec(url);
@@ -563,47 +796,47 @@
         });
 
         $('input[class="bootstrap-toggle"]').on('change', function (e) {
-            var processId = e.currentTarget.attributes.processId.value;
-            var processTitle = $('input[processId="' + processId + '"]').val();
+            var graphId = e.currentTarget.attributes.graphId.value;
+            var processTitle = $('input[graphId="' + graphId + '"]').val();
             var showOnFrontPage = $(e.currentTarget).prop('checked');
-            updateProcess(processId, processTitle, showOnFrontPage);
+            updateProcess(graphId, processTitle, showOnFrontPage);
         });
     }
 
     function registerEditProcessEvent() {
         $('button[name="editProcess"]').on('click', function (e) {
-            var processId = e.currentTarget.attributes.processId.value;
-            $('span[processId="' + processId + '"]').toggle();
-            $('input[processId="' + processId + '"]').toggle();
-            $('button[name="editProcess"][processId="' + processId + '"]').toggle();
-            $('button[name="updateProcess"][processId="' + processId + '"]').toggle();
-            $('button[name="cancelUpdateProcess"][processId="' + processId + '"]').toggle();
-            $('button[name="deleteProcess"][processId="' + processId + '"]').toggle();
-            $('button[name="refreshProcess"][processId="' + processId + '"]').toggle();
+            var graphId = e.currentTarget.attributes.graphId.value;
+            $('a[graphId="' + graphId + '"]').hide();
+            $('span[graphId="' + graphId + '"]').hide();
+            $('input[graphId="' + graphId + '"]').show();
+            $('button[name="editProcess"][graphId="' + graphId + '"]').hide();
+            $('button[name="updateProcess"][graphId="' + graphId + '"]').show();
+            $('button[name="cancelUpdateProcess"][graphId="' + graphId + '"]').show();
+            $('button[name="deleteProcess"][graphId="' + graphId + '"]').hide();
+            $('button[name="refreshProcess"][graphId="' + graphId + '"]').hide();
+            $('button[name="inApproval"][graphId="' + graphId + '"]').hide();
+            $('button[name="updateMajorRevision"][graphId="' + graphId + '"]').hide();
+            $('a[name="processInstance"][graphId="' + graphId + '"]').hide();
+            $('a[name="processHistory"][graphId="' + graphId + '"]').hide();
+            $('button[name="gotoProcess"][graphId="' + graphId + '"]').hide();
+            $('button[name="exportModal"][graphId="' + graphId + '"]').hide();
+            $('i[id="error_' + graphId + '"]').hide();
             e.preventDefault();
         });
     }
 
     function registerCancelProcessEvent() {
         $('button[name="cancelUpdateProcess"]').on('click', function (e) {
-            var processId = e.currentTarget.attributes.processId.value;
-            $('span[processId="' + processId + '"]').toggle();
-            $('input[processId="' + processId + '"]').toggle();
-            $('button[name="editProcess"][processId="' + processId + '"]').toggle();
-            $('button[name="updateProcess"][processId="' + processId + '"]').toggle();
-            $('button[name="cancelUpdateProcess"][processId="' + processId + '"]').toggle();
-            $('button[name="deleteProcess"][processId="' + processId + '"]').toggle();
-            $('button[name="refreshProcess"][processId="' + processId + '"]').toggle();
-            e.preventDefault();
+            getAllProcesses();
         });
     }
 
     function registerUpdateProcessEvent() {
         $('button[name="updateProcess"]').on('click', function (e) {
-            var processId = e.currentTarget.attributes.processId.value;
-            var processTitle = $('input[type="text"][processId="' + processId + '"]').val();
-            var showOnFrontPage = $('input[type="checkbox"][processId="' + processId + '"]').prop('checked');
-            updateProcess(processId, processTitle, showOnFrontPage);
+            var graphId = e.currentTarget.attributes.graphId.value;
+            var processTitle = $('input[type="text"][graphId="' + graphId + '"]').val();
+            var showOnFrontPage = $('input[type="checkbox"][graphId="' + graphId + '"]').prop('checked');
+            updateProcess(graphId, processTitle, showOnFrontPage);
             e.preventDefault();
         });
     }
@@ -612,11 +845,11 @@
         $('button[name="deleteProcess"]').on('click', function (e) {
             App.showConfirmMessageBox(translations.ProcessDeleteMessage, translations.Yes, translations.No, function () {
 
-                var processId = e.currentTarget.attributes.processId.value;
-                var processTitle = $('a[processId="' + processId + '"]').text();
-                var showOnFrontPage = $('input[type="checkbox"][processId="' + processId + '"]').prop('checked');
+                var graphId = e.currentTarget.attributes.graphId.value;
+                var processTitle = $('a[graphId="' + graphId + '"]').text();
+                var showOnFrontPage = $('input[type="checkbox"][graphId="' + graphId + '"]').prop('checked');
 
-                deleteProcess(processId, processTitle, showOnFrontPage);
+                deleteProcess(graphId, processTitle, showOnFrontPage);
 
             }, null, translations.Delete);
             e.preventDefault();
@@ -642,20 +875,63 @@
         });
     }
 
-    function showTaskWithNotePopup(data, elem, isFrontPage, uievent, isMUS) {
+    function exportDCRXMLLog() {
+        $('button[name="exportModal"]').on('click', function (e) {
+            var processId = e.currentTarget.attributes.graphId.value;
+            $('#exportDCRXMLLOGFileModal').modal('toggle');
 
-        var eventTitle = elem.next('.title').html();
-        var eventDescription = elem.next().next('.description').html();
-        var taskWNoteModal = $('#TasksWNote');
-        taskWNoteModal.modal('show');
-        taskWNoteModal.find('.TasksWNoteheading span').text(eventTitle);
-        taskWNoteModal.find('.modal-body p').html(eventDescription);
-        taskWNoteModal.find('.commentbox').val('');
-
-        taskWNoteModal.find('.TasksWNoteBtn').on('click', function (e) {
-            App.executeEvent(data, isFrontPage, uievent, isMUS);
-            taskWNoteModal.modal('hide');
+            $('#graphId').val(processId);
+            e.preventDefault();
         });
+    }
+
+    async function showTaskWithNoteFullPopup(data, elem, isFrontPage, uievent, isMUS) {
+        var globalEvents = [];
+        if (data.eventId.toLocaleLowerCase().startsWith("global")) {
+            globalEvents = await canExecuteGlobalEvents(data.eventId, data.instanceId);
+        }
+        else {
+            globalEvents = ["Not Global Event"];
+        }
+
+        if (globalEvents.length > 0) {
+            CreateJournalNoteView(data.eventId, data.Modified);
+        }
+    }
+
+    async function showTaskWithNotePopup(data, elem, isFrontPage, uievent, isMUS) {
+        var globalEvents = [];
+        if (data.eventId.toLocaleLowerCase().startsWith("global")) {
+            globalEvents = await canExecuteGlobalEvents(data.eventId, data.instanceId);
+        }
+        else {
+            globalEvents = ["Not Global Event"];
+        }
+
+        if (globalEvents.length > 0) {
+
+            var eventTitle = elem.next('.title').html();
+            var eventDescription = elem.next().next('.description').html();
+            var taskWNoteModal = $('#TasksWNote');
+            taskWNoteModal.modal('show');
+            taskWNoteModal.find('.TasksWNoteheading span').text(eventTitle);
+            taskWNoteModal.find('.modal-body p').html(eventDescription);
+            taskWNoteModal.find('.commentbox').val('');
+
+            taskWNoteModal.find('.TasksWNoteBtn').on('click', function (e) {
+                taskWNoteModal.find('.TasksWNoteBtn').unbind("click");
+                var promise = new Promise(function (resolve, reject) {
+                    var comment = taskWNoteModal.find('.commentbox').val();
+                    Task.saveTasksNote(data.eventId, data.instanceId, comment, false, resolve, reject);
+                });
+                promise.then(function (response) {
+                    App.executeEvent(data, isFrontPage, uievent, isMUS);
+                    taskWNoteModal.modal('hide');
+                }, function (e) {
+                    showExceptionErrorMessage(e);
+                });
+            });
+        }
     }
 
     function getMyInstanceHtml(item) {
@@ -663,6 +939,7 @@
     }
 
     function getInstanceHtml(item) {
+
         $('#instanceTitle').text(item.Title);
         if (item.CaseNoForeign !== null) {
             $('.caseNum').show();
@@ -675,6 +952,19 @@
 
         if (item.IsOpen) $('#instanceTitle').append(getStatus(item.NextDeadline));
         else $('#instanceTitle').append("<span class='dot dotGrey'></span>");
+        if (typeof (Instruction) == 'undefined') Instruction = null;
+        if (Instruction != null) {
+            if (item.Description != null && item.Description != '')
+                Instruction.setText(item.Description);
+            else
+                Instruction.hideWebPart();
+        }
+
+        $('#instanceResponsible').text(item.Responsible);
+        $('#itemResponsible').attr('itemResponsible', item.Responsible);
+        $('#itemResponsible').attr('itemTitle', item.Title);
+        $('#itemResponsible').attr('itemInstanceId', item.Id);
+        $('#itemResponsible').attr('changeResponsibleFor', 'instance');
     }
 
     function getProcessHtml(item) {
@@ -684,25 +974,38 @@
     function getProcessesHtml(item) {
         var returnHtml = '';
         returnHtml = '<tr class="trStyleClass">' +
-            '<td style="display:none;" > ' + item.Id + '</td >' +
-            '<td> ' + item.GraphId + ' </td>' +
+            '<td style="display:none;" > ' + item.ProcessId + '</td >' +
+            '<td>' + item.GraphId + '</td>' +
             '<td> ' +
-            '<a href="../../process?id=' + item.Id + '" processId="' + item.Id + '">' + item.Title + '</a>' +
-            '<input processId="' + item.Id + '" style="display:none" type="text" name="processTitle" class="form-control" value="' + item.Title + '"/>' +
+            '<a href="../../process?id=' + item.ProcessId + '" processId="' + item.ProcessId + '" graphId="' + item.GraphId + '">' + item.Title + '</a><i style="margin-left:5px;" id="error_' + item.GraphId + '" class="fas fa-exclamation-circle text-danger hide"></i>' +
+            '<input graphId="' + item.GraphId + '" processId="' + item.ProcessId + '" style="display:none" type="text" name="processTitle" class="form-control" value="' + item.Title + '"/>' +
             '</td>' +
-            '<td> <input processId="' + item.Id + '" type="checkbox" class="bootstrap-toggle" data-size="mini" data-onstyle="info" data-style="color" data-on="' + translations.On + '" data-off="' + translations.Off + '" ';
+            '<td>&nbsp;' + (item.MajorVersionTitle == null ? '' : item.MajorVersionTitle) + ' </td>' +
+            '<td> ' + (item.MajorVerisonDate === null ? '&nbsp;' : moment(new Date(item.MajorVerisonDate)).format('L LT')) + ' </td>' +
+            '<td> ' + '' + item.ProcessOwner + ' </td>' +
+
+            '<td> <input processId="' + item.ProcessId + '" graphId="' + item.GraphId + '" type="checkbox" class="bootstrap-toggle" data-size="mini" data-onstyle="info" data-style="color" data-on="' + translations.On + '" data-off="' + translations.Off + '" ';
         if (item.OnFrontPage) {
             returnHtml += " checked ";
         }
         returnHtml += '/> ' +
             '</td>' +
             '<td>';
-        returnHtml += '<button processId="' + item.Id + '" type="button" name="editProcess" value="editProcess" class="btn btn-info taskExecutionBtn"><img title="' + translations.Edit + '" src="../../content/images/edit.png"></button> ';
-        returnHtml += '<button style="display:none" processId="' + item.Id + '" type="button" name="updateProcess" value="updateProcess" class="btn btn-info taskExecutionBtn"><img title="' + translations.Edit + '" src="../../content/images/edit.png"></button> ';
-        returnHtml += '<button style="display:none" processId="' + item.Id + '" type="button" name="cancelUpdateProcess" value="cancelUpdateProcess" class="btn btn-info taskExecutionBtn"><img title="' + translations.Cancel + '" src="../../content/images/cancel.png"></button> ';
-        returnHtml += '<button  processId="' + item.Id + '" graphId="' + item.GraphId + '" type="button" name="refreshProcess" value="refreshProcess" class="btn btn-info taskExecutionBtn"><img title="' + translations.Update + '" src="../../content/images/update.png"></button> ';
-        returnHtml += '<button processId="' + item.Id + '" type="button" name="deleteProcess" value="deleteProcess" class="btn btn-info taskExecutionBtn"><img title="' + translations.Delete + '" src="../../content/images/delete.png"></button> ';
-        returnHtml += '<button processId="' + item.Id + '" graphId="' + item.GraphId + '" type="button" name="gotoProcess" value="gotoProcess" class="btn btn-info taskExecutionBtn"><img title="' + translations.GotoGraph + '" src="../../content/images/goto.png"></button> ';
+        returnHtml += '<button style="margin-right:3px;" processId="' + item.ProcessId + '" title="' + item.Title + '" graphId="' + item.GraphId + '" type="button" value="" class="btn btn-info taskExecutionBtn"><img class="btn btn-info taskExecutionBtn" src="../Content/Images/update.png" name="checkMajorVersions" graphId="' + item.GraphId + '" style="cursor:pointer" /></button>';
+        returnHtml += '<button style="margin-right:3px;display:none;" approval="' + item.ProcessApprovalState + '" processId="' + item.ProcessId + '" title="' + item.Title + '" graphId="' + item.GraphId + '" type="button" name="updateMajorRevision" value="" class="btn btn-info taskExecutionBtn"><img title="' + translations.NewVersionAvailable + '" src="../../content/images/standard/refresh.png"></button>';
+        if (item.ProcessApprovalState === 0) {
+            returnHtml += '<button style="display:inline" approval="' + item.ProcessApprovalState + '" processId="' + item.ProcessId + '" title="' + translations.InApproval + '" graphId="' + item.GraphId + '" type="button" name="inApproval" value="" class="btn btn-info taskExecutionBtn"><i class="fas fa-user-edit"></i></button>&nbsp;';
+        }
+        if (item.InstanceId !== null)
+            returnHtml += '<a name="processInstance" target="_blank" href="../instance?id=' + item.InstanceId + '" graphId="' + item.GraphId + '" class="btn btn-info taskExecutionBtn"><i class="fas fa-infinity btn-info" title="' + translations.ProcessInstance + '"></i></a> ';
+        returnHtml += '<a name="processHistory" graphId="' + item.GraphId + '" target="_blank" href="../process/processhistory?graphid=' + item.GraphId + '" class="btn btn-info taskExecutionBtn"><i class="fas fa-history btn-info" title="' + translations.ProcessHistory + '"></i></a> ';
+        returnHtml += '<button graphId="' + item.GraphId + '" processId="' + item.ProcessId + '" type="button" name="editProcess" value="editProcess" class="btn btn-info taskExecutionBtn"><img title="' + translations.Edit + '" src="../../content/images/standard/edit.png"></button> ';
+        returnHtml += '<button  graphId="' + item.GraphId + '" style="display:none" processId="' + item.ProcessId + '" type="button" name="updateProcess" value="updateProcess" class="btn btn-info taskExecutionBtn"><img title="' + translations.Edit + '" src="../../content/images/standard/edit.png"></button> ';
+        returnHtml += '<button  graphId="' + item.GraphId + '"  style="display:none" processId="' + item.ProcessId + '" type="button" name="cancelUpdateProcess" value="cancelUpdateProcess" class="btn btn-info taskExecutionBtn"><img title="' + translations.Cancel + '" src="../../content/images/standard/cancel.png"></button> ';
+        //returnHtml += '<button style="display:none;" processId="' + item.ProcessId + '" graphId="' + item.GraphId + '" type="button" name="refreshProcess" value="refreshProcess" class="btn btn-info taskExecutionBtn"><img title="' + translations.Update + '" src="../../content/images/standard/update.png"></button> ';
+        returnHtml += '<button graphId="' + item.GraphId + '" processId="' + item.ProcessId + '" type="button" name="deleteProcess" value="deleteProcess" class="btn btn-info taskExecutionBtn"><img title="' + translations.Delete + '" src="../../content/images/standard/delete.png"></button> ';
+        returnHtml += '<button processId="' + item.ProcessId + '" graphId="' + item.GraphId + '" type="button" name="gotoProcess" value="gotoProcess" class="btn btn-info taskExecutionBtn"><img title="' + translations.GotoGraph + '" src="../../content/images/standard/goto.png"></button> ';
+        returnHtml += '<button processId="' + item.ProcessId + '" graphId="' + item.GraphId + '" type="button" name="exportModal" value="exportModal" class="btn btn-info taskExecutionBtn"><img title="' + translations.ExportDCRXML + '" src="../../content/images/standard/exportFile.png"></button> ';
         returnHtml += '</td>' + '</tr>';
         return returnHtml;
     }
@@ -715,7 +1018,7 @@
             html = "<li class=\"phaseItem\"> " + item.Title + "</li><li>";
 
         if (index < count - 1)
-            html += "<img src='../content/images/dash.png' /></li> ";
+            html += "<img class='phaseDash' src='' /></li> ";
         return html;
     }
 
@@ -744,9 +1047,9 @@
         }
         $("#" + id).html("").append(list);
 
-      /*  for (i = 0; i < result.length; i++) {
-            $('#multi-select-' + result[i].Id + '').multiselect();
-        }*/
+        /*  for (i = 0; i < result.length; i++) {
+              $('#multi-select-' + result[i].Id + '').multiselect();
+          }*/
     }
 
     function getUserRoles(role, users) {
@@ -818,14 +1121,55 @@
     }
 
     function setTexts() {
-        $('[data-locale]').each(function (index, element) {
-            if ($(this).attr('data-apply') === 'attribute') {
-                $(this).attr($(this).attr('data-attribute'), translations[$(this).attr('data-key')]);
-            }
-            else if ($(this).attr('data-apply') === 'text') {
-                $(this).text(translations[$(this).attr('data-key')]);
-            }
-        });
+        if (typeof (translations) === "undefined") {
+            getTranslations();
+        } else {
+            $('[data-locale]').each(function (index, element) {
+                if ($(this).attr('data-apply') === 'attribute') {
+                    $(this).attr($(this).attr('data-attribute'), translations[$(this).attr('data-key')]);
+                }
+                else if ($(this).attr('data-apply') === 'text') {
+                    $(this).text(translations[$(this).attr('data-key')]);
+                }
+            });
+        }
+
+    }
+
+    function getTranslations() {
+        var localeDefs = {
+            'da': 'da-DK',
+            'da-DK': 'da-DK',
+            'en': 'en-US',
+            'en-US': 'en-US',
+            'pt': 'pt-BR',
+            'pt-BR': 'pt-BR',
+            'es': 'es',
+            'es-AR': 'es',
+            'ca': 'ca',
+            'it': 'it-IT',
+            'it-IT': 'it-IT',
+            'nb': 'nb-NO',
+            'nb-NO': 'nb-NO',
+            'sv': 'se-SV',
+            'se-SV': 'se-SV'
+        };
+
+        var browserLocale = navigator.languages ? navigator.languages[0] : (navigator.language || navigator.userLanguage);
+        var defaultLocale = 'en-US';
+
+        var locale = (localeDefs[browserLocale] === undefined) ? defaultLocale : localeDefs[browserLocale];
+        var getUrl = window.location;
+        var baseUrl = getUrl.protocol + "//" + getUrl.host + "/";
+        var fileUrl = baseUrl + 'scripts/translations/' + locale + '.js';
+
+        API.getJSFile(fileUrl)
+            .done(function (response) {
+                setTexts();
+            })
+            .fail(function (e) {
+                alert('Error in getting locale');
+            });
     }
 
     function skipAutoRoles(roles) {
@@ -855,39 +1199,34 @@
     }
 
     function showExceptionErrorMessage(exception) {
-        var message = exception.responseText;
-        if (exception.responseJSON != null) {
+        var message = '';
+        if (exception.ExceptionMessage !== undefined) {
+            message = exception.ExceptionMessage;
+        }
+        else if (exception.Message !== undefined) {
+            message = exception.Message;
+        }
+        else if (exception.responseJSON !== undefined) {
             try {
-                message = JSON.parse(exception.responseJSON);
+                message = exception.responseJSON.ExceptionMessage;
             }
             catch (e) {
-                message = JSON.parse(exception.responseText);
+                if (exception.responseJSON.Message !== undefined) {
+                    message = exception.responseJSON.Message;
+                }
+                else if (exception.responseText !== undefined) {
+                    message = exception.responseText;
+                }
+                else {
+                    message = 'An error occured. Check Log to see the details';
+                }
             }
         }
-        if (message != null) {
-
-            new Noty({
-                type: 'error',
-                theme: 'mint',
-                layout: 'topRight',
-                text: message,
-                timeout: 5000,
-                container: '.custom-container'
-            }).show();
+        else
+        {
+            message = exception.responseText;
         }
-        else {
-            new Noty({
-                type: 'error',
-                theme: 'mint',
-                layout: 'topRight',
-                text: exception.responseJSON.ExceptionMessage,
-                timeout: 5000,
-                container: '.custom-container'
-            }).show();
-        }
-    }
 
-    function showErrorMessage(message) {
         new Noty({
             type: 'error',
             theme: 'mint',
@@ -896,6 +1235,30 @@
             timeout: 5000,
             container: '.custom-container'
         }).show();
+
+    }
+
+    function showErrorMessage(message) {
+        var errorMessage = '';
+        try {
+            errorMessage = JSON.parse(message);
+        }
+        catch (ex) {
+            errorMessage = message;
+        }
+
+        if (typeof (errorMessage) === "string")
+            new Noty({
+                type: 'error',
+                theme: 'mint',
+                layout: 'topRight',
+                text: errorMessage,
+                timeout: 5000,
+                container: '.custom-container'
+            }).show();
+        else {
+            showExceptionErrorMessage(errorMessage);
+        }
     }
 
     function showSuccessMessage(message) {
@@ -1011,7 +1374,16 @@
 
             var fn = functionName.split("(")
             var params = fn[1].split(/[()]+/);
-            Custom[fn[0]].apply(undefined, (new Function("return [" + params[0] + "];")()))
+            var paramsArray = params[0].split("',");
+            for (var i = 0; i < paramsArray.length; i++) {
+                var itemId = paramsArray[i].substring(1, paramsArray[i].length);
+                paramsArray[i] = itemId;
+                if (i === paramsArray.length - 1) {
+                    itemId = paramsArray[i].substring(0, paramsArray[i].length - 1);
+                    paramsArray[i] = itemId;
+                }
+            }
+            Custom[fn[0]].apply(undefined, paramsArray);
         }
         catch (e) {
             showErrorMessage('Method not found or method parsing is failed due to parameters');
@@ -1048,6 +1420,31 @@
             });
     }
 
+    function getInstanceTitle(id) {
+        var query = {
+            "type": "SELECT",
+            "entity": "Instance",
+            "resultSet": ["Title"],
+            "filters": [
+                {
+                    "column": "Id",
+                    "operator": "equal",
+                    "value": id,
+                    "valueType": "int"
+                }
+            ],
+            "order": [{ "column": "title", "descending": false }]
+        }
+        API.service('records', query)
+            .done(function (response) {
+                var result = JSON.parse(response);
+                document.title = result[0].Title;
+            })
+            .fail(function (e) {
+                showExceptionErrorMessage(e);
+            });
+    }
+
     var app = function () {
         this.getProcessAsync = getProcessAsync;
         this.getProcessHtml = getProcessHtml;
@@ -1077,12 +1474,18 @@
         this.logJsError = logJsError;
         this.showInformationMessage = showInformationMessage;
         this.showTaskWithNotePopup = showTaskWithNotePopup;
+        this.showTaskWithNoteFullPopup = showTaskWithNoteFullPopup;
         this.hideDocumentWebpart = hideDocumentWebpart;
         this.getUserRoles = getUserRoles;
         this.addChild = addChild;
+        this.getInstanceTitle = getInstanceTitle;
+        this.setTexts = setTexts;
+        this.getKeyValue = getKeyValue;
+        this.getAllProcesses = getAllProcesses;
+        this.hideUpdateMajorRevision = hideUpdateMajorRevision;
     };
 
-    getTranslations(locale);
+    setTexts();
     getResponsibleName();
     return window.App = new app;
 }(window));

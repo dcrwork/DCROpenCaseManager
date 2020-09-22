@@ -1,11 +1,17 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using OpenCaseManager.Commons;
+using OpenCaseManager.Custom.Syddjurs;
 using OpenCaseManager.Managers;
 using OpenCaseManager.Models;
+using RestSharp;
+using RestSharp.Authenticators;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
+using System.Linq;
+using System.Text;
 using System.Web;
 using System.Web.Http;
 using System.Xml;
@@ -20,28 +26,45 @@ namespace OpenCaseManager.Controllers.ApiControllers
         private IService _service;
         private IDCRService _dCRService;
         private IDataModelManager _dataModelManager;
-        private IDocumnentManager _documentManager;
+        private IDocumentManager _documentManager;
+        private ISyddjursWork _syddjursWork;
+        private ICommons _commons;
+        private ServicesController _servicesController;
 
-        public RecordsController(IManager manager, IService service, IDCRService dCRService, IDataModelManager dataModelManager, IDocumnentManager documentManager)
+        public RecordsController(IManager manager, IService service, IDCRService dCRService,
+                                    IDataModelManager dataModelManager, IDocumentManager documentManager,
+                                    ISyddjursWork syddjursWork, IAutomaticEvents automaticEvents,
+                                    IMailRepository mailRepository, ICommons commons)
         {
             _manager = manager;
             _service = service;
             _dCRService = dCRService;
             _dataModelManager = dataModelManager;
             _documentManager = documentManager;
-
+            _syddjursWork = syddjursWork;
+            _commons = commons;
+            _servicesController = new ServicesController(manager, service, dCRService, dataModelManager, documentManager, automaticEvents, mailRepository, commons);
         }
 
         // POST api/values
         [HttpPost]
         public IHttpActionResult Post(DataModel model)
         {
-            if (model.Type == Enums.SQLOperation.SELECT.ToString())
+            try
             {
-                var output = _manager.SelectData(model);
-                return Ok(Common.ToJson(output));
+                if (model.Type == Enums.SQLOperation.SELECT.ToString())
+                {
+                    var output = _manager.SelectData(model);
+                    return Ok(Common.ToJson(output));
+                }
+                return BadRequest("Only Select statement is allowed.");
             }
-            return BadRequest();
+            catch (Exception ex)
+            {
+                _manager.LogSQLModel(model, ex, "Post");
+                Common.LogError(ex);
+                return InternalServerError(ex);
+            }
         }
 
         /// <summary>
@@ -55,10 +78,19 @@ namespace OpenCaseManager.Controllers.ApiControllers
         // POST api/values
         public IHttpActionResult AddChildApi(AddChildModel input)
         {
-            // add child 
-            var childId = AddChild(input);
-            AddChildName(input.ChildName, input.CaseNumber, childId);
-            return Ok(Common.ToJson(childId));
+            try
+            {
+                // add child 
+                var childId = AddChild(input);
+                AddChildName(input.ChildName, input.CaseNumber, childId);
+                return Ok(Common.ToJson(childId));
+            }
+            catch (Exception ex)
+            {
+                Common.LogInfo(_manager, _dataModelManager, "AddChild - Failed. - " + Common.ToJson(input));
+                Common.LogError(ex);
+                return InternalServerError(ex);
+            }
         }
 
         /// <summary>
@@ -71,10 +103,94 @@ namespace OpenCaseManager.Controllers.ApiControllers
         // POST api/values
         public IHttpActionResult AddInstanceApi(AddInstanceModel input)
         {
-            // add Instance
-            var instanceId = AddInstance(input);
-            if (input.ChildId != null) ConnectInstanceToChild(instanceId, input.ChildId);
-            return Ok(Common.ToJson(instanceId));
+            try
+            {
+                // add Instance
+                var instanceId = AddInstance(input);
+                if (instanceId != "")
+                {
+                    return Ok(Common.ToJson(instanceId));
+                }
+                else
+                {
+                    Common.LogInfo(_manager, _dataModelManager, "AddInstance - Failed. - " + Common.ToJson(input));
+                    Exception ex = new Exception("AddInstance failed");
+                    Common.LogError(ex);
+                    return InternalServerError(ex);
+                }
+            }
+            catch (Exception ex)
+            {
+                Common.LogInfo(_manager, _dataModelManager, "AddInstance - Failed. - " + Common.ToJson(input));
+                Common.LogError(ex);
+                return InternalServerError(ex);
+            }
+        }
+
+        private string AddInstance(AddInstanceModel input)
+        {
+            try
+            {
+                // add Instance
+                var instanceId = Common.AddInstance(input, _manager, _dataModelManager);
+                if (!string.IsNullOrEmpty(input.CaseId))
+                {
+                    LinkCaseToInstance(input.CaseId, input.CaseNumberIdentifier, instanceId, input.CaseLink);
+                }
+                if (input.ChildId != null)
+                {
+                    ConnectInstanceToChild(instanceId, input.ChildId);
+                }
+                return instanceId;
+            }
+            catch (Exception ex)
+            {
+                Common.LogInfo(_manager, _dataModelManager, "AddInstance - Failed. - " + Common.ToJson(input));
+                Common.LogError(ex);
+                return "";
+            }
+        }
+
+        /// <summary>
+        /// Add Instance and Initialize graph
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("createInstance")]
+        // POST api/values
+        public IHttpActionResult CreateInstanceApi(AddInstanceModel input)
+        {
+            try
+            {
+                // Call AddInstanceAPI
+                var instanceString = AddInstance(input);
+
+
+
+                var json = @"{""instanceId"":" + instanceString + @",""graphId"":" + input.GraphId + "}";
+                dynamic graphInput = JObject.Parse(json);
+
+
+                var result = _servicesController.InitializeGraph(graphInput, out string output);
+                if (result)
+                {
+                    return Ok(Common.ToJson(instanceString));
+                }
+                else
+                {
+                    Common.LogInfo(_manager, _dataModelManager, "CreateInstance - InitializeGraph - Failed. - " + Common.ToJson(input));
+                    Exception ex = new Exception("CreateInstance - InitializeGraph failed");
+                    Common.LogError(ex);
+                    return InternalServerError(ex);
+                }
+            }
+            catch (Exception ex)
+            {
+                Common.LogInfo(_manager, _dataModelManager, "CreateInstance - AddInstance - Failed. - " + Common.ToJson(input));
+                Common.LogError(ex);
+                return InternalServerError(ex);
+            }
         }
 
         /// <summary>
@@ -91,49 +207,254 @@ namespace OpenCaseManager.Controllers.ApiControllers
             // add Instance
             foreach (var process in input)
             {
-                var graphXml = string.Empty;
-                graphXml = _dCRService.GetProcess(process.GraphId);
-
                 _dataModelManager.GetDefaultDataModel(Enums.SQLOperation.SELECT, DBEntityNames.Tables.Process.ToString());
-                _dataModelManager.AddFilter(DBEntityNames.Process.GraphId.ToString(), Enums.ParameterType._int, process.GraphId.ToString(), Enums.CompareOperator.equal, Enums.LogicalOperator.and);
-                _dataModelManager.AddFilter(DBEntityNames.Process.Status.ToString(), Enums.ParameterType._boolean, Boolean.FalseString, Enums.CompareOperator.equal, Enums.LogicalOperator.none);
-                _dataModelManager.AddResultSet(new List<string> { DBEntityNames.Process.Id.ToString(), DBEntityNames.Process.GraphId.ToString(), DBEntityNames.Process.Status.ToString() });
+                _dataModelManager.AddFilter(DBEntityNames.Process.GraphId.ToString(), Enums.ParameterType._int, process.GraphId.ToString(), Enums.CompareOperator.equal, Enums.LogicalOperator.none);
+                _dataModelManager.AddResultSet(new List<string> { DBEntityNames.Process.Id.ToString(), DBEntityNames.Process.Status.ToString() });
+                var isProcessExists = _manager.SelectData(_dataModelManager.DataModel);
 
-                var processes = _manager.SelectData(_dataModelManager.DataModel);
-                if (processes.Rows.Count < 1)
+                if (isProcessExists.Rows.Count > 0)
                 {
-                    _dataModelManager.GetDefaultDataModel(Enums.SQLOperation.INSERT, DBEntityNames.Tables.Process.ToString());
-                    _dataModelManager.AddParameter(DBEntityNames.Process.Title.ToString(), Enums.ParameterType._string, process.Title);
-                    _dataModelManager.AddParameter(DBEntityNames.Process.GraphId.ToString(), Enums.ParameterType._int, process.GraphId.ToString());
-                    _dataModelManager.AddParameter(DBEntityNames.Process.DCRXML.ToString(), Enums.ParameterType._xml, graphXml);
-
                     try
                     {
-                        var processId = _manager.InsertData(_dataModelManager.DataModel);
+                        if (isProcessExists.Rows[0]["Status"].ToString().ToLower() == false.ToString().ToLower())
+                        {
+                            _dataModelManager.GetDefaultDataModel(Enums.SQLOperation.UPDATE, DBEntityNames.Tables.Process.ToString());
+                            _dataModelManager.AddParameter(DBEntityNames.Process.Status.ToString(), Enums.ParameterType._boolean, "true");
+                            _dataModelManager.AddParameter(DBEntityNames.Process.Modified.ToString(), Enums.ParameterType._datetime, DateTime.Now.ToString());
+                            _dataModelManager.AddFilter(DBEntityNames.Process.GraphId.ToString(), Enums.ParameterType._int, process.GraphId.ToString(), Enums.CompareOperator.equal, Enums.LogicalOperator.none);
 
-                        var phases = _dCRService.GetProcessPhases(process.GraphId);
-
-                        _dataModelManager.GetDefaultDataModel(Enums.SQLOperation.SP, DBEntityNames.StoredProcedures.AddProcessPhases.ToString());
-                        _dataModelManager.AddParameter(DBEntityNames.AddProcessPhases.ProcessId.ToString(), Enums.ParameterType._int, (processId.Rows[0]["Id"]).ToString());
-                        _dataModelManager.AddParameter(DBEntityNames.AddProcessPhases.PhaseXml.ToString(), Enums.ParameterType._xml, phases);
-
-                        _manager.ExecuteStoreProcedure(_dataModelManager.DataModel);
-
-                        countAdded++;
+                            _manager.UpdateData(_dataModelManager.DataModel);
+                            countAdded++;
+                        }
                     }
-                    catch
+                    catch (Exception ex)
                     {
+                        Common.LogInfo(_manager, _dataModelManager, "AddProcess - Process Status Update Failed. - " + Common.ToJson(process));
+                        Common.LogError(ex);
                     }
                 }
                 else
                 {
-                    UpdateProcessAndPhases(processes.Rows[0][DBEntityNames.Process.Id.ToString()].ToString(), processes.Rows[0][DBEntityNames.Process.GraphId.ToString()].ToString(), process.Title);
-                    countAdded++;
+                    try
+                    {
+                        var graphXml = string.Empty;
+                        graphXml = _dCRService.GetProcess(process.GraphId);
+
+                        _dataModelManager.GetDefaultDataModel(Enums.SQLOperation.SELECT, DBEntityNames.Tables.ProcessHistory.ToString());
+                        _dataModelManager.AddFilter(DBEntityNames.ProcessHistory.GraphId.ToString(), Enums.ParameterType._int, process.GraphId.ToString(), Enums.CompareOperator.equal, Enums.LogicalOperator.none);
+                        _dataModelManager.AddResultSet(new List<string> { DBEntityNames.ProcessHistory.Id.ToString(), DBEntityNames.ProcessHistory.GraphId.ToString(), DBEntityNames.ProcessHistory.Status.ToString() });
+
+                        var processHistories = _manager.SelectData(_dataModelManager.DataModel);
+                        if (processHistories.Rows.Count == 0)
+                        {
+                            _dataModelManager.GetDefaultDataModel(Enums.SQLOperation.INSERT, DBEntityNames.Tables.ProcessHistory.ToString());
+                            _dataModelManager.AddParameter(DBEntityNames.ProcessHistory.Title.ToString(), Enums.ParameterType._string, process.Title);
+                            _dataModelManager.AddParameter(DBEntityNames.ProcessHistory.GraphId.ToString(), Enums.ParameterType._int, process.GraphId.ToString());
+                            _dataModelManager.AddParameter(DBEntityNames.ProcessHistory.DCRXML.ToString(), Enums.ParameterType._xml, graphXml);
+                            _dataModelManager.AddParameter(DBEntityNames.ProcessHistory.InstanceId.ToString(), Enums.ParameterType._int, process.InstanceId);
+                            _dataModelManager.AddParameter(DBEntityNames.ProcessHistory.State.ToString(), Enums.ParameterType._int, "0");
+                            _dataModelManager.AddParameter(DBEntityNames.ProcessHistory.Owner.ToString(), Enums.ParameterType._int, Common.GetResponsibleId());
+
+                            var response = _dCRService.GetMajorRevisions(process.GraphId);
+                            var xmlDocument = new XmlDocument();
+                            xmlDocument.LoadXml(response);
+
+                            var majorVersionId = 0;
+
+                            var childs = xmlDocument.ChildNodes;
+                            if (childs.Count > 0)
+                            {
+                                var majorVersionIds = new List<int>();
+                                var majorVersionDate = new Dictionary<int, DateTime>();
+                                var majorVersionTitle = new Dictionary<int, string>();
+
+                                foreach (XmlNode node in childs)
+                                {
+                                    foreach (XmlNode nodes in node)
+                                    {
+                                        majorVersionIds.Add(int.Parse(nodes.Attributes["id"].Value));
+                                        majorVersionTitle.Add(int.Parse(nodes.Attributes["id"].Value), nodes.Attributes["title"].Value);
+                                        majorVersionDate.Add(int.Parse(nodes.Attributes["id"].Value), DateTime.Parse(nodes.Attributes["date"].Value));
+                                    }
+                                }
+                                if (majorVersionIds.Count > 0)
+                                {
+                                    majorVersionId = majorVersionIds.Max();
+                                    var title = majorVersionTitle[majorVersionId];
+                                    var date = majorVersionDate[majorVersionId];
+
+
+                                    _dataModelManager.AddParameter(DBEntityNames.ProcessHistory.MajorVerisonDate.ToString(), Enums.ParameterType._datetime, date.ToString());
+                                    _dataModelManager.AddParameter(DBEntityNames.ProcessHistory.MajorVersionId.ToString(), Enums.ParameterType._int, majorVersionId.ToString());
+                                    _dataModelManager.AddParameter(DBEntityNames.ProcessHistory.MajorVersionTitle.ToString(), Enums.ParameterType._string, title);
+                                }
+                            }
+                            var processId = _manager.InsertData(_dataModelManager.DataModel);
+                            countAdded++;
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Common.LogInfo(_manager, _dataModelManager, "AddProcess - Add Process Failed. - " + Common.ToJson(process));
+                        Common.LogError(ex);
+                    }
                 }
             }
+
             if (countAdded > 0)
                 return Ok(countAdded);
             return Conflict();
+        }
+
+        /// <summary>
+        /// Add Process Revision
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("AddProcessRevision")]
+        // POST api/values
+        public IHttpActionResult AddProcessRevision(List<Model> input)
+        {
+            try
+            {
+                var countAdded = 0;
+                // add Instance
+                foreach (var process in input)
+                {
+
+                    // check in approval process and mark as abort
+                    _dataModelManager.GetDefaultDataModel(Enums.SQLOperation.SELECT, DBEntityNames.Tables.ProcessHistory.ToString());
+                    _dataModelManager.AddFilter(DBEntityNames.ProcessHistory.GraphId.ToString(), Enums.ParameterType._int, process.GraphId.ToString(), Enums.CompareOperator.equal, Enums.LogicalOperator.and);
+                    _dataModelManager.AddFilter(DBEntityNames.ProcessHistory.State.ToString(), Enums.ParameterType._int, 0.ToString(), Enums.CompareOperator.equal, Enums.LogicalOperator.none);
+                    _dataModelManager.AddResultSet(new List<string> { DBEntityNames.ProcessHistory.Id.ToString(), DBEntityNames.ProcessHistory.InstanceId.ToString() });
+                    var processes = _manager.SelectData(_dataModelManager.DataModel);
+
+                    if (processes.Rows.Count > 0)
+                    {
+                        foreach (DataRow row in processes.Rows)
+                        {
+                            _dataModelManager.GetDefaultDataModel(Enums.SQLOperation.UPDATE, DBEntityNames.Tables.ProcessHistory.ToString());
+                            _dataModelManager.AddParameter(DBEntityNames.ProcessHistory.State.ToString(), Enums.ParameterType._int, (-1).ToString());
+                            _dataModelManager.AddFilter(DBEntityNames.ProcessHistory.Id.ToString(), Enums.ParameterType._int, row["Id"].ToString(), Enums.CompareOperator.equal, Enums.LogicalOperator.none);
+                            _manager.UpdateData(_dataModelManager.DataModel);
+
+                            // get instance details
+                            _dataModelManager.GetDefaultDataModel(Enums.SQLOperation.SELECT, DBEntityNames.Tables.Instance.ToString());
+                            _dataModelManager.AddFilter(DBEntityNames.Instance.Id.ToString(), Enums.ParameterType._int, row["InstanceId"].ToString(), Enums.CompareOperator.equal, Enums.LogicalOperator.none);
+                            _dataModelManager.AddResultSet(new List<string> { DBEntityNames.Instance.SimulationId.ToString(), DBEntityNames.Instance.GraphId.ToString() });
+                            var instance = _manager.SelectData(_dataModelManager.DataModel);
+
+                            // get event details
+                            _dataModelManager.GetDefaultDataModel(Enums.SQLOperation.SELECT, DBEntityNames.Tables.Event.ToString());
+                            _dataModelManager.AddFilter(DBEntityNames.Event.EventId.ToString(), Enums.ParameterType._string, "AbortApproval", Enums.CompareOperator.equal, Enums.LogicalOperator.and);
+                            _dataModelManager.AddFilter(DBEntityNames.Event.InstanceId.ToString(), Enums.ParameterType._int, row["InstanceId"].ToString(), Enums.CompareOperator.equal, Enums.LogicalOperator.none);
+                            _dataModelManager.AddResultSet(new List<string> { DBEntityNames.Event.Id.ToString() });
+                            var events = _manager.SelectData(_dataModelManager.DataModel);
+
+                            // invoke AbortApproval in process instance
+                            var obj = new
+                            {
+                                graphId = instance.Rows[0]["GraphId"].ToString(),
+                                simulationId = instance.Rows[0]["SimulationId"].ToString(),
+                                instanceId = row["InstanceId"].ToString(),
+                                eventId = "AbortApproval",
+                                trueEventId = events.Rows[0]["Id"].ToString()
+                            };
+
+                            var serviceModel = new ServiceModel()
+                            {
+                                BaseUrl = Request.RequestUri.GetLeftPart(UriPartial.Authority),
+                                Body = "",
+                                MethodType = RestSharp.Method.POST,
+                                Url = "api/services/ExecuteEvent"
+                            };
+                            var req = _service.GetRequest(serviceModel);
+                            req.AddParameter("application/json", SimpleJson.SerializeObject(obj), ParameterType.RequestBody);
+
+                            var client = new RestClient
+                            {
+                                BaseUrl = new Uri(serviceModel.BaseUrl)
+                            };
+                            client.Authenticator = new NtlmAuthenticator();
+                            IRestResponse res = client.Execute(req);
+                            if (res.StatusCode >= System.Net.HttpStatusCode.BadRequest)
+                            {
+                                throw new Exception(res.Content);
+                            }
+
+                        }
+                    }
+
+                    var graphXml = string.Empty;
+                    graphXml = _dCRService.GetProcess(process.GraphId);
+
+                    _dataModelManager.GetDefaultDataModel(Enums.SQLOperation.INSERT, DBEntityNames.Tables.ProcessHistory.ToString());
+                    _dataModelManager.AddParameter(DBEntityNames.ProcessHistory.Title.ToString(), Enums.ParameterType._string, process.Title);
+                    _dataModelManager.AddParameter(DBEntityNames.ProcessHistory.GraphId.ToString(), Enums.ParameterType._int, process.GraphId.ToString());
+                    _dataModelManager.AddParameter(DBEntityNames.ProcessHistory.DCRXML.ToString(), Enums.ParameterType._xml, graphXml);
+                    _dataModelManager.AddParameter(DBEntityNames.ProcessHistory.InstanceId.ToString(), Enums.ParameterType._int, process.InstanceId);
+                    _dataModelManager.AddParameter(DBEntityNames.ProcessHistory.State.ToString(), Enums.ParameterType._int, "0");
+                    _dataModelManager.AddParameter(DBEntityNames.ProcessHistory.Owner.ToString(), Enums.ParameterType._int, Common.GetResponsibleId());
+
+                    var response = _dCRService.GetMajorRevisions(process.GraphId);
+                    var xmlDocument = new XmlDocument();
+                    xmlDocument.LoadXml(response);
+
+                    var majorVersionId = 0;
+
+                    var childs = xmlDocument.ChildNodes;
+                    if (childs.Count > 0)
+                    {
+                        var majorVersionIds = new List<int>();
+                        var majorVersionDate = new Dictionary<int, DateTime>();
+                        var majorVersionTitle = new Dictionary<int, string>();
+
+                        foreach (XmlNode node in childs)
+                        {
+                            foreach (XmlNode nodes in node)
+                            {
+                                majorVersionIds.Add(int.Parse(nodes.Attributes["id"].Value));
+                                majorVersionTitle.Add(int.Parse(nodes.Attributes["id"].Value), nodes.Attributes["title"].Value);
+                                majorVersionDate.Add(int.Parse(nodes.Attributes["id"].Value), DateTime.Parse(nodes.Attributes["date"].Value));
+                            }
+                        }
+                        if (majorVersionIds.Count > 0)
+                        {
+                            majorVersionId = majorVersionIds.Max();
+                            var title = majorVersionTitle[majorVersionId];
+                            var date = majorVersionDate[majorVersionId];
+
+
+                            _dataModelManager.AddParameter(DBEntityNames.ProcessHistory.MajorVerisonDate.ToString(), Enums.ParameterType._datetime, date.ToString());
+                            _dataModelManager.AddParameter(DBEntityNames.ProcessHistory.MajorVersionId.ToString(), Enums.ParameterType._int, majorVersionId.ToString());
+                            _dataModelManager.AddParameter(DBEntityNames.ProcessHistory.MajorVersionTitle.ToString(), Enums.ParameterType._string, title);
+                        }
+                    }
+                    try
+                    {
+                        var processId = _manager.InsertData(_dataModelManager.DataModel);
+                        countAdded++;
+                    }
+                    catch (Exception ex)
+                    {
+                        Common.LogInfo(_manager, _dataModelManager, "AddProcessRevision - Failed. - " + Common.ToJson(process));
+                        Common.LogError(ex);
+                        return InternalServerError(ex);
+                    }
+                }
+
+                if (countAdded > 0)
+                    return Ok(countAdded);
+                else
+                    return BadRequest("No Revision is added");
+            }
+            catch (Exception ex)
+            {
+                Common.LogInfo(_manager, _dataModelManager, "AddProcessRevision - Failed. " + Common.ToJson(input));
+                Common.LogError(ex);
+                return InternalServerError(ex);
+            }
         }
 
         /// <summary>
@@ -146,20 +467,30 @@ namespace OpenCaseManager.Controllers.ApiControllers
         // POST api/values
         public IHttpActionResult UpdateProcess(dynamic input)
         {
-            var processId = input["processId"].ToString();
-            var processTitle = input["processTitle"].ToString();
-            var processStatus = input["processStatus"].ToString();
-            var showOnFronPage = input["showOnFronPage"].ToString();
+            try
+            {
+                var graphId = input["graphId"].ToString();
+                var processTitle = input["processTitle"].ToString();
+                var processStatus = input["processStatus"].ToString();
+                var showOnFronPage = input["showOnFronPage"].ToString();
 
-            _dataModelManager.GetDefaultDataModel(Enums.SQLOperation.UPDATE, DBEntityNames.Tables.Process.ToString());
-            _dataModelManager.AddParameter(DBEntityNames.Process.Title.ToString(), Enums.ParameterType._string, processTitle);
-            _dataModelManager.AddParameter(DBEntityNames.Process.Status.ToString(), Enums.ParameterType._boolean, processStatus);
-            _dataModelManager.AddParameter(DBEntityNames.Process.OnFrontPage.ToString(), Enums.ParameterType._boolean, showOnFronPage);
-            _dataModelManager.AddParameter(DBEntityNames.Process.Modified.ToString(), Enums.ParameterType._datetime, DateTime.Now.ToString());
-            _dataModelManager.AddFilter(DBEntityNames.Process.Id.ToString(), Enums.ParameterType._int, processId, Enums.CompareOperator.equal, Enums.LogicalOperator.none);
+                _dataModelManager.GetDefaultDataModel(Enums.SQLOperation.UPDATE, DBEntityNames.Tables.Process.ToString());
+                _dataModelManager.AddParameter(DBEntityNames.Process.Title.ToString(), Enums.ParameterType._string, processTitle);
+                _dataModelManager.AddParameter(DBEntityNames.Process.Status.ToString(), Enums.ParameterType._boolean, processStatus);
+                _dataModelManager.AddParameter(DBEntityNames.Process.OnFrontPage.ToString(), Enums.ParameterType._boolean, showOnFronPage);
+                _dataModelManager.AddParameter(DBEntityNames.Process.Modified.ToString(), Enums.ParameterType._datetime, DateTime.Now.ToString());
+                _dataModelManager.AddFilter(DBEntityNames.Process.GraphId.ToString(), Enums.ParameterType._int, graphId, Enums.CompareOperator.equal, Enums.LogicalOperator.none);
 
-            _manager.UpdateData(_dataModelManager.DataModel);
-            return Ok(Common.ToJson(new { }));
+                _manager.UpdateData(_dataModelManager.DataModel);
+                return Ok(Common.ToJson(new { }));
+            }
+            catch (Exception ex)
+            {
+                Common.LogInfo(_manager, _dataModelManager, "UpdateProcess - Failed. - " + Common.ToJson(input));
+                Common.LogError(ex);
+                return InternalServerError(ex);
+            }
+
         }
 
         /// <summary>
@@ -172,11 +503,21 @@ namespace OpenCaseManager.Controllers.ApiControllers
         // POST api/values
         public IHttpActionResult UpdateProcessFromDCR(dynamic input)
         {
-            var processId = input["processId"].ToString();
-            var graphId = input["graphId"].ToString();
+            try
+            {
+                var processId = input["processId"].ToString();
+                var graphId = input["graphId"].ToString();
 
-            UpdateProcessAndPhases(processId, graphId);
-            return Ok(Common.ToJson(new { }));
+                UpdateProcessAndPhases(processId, graphId);
+                return Ok(Common.ToJson(new { }));
+            }
+            catch (Exception ex)
+            {
+                Common.LogInfo(_manager, _dataModelManager, "UpdateProcessFromDCR - Failed. - " + Common.ToJson(input));
+                Common.LogError(ex);
+                return InternalServerError(ex);
+            }
+
         }
 
         /// <summary>
@@ -188,34 +529,43 @@ namespace OpenCaseManager.Controllers.ApiControllers
         [Route("AddForm")]
         public IHttpActionResult AddForm(dynamic input)
         {
-            var isFromTemplate = Boolean.Parse(input["isFromTemplate"].ToString());
-            var templateFormId = input["templateFormId"].ToString();
-
-            // new form data model
-            _dataModelManager.GetDefaultDataModel(Enums.SQLOperation.INSERT, DBEntityNames.Tables.Form.ToString());
-            _dataModelManager.AddParameter(DBEntityNames.Form.Title.ToString(), Enums.ParameterType._string, "Untitled");
-            _dataModelManager.AddParameter(DBEntityNames.Form.IsTemplate.ToString(), Enums.ParameterType._boolean, bool.FalseString);
-            _dataModelManager.AddParameter(DBEntityNames.Form.UserId.ToString(), Enums.ParameterType._int, Common.GetResponsibleId());
-            if (isFromTemplate)
+            try
             {
-                _dataModelManager.AddParameter(DBEntityNames.Form.FormTemplateId.ToString(), Enums.ParameterType._string, templateFormId);
+                var isFromTemplate = Boolean.Parse(input["isFromTemplate"].ToString());
+                var templateFormId = input["templateFormId"].ToString();
+
+                // new form data model
+                _dataModelManager.GetDefaultDataModel(Enums.SQLOperation.INSERT, DBEntityNames.Tables.Form.ToString());
+                _dataModelManager.AddParameter(DBEntityNames.Form.Title.ToString(), Enums.ParameterType._string, "Untitled");
+                _dataModelManager.AddParameter(DBEntityNames.Form.IsTemplate.ToString(), Enums.ParameterType._boolean, bool.FalseString);
+                _dataModelManager.AddParameter(DBEntityNames.Form.UserId.ToString(), Enums.ParameterType._int, Common.GetResponsibleId());
+                if (isFromTemplate)
+                {
+                    _dataModelManager.AddParameter(DBEntityNames.Form.FormTemplateId.ToString(), Enums.ParameterType._string, templateFormId);
+                }
+
+                var dataTable = _manager.InsertData(_dataModelManager.DataModel);
+                var formId = 0;
+                if (dataTable.Rows.Count > 0)
+                    formId = int.Parse(dataTable.Rows[0][DBEntityNames.Form.Id.ToString()].ToString());
+
+                if (isFromTemplate)
+                {
+                    _dataModelManager.GetDefaultDataModel(Enums.SQLOperation.SP, DBEntityNames.StoredProcedures.CopyFormFromTemplate.ToString());
+                    _dataModelManager.AddParameter(DBEntityNames.CopyFormFromTemplate.FormId.ToString(), Enums.ParameterType._int, formId.ToString());
+                    _dataModelManager.AddParameter(DBEntityNames.CopyFormFromTemplate.TemplateId.ToString(), Enums.ParameterType._int, templateFormId);
+
+                    _manager.ExecuteStoredProcedure(_dataModelManager.DataModel);
+                }
+
+                return Ok(Common.ToJson(formId));
             }
-
-            var dataTable = _manager.InsertData(_dataModelManager.DataModel);
-            var formId = 0;
-            if (dataTable.Rows.Count > 0)
-                formId = int.Parse(dataTable.Rows[0][DBEntityNames.Form.Id.ToString()].ToString());
-
-            if (isFromTemplate)
+            catch (Exception ex)
             {
-                _dataModelManager.GetDefaultDataModel(Enums.SQLOperation.SP, DBEntityNames.StoredProcedures.CopyFormFromTemplate.ToString());
-                _dataModelManager.AddParameter(DBEntityNames.CopyFormFromTemplate.FormId.ToString(), Enums.ParameterType._int, formId.ToString());
-                _dataModelManager.AddParameter(DBEntityNames.CopyFormFromTemplate.TemplateId.ToString(), Enums.ParameterType._int, templateFormId);
-
-                _manager.ExecuteStoreProcedure(_dataModelManager.DataModel);
+                Common.LogInfo(_manager, _dataModelManager, "AddForm - Failed. - " + Common.ToJson(input));
+                Common.LogError(ex);
+                return InternalServerError(ex);
             }
-
-            return Ok(Common.ToJson(formId));
         }
 
         /// <summary>
@@ -227,18 +577,27 @@ namespace OpenCaseManager.Controllers.ApiControllers
         [Route("UpdateForm")]
         public IHttpActionResult UpdateForm(dynamic input)
         {
-            var isTemplate = input["isTemplate"].ToString();
-            var title = input["title"].ToString();
-            var formId = input["id"].ToString();
+            try
+            {
+                var isTemplate = input["isTemplate"].ToString();
+                var title = input["title"].ToString();
+                var formId = input["id"].ToString();
 
-            _dataModelManager.GetDefaultDataModel(Enums.SQLOperation.UPDATE, DBEntityNames.Tables.Form.ToString());
-            _dataModelManager.AddParameter(DBEntityNames.Form.Title.ToString(), Enums.ParameterType._string, title);
-            _dataModelManager.AddParameter(DBEntityNames.Form.IsTemplate.ToString(), Enums.ParameterType._boolean, isTemplate);
-            _dataModelManager.AddFilter(DBEntityNames.Form.Id.ToString(), Enums.ParameterType._int, formId, Enums.CompareOperator.equal, Enums.LogicalOperator.none);
+                _dataModelManager.GetDefaultDataModel(Enums.SQLOperation.UPDATE, DBEntityNames.Tables.Form.ToString());
+                _dataModelManager.AddParameter(DBEntityNames.Form.Title.ToString(), Enums.ParameterType._string, title);
+                _dataModelManager.AddParameter(DBEntityNames.Form.IsTemplate.ToString(), Enums.ParameterType._boolean, isTemplate);
+                _dataModelManager.AddFilter(DBEntityNames.Form.Id.ToString(), Enums.ParameterType._int, formId, Enums.CompareOperator.equal, Enums.LogicalOperator.none);
 
-            var dataTable = _manager.UpdateData(_dataModelManager.DataModel);
+                var dataTable = _manager.UpdateData(_dataModelManager.DataModel);
 
-            return Ok(Common.ToJson(formId));
+                return Ok(Common.ToJson(formId));
+            }
+            catch (Exception ex)
+            {
+                Common.LogInfo(_manager, _dataModelManager, "UpdateForm - Failed. - " + Common.ToJson(input));
+                Common.LogError(ex);
+                return InternalServerError(ex);
+            }
         }
 
         /// <summary>
@@ -250,29 +609,38 @@ namespace OpenCaseManager.Controllers.ApiControllers
         [Route("AddQuestion")]
         public IHttpActionResult AddQuestion(dynamic input)
         {
-            var formId = input["formId"].ToString();
-            var itemText = input["itemText"].ToString();
-            var sequenceNumber = input["sequenceNumber"].ToString();
-            var itemId = input["itemId"];
-            var isGroup = input["isGroup"].ToString();
-
-            _dataModelManager.GetDefaultDataModel(Enums.SQLOperation.INSERT, DBEntityNames.Tables.FormItem.ToString());
-            _dataModelManager.AddParameter(DBEntityNames.FormItem.FormId.ToString(), Enums.ParameterType._int, formId);
-            _dataModelManager.AddParameter(DBEntityNames.FormItem.IsGroup.ToString(), Enums.ParameterType._boolean, isGroup);
-            _dataModelManager.AddParameter(DBEntityNames.FormItem.SequenceNumber.ToString(), Enums.ParameterType._int, sequenceNumber);
-            _dataModelManager.AddParameter(DBEntityNames.FormItem.ItemText.ToString(), Enums.ParameterType._string, itemText);
-            if (itemId != null)
+            try
             {
-                _dataModelManager.AddParameter(DBEntityNames.FormItem.ItemId.ToString(), Enums.ParameterType._int, itemId.ToString());
+                var formId = input["formId"].ToString();
+                var itemText = input["itemText"].ToString();
+                var sequenceNumber = input["sequenceNumber"].ToString();
+                var itemId = input["itemId"];
+                var isGroup = input["isGroup"].ToString();
+
+                _dataModelManager.GetDefaultDataModel(Enums.SQLOperation.INSERT, DBEntityNames.Tables.FormItem.ToString());
+                _dataModelManager.AddParameter(DBEntityNames.FormItem.FormId.ToString(), Enums.ParameterType._int, formId);
+                _dataModelManager.AddParameter(DBEntityNames.FormItem.IsGroup.ToString(), Enums.ParameterType._boolean, isGroup);
+                _dataModelManager.AddParameter(DBEntityNames.FormItem.SequenceNumber.ToString(), Enums.ParameterType._int, sequenceNumber);
+                _dataModelManager.AddParameter(DBEntityNames.FormItem.ItemText.ToString(), Enums.ParameterType._string, itemText);
+                if (itemId != null)
+                {
+                    _dataModelManager.AddParameter(DBEntityNames.FormItem.ItemId.ToString(), Enums.ParameterType._int, itemId.ToString());
+                }
+
+                var dataTable = _manager.InsertData(_dataModelManager.DataModel);
+
+                var questionId = 0;
+                if (dataTable.Rows.Count > 0)
+                    questionId = int.Parse(dataTable.Rows[0][DBEntityNames.FormItem.Id.ToString()].ToString());
+
+                return Ok(Common.ToJson(questionId));
             }
-
-            var dataTable = _manager.InsertData(_dataModelManager.DataModel);
-
-            var questionId = 0;
-            if (dataTable.Rows.Count > 0)
-                questionId = int.Parse(dataTable.Rows[0][DBEntityNames.FormItem.Id.ToString()].ToString());
-
-            return Ok(Common.ToJson(questionId));
+            catch (Exception ex)
+            {
+                Common.LogInfo(_manager, _dataModelManager, "AddQuestion - Failed. - " + Common.ToJson(input));
+                Common.LogError(ex);
+                return InternalServerError(ex);
+            }
         }
 
         /// <summary>
@@ -284,18 +652,27 @@ namespace OpenCaseManager.Controllers.ApiControllers
         [Route("SetQuestionSequence")]
         public IHttpActionResult SetQuestionSequence(dynamic input)
         {
-            var itemId = input["itemId"].ToString();
-            var parentId = input["targetId"].ToString();
-            var position = input["position"].ToString();
+            try
+            {
+                var itemId = input["itemId"].ToString();
+                var parentId = input["targetId"].ToString();
+                var position = input["position"].ToString();
 
-            _dataModelManager.GetDefaultDataModel(Enums.SQLOperation.SP, DBEntityNames.StoredProcedures.SetFormItemSequence.ToString());
-            _dataModelManager.AddParameter(DBEntityNames.SetFormItemSequence.Source.ToString(), Enums.ParameterType._int, itemId);
-            _dataModelManager.AddParameter(DBEntityNames.SetFormItemSequence.Target.ToString(), Enums.ParameterType._int, parentId);
-            _dataModelManager.AddParameter(DBEntityNames.SetFormItemSequence.Position.ToString(), Enums.ParameterType._int, position);
+                _dataModelManager.GetDefaultDataModel(Enums.SQLOperation.SP, DBEntityNames.StoredProcedures.SetFormItemSequence.ToString());
+                _dataModelManager.AddParameter(DBEntityNames.SetFormItemSequence.Source.ToString(), Enums.ParameterType._int, itemId);
+                _dataModelManager.AddParameter(DBEntityNames.SetFormItemSequence.Target.ToString(), Enums.ParameterType._int, parentId);
+                _dataModelManager.AddParameter(DBEntityNames.SetFormItemSequence.Position.ToString(), Enums.ParameterType._int, position);
 
-            var dataTable = _manager.ExecuteStoreProcedure(_dataModelManager.DataModel);
+                var dataTable = _manager.ExecuteStoredProcedure(_dataModelManager.DataModel);
 
-            return Ok(Common.ToJson(new { }));
+                return Ok(Common.ToJson(new { }));
+            }
+            catch (Exception ex)
+            {
+                Common.LogInfo(_manager, _dataModelManager, "SetQuestionSequence - Failed. - " + Common.ToJson(input));
+                Common.LogError(ex);
+                return InternalServerError(ex);
+            }
         }
 
         /// <summary>
@@ -307,14 +684,23 @@ namespace OpenCaseManager.Controllers.ApiControllers
         [Route("DeleteQuestion")]
         public IHttpActionResult DeleteQuestion(dynamic input)
         {
-            var itemId = input["itemId"].ToString();
+            try
+            {
+                var itemId = input["itemId"].ToString();
 
-            _dataModelManager.GetDefaultDataModel(Enums.SQLOperation.SP, DBEntityNames.StoredProcedures.DeleteFormItem.ToString());
-            _dataModelManager.AddParameter(DBEntityNames.DeleteFormItem.FormItemId.ToString(), Enums.ParameterType._int, itemId);
+                _dataModelManager.GetDefaultDataModel(Enums.SQLOperation.SP, DBEntityNames.StoredProcedures.DeleteFormItem.ToString());
+                _dataModelManager.AddParameter(DBEntityNames.DeleteFormItem.FormItemId.ToString(), Enums.ParameterType._int, itemId);
 
-            var dataTable = _manager.ExecuteStoreProcedure(_dataModelManager.DataModel);
+                var dataTable = _manager.ExecuteStoredProcedure(_dataModelManager.DataModel);
 
-            return Ok(Common.ToJson(new { }));
+                return Ok(Common.ToJson(new { }));
+            }
+            catch (Exception ex)
+            {
+                Common.LogInfo(_manager, _dataModelManager, "DeleteQuestion - Failed. - " + Common.ToJson(input));
+                Common.LogError(ex);
+                return InternalServerError(ex);
+            }
         }
 
         /// <summary>
@@ -326,16 +712,25 @@ namespace OpenCaseManager.Controllers.ApiControllers
         [Route("UpdateQuestion")]
         public IHttpActionResult UpdateQuestion(dynamic input)
         {
-            var itemId = input["itemId"].ToString();
-            var itemText = input["itemText"].ToString();
+            try
+            {
+                var itemId = input["itemId"].ToString();
+                var itemText = input["itemText"].ToString();
 
-            _dataModelManager.GetDefaultDataModel(Enums.SQLOperation.UPDATE, DBEntityNames.Tables.FormItem.ToString());
-            _dataModelManager.AddParameter(DBEntityNames.FormItem.ItemText.ToString(), Enums.ParameterType._string, itemText);
-            _dataModelManager.AddFilter(DBEntityNames.FormItem.Id.ToString(), Enums.ParameterType._int, itemId, Enums.CompareOperator.equal, Enums.LogicalOperator.none);
+                _dataModelManager.GetDefaultDataModel(Enums.SQLOperation.UPDATE, DBEntityNames.Tables.FormItem.ToString());
+                _dataModelManager.AddParameter(DBEntityNames.FormItem.ItemText.ToString(), Enums.ParameterType._string, itemText);
+                _dataModelManager.AddFilter(DBEntityNames.FormItem.Id.ToString(), Enums.ParameterType._int, itemId, Enums.CompareOperator.equal, Enums.LogicalOperator.none);
 
-            var dataTable = _manager.UpdateData(_dataModelManager.DataModel);
+                var dataTable = _manager.UpdateData(_dataModelManager.DataModel);
 
-            return Ok(Common.ToJson(new { }));
+                return Ok(Common.ToJson(new { }));
+            }
+            catch (Exception ex)
+            {
+                Common.LogInfo(_manager, _dataModelManager, "UpdateQuestion - Failed. - " + Common.ToJson(input));
+                Common.LogError(ex);
+                return InternalServerError(ex);
+            }
         }
 
         /// <summary>
@@ -347,17 +742,26 @@ namespace OpenCaseManager.Controllers.ApiControllers
         [Route("AddInstanceCustomAttributes")]
         public IHttpActionResult AddInstanceCustomAttributes(dynamic input)
         {
-            var instanceId = input["instanceId"].ToString();
-            var employee = input["employee"].ToString();
+            try
+            {
+                var instanceId = input["instanceId"].ToString();
+                var employee = input["employee"].ToString();
 
-            _dataModelManager.GetDefaultDataModel(Enums.SQLOperation.INSERT, DBEntityNames.Tables.InstanceExtension.ToString());
-            _dataModelManager.AddParameter(DBEntityNames.InstanceExtension.InstanceId.ToString(), Enums.ParameterType._int, instanceId);
-            _dataModelManager.AddParameter(DBEntityNames.InstanceExtension.Employee.ToString(), Enums.ParameterType._string, employee);
-            _dataModelManager.AddParameter(DBEntityNames.InstanceExtension.Year.ToString(), Enums.ParameterType._int, DateTime.Now.Year.ToString());
+                _dataModelManager.GetDefaultDataModel(Enums.SQLOperation.INSERT, DBEntityNames.Tables.InstanceExtension.ToString());
+                _dataModelManager.AddParameter(DBEntityNames.InstanceExtension.InstanceId.ToString(), Enums.ParameterType._int, instanceId);
+                _dataModelManager.AddParameter(DBEntityNames.InstanceExtension.Employee.ToString(), Enums.ParameterType._string, employee);
+                _dataModelManager.AddParameter(DBEntityNames.InstanceExtension.Year.ToString(), Enums.ParameterType._int, DateTime.Now.Year.ToString());
 
-            var dataTable = _manager.InsertData(_dataModelManager.DataModel);
+                var dataTable = _manager.InsertData(_dataModelManager.DataModel);
 
-            return Ok(Common.ToJson(new { }));
+                return Ok(Common.ToJson(new { }));
+            }
+            catch (Exception ex)
+            {
+                Common.LogInfo(_manager, _dataModelManager, "AddInstanceCustomAttributes - Failed. - " + Common.ToJson(input));
+                Common.LogError(ex);
+                return InternalServerError(ex);
+            }
         }
 
         /// <summary>
@@ -368,163 +772,40 @@ namespace OpenCaseManager.Controllers.ApiControllers
         [HttpPost]
         public IHttpActionResult AddDocument()
         {
-            var request = HttpContext.Current.Request;
-            var givenFileName = request.Headers["givenFileName"];
-            var fileName = request.Headers["filename"];
-            var fileType = request.Headers["type"];
-            var instanceId = request.Headers["instanceId"];
-            var eventId = string.Empty;
             try
             {
-                eventId = request.Headers["eventId"];
-            }
-            catch (Exception) { }
-            var eventTime = DateTime.Now;
-            try
-            {
-                eventTime = request.Headers["eventTime"].parseDanishDateToDate();
-            }
-            catch (Exception) { }
-            var isDraft = false;
-            try
-            {
-                isDraft = Convert.ToBoolean(request.Headers["isDraft"]);
-            }
-            catch (Exception) { }
-            var filePath = string.Empty;
-            var documentId = string.Empty;
-            if (fileType == "JournalNoteBig")
-            {
-                var addedDocument = _documentManager.AddDocument(instanceId, fileType, givenFileName, fileName, eventId, isDraft, eventTime, _manager, _dataModelManager);
-                filePath = addedDocument.Item1;
-                documentId = addedDocument.Item2;
-            }
-            else filePath = _documentManager.AddDocument(instanceId, fileType, givenFileName, fileName, eventId, _manager, _dataModelManager);
-            try
-            {
-                using (var fs = new FileStream(filePath, FileMode.Create))
-                {
-                    request.InputStream.CopyTo(fs);
-                }
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-
-            var docId = 0;
-            var parseResult = int.TryParse(documentId, out docId);
-
-            return Ok(Common.ToJson(docId == 0 ? "" : docId.ToString()));
-        }
-
-        /// <summary>
-        /// Update Document
-        /// </summary>
-        /// <returns></returns>
-        [Route("UpdateDocument")]
-        [HttpPost]
-        public IHttpActionResult UpdateDocument()
-        {
-            var request = HttpContext.Current.Request;
-            var id = request.Headers["id"];
-            var givenFileName = request.Headers["givenFileName"];
-            var fileType = request.Headers["type"];
-            var instanceId = request.Headers["instanceId"];
-            var isNewFileAdded = bool.Parse(request.Headers["isNewFileAdded"]);
-            var fileLink = string.Empty;
-            var eventTime = DateTime.Now;
-            try
-            {
-                eventTime = Convert.ToDateTime(request.Headers["eventTime"]);
-            }
-            catch (Exception) { }
-            var isDraft = false;
-            try
-            {
-                isDraft = Convert.ToBoolean(request.Headers["isDraft"]);
-            }
-            catch (Exception) { }
-            if (isNewFileAdded)
-            {
-                DeleteFileFromFileSystem(id, fileType, instanceId);
-
+                var request = HttpContext.Current.Request;
+                var givenFileName = request.Headers["givenFileName"];
                 var fileName = request.Headers["filename"];
-                string ext = Path.GetExtension(fileName);
-                fileLink = DateTime.Now.ToFileTime() + ext;
-                var filePath = string.Empty;
-
-                switch (fileType)
+                var fileType = request.Headers["type"];
+                var instanceId = request.Headers["instanceId"];
+                var eventId = string.Empty;
+                try
                 {
-                    case "PersonalDocument":
-                        var directoryInfo = new DirectoryInfo(Configurations.Config.PersonalFileLocation);
-                        if (!directoryInfo.Exists)
-                        {
-                            directoryInfo.Create();
-                        }
-                        var currentUser = Common.GetCurrentUserName();
-                        directoryInfo = new DirectoryInfo(Configurations.Config.PersonalFileLocation + "\\" + currentUser);
-                        if (!directoryInfo.Exists)
-                        {
-                            directoryInfo.Create();
-                        }
-                        filePath = directoryInfo.FullName;
-                        break;
-                    case "InstanceDocument":
-                        directoryInfo = new DirectoryInfo(Configurations.Config.InstanceFileLocation);
-                        if (!directoryInfo.Exists)
-                        {
-                            directoryInfo.Create();
-                        }
-                        directoryInfo = new DirectoryInfo(Configurations.Config.InstanceFileLocation + "\\" + instanceId);
-                        if (!directoryInfo.Exists)
-                        {
-                            directoryInfo.Create();
-                        }
-                        filePath = directoryInfo.FullName;
-                        break;
-                    case "JournalNoteImportant":
-                        directoryInfo = new DirectoryInfo(Configurations.Config.JournalNoteFileLocation);
-                        if (!directoryInfo.Exists)
-                        {
-                            directoryInfo.Create();
-                        }
-                        directoryInfo = new DirectoryInfo(Configurations.Config.JournalNoteFileLocation + "\\" + instanceId);
-                        if (!directoryInfo.Exists)
-                        {
-                            directoryInfo.Create();
-                        }
-                        filePath = directoryInfo.FullName;
-                        break;
-                    case "JournalNoteLittle": //Should only temporarily be allowed to be edited
-                        directoryInfo = new DirectoryInfo(Configurations.Config.JournalNoteFileLocation);
-                        if (!directoryInfo.Exists)
-                        {
-                            directoryInfo.Create();
-                        }
-                        directoryInfo = new DirectoryInfo(Configurations.Config.JournalNoteFileLocation + "\\" + instanceId);
-                        if (!directoryInfo.Exists)
-                        {
-                            directoryInfo.Create();
-                        }
-                        filePath = directoryInfo.FullName;
-                        break;
-                    case "JournalNoteBig": //Should only temporarily be allowed to be edited
-                        directoryInfo = new DirectoryInfo(Configurations.Config.JournalNoteFileLocation);
-                        if (!directoryInfo.Exists)
-                        {
-                            directoryInfo.Create();
-                        }
-                        directoryInfo = new DirectoryInfo(Configurations.Config.JournalNoteFileLocation + "\\" + instanceId);
-                        if (!directoryInfo.Exists)
-                        {
-                            directoryInfo.Create();
-                        }
-                        filePath = directoryInfo.FullName;
-                        break;
+                    eventId = request.Headers["eventId"];
                 }
-                filePath = filePath + "\\" + fileLink;
-
+                catch (Exception) { }
+                var eventTime = DateTime.Now;
+                try
+                {
+                    eventTime = request.Headers["eventTime"].parseDanishDateToDate();
+                }
+                catch (Exception) { }
+                var isDraft = false;
+                try
+                {
+                    isDraft = Convert.ToBoolean(request.Headers["isDraft"]);
+                }
+                catch (Exception) { }
+                var filePath = string.Empty;
+                var documentId = string.Empty;
+                if (fileType == "JournalNoteBig")
+                {
+                    var addedDocument = _documentManager.AddDocument(instanceId, fileType, givenFileName, fileName, eventId, isDraft, eventTime, _manager, _dataModelManager);
+                    filePath = addedDocument.Item1;
+                    documentId = addedDocument.Item2;
+                }
+                else filePath = _documentManager.AddDocument(instanceId, fileType, givenFileName, fileName, eventId, _manager, _dataModelManager);
                 try
                 {
                     using (var fs = new FileStream(filePath, FileMode.Create))
@@ -536,13 +817,153 @@ namespace OpenCaseManager.Controllers.ApiControllers
                 {
                     throw ex;
                 }
-            }
-            UpdateDocument(id, givenFileName, fileLink, isDraft.ToString());
-            if (fileType == "JournalNoteBig") UpdateJournalHistoryDocument(id, givenFileName, eventTime);
 
-            return Ok(Common.ToJson(new { }));
+                var docId = 0;
+                var parseResult = int.TryParse(documentId, out docId);
+
+                return Ok(Common.ToJson(docId == 0 ? "" : docId.ToString()));
+            }
+            catch (Exception ex)
+            {
+                Common.LogInfo(_manager, _dataModelManager, "AddDocument - Failed. - " + Common.ToJson(Request.Headers));
+                Common.LogError(ex);
+                return InternalServerError(ex);
+            }
         }
 
+        /// <summary>
+        /// Update Document
+        /// </summary>
+        /// <returns></returns>
+        [Route("UpdateDocument")]
+        [HttpPost]
+        public IHttpActionResult UpdateDocument()
+        {
+            try
+            {
+                var request = HttpContext.Current.Request;
+                var id = request.Headers["id"];
+                var givenFileName = request.Headers["givenFileName"];
+                var fileType = request.Headers["type"];
+                var instanceId = request.Headers["instanceId"];
+                var isNewFileAdded = bool.Parse(request.Headers["isNewFileAdded"]);
+                var fileLink = string.Empty;
+                var eventTime = DateTime.Now;
+                try
+                {
+                    eventTime = Convert.ToDateTime(request.Headers["eventTime"]);
+                }
+                catch (Exception) { }
+                var isDraft = false;
+                try
+                {
+                    isDraft = Convert.ToBoolean(request.Headers["isDraft"]);
+                }
+                catch (Exception) { }
+                if (isNewFileAdded)
+                {
+                    DeleteFileFromFileSystem(id, fileType, instanceId);
+
+                    var fileName = request.Headers["filename"];
+                    string ext = Path.GetExtension(fileName);
+                    fileLink = DateTime.Now.ToFileTime() + ext;
+                    var filePath = string.Empty;
+
+                    switch (fileType)
+                    {
+                        case "PersonalDocument":
+                            var directoryInfo = new DirectoryInfo(Configurations.Config.PersonalFileLocation);
+                            if (!directoryInfo.Exists)
+                            {
+                                directoryInfo.Create();
+                            }
+                            var currentUser = Common.GetCurrentUserName();
+                            directoryInfo = new DirectoryInfo(Configurations.Config.PersonalFileLocation + "\\" + currentUser);
+                            if (!directoryInfo.Exists)
+                            {
+                                directoryInfo.Create();
+                            }
+                            filePath = directoryInfo.FullName;
+                            break;
+                        case "InstanceDocument":
+                            directoryInfo = new DirectoryInfo(Configurations.Config.InstanceFileLocation);
+                            if (!directoryInfo.Exists)
+                            {
+                                directoryInfo.Create();
+                            }
+                            directoryInfo = new DirectoryInfo(Configurations.Config.InstanceFileLocation + "\\" + instanceId);
+                            if (!directoryInfo.Exists)
+                            {
+                                directoryInfo.Create();
+                            }
+                            filePath = directoryInfo.FullName;
+                            break;
+                        case "JournalNoteImportant":
+                            directoryInfo = new DirectoryInfo(Configurations.Config.JournalNoteFileLocation);
+                            if (!directoryInfo.Exists)
+                            {
+                                directoryInfo.Create();
+                            }
+                            directoryInfo = new DirectoryInfo(Configurations.Config.JournalNoteFileLocation + "\\" + instanceId);
+                            if (!directoryInfo.Exists)
+                            {
+                                directoryInfo.Create();
+                            }
+                            filePath = directoryInfo.FullName;
+                            break;
+                        case "JournalNoteLittle": //Should only temporarily be allowed to be edited
+                            directoryInfo = new DirectoryInfo(Configurations.Config.JournalNoteFileLocation);
+                            if (!directoryInfo.Exists)
+                            {
+                                directoryInfo.Create();
+                            }
+                            directoryInfo = new DirectoryInfo(Configurations.Config.JournalNoteFileLocation + "\\" + instanceId);
+                            if (!directoryInfo.Exists)
+                            {
+                                directoryInfo.Create();
+                            }
+                            filePath = directoryInfo.FullName;
+                            break;
+                        case "JournalNoteBig": //Should only temporarily be allowed to be edited
+                            directoryInfo = new DirectoryInfo(Configurations.Config.JournalNoteFileLocation);
+                            if (!directoryInfo.Exists)
+                            {
+                                directoryInfo.Create();
+                            }
+                            directoryInfo = new DirectoryInfo(Configurations.Config.JournalNoteFileLocation + "\\" + instanceId);
+                            if (!directoryInfo.Exists)
+                            {
+                                directoryInfo.Create();
+                            }
+                            filePath = directoryInfo.FullName;
+                            break;
+                    }
+                    filePath = filePath + "\\" + fileLink;
+
+                    try
+                    {
+                        using (var fs = new FileStream(filePath, FileMode.Create))
+                        {
+                            request.InputStream.CopyTo(fs);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        throw ex;
+                    }
+                }
+                UpdateDocument(id, givenFileName, fileLink, isDraft.ToString());
+                if (fileType == "JournalNoteBig") UpdateJournalHistoryDocument(id, givenFileName, eventTime);
+
+                return Ok(Common.ToJson(new { }));
+            }
+            catch (Exception ex)
+            {
+                Common.LogInfo(_manager, _dataModelManager, "UpdateDocument - Failed. - " + Common.ToJson(Request.Headers));
+                Common.LogError(ex);
+                return InternalServerError(ex);
+            }
+        }
 
         /// <summary>
         /// Delete Document
@@ -553,18 +974,27 @@ namespace OpenCaseManager.Controllers.ApiControllers
         [HttpPost]
         public IHttpActionResult DeleteDocument(dynamic input)
         {
-            var id = input["Id"].ToString();
-            var type = input["Type"].ToString();
-            var instanceId = input["InstanceId"].ToString();
-
-            // delete document from filesystem
-            var isDeleted = DeleteFileFromFileSystem(id, type, instanceId);
-            if (isDeleted)
+            try
             {
-                // delete document from DB
-                DeleteDocument(id);
+                var id = input["Id"].ToString();
+                var type = input["Type"].ToString();
+                var instanceId = input["InstanceId"].ToString();
+
+                // delete document from filesystem
+                var isDeleted = DeleteFileFromFileSystem(id, type, instanceId);
+                if (isDeleted)
+                {
+                    // delete document from DB
+                    DeleteDocument(id);
+                }
+                return Ok(Common.ToJson(new { }));
             }
-            return Ok(Common.ToJson(new { }));
+            catch (Exception ex)
+            {
+                Common.LogInfo(_manager, _dataModelManager, "DeleteDocument - Failed. - " + Common.ToJson(input));
+                Common.LogError(ex);
+                return InternalServerError(ex);
+            }
         }
 
         /// <summary>
@@ -576,11 +1006,20 @@ namespace OpenCaseManager.Controllers.ApiControllers
         [HttpPost]
         public IHttpActionResult GetDocumentsUrl(dynamic input)
         {
-            var type = input["Type"].ToString();
-            var instanceId = input["InstanceId"].ToString();
-            var documentsUrl = CopyToTempFolder(type, instanceId);
+            try
+            {
+                var type = input["Type"].ToString();
+                var instanceId = input["InstanceId"].ToString();
+                var documentsUrl = CopyToTempFolder(type, instanceId);
 
-            return Ok(Common.ToJson(documentsUrl));
+                return Ok(Common.ToJson(documentsUrl));
+            }
+            catch (Exception ex)
+            {
+                Common.LogInfo(_manager, _dataModelManager, "GetDocumentsUrl - Failed. - " + Common.ToJson(input));
+                Common.LogError(ex);
+                return InternalServerError(ex);
+            }
         }
 
         /// <summary>
@@ -592,21 +1031,30 @@ namespace OpenCaseManager.Controllers.ApiControllers
         [HttpPost]
         public IHttpActionResult CleanUpTempDocuments(dynamic input)
         {
-            var urls = new List<string>();
-            for (var i = 0; i < input["docsUrl"].Count; i++)
+            try
             {
-                urls.Add(AppDomain.CurrentDomain.BaseDirectory + "tmp" + input["docsUrl"][i].ToString().Split(new string[] { "tmp" }, StringSplitOptions.None)[1]);
-            }
-
-            foreach (var url in urls)
-            {
-                var fileInfo = new FileInfo(url);
-                if (fileInfo.Exists)
+                var urls = new List<string>();
+                for (var i = 0; i < input["docsUrl"].Count; i++)
                 {
-                    fileInfo.Directory.Delete(true);
+                    urls.Add(AppDomain.CurrentDomain.BaseDirectory + "tmp" + input["docsUrl"][i].ToString().Split(new string[] { "tmp" }, StringSplitOptions.None)[1]);
                 }
+
+                foreach (var url in urls)
+                {
+                    var fileInfo = new FileInfo(url);
+                    if (fileInfo.Exists)
+                    {
+                        fileInfo.Directory.Delete(true);
+                    }
+                }
+                return Ok(Common.ToJson(new { }));
             }
-            return Ok(Common.ToJson(new { }));
+            catch (Exception ex)
+            {
+                Common.LogInfo(_manager, _dataModelManager, "CleanUpTempDocuments - Failed. - " + Common.ToJson(input));
+                Common.LogError(ex);
+                return InternalServerError(ex);
+            }
         }
 
         /// <summary>
@@ -618,10 +1066,19 @@ namespace OpenCaseManager.Controllers.ApiControllers
         [HttpPost]
         public IHttpActionResult ReplaceEventTypeParamsKeys(dynamic input)
         {
-            var eventTypeValue = input["eventTypeValue"].ToString();
-            var instanceId = input["instanceId"].ToString();
-            var actualValue = Common.ReplaceEventTypeKeyValues(eventTypeValue, instanceId, _manager, _dataModelManager);
-            return Ok(actualValue);
+            try
+            {
+                var eventTypeValue = input["eventTypeValue"].ToString();
+                var instanceId = input["instanceId"].ToString();
+                var actualValue = Common.ReplaceEventTypeKeyValues(eventTypeValue, instanceId, _manager, _dataModelManager);
+                return Ok(actualValue);
+            }
+            catch (Exception ex)
+            {
+                Common.LogInfo(_manager, _dataModelManager, "ReplaceEventTypeParamsKeys - Failed. - " + Common.ToJson(input));
+                Common.LogError(ex);
+                return InternalServerError(ex);
+            }
         }
 
         /// <summary>
@@ -633,33 +1090,42 @@ namespace OpenCaseManager.Controllers.ApiControllers
         [HttpPost]
         public IHttpActionResult UploadFormToPersonalFolder(dynamic input)
         {
-            var formId = input["formId"].ToString();
-            var formName = input["formName"].ToString();
-            var documentType = input["type"].ToString();
-
-            var givenFileName = String.Format("{0:yyyyMMdd}", DateTime.Now) + "_" + formName;
-            var fileName = givenFileName;
-            byte[] data = { };
-
-            if (documentType == "word")
+            try
             {
-                fileName += ".docx";
+                var formId = input["formId"].ToString();
+                var formName = input["formName"].ToString();
+                var documentType = input["type"].ToString();
 
-                var html = Common.GetFormHtml(formId, _manager, _dataModelManager);
-                var path = Common.GetFormWordPath(html, _service);
-                var formDocumentPath = JsonConvert.DeserializeObject<dynamic>(path);
-                data = File.ReadAllBytes(formDocumentPath.success.ToString());
+                var givenFileName = String.Format("{0:yyyyMMdd}", DateTime.Now) + "_" + formName;
+                var fileName = givenFileName;
+                byte[] data = { };
+
+                if (documentType == "word")
+                {
+                    fileName += ".docx";
+
+                    var html = Common.GetFormHtml(formId, _manager, _dataModelManager);
+                    var path = Common.GetFormWordPath(html, _service);
+                    var formDocumentPath = JsonConvert.DeserializeObject<dynamic>(path);
+                    data = File.ReadAllBytes(formDocumentPath.success.ToString());
+                }
+                else if (documentType == "pdf")
+                {
+                    fileName += ".pdf";
+                    data = Common.GetFormData(formId, _manager, _dataModelManager);
+                }
+
+                var filePath = _documentManager.AddDocument(string.Empty, "Personal", givenFileName, fileName, string.Empty, _manager, _dataModelManager);
+                Common.SaveBytesToFile(filePath, data);
+
+                return Ok(Common.ToJson(new { }));
             }
-            else if (documentType == "pdf")
+            catch (Exception ex)
             {
-                fileName += ".pdf";
-                data = Common.GetFormData(formId, _manager, _dataModelManager);
+                Common.LogInfo(_manager, _dataModelManager, "UploadFormToPersonalFolder - Failed. - " + Common.ToJson(input));
+                Common.LogError(ex);
+                return InternalServerError(ex);
             }
-
-            var filePath = _documentManager.AddDocument(string.Empty, "Personal", givenFileName, fileName, string.Empty, _manager, _dataModelManager);
-            Common.SaveBytesToFile(filePath, data);
-
-            return Ok(Common.ToJson(new { }));
         }
 
         /// <summary>
@@ -671,22 +1137,31 @@ namespace OpenCaseManager.Controllers.ApiControllers
         [HttpPost]
         public IHttpActionResult LogJsError(dynamic input)
         {
-            var message = input["message"].ToString();
-            var source = input["source"].ToString();
-            var stack = input["stack"].ToString();
+            try
+            {
+                var message = input["message"].ToString();
+                var source = input["source"].ToString();
+                var stack = input["stack"].ToString();
 
-            _dataModelManager.GetDefaultDataModel(Enums.SQLOperation.INSERT, DBEntityNames.Tables.Log.ToString());
-            _dataModelManager.AddParameter(DBEntityNames.Log.Level.ToString(), Enums.ParameterType._string, "JsError");
-            _dataModelManager.AddParameter(DBEntityNames.Log.UserName.ToString(), Enums.ParameterType._string, Common.GetCurrentUserName());
-            _dataModelManager.AddParameter(DBEntityNames.Log.ServerName.ToString(), Enums.ParameterType._string, Request.RequestUri.Host);
-            _dataModelManager.AddParameter(DBEntityNames.Log.Port.ToString(), Enums.ParameterType._string, Request.RequestUri.Port.ToString());
-            _dataModelManager.AddParameter(DBEntityNames.Log.Url.ToString(), Enums.ParameterType._string, source);
-            _dataModelManager.AddParameter(DBEntityNames.Log.Https.ToString(), Enums.ParameterType._boolean, Common.IsHttps().ToString());
-            _dataModelManager.AddParameter(DBEntityNames.Log.Message.ToString(), Enums.ParameterType._string, message);
-            _dataModelManager.AddParameter(DBEntityNames.Log.Exception.ToString(), Enums.ParameterType._string, stack);
-            _manager.InsertData(_dataModelManager.DataModel);
+                _dataModelManager.GetDefaultDataModel(Enums.SQLOperation.INSERT, DBEntityNames.Tables.Log.ToString());
+                _dataModelManager.AddParameter(DBEntityNames.Log.Level.ToString(), Enums.ParameterType._string, "JsError");
+                _dataModelManager.AddParameter(DBEntityNames.Log.UserName.ToString(), Enums.ParameterType._string, Common.GetCurrentUserName());
+                _dataModelManager.AddParameter(DBEntityNames.Log.ServerName.ToString(), Enums.ParameterType._string, Request.RequestUri.Host);
+                _dataModelManager.AddParameter(DBEntityNames.Log.Port.ToString(), Enums.ParameterType._string, Request.RequestUri.Port.ToString());
+                _dataModelManager.AddParameter(DBEntityNames.Log.Url.ToString(), Enums.ParameterType._string, source);
+                _dataModelManager.AddParameter(DBEntityNames.Log.Https.ToString(), Enums.ParameterType._boolean, Common.IsHttps().ToString());
+                _dataModelManager.AddParameter(DBEntityNames.Log.Message.ToString(), Enums.ParameterType._string, message);
+                _dataModelManager.AddParameter(DBEntityNames.Log.Exception.ToString(), Enums.ParameterType._string, stack);
+                _manager.InsertData(_dataModelManager.DataModel);
 
-            return Ok(Common.ToJson(new { }));
+                return Ok(Common.ToJson(new { }));
+            }
+            catch (Exception ex)
+            {
+                Common.LogInfo(_manager, _dataModelManager, "LogJsError - Failed. - " + Common.ToJson(input));
+                Common.LogError(ex);
+                return InternalServerError(ex);
+            }
         }
 
         /// <summary>
@@ -698,43 +1173,285 @@ namespace OpenCaseManager.Controllers.ApiControllers
         [HttpPost]
         public IHttpActionResult AddMUSRole(dynamic input)
         {
-            var instanceId = input["instanceId"].ToString();
-            var employee = input["employee"].ToString();
-            var roles = new List<string>();
-            for (var i = 0; i < input["roles"].Count; i++)
+            try
             {
-                roles.Add(input["roles"][i].ToString());
-            }
-            var userRoles = new List<UserRole>();
-            foreach (var role in roles)
-            {
-                if (role == Configurations.Config.MUSLeaderRole)
+                var instanceId = input["instanceId"].ToString();
+                var employee = input["employee"].ToString();
+                var roles = new List<string>();
+                for (var i = 0; i < input["roles"].Count; i++)
                 {
-                    userRoles.Add(new UserRole()
-                    {
-                        RoleId = role,
-                        UserId = int.Parse(Common.GetResponsibleId())
-                    });
+                    roles.Add(input["roles"][i].ToString());
                 }
-                else if (role == Configurations.Config.MUSEmployeeRole)
+                var userRoles = new List<UserRole>();
+                foreach (var role in roles)
                 {
-                    userRoles.Add(new UserRole()
+                    if (role == Configurations.Config.MUSLeaderRole)
                     {
-                        RoleId = role,
-                        UserId = int.Parse(Common.GetResponsibleFullDetails(_manager, _dataModelManager, employee).Rows[0]["Id"].ToString())
-                    });
+                        userRoles.Add(new UserRole()
+                        {
+                            RoleId = role,
+                            UserId = int.Parse(Common.GetResponsibleId())
+                        });
+                    }
+                    else if (role == Configurations.Config.MUSEmployeeRole)
+                    {
+                        userRoles.Add(new UserRole()
+                        {
+                            RoleId = role,
+                            UserId = int.Parse(Common.GetResponsibleFullDetails(_manager, _dataModelManager, employee).Rows[0]["Id"].ToString())
+                        });
+                    }
+                    else
+                    {
+                        userRoles.Add(new UserRole()
+                        {
+                            RoleId = role,
+                            UserId = int.Parse(Common.GetResponsibleId())
+                        });
+                    }
+                }
+                Common.AddInstanceRoles(userRoles, instanceId, _manager, _dataModelManager);
+                return Ok(Common.ToJson(new { }));
+            }
+            catch (Exception ex)
+            {
+                Common.LogInfo(_manager, _dataModelManager, "AddMUSRole - Failed. - " + Common.ToJson(input));
+                Common.LogError(ex);
+                return InternalServerError(ex);
+            }
+        }
+
+        /// <summary>
+        /// Update Comment for Tasks With Note
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("SetTasksWNoteComment")]
+        public IHttpActionResult SetTasksWNoteComment(dynamic input)
+        {
+            try
+            {
+                var eventId = input["eventId"].ToString();
+                var instanceId = input["instanceId"].ToString();
+                var note = input["note"].ToString();
+                var isHtml = input["isHtml"].ToString();
+
+                if (eventId.ToLower().StartsWith("global".ToLower()))
+                {
+                    var childId = Common.GetInstanceChildId(_manager, _dataModelManager, instanceId);
+                    if (childId > 0)
+                    {
+                        _dataModelManager.GetDefaultDataModel(Enums.SQLOperation.SP, DBEntityNames.StoredProcedures.GetGlobalEvents.ToString());
+                        _dataModelManager.AddParameter(DBEntityNames.GetGlobalEvents.ChildId.ToString(), Enums.ParameterType._int, childId.ToString());
+                        _dataModelManager.AddParameter(DBEntityNames.GetGlobalEvents.EventId.ToString(), Enums.ParameterType._string, eventId);
+                        var globalEvents = _manager.ExecuteStoredProcedure(_dataModelManager.DataModel);
+
+                        foreach (DataRow globalEvent in globalEvents.Rows)
+                        {
+                            _dataModelManager.GetDefaultDataModel(Enums.SQLOperation.UPDATE, DBEntityNames.Tables.Event.ToString());
+                            _dataModelManager.AddParameter(DBEntityNames.Event.Note.ToString(), Enums.ParameterType._string, note);
+                            _dataModelManager.AddParameter(DBEntityNames.Event.NoteIsHtml.ToString(), Enums.ParameterType._boolean, isHtml);
+                            _dataModelManager.AddFilter(DBEntityNames.Event.EventId.ToString(), Enums.ParameterType._string, eventId, Enums.CompareOperator.equal, Enums.LogicalOperator.and);
+                            _dataModelManager.AddFilter(DBEntityNames.Event.InstanceId.ToString(), Enums.ParameterType._int, globalEvent["InstanceId"].ToString(), Enums.CompareOperator.equal, Enums.LogicalOperator.none);
+
+                            var dataTable = _manager.UpdateData(_dataModelManager.DataModel);
+                        }
+                    }
                 }
                 else
                 {
-                    userRoles.Add(new UserRole()
-                    {
-                        RoleId = role,
-                        UserId = int.Parse(Common.GetResponsibleId())
-                    });
+                    _dataModelManager.GetDefaultDataModel(Enums.SQLOperation.UPDATE, DBEntityNames.Tables.Event.ToString());
+                    _dataModelManager.AddParameter(DBEntityNames.Event.Note.ToString(), Enums.ParameterType._string, note);
+                    _dataModelManager.AddParameter(DBEntityNames.Event.NoteIsHtml.ToString(), Enums.ParameterType._boolean, isHtml);
+                    _dataModelManager.AddFilter(DBEntityNames.Event.EventId.ToString(), Enums.ParameterType._string, eventId, Enums.CompareOperator.equal, Enums.LogicalOperator.and);
+                    _dataModelManager.AddFilter(DBEntityNames.Event.InstanceId.ToString(), Enums.ParameterType._int, instanceId, Enums.CompareOperator.equal, Enums.LogicalOperator.none);
+
+                    _manager.UpdateData(_dataModelManager.DataModel);
                 }
+
+                return Ok(Common.ToJson(new { }));
             }
-            AddInstanceRoles(userRoles, instanceId);
-            return Ok(Common.ToJson(new { }));
+            catch (Exception ex)
+            {
+                Common.LogInfo(_manager, _dataModelManager, "SetTasksWNoteComment - Failed. - " + Common.ToJson(input));
+                Common.LogError(ex);
+                return InternalServerError(ex);
+            }
+        }
+
+        /// <summary>
+        /// Get Menu Items
+        /// </summary>
+        /// <returns></returns>        
+        [HttpGet]
+        [Route("GetMenuItems")]
+        public IHttpActionResult GetMenuItems()
+        {
+            try
+            {
+                _dataModelManager.GetDefaultDataModel(Enums.SQLOperation.SP, DBEntityNames.StoredProcedures.GetMenuItems.ToString());
+                _dataModelManager.AddParameter(DBEntityNames.Form.UserId.ToString(), Enums.ParameterType._int, Common.GetResponsibleId());
+
+                var datatable = _manager.ExecuteStoredProcedure(_dataModelManager.DataModel);
+                return Ok(Common.ToJson(datatable));
+            }
+            catch (Exception ex)
+            {
+                Common.LogInfo(_manager, _dataModelManager, "GetMenuItems - Failed.");
+                Common.LogError(ex);
+                return InternalServerError(ex);
+            }
+        }
+
+        /// <summary>
+        /// Update Responsible
+        /// </summary>
+        /// <returns></returns>        
+        [HttpPost]
+        [Route("UpdateResponsible")]
+        public IHttpActionResult UpdateResponsible(dynamic input)
+        {
+            try
+            {
+                string instanceId = input["instanceId"].ToString();
+                string eventId = input["trueEventId"] == null ? "" : input["trueEventId"].ToString();
+                string childId = input["childId"] == null ? "" : input["childId"].ToString();
+
+                string responsible = input["responsible"].ToString();
+                string changeResponsibleFor = input["changeFor"].ToString();
+                string oldResponsibleSamAccountName = input["oldResponsible"].ToString();
+
+                var newResponsible = Common.GetUserName(_manager, _dataModelManager, responsible);
+                var internalCaseId = string.Empty;
+                DataTable instanceDetails = new DataTable();
+
+                switch (changeResponsibleFor)
+                {
+                    case "activity":
+                        // get instance details
+                        childId = Common.GetInstanceChildId(_manager, _dataModelManager, instanceId).ToString();
+                        instanceDetails = Common.GetInstanceDetails(_manager, _dataModelManager, instanceId);
+                        internalCaseId = instanceDetails.Rows[0][DBEntityNames.Instance.InternalCaseID.ToString()].ToString();
+                        break;
+                    case "instance":
+                        // get instance details
+                        instanceDetails = Common.GetInstanceDetails(_manager, _dataModelManager, instanceId);
+                        var oldResponsibleId = instanceDetails.Rows[0][DBEntityNames.Instance.Responsible.ToString()].ToString();
+                        oldResponsibleSamAccountName = Common.GetUserName(_manager, _dataModelManager, oldResponsibleId);
+                        internalCaseId = instanceDetails.Rows[0][DBEntityNames.Instance.InternalCaseID.ToString()].ToString();
+                        if (string.IsNullOrWhiteSpace(childId))
+                        {
+                            childId = Common.GetInstanceChildId(_manager, _dataModelManager, instanceId).ToString();
+                        }
+                        Common.UpdateInstanceResponsible(instanceId, internalCaseId, oldResponsibleSamAccountName, newResponsible, _manager, _dataModelManager);
+                        break;
+                    case "child":
+                        Common.UpdateChildResponsible(childId, oldResponsibleSamAccountName, newResponsible, _manager, _dataModelManager);
+                        break;
+                }
+
+                Common.LogInfo(_manager, _dataModelManager, "ChangeResponsibleOfChild - childId : " + childId + ",instanceId : " + instanceId + ",eventId : " + eventId + ",FromInitials : " + oldResponsibleSamAccountName + ",ToInitials : " + newResponsible);
+
+                _dataModelManager.GetDefaultDataModel(Enums.SQLOperation.SP, DBEntityNames.StoredProcedures.ChangeResponsibleOfChild.ToString());
+                _dataModelManager.AddParameter(DBEntityNames.ChangeResponsibleOfChild.ChildId.ToString(), Enums.ParameterType._int, childId.ToString());
+                if (!string.IsNullOrWhiteSpace(instanceId))
+                    _dataModelManager.AddParameter(DBEntityNames.ChangeResponsibleOfChild.InstanceId.ToString(), Enums.ParameterType._int, instanceId.ToString());
+                if (!string.IsNullOrWhiteSpace(eventId))
+                    _dataModelManager.AddParameter(DBEntityNames.ChangeResponsibleOfChild.EventId.ToString(), Enums.ParameterType._int, eventId.ToString());
+                _dataModelManager.AddParameter(DBEntityNames.ChangeResponsibleOfChild.FromInitials.ToString(), Enums.ParameterType._string, oldResponsibleSamAccountName);
+                _dataModelManager.AddParameter(DBEntityNames.ChangeResponsibleOfChild.ToInitials.ToString(), Enums.ParameterType._string, newResponsible);
+                var dataTable = _manager.ExecuteStoredProcedure(_dataModelManager.DataModel);
+
+                if (dataTable.Rows.Count > 0)
+                {
+                    if (!string.IsNullOrWhiteSpace(dataTable.Rows[0]["Message"].ToString()) && (!string.IsNullOrWhiteSpace(internalCaseId) || !string.IsNullOrWhiteSpace(childId)))
+                    {
+                        var accessCode = "BO";
+                        var caseFileReference = childId;
+                        var creator = Common.GetCurrentUserName();
+                        var fileName = DateTime.Now.ToFileTime() + ".rtf";
+                        var memoTitleText = string.IsNullOrWhiteSpace(dataTable.Rows[0]["Title"].ToString()) ? "Ændr ansvarlig" : dataTable.Rows[0]["Title"].ToString();
+                        var memoTypeReference = "2";
+                        var memoIsLocked = true;
+                        var fileBytes = Common.GetRTFDocument(dataTable.Rows[0]["Message"].ToString(), _manager, _dataModelManager, instanceId, string.Empty, changeResponsibleFor == "child" ? childId : string.Empty);
+                        var date = DateTime.UtcNow;
+
+                        var parameters = new Dictionary<string, dynamic>
+                            {
+                                { "accessCode", accessCode },
+                                { "caseFileReference", caseFileReference },
+                                { "creator", creator },
+                                { "fileName", fileName },
+                                { "memoTitleText", memoTitleText },
+                                { "memoTypeReference", memoTypeReference },
+                                { "memoIsLocked", memoIsLocked },
+                                { "date", date },
+                                { "xmlBinary", Encoding.ASCII.GetString(fileBytes) }
+                            };
+
+                        try
+                        {
+                            Common.SaveEventTypeDataParamertes(instanceId, parameters, "CreateMemoAcadre", null, _manager, _dataModelManager);
+
+                            AcadrePWS.CaseManagement.ActingFor(Common.GetCurrentUserName());
+                            AcadrePWS.CaseManagement.CreateMemo(fileName, accessCode, caseFileReference, memoTitleText, creator, memoTypeReference, memoIsLocked, fileBytes, date);
+                        }
+                        catch (Exception ex)
+                        {
+                            Common.SaveEventTypeDataParamertes(instanceId, parameters, "CreateMemoAcadre", ex, _manager, _dataModelManager);
+                            Common.LogError(ex);
+                        }
+                    }
+                    else
+                    {
+                        Common.LogInfo(_manager, _dataModelManager, "ChangeResponsible CreateJournalAcadre - Message, InternalCaseId or JournalCaseId is empty");
+                    }
+                }
+                return Ok(Common.ToJson(new object { }));
+            }
+            catch (Exception ex)
+            {
+                Common.LogInfo(_manager, _dataModelManager, "UpdateResponsible - Failed. - " + Common.ToJson(input));
+                Common.LogError(ex);
+                return InternalServerError(ex);
+            }
+        }
+
+        /// <summary>
+        /// Update Instance Title
+        /// </summary>
+        /// <returns></returns>        
+        [HttpPost]
+        [Route("UpdateInstanceTitle")]
+        public IHttpActionResult UpdateInstanceTitle(dynamic input)
+        {
+            try
+            {
+                string instanceTitle = input["title"].ToString();
+                string instanceId = input["instanceId"].ToString();
+
+                _dataModelManager.GetDefaultDataModel(Enums.SQLOperation.UPDATE, DBEntityNames.Tables.Instance.ToString());
+                _dataModelManager.AddParameter(DBEntityNames.Instance.Title.ToString(), Enums.ParameterType._string, instanceTitle);
+                _dataModelManager.AddFilter(DBEntityNames.Instance.Id.ToString(), Enums.ParameterType._int, instanceId, Enums.CompareOperator.equal, Enums.LogicalOperator.none);
+                _manager.UpdateData(_dataModelManager.DataModel);
+
+                _dataModelManager.GetDefaultDataModel(Enums.SQLOperation.SELECT, DBEntityNames.Tables.Instance.ToString());
+                _dataModelManager.AddResultSet(new List<string>() { DBEntityNames.Instance.InternalCaseID.ToString() });
+                _dataModelManager.AddFilter(DBEntityNames.Instance.Id.ToString(), Enums.ParameterType._int, instanceId, Enums.CompareOperator.equal, Enums.LogicalOperator.none);
+                var data = _manager.SelectData(_dataModelManager.DataModel);
+
+                if (data.Rows.Count > 0 && data.Rows[0][DBEntityNames.Instance.InternalCaseID.ToString()] != null && data.Rows[0][DBEntityNames.Instance.InternalCaseID.ToString()].ToString() != string.Empty)
+                    _syddjursWork.UpdateCaseContent(int.Parse(data.Rows[0][DBEntityNames.Instance.InternalCaseID.ToString()].ToString()), instanceTitle);
+
+                return Ok(Common.ToJson(new object { }));
+            }
+            catch (Exception ex)
+            {
+                Common.LogInfo(_manager, _dataModelManager, "UpdateInstanceTitle - Failed. - " + Common.ToJson(input));
+                Common.LogError(ex);
+                return InternalServerError(ex);
+            }
         }
 
         /// <summary>
@@ -745,109 +1462,61 @@ namespace OpenCaseManager.Controllers.ApiControllers
         /// <returns></returns>
         private List<string> CopyToTempFolder(string type, string instanceId)
         {
-            var documentUrl = new List<string>();
-            var selectedDocuments = SelectPersonDocumentByPerson(new List<string> { "Title", "Link" });
-            if (selectedDocuments.Rows.Count > 0)
+            try
             {
-                var dirPath = "tmp\\" + DateTime.Now.ToFileTime();
-
-                foreach (DataRow document in selectedDocuments.Rows)
+                var documentUrl = new List<string>();
+                var selectedDocuments = SelectPersonDocumentByPerson(new List<string> { "Title", "Link" });
+                if (selectedDocuments.Rows.Count > 0)
                 {
-                    var path = string.Empty;
-                    // delete document from file system
-                    switch (type)
-                    {
-                        case "PersonalDocument":
-                            var currentUser = Common.GetCurrentUserName();
-                            path = Configurations.Config.PersonalFileLocation + "\\" + currentUser + "\\" + document["Link"].ToString();
-                            break;
-                        case "InstanceDocument":
-                            path = Configurations.Config.InstanceFileLocation + "\\" + instanceId + "\\" + document["Link"].ToString();
-                            break;
-                    }
+                    var dirPath = "tmp\\" + DateTime.Now.ToFileTime();
 
-                    var fileInfo = new FileInfo(path);
-                    if (fileInfo.Exists)
+                    foreach (DataRow document in selectedDocuments.Rows)
                     {
-                        try
+                        var path = string.Empty;
+                        // delete document from file system
+                        switch (type)
                         {
-                            var destFilePath = dirPath + "\\" + document["Title"].ToString() + Path.GetExtension(path);
-                            var destPath = AppDomain.CurrentDomain.BaseDirectory + destFilePath;
-                            Directory.CreateDirectory(AppDomain.CurrentDomain.BaseDirectory + dirPath);
+                            case "PersonalDocument":
+                                var currentUser = Common.GetCurrentUserName();
+                                path = Configurations.Config.PersonalFileLocation + "\\" + currentUser + "\\" + document["Link"].ToString();
+                                break;
+                            case "InstanceDocument":
+                                path = Configurations.Config.InstanceFileLocation + "\\" + instanceId + "\\" + document["Link"].ToString();
+                                break;
+                        }
 
-                            var destFileInfor = new FileInfo(destPath);
-                            if (destFileInfor.Exists)
+                        var fileInfo = new FileInfo(path);
+                        if (fileInfo.Exists)
+                        {
+                            try
                             {
-                                destFileInfor.Delete();
+                                var destFilePath = dirPath + "\\" + document["Title"].ToString() + Path.GetExtension(path);
+                                var destPath = AppDomain.CurrentDomain.BaseDirectory + destFilePath;
+                                Directory.CreateDirectory(AppDomain.CurrentDomain.BaseDirectory + dirPath);
+
+                                var destFileInfor = new FileInfo(destPath);
+                                if (destFileInfor.Exists)
+                                {
+                                    destFileInfor.Delete();
+                                }
+                                fileInfo.CopyTo(destPath);
+                                documentUrl.Add(HttpContext.Current.Request.Url.GetLeftPart(UriPartial.Authority) + "/" + destFilePath);
                             }
-                            fileInfo.CopyTo(destPath);
-                            documentUrl.Add(HttpContext.Current.Request.Url.GetLeftPart(UriPartial.Authority) + "/" + destFilePath);
-                        }
-                        catch (Exception ex)
-                        {
-                            throw ex;
+                            catch (Exception ex)
+                            {
+                                throw ex;
+                            }
                         }
                     }
                 }
+                return documentUrl;
             }
-            return documentUrl;
-        }
-
-        /// <summary>
-        /// Create xml for roles
-        /// </summary>
-        /// <param name="userRolesList"></param>
-        /// <returns></returns>
-        private XmlDocument CreateUserRolesXml(List<UserRole> userRolesList)
-        {
-            var xmlDoc = new XmlDocument();
-            var rootNode = xmlDoc.CreateElement("UserRoles");
-            xmlDoc.AppendChild(rootNode);
-
-            foreach (var userRole in userRolesList)
+            catch (Exception ex)
             {
-                XmlNode userNode = xmlDoc.CreateElement("User");
-                XmlAttribute attribute = xmlDoc.CreateAttribute("Id");
-                attribute.Value = userRole.UserId.ToString();
-                userNode.Attributes.Append(attribute);
-
-                XmlNode roleNode = xmlDoc.CreateElement("Role");
-                roleNode.InnerText = userRole.RoleId;
-                userNode.AppendChild(roleNode);
-
-                rootNode.AppendChild(userNode);
+                Common.LogInfo(_manager, _dataModelManager, "CopyToTempFolder - Failed. - instanceId : " + instanceId + ", type : " + type);
+                Common.LogError(ex);
+                throw ex;
             }
-            return xmlDoc;
-        }
-
-        /// <summary>
-        /// Add Instance
-        /// </summary>
-        /// <param name="model"></param>
-        /// <returns></returns>
-        private string AddInstance(AddInstanceModel model)
-        {
-            _dataModelManager.GetDefaultDataModel(Enums.SQLOperation.INSERT, DBEntityNames.Tables.Instance.ToString());
-            _dataModelManager.AddParameter(DBEntityNames.Instance.Title.ToString(), Enums.ParameterType._string, model.Title);
-            _dataModelManager.AddParameter(DBEntityNames.Instance.Responsible.ToString(), Enums.ParameterType._int, Common.GetResponsibleId());
-            _dataModelManager.AddParameter(DBEntityNames.Instance.GraphId.ToString(), Enums.ParameterType._int, model.GraphId.ToString());
-
-            var instanceIdTable = _manager.InsertData(_dataModelManager.DataModel);
-
-            // add Instance Roles
-            if (instanceIdTable.Rows.Count > 0 && instanceIdTable.Rows[0][DBEntityNames.Instance.Id.ToString()] != null)
-            {
-                var instanceId = (instanceIdTable.Rows[0][DBEntityNames.Instance.Id.ToString()]).ToString();
-
-                AddInstanceDescription(instanceId, model.GraphId.ToString());
-
-                if (model.UserRoles.Count > 0)
-                {
-                    AddInstanceRoles(model.UserRoles, instanceId);
-                }
-                return instanceId;
-            }
-            return string.Empty;
         }
 
         /// <summary>
@@ -879,35 +1548,6 @@ namespace OpenCaseManager.Controllers.ApiControllers
         }
 
         /// <summary>
-        /// Add Roles to Instance
-        /// </summary>
-        /// <param name="UserRoles"></param>
-        private void AddInstanceRoles(List<UserRole> UserRoles, string instanceId)
-        {
-            var xmlDoc = CreateUserRolesXml(UserRoles);
-
-            _dataModelManager.GetDefaultDataModel(Enums.SQLOperation.SP, DBEntityNames.StoredProcedures.AddInstanceRoles.ToString());
-            _dataModelManager.AddParameter(DBEntityNames.AddInstanceRoles.InstanceId.ToString(), Enums.ParameterType._string, instanceId);
-            _dataModelManager.AddParameter(DBEntityNames.AddInstanceRoles.UserRoles.ToString(), Enums.ParameterType._xml, xmlDoc.InnerXml);
-
-            _manager.ExecuteStoreProcedure(_dataModelManager.DataModel);
-        }
-
-        /// <summary>
-        /// Add Instance Description
-        /// </summary>
-        /// <param name="instanceId"></param>
-        /// <param name="graphId"></param>
-        private void AddInstanceDescription(string instanceId, string graphId)
-        {
-            _dataModelManager.GetDefaultDataModel(Enums.SQLOperation.SP, DBEntityNames.StoredProcedures.AddInstanceDescription.ToString());
-            _dataModelManager.AddParameter(DBEntityNames.AddInstanceDescription.InstanceId.ToString(), Enums.ParameterType._int, instanceId);
-            _dataModelManager.AddParameter(DBEntityNames.AddInstanceDescription.GraphId.ToString(), Enums.ParameterType._int, graphId);
-
-            _manager.ExecuteStoreProcedure(_dataModelManager.DataModel);
-        }
-
-        /// <summary>
         /// Update instance after event Log
         /// </summary>
         /// <param name="instanceId"></param>
@@ -917,7 +1557,7 @@ namespace OpenCaseManager.Controllers.ApiControllers
             _dataModelManager.AddParameter(DBEntityNames.UpdateEventLogInstance.instanceId.ToString(), Enums.ParameterType._int, instanceId);
             _dataModelManager.AddParameter(DBEntityNames.UpdateEventLogInstance.xml.ToString(), Enums.ParameterType._xml, xml);
 
-            _manager.ExecuteStoreProcedure(_dataModelManager.DataModel);
+            _manager.ExecuteStoredProcedure(_dataModelManager.DataModel);
         }
 
         /// <summary>
@@ -941,13 +1581,13 @@ namespace OpenCaseManager.Controllers.ApiControllers
 
             _manager.UpdateData(_dataModelManager.DataModel);
 
-            var phases = _dCRService.GetProcessPhases(graphId);
+            var phases = _dCRService.GetPhases(graphXml);
 
             _dataModelManager.GetDefaultDataModel(Enums.SQLOperation.SP, DBEntityNames.StoredProcedures.AddProcessPhases.ToString());
             _dataModelManager.AddParameter(DBEntityNames.AddProcessPhases.ProcessId.ToString(), Enums.ParameterType._int, processId);
             _dataModelManager.AddParameter(DBEntityNames.AddProcessPhases.PhaseXml.ToString(), Enums.ParameterType._xml, phases);
 
-            _manager.ExecuteStoreProcedure(_dataModelManager.DataModel);
+            _manager.ExecuteStoredProcedure(_dataModelManager.DataModel);
         }
 
         /// <summary>
@@ -972,6 +1612,12 @@ namespace OpenCaseManager.Controllers.ApiControllers
             _manager.UpdateData(_dataModelManager.DataModel);
         }
 
+        /// <summary>
+        /// Update Journal History
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="documentName"></param>
+        /// <param name="eventTime"></param>
         private void UpdateJournalHistoryDocument(string id, string documentName, DateTime eventTime)
         {
             _dataModelManager.GetDefaultDataModel(Enums.SQLOperation.UPDATE, DBEntityNames.Tables.JournalHistory.ToString());
@@ -1062,6 +1708,8 @@ namespace OpenCaseManager.Controllers.ApiControllers
                     }
                     catch (Exception ex)
                     {
+                        Common.LogInfo(_manager, _dataModelManager, "DeleteFileFromFileSystem - Failed. - instanceId : " + instanceId + ", type : " + type + ", documentid : " + id);
+                        Common.LogError(ex);
                         throw ex;
                     }
                 }
@@ -1081,6 +1729,32 @@ namespace OpenCaseManager.Controllers.ApiControllers
             _dataModelManager.AddParameter(DBEntityNames.InstanceExtension.ChildId.ToString(), Enums.ParameterType._int, childId.ToString());
 
             _manager.InsertData(_dataModelManager.DataModel);
+        }
+
+        /// <summary>
+        /// Link Acadre to Instance
+        /// </summary>
+        /// <param name="childId"></param>
+        /// <param name="caseNumberIdentifier"></param>
+        private void LinkCaseToInstance(string caseId, string caseNumberIdentifier, string instanceId, string caseLink = "")
+        {
+            Common.LogInfo(_manager, _dataModelManager, "GetCaseURL(" + caseId + " )");
+            if (string.IsNullOrEmpty(caseLink))
+            {
+                caseLink = Common.GetCaseLink(caseId);
+            }
+            if (string.IsNullOrWhiteSpace(caseNumberIdentifier))
+            {
+                Common.LogInfo(_manager, _dataModelManager, "GetCaseNumber(" + caseId + " )");
+                caseNumberIdentifier = Common.GetCaseIdForeign(caseId);
+            }
+
+            _dataModelManager.GetDefaultDataModel(Enums.SQLOperation.UPDATE, DBEntityNames.Tables.Instance.ToString());
+            _dataModelManager.AddParameter(DBEntityNames.Instance.InternalCaseID.ToString(), Enums.ParameterType._int, caseId);
+            _dataModelManager.AddParameter(DBEntityNames.Instance.CaseNoForeign.ToString(), Enums.ParameterType._string, caseNumberIdentifier);
+            _dataModelManager.AddParameter(DBEntityNames.Instance.CaseLink.ToString(), Enums.ParameterType._string, caseLink);
+            _dataModelManager.AddFilter(DBEntityNames.Instance.Id.ToString(), Enums.ParameterType._int, instanceId, Enums.CompareOperator.equal, Enums.LogicalOperator.none);
+            _manager.UpdateData(_dataModelManager.DataModel);
         }
     }
 }

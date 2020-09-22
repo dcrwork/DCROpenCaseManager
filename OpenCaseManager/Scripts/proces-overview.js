@@ -189,13 +189,13 @@ function getProcessInstances() {
                                 if (i < data.length) {
                                     console.log(data[i]);
                                     html += '<div class="instance-block">';
-                                    html += '<div class="ins-title">' + data[i].Title + '</div><div class="case-num-block"><a href="../ChildInstance?id=' + data[i].Id + '">' + (data[i].CaseNoForeign == null ? 'Id:' + data[i].Id : translations.CaseNoForeign + ':' + data[i].CaseNoForeign) + '</a></div></div>';
+                                    html += '<div class="ins-title">' + data[i].Title + '</div><div class="case-num-block"><a href="../Instance?id=' + data[i].Id + '">' + (data[i].CaseNoForeign == null ? 'Id:' + data[i].Id : translations.CaseNoForeign + ':' + data[i].CaseNoForeign) + '</a></div></div>';
                                 }
                                 html += "</div>";
                             }
                             else {
                                 html = '<div class="instance-block">';
-                                html += '<div class="ins-title">' + data[i].Title + '</div><div class="case-num-block"><a href="../ChildInstance?id=' + data[i].Id + '">' + (data[i].CaseNoForeign == null ? 'Id:' + data[i].Id : 'Case:' + data[i].CaseNoForeign) + '</a></div></div>';
+                                html += '<div class="ins-title">' + data[i].Title + '</div><div class="case-num-block"><a href="../Instance?id=' + data[i].Id + '">' + (data[i].CaseNoForeign == null ? 'Id:' + data[i].Id : 'Case:' + data[i].CaseNoForeign) + '</a></div></div>';
                             }
                             $('#' + data[0].CurrentPhaseNo).append(html);
                         }

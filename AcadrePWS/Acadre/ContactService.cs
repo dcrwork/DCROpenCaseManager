@@ -8,7 +8,7 @@ namespace AcadrePWS.Acadre
 {
     class ContactService
     {
-        private static AcadreServiceV7.ContactService7 contactService7 = AcadreServiceFactory.GetContactService7();
+        private static AcadreLib.AcadreServiceV7.ContactService7 contactService7 = AcadreServiceFactory.GetContactService7();
 
     }
 }

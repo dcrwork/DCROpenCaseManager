@@ -3,9 +3,10 @@
     [Year]       INT            NULL,
     [Employee]   NVARCHAR (500) NULL,
     [InstanceId] INT            NOT NULL,
-	[ChildId]	 INT,
+    [ChildId]    INT            NULL,
     CONSTRAINT [PK_InstanceExtension] PRIMARY KEY CLUSTERED ([Id] ASC),
-    CONSTRAINT [FK_InstanceExtension_Instance] FOREIGN KEY ([InstanceId]) REFERENCES [dbo].[Instance] ([Id]) ON DELETE CASCADE,
-	CONSTRAINT [FK_InstanceExtension_Child] FOREIGN KEY ([ChildId]) REFERENCES [dbo].[Child] (Id)
+    CONSTRAINT [FK_InstanceExtension_Instance] FOREIGN KEY ([InstanceId]) REFERENCES [dbo].[Instance] ([Id]) ON DELETE CASCADE
 );
+
+
 

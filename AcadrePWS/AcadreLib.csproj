@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -7,22 +7,13 @@
     <ProjectGuid>{2FEAEBE9-AB50-4ACA-89B3-31E342426858}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>AcadrePWS</RootNamespace>
-    <AssemblyName>AcadrePWS</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <RootNamespace>AcadreLib</RootNamespace>
+    <AssemblyName>AcadreLib</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <SccProjectName>
-    </SccProjectName>
-    <SccLocalPath>
-    </SccLocalPath>
-    <SccAuxPath>
-    </SccAuxPath>
-    <SccProvider>
-    </SccProvider>
+    <Deterministic>true</Deterministic>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -32,7 +23,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -41,10 +31,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.EnterpriseServices" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Web.Services" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -52,120 +46,448 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
-    <Reference Include="Microsoft.CSharp">
-      <HintPath>..\..\..\..\..\..\usr\lib\mono\4.5.2-api\Microsoft.CSharp.dll</HintPath>
-    </Reference>
-    <Reference Include="mscorlib">
-      <HintPath>..\..\..\..\..\..\usr\lib\mono\4.5.2-api\mscorlib.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Core">
-      <HintPath>..\..\..\..\..\..\usr\lib\mono\4.5.2-api\System.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Data.DataSetExtensions">
-      <HintPath>..\..\..\..\..\..\usr\lib\mono\4.5.2-api\System.Data.DataSetExtensions.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Data">
-      <HintPath>..\..\..\..\..\..\usr\lib\mono\4.5.2-api\System.Data.dll</HintPath>
-    </Reference>
-    <Reference Include="System">
-      <HintPath>..\..\..\..\..\..\usr\lib\mono\4.5.2-api\System.dll</HintPath>
-    </Reference>
-    <Reference Include="System.EnterpriseServices">
-      <HintPath>..\..\..\..\..\..\usr\lib\mono\4.5.2-api\System.EnterpriseServices.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Net.Http">
-      <HintPath>..\..\..\..\..\..\usr\lib\mono\4.5.2-api\System.Net.Http.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.Services">
-      <HintPath>..\..\..\..\..\..\usr\lib\mono\4.5.2-api\System.Web.Services.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Xml">
-      <HintPath>..\..\..\..\..\..\usr\lib\mono\4.5.2-api\System.Xml.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Xml.Linq">
-      <HintPath>..\..\..\..\..\..\usr\lib\mono\4.5.2-api\System.Xml.Linq.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Acadre\AcadreServiceFactory.cs" />
     <Compile Include="Acadre\ContactService.cs" />
     <Compile Include="Acadre\PWSSoapHeader.cs" />
+    <Compile Include="Address.cs" />
+    <Compile Include="Child.cs" />
+    <Compile Include="ChildCase.cs" />
+    <Compile Include="AcadreService.cs" />
+    <Compile Include="Config.cs" />
+    <Compile Include="CPRBrokerService.cs" />
+    <Compile Include="CPRBrokerWrapper.cs" />
+    <Compile Include="AcadreLibChildCase.cs" />
+    <Compile Include="JournalDocument.cs" />
+    <Compile Include="Library.cs" />
+    <Compile Include="MemoRequest.cs" />
+    <Compile Include="SimplePerson.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-    <Compile Include="Web References\AcadreServiceV7\Reference.cs">
+    <Compile Include="PWSSoapHeader.cs" />
+    <Compile Include="SearchCriterion.cs" />
+    <Compile Include="Web References\AcadreServiceV4\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
       <DependentUpon>Reference.map</DependentUpon>
     </Compile>
-    <Compile Include="Library.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config" />
-    <None Include="Web References\AcadreServiceV7\schema19.xsd" />
-    <None Include="Web References\AcadreServiceV7\schema18.xsd" />
-    <None Include="Web References\AcadreServiceV7\AcadreServiceV7.wsdl" />
-    <None Include="Web References\AcadreServiceV7\AcadreServiceV70.wsdl" />
-    <None Include="Web References\AcadreServiceV7\schema5.xsd" />
-    <None Include="Web References\AcadreServiceV7\schema4.xsd" />
-    <None Include="Web References\AcadreServiceV7\schema7.xsd" />
-    <None Include="Web References\AcadreServiceV7\schema6.xsd" />
-    <None Include="Web References\AcadreServiceV7\schema1.xsd" />
-    <None Include="Web References\AcadreServiceV7\schema3.xsd" />
-    <None Include="Web References\AcadreServiceV7\schema2.xsd" />
-    <None Include="Web References\AcadreServiceV7\schema9.xsd" />
-    <None Include="Web References\AcadreServiceV7\schema8.xsd" />
-    <None Include="Web References\AcadreServiceV7\schema15.xsd" />
-    <None Include="Web References\AcadreServiceV7\schema14.xsd" />
-    <None Include="Web References\AcadreServiceV7\AcadreServiceV7.disco" />
-    <None Include="Web References\AcadreServiceV7\schema24.xsd" />
-    <None Include="Web References\AcadreServiceV7\AcadreServiceV71.wsdl" />
-    <None Include="Web References\AcadreServiceV7\schema11.xsd" />
-    <None Include="Web References\AcadreServiceV7\schema22.xsd" />
-    <None Include="Web References\AcadreServiceV7\schema10.xsd" />
-    <None Include="Web References\AcadreServiceV7\schema21.xsd" />
-    <None Include="Web References\AcadreServiceV7\schema17.xsd" />
-    <None Include="Web References\AcadreServiceV7\schema20.xsd" />
-    <None Include="Web References\AcadreServiceV7\schema12.xsd" />
-    <None Include="Web References\AcadreServiceV7\schema13.xsd" />
-    <None Include="Web References\AcadreServiceV7\schema23.xsd" />
-    <None Include="Web References\AcadreServiceV7\schema16.xsd" />
-    <None Include="Web References\AcadreServiceV7\Reference.map">
-      <Generator>MSDiscoCodeGenerator</Generator>
-      <LastGenOutput>Reference.cs</LastGenOutput>
-    </None>
-    <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <WCFMetadata Include="Service References\" />
+    <Compile Include="Web References\AcadreServiceV7\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.map</DependentUpon>
+    </Compile>
+    <Compile Include="Web References\CPRBroker\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.map</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <WebReferences Include="Web References\" />
   </ItemGroup>
   <ItemGroup>
-    <WebReferenceUrl Include="http://esdhtest2/acadre/Acadre.CM.PublicServices.soapauth/AcadreServiceV7.asmx">
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="Web References\AcadreServiceV4\AcadreServiceV4.wsdl" />
+    <None Include="Web References\AcadreServiceV4\AcadreServiceV40.wsdl" />
+    <None Include="Web References\AcadreServiceV4\AcadreServiceV41.wsdl" />
+    <None Include="Web References\AcadreServiceV4\CaseFileType1.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AcadreServiceV4\CaseSearchResponseType.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AcadreServiceV4\ContactSearchResponseType.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AcadreServiceV4\ContactType.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AcadreServiceV4\DocumentResponseType.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AcadreServiceV4\ErrorListEnum.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AcadreServiceV4\GroupType1.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AcadreServiceV4\GroupType2.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AcadreServiceV4\MemoType.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AcadreServiceV4\OrganizationType1.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AcadreServiceV4\OrganizationType2.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AcadreServiceV4\PersonType1.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AcadreServiceV4\PersonType2.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AcadreServiceV4\PropertyType1.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AcadreServiceV4\PropertyType2.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AcadreServiceV4\Reference.map">
+      <Generator>MSDiscoCodeGenerator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Web References\AcadreServiceV4\schema1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Web References\AcadreServiceV4\schema10.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Web References\AcadreServiceV4\schema11.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Web References\AcadreServiceV4\schema12.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Web References\AcadreServiceV4\schema13.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Web References\AcadreServiceV4\schema14.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Web References\AcadreServiceV4\schema15.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Web References\AcadreServiceV4\schema16.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Web References\AcadreServiceV4\schema17.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Web References\AcadreServiceV4\schema18.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Web References\AcadreServiceV4\schema19.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Web References\AcadreServiceV4\schema2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Web References\AcadreServiceV4\schema20.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Web References\AcadreServiceV4\schema21.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Web References\AcadreServiceV4\schema22.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Web References\AcadreServiceV4\schema23.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Web References\AcadreServiceV4\schema24.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Web References\AcadreServiceV4\schema3.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Web References\AcadreServiceV4\schema4.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Web References\AcadreServiceV4\schema5.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Web References\AcadreServiceV4\schema6.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Web References\AcadreServiceV4\schema7.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Web References\AcadreServiceV4\schema8.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Web References\AcadreServiceV4\schema9.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Web References\AcadreServiceV4\SupplementResponseType.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AcadreServiceV7\AcadreServiceV7.wsdl" />
+    <None Include="Web References\AcadreServiceV7\AcadreServiceV70.wsdl" />
+    <None Include="Web References\AcadreServiceV7\AcadreServiceV71.wsdl" />
+    <None Include="Web References\AcadreServiceV7\AccessCodeType.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AcadreServiceV7\AccessGroupType.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AcadreServiceV7\AccessLevelType.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AcadreServiceV7\AdminUnitType.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AcadreServiceV7\AdvancedMultiCaseContactType.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AcadreServiceV7\AdvancedMultiCaseType2.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AcadreServiceV7\CaseContainer.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AcadreServiceV7\CaseFileType3.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AcadreServiceV7\CaseSearchResponseType.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AcadreServiceV7\CaseStatusType.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AcadreServiceV7\CaseSubType.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AcadreServiceV7\CaseTypeType.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AcadreServiceV7\ClassificationCategoryType.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AcadreServiceV7\ContactSearchResponseType.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AcadreServiceV7\ContactSubType.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AcadreServiceV7\ContactType.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AcadreServiceV7\CreateCaseResponseType.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AcadreServiceV7\CustomFieldDefinition.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AcadreServiceV7\DiscardRuleType.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AcadreServiceV7\DocumentCategoryType.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AcadreServiceV7\DocumentResponseType2.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AcadreServiceV7\DocumentStatusType.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AcadreServiceV7\DocumentStorageFormType.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AcadreServiceV7\DocumentTypeType.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AcadreServiceV7\ErrorListEnum.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AcadreServiceV7\GroupType3.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AcadreServiceV7\MainDocumentStatusType.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AcadreServiceV7\MainDocumentTypeType.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AcadreServiceV7\OptionType.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AcadreServiceV7\OrganizationType3.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AcadreServiceV7\PartyRelationType.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AcadreServiceV7\PersonType3.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AcadreServiceV7\PropertyType3.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AcadreServiceV7\Reference.map">
+      <Generator>MSDiscoCodeGenerator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Web References\AcadreServiceV7\schema1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Web References\AcadreServiceV7\schema10.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Web References\AcadreServiceV7\schema11.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Web References\AcadreServiceV7\schema12.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Web References\AcadreServiceV7\schema13.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Web References\AcadreServiceV7\schema14.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Web References\AcadreServiceV7\schema15.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Web References\AcadreServiceV7\schema16.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Web References\AcadreServiceV7\schema17.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Web References\AcadreServiceV7\schema18.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Web References\AcadreServiceV7\schema19.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Web References\AcadreServiceV7\schema2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Web References\AcadreServiceV7\schema20.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Web References\AcadreServiceV7\schema21.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Web References\AcadreServiceV7\schema22.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Web References\AcadreServiceV7\schema23.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Web References\AcadreServiceV7\schema24.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Web References\AcadreServiceV7\schema3.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Web References\AcadreServiceV7\schema4.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Web References\AcadreServiceV7\schema5.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Web References\AcadreServiceV7\schema6.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Web References\AcadreServiceV7\schema7.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Web References\AcadreServiceV7\schema8.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Web References\AcadreServiceV7\schema9.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Web References\AcadreServiceV7\SystemMulticaseSettingsType.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AcadreServiceV7\TimedJournalMemoType.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AcadreServiceV7\UserType.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\CPRBroker\BasicOutputTypeOfBoolean.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\CPRBroker\GetUuidArrayOutputType.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\CPRBroker\GetUuidOutputType.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\CPRBroker\LaesOutputType.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\CPRBroker\ListOutputType1.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\CPRBroker\Part.wsdl" />
+    <None Include="Web References\CPRBroker\Reference.map">
+      <Generator>MSDiscoCodeGenerator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Web References\CPRBroker\SoegListOutputType.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\CPRBroker\SoegOutputType.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WebReferenceUrl Include="http://esdhtest2/acadre/Acadre.CM.PublicServices/soapAuth/AcadreServiceV4.asmx">
       <UrlBehavior>Dynamic</UrlBehavior>
-      <RelPath>Web References\AcadreServiceV7\</RelPath>
-      <UpdateFromURL>http://esdhtest2/acadre/Acadre.CM.PublicServices.soapauth/AcadreServiceV7.asmx</UpdateFromURL>
+      <RelPath>Web References\AcadreServiceV4\</RelPath>
+      <UpdateFromURL>http://esdhtest2/acadre/Acadre.CM.PublicServices/soapAuth/AcadreServiceV4.asmx</UpdateFromURL>
       <ServiceLocationURL>
       </ServiceLocationURL>
       <CachedDynamicPropName>
       </CachedDynamicPropName>
       <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
-      <CachedSettingsPropName>AcadrePWS_AcadreServiceV7_AcadreServiceV7</CachedSettingsPropName>
+      <CachedSettingsPropName>AcadreLib_AcadreServiceV4_AcadreServiceV4</CachedSettingsPropName>
+    </WebReferenceUrl>
+    <WebReferenceUrl Include="http://esdhtest2/acadre/Acadre.CM.PublicServices/SoapAuth/AcadreServiceV7.asmx">
+      <UrlBehavior>Dynamic</UrlBehavior>
+      <RelPath>Web References\AcadreServiceV7\</RelPath>
+      <UpdateFromURL>http://esdhtest2/acadre/Acadre.CM.PublicServices/SoapAuth/AcadreServiceV7.asmx</UpdateFromURL>
+      <ServiceLocationURL>
+      </ServiceLocationURL>
+      <CachedDynamicPropName>
+      </CachedDynamicPropName>
+      <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
+      <CachedSettingsPropName>AcadreLib_AcadreServiceV7_AcadreServiceV7</CachedSettingsPropName>
+    </WebReferenceUrl>
+    <WebReferenceUrl Include="https://cprbroker.syddjurs.dk/services/Part.asmx">
+      <UrlBehavior>Dynamic</UrlBehavior>
+      <RelPath>Web References\CPRBroker\</RelPath>
+      <UpdateFromURL>https://cprbroker.syddjurs.dk/services/Part.asmx</UpdateFromURL>
+      <ServiceLocationURL>
+      </ServiceLocationURL>
+      <CachedDynamicPropName>
+      </CachedDynamicPropName>
+      <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
+      <CachedSettingsPropName>AcadreLib_CPRBroker_Part</CachedSettingsPropName>
     </WebReferenceUrl>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="Web References\AcadreServiceV7\AcadreServiceV7.disco" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Web References\CPRBroker\Part.disco" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Web References\AcadreServiceV4\AcadreServiceV4.disco" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Service References\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>

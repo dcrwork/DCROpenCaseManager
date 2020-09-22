@@ -11,10 +11,10 @@ namespace OpenCaseManager.Controllers
     {
         private IManager _manager;
         private IDataModelManager _dataModelManager;
-        private IDocumnentManager _documentManager;
+        private IDocumentManager _documentManager;
         private IService _service;
 
-        public FormController(IManager manager, IDataModelManager dataModelManager, IDocumnentManager documentManager, IService service)
+        public FormController(IManager manager, IDataModelManager dataModelManager, IDocumentManager documentManager, IService service)
         {
             _manager = manager;
             _dataModelManager = dataModelManager;

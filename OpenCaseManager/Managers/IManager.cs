@@ -1,4 +1,5 @@
 ﻿using OpenCaseManager.Models;
+using System;
 using System.Data;
 
 namespace OpenCaseManager.Managers
@@ -13,6 +14,8 @@ namespace OpenCaseManager.Managers
         DataTable SelectData(DataModel dataModel);
         DataTable UpdateData(DataModel dataModel);
         DataTable InsertData(DataModel dataModel);
-        DataTable ExecuteStoreProcedure(DataModel dataModel);
+        DataTable ExecuteStoredProcedure(DataModel dataModel);
+        void LogSQLModel(DataModel dataModel, Exception ex, string methodName);
+
     }
 }

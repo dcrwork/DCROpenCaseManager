@@ -7,7 +7,7 @@
     function getFormServerUrl(callback, errorCallback) {
         API.serviceGET('services/GetDCRFormServerURL')
             .done(function (response) {
-                formserver.dcrFormServerUrl = response;
+                window.FormServer.dcrFormServerUrl = response;
                 callback(response);
             })
             .fail(function (e) {
@@ -16,21 +16,43 @@
     }
 
     function getFormServerJS(data, callback, errorCallback) {
-        API.getJSFile(data + '/Scripts/dynamicform/CallBackHandler.js')
-            .done(function (response) {
-            })
-            .fail(function (e) {
-                App.showExceptionErrorMessage(e);
+        fetch(data + '/Scripts/dynamicform/CallBackHandler.js', { method: 'GET', mode: 'no-cors' })
+            .then(async (r) => {
+                API.getJSFile(data + '/Scripts/dynamicform/CallBackHandler.js')
+                    .done(function (response) {
+                    })
+                    .fail(function (e) {
+                        App.showExceptionErrorMessage(e);
+                    });
+                // Read the response as json.
+                return r;
+            }).then(async (r) => {
+                setTimeout(function () {
+                    if (count > 0) {
+                        count--;
+                    }
+                    if (count == 0) {
+                        $('#loadMe').hide();
+                    }
+                }, 3000);
+            }).catch(e => {
+                console.log(e);
             });
     }
 
     function getFormServerIFrame(data, callback, errorCallback) {
-        API.getJSFile(response + '/Scripts/dynamicform/CallBackHandler.js')
-            .done(function (response) {
-            })
-            .fail(function (e) {
-                App.showExceptionErrorMessage(e);
-            });
+        fetch(data + '/Scripts/dynamicform/CallBackHandler.js', { mode: 'no-cors' }).then(r => {
+            if (r.status == 200) {
+                API.getJSFile(response + '/Scripts/dynamicform/CallBackHandler.js')
+                    .done(function (response) {
+                    })
+                    .fail(function (e) {
+                        App.showExceptionErrorMessage(e);
+                    });
+            }
+        }).catch(e => {
+            console.log(e);
+        });
     }
 
     // formserver library

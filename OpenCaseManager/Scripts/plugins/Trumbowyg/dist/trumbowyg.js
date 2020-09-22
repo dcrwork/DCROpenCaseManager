@@ -102,7 +102,7 @@ Object.defineProperty(jQuery.trumbowyg, 'defaultOptions', {
             ['strong', 'em', 'del'],
             ['superscript', 'subscript'],
             ['link'],
-            ['insertImage'],
+            // ['insertImage'],
             ['justifyLeft', 'justifyCenter', 'justifyRight', 'justifyFull'],
             ['unorderedList', 'orderedList'],
             ['horizontalRule'],
@@ -494,7 +494,7 @@ Object.defineProperty(jQuery.trumbowyg, 'defaultOptions', {
                 return;
             }
 
-            if (typeof(protocol) !== 'string') {
+            if (typeof (protocol) !== 'string') {
                 return 'https://';
             }
             return /:\/\/$/.test(protocol) ? protocol : protocol + '://';
@@ -536,7 +536,7 @@ Object.defineProperty(jQuery.trumbowyg, 'defaultOptions', {
             t.$ta
                 .addClass(prefix + 'textarea')
                 .attr('tabindex', -1)
-            ;
+                ;
 
             t.$ed
                 .addClass(prefix + 'editor')
@@ -545,7 +545,7 @@ Object.defineProperty(jQuery.trumbowyg, 'defaultOptions', {
                     dir: t.lang._dir || 'ltr'
                 })
                 .html(html)
-            ;
+                ;
 
             if (t.o.tabindex) {
                 t.$ed.attr('tabindex', t.o.tabindex);
@@ -586,13 +586,13 @@ Object.defineProperty(jQuery.trumbowyg, 'defaultOptions', {
                     if ((e.ctrlKey || e.metaKey) && !e.altKey) {
                         ctrl = true;
                         var key = t.keys[String.fromCharCode(e.which).toUpperCase()];
-                        
+
                         try {
                             t.execCmd(key.fn, key.param);
                             return false;
-                        } catch (c) {}
+                        } catch (c) { }
                     } else {
-                        
+
                         if (t.o.tabToIndent && e.key === 'Tab') {
                             try {
                                 if (e.shiftKey) {
@@ -601,7 +601,7 @@ Object.defineProperty(jQuery.trumbowyg, 'defaultOptions', {
                                     t.execCmd('indent', true, null);
                                 }
                                 return false;
-                            } catch (c) {}
+                            } catch (c) { }
                         }
                     }
                 })
@@ -661,7 +661,7 @@ Object.defineProperty(jQuery.trumbowyg, 'defaultOptions', {
                             t.autogrowEditorOnEnter();
                         }
                         else if (!t.o.autogrow) {
-                            t.$ed.css({height: t.$ed.css('min-height')});
+                            t.$ed.css({ height: t.$ed.css('min-height') });
                             t.$c.trigger('tbwresize');
                         }
                     }
@@ -739,7 +739,7 @@ Object.defineProperty(jQuery.trumbowyg, 'defaultOptions', {
             if (oldHeight !== totalHeight) {
                 t.$ed.height(oldHeight);
                 setTimeout(function () {
-                    t.$ed.css({height: totalHeight});
+                    t.$ed.css({ height: totalHeight });
                     t.$c.trigger('tbwresize');
                 }, 0);
             }
@@ -937,7 +937,7 @@ Object.defineProperty(jQuery.trumbowyg, 'defaultOptions', {
                                 left: fixedFullWidth ? '0' : 'auto',
                                 zIndex: 7
                             });
-                            $([t.$ta, t.$ed]).css({marginTop: bp.height()});
+                            $([t.$ta, t.$ed]).css({ marginTop: bp.height() });
                         }
                         bp.css({
                             width: fixedFullWidth ? '100%' : (($box.width() - 1) + 'px')
@@ -951,7 +951,7 @@ Object.defineProperty(jQuery.trumbowyg, 'defaultOptions', {
                     } else if (t.isFixed) {
                         t.isFixed = false;
                         bp.removeAttr('style');
-                        $([t.$ta, t.$ed]).css({marginTop: 0});
+                        $([t.$ta, t.$ed]).css({ marginTop: 0 });
                         $('.' + t.o.prefix + 'fixed-top', $box).css({
                             position: 'absolute',
                             top: oh
@@ -984,7 +984,7 @@ Object.defineProperty(jQuery.trumbowyg, 'defaultOptions', {
             if (t.isTextarea) {
                 t.$box.after(
                     t.$ta
-                        .css({height: ''})
+                        .css({ height: '' })
                         .val(t.html())
                         .removeClass(prefix + 'textarea')
                         .show()
@@ -992,7 +992,7 @@ Object.defineProperty(jQuery.trumbowyg, 'defaultOptions', {
             } else {
                 t.$box.after(
                     t.$ed
-                        .css({height: ''})
+                        .css({ height: '' })
                         .removeClass(prefix + 'editor')
                         .removeAttr('contenteditable')
                         .removeAttr('dir')
@@ -1115,7 +1115,7 @@ Object.defineProperty(jQuery.trumbowyg, 'defaultOptions', {
             if (t.o.autogrow) {
                 t.height = t.$ed.height();
                 if (t.height !== t.$ta.css('height')) {
-                    t.$ta.css({height: t.height});
+                    t.$ta.css({ height: t.height });
                     t.$c.trigger('tbwresize');
                 }
             }
@@ -1124,7 +1124,7 @@ Object.defineProperty(jQuery.trumbowyg, 'defaultOptions', {
                 t.$ed.height('auto');
                 var totalheight = t.autogrowOnEnterWasFocused ? t.$ed[0].scrollHeight : t.$ed.css('min-height');
                 if (totalheight !== t.$ta.css('height')) {
-                    t.$ed.css({height: totalheight});
+                    t.$ed.css({ height: totalheight });
                     t.$c.trigger('tbwresize');
                 }
             }
@@ -1204,7 +1204,7 @@ Object.defineProperty(jQuery.trumbowyg, 'defaultOptions', {
 
             $(oldTag, this.$ed).each(function () {
                 var $oldTag = $(this);
-                if($oldTag.contents().length === 0) {
+                if ($oldTag.contents().length === 0) {
                     return false;
                 }
 
@@ -1633,10 +1633,10 @@ Object.defineProperty(jQuery.trumbowyg, 'defaultOptions', {
                 .addClass(prefix + 'input-error')
                 .find('input+span')
                 .append(
-                    $('<span/>', {
-                        class: prefix + 'msg-error',
-                        text: err
-                    })
+                $('<span/>', {
+                    class: prefix + 'msg-error',
+                    text: err
+                })
                 );
         },
 
@@ -1768,7 +1768,7 @@ Object.defineProperty(jQuery.trumbowyg, 'defaultOptions', {
                 documentSelection.removeAllRanges();
             } catch (e) {
             }
-            
+
             documentSelection.addRange(range || savedRange);
         },
         getRangeText: function () {

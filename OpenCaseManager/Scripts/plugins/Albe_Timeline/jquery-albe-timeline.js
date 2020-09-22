@@ -6,24 +6,24 @@
  * 2017, Albertino Júnior, http://albertino.eti.br
  */
 
-    $(document).ready(function () {
-        var monthMenu = $('<select>').attr('id', 'timeline-month-selector');
-        var months = ['Januar', 'Februar', 'Marts', 'April', 'Maj', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'December'];
+$(document).ready(function () {
+    var monthMenu = $('<select>').attr('id', 'timeline-month-selector');
+    var months = ['Januar', 'Februar', 'Marts', 'April', 'Maj', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'December'];
+    var year = getYearId();
+    updateMonthMenu(year, monthMenu, months);
+
+    updateTimeline(monthMenu);
+
+    // updates the month dropdown menu according to the year selected
+    $(document).on('change', '#timeline-menu', function () {
         var year = getYearId();
         updateMonthMenu(year, monthMenu, months);
+    });
 
-        updateTimeline(monthMenu);
-
-        // updates the month dropdown menu according to the year selected
-        $(document).on('change', '#timeline-menu', function () {
-            var year = getYearId();
-            updateMonthMenu(year, monthMenu, months);
-        });
-
-        // toggles the filter checkboxes when the filter button is clicked
-        $(document).on('click', '#filterButton', function () {
-            $('.filterTypeWrapper').toggle("slide");
-        });
+    // toggles the filter checkboxes when the filter button is clicked
+    $(document).on('click', '#filterButton', function () {
+        $('.filterTypeWrapper').toggle("slide");
+    });
 });
 
 function updateMonthMenu(year, monthMenu, months) {
@@ -33,11 +33,11 @@ function updateMonthMenu(year, monthMenu, months) {
     var monthsElements = $('div[id^="y' + year + '"]');
 
     // adds months to dropdown menu
-    monthsElements.each(function (index) {       
+    monthsElements.each(function (index) {
         if (index === 0) { return true; }
         var monthSplit = (monthsElements[index].id).split("m");
         var monthIndex = parseInt(monthSplit[1]);
-        
+
         var monthOption = $('<option>').attr('value', monthIndex).append(months[monthIndex]);
         monthMenu.append(monthOption);
     });
@@ -168,7 +168,7 @@ function updateTimeline(monthMenu) {
                 $.each(element.body, function (index2, value2) {
                     var e = $('<' + value2.tag + '>');
 
-                    
+
                     $(value2.attr).each(function () {
                         $.each(this, function (index3, value3) {
                             (index3.toLowerCase() === 'cssclass') ? e.addClass(value3) : e.attr(index3, value3);
@@ -188,7 +188,7 @@ function updateTimeline(monthMenu) {
                     ePanel.append(ePanelFooter);
                 }
 
-                var monthSiblings = createGroupMonth.siblings('article[id^="a' + year + '-' + month + '"]');
+                var monthSiblings = createGroupMonth.siblings('article[id^="a' + year + '-' + month + '-"]');
 
                 var slot = $('<article id="a' + year + '-' + month + '-' + (monthSiblings.length + 1) + '">').append(ePanel);
 
@@ -198,7 +198,7 @@ function updateTimeline(monthMenu) {
                 else
                     slot.insertAfter(createGroupMonth);
                 /****************************************FIM - SLOT <article> ****************************************/
-            }          
+            }
         });
 
         var badge = $('<div>').addClass('badge').html('&nbsp;');
@@ -211,11 +211,11 @@ function updateTimeline(monthMenu) {
         $.each(eTimeline.find('article'), function (index, value) {
             if (settings.effect && settings.effect != 'none')
                 $(this).addClass('animated ' + settings.effect);
-        }); 
+        });
 
         var filterTimeWrapper = $('<div>').addClass('filterTimeWrapper').append(yearMenu);
         filterTimeWrapper.append(monthMenu);
-        filterTimeWrapper.append(findTimeFrameButton);        
+        filterTimeWrapper.append(findTimeFrameButton);
 
         filterTimeWrapper.appendTo(_this);
 

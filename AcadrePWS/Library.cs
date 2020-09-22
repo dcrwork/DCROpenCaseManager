@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AcadrePWS
 {
@@ -14,7 +10,7 @@ namespace AcadrePWS
             /* A short text description of the system making these calls */
             string user)
         {
-            Acadre.PWSHeaderExtension.User = user;
+            AcadreLib.Acadre.PWSHeaderExtension.User = user;
         }
 
         /// <summary>
@@ -44,7 +40,8 @@ namespace AcadrePWS
 			 * "BGSAG" (borgersag)
 			 * "EJSAG" (ejendomssag)
 			 * "PERSAG" (personalesag)
-			 * "BYGGESAG" (byggesag) */
+			 * "BYGGESAG" (byggesag) 
+			 * "BUSAG" (Børn og unge sag)*/
             string caseFileTypeCode,
             /* Security code. One of the following:
 			 * "BO" (borgersag)
@@ -77,7 +74,11 @@ namespace AcadrePWS
             string caseFileDisposalCode,
             /* Deletion code; "P1800D" seems to be the standard value here */
             string deletionCode,
-            string caseRestrictedFromPublicText
+            string caseRestrictedFromPublicText,
+            string SpecialistID,
+            string RecommendationID,
+            string CategoryID,
+            string SubType
             )
         {
             var caseService = Acadre.AcadreServiceFactory.GetCaseService7();
@@ -85,11 +86,11 @@ namespace AcadrePWS
             var configurationService = Acadre.AcadreServiceFactory.GetConfigurationService7();
 
             // look up contact by cprnumber
-            var searchContactCriterion = new AcadreServiceV7.SearchContactCriterionType2();
+            var searchContactCriterion = new AcadreLib.AcadreServiceV7.SearchContactCriterionType2();
             searchContactCriterion.ContactTypeName = "Person";
             searchContactCriterion.SearchTerm = personCivilRegistrationNumber;
 
-            AcadreServiceV7.ContactSearchResponseType[] foundContacts =
+            AcadreLib.AcadreServiceV7.ContactSearchResponseType[] foundContacts =
                 contactService.SearchContacts(searchContactCriterion);
 
             string contactGUID;
@@ -101,7 +102,7 @@ namespace AcadrePWS
             else
             {
                 // contact doesn't exist - create it and assign GUID
-                var contact = new AcadreServiceV7.PersonType2();
+                var contact = new AcadreLib.AcadreServiceV7.PersonType2();
                 contact.PersonCivilRegistrationIdentifierStatusCode = "0";
                 contact.PersonCivilRegistrationIdentifier = personCivilRegistrationNumber;
                 contact.PersonNameForAddressingName = personNameForAddressingName;
@@ -109,9 +110,46 @@ namespace AcadrePWS
             }
 
             // create the case
-            var createCaseRequest = new AcadreServiceV7.CreateCaseRequestType();
+            var createCaseRequest = new AcadreLib.AcadreServiceV7.CreateCaseRequestType();
 
-            AcadreServiceV7.CaseFileType3 caseFile = new AcadreServiceV7.CaseFileType3();
+            AcadreLib.AcadreServiceV7.CaseFileType3 caseFile;
+            if (caseFileTypeCode == "BUSAG")
+            {
+                AcadreLib.AcadreServiceV7.BUCaseFileType BUcaseFile = new AcadreLib.AcadreServiceV7.BUCaseFileType();
+                try
+                {
+                    BUcaseFile.SpecialistId = int.Parse(SpecialistID); // Faggruppe
+                    BUcaseFile.SpecialistIdSpecified = true;
+                }
+                catch (Exception ex)
+                {
+                    BUcaseFile.SpecialistIdSpecified = false;
+                }
+                try
+                {
+                    BUcaseFile.RecommendationId = int.Parse(RecommendationID); // Henvendelse
+                    BUcaseFile.RecommendationIdSpecified = true;
+                }
+                catch (Exception ex)
+                {
+                    BUcaseFile.RecommendationIdSpecified = false;
+                }
+                try
+                {
+                    BUcaseFile.CategoryId = int.Parse(CategoryID); // Kategori
+                    BUcaseFile.CategoryIdSpecified = true;
+                }
+                catch (Exception ex)
+                {
+                    BUcaseFile.CategoryIdSpecified = false;
+                }
+                caseFile = BUcaseFile;
+            }
+            else
+            {
+                caseFile = new AcadreLib.AcadreServiceV7.CaseFileType3();
+            }
+            caseFile.SubType = SubType; // SubType from input argument
             caseFile.CaseFileTypeCode = caseFileTypeCode;
             caseFile.Year = DateTime.Now.Year.ToString();
             caseFile.CreationDate = DateTime.Now;
@@ -124,26 +162,26 @@ namespace AcadrePWS
             caseFile.DeletionCode = deletionCode;
             caseFile.AccessCode = accessCode;
 
-            caseFile.AdministrativeUnit = new AcadreServiceV7.AdministrativeUnitType[]
+            caseFile.AdministrativeUnit = new AcadreLib.AcadreServiceV7.AdministrativeUnitType[]
                 {
-                new AcadreServiceV7.AdministrativeUnitType() { AdministrativeUnitReference=administrativeUnit }
+                new AcadreLib.AcadreServiceV7.AdministrativeUnitType() { AdministrativeUnitReference=administrativeUnit }
                 };
 
-            caseFile.CustomFieldCollection = new AcadreServiceV7.CustomField[]
+            caseFile.CustomFieldCollection = new AcadreLib.AcadreServiceV7.CustomField[]
                 {
-                    new AcadreServiceV7.CustomField(){Name = "df1",Value = caseContent}
-                    ,new AcadreServiceV7.CustomField(){Name = "df25",Value = contactGUID}
+                    new AcadreLib.AcadreServiceV7.CustomField(){Name = "df1",Value = caseContent}
+                    ,new AcadreLib.AcadreServiceV7.CustomField(){Name = "df25",Value = contactGUID}
                 };
 
-            caseFile.Classification = new AcadreServiceV7.ClassificationType
+            caseFile.Classification = new AcadreLib.AcadreServiceV7.ClassificationType
             {
-                Category = new AcadreServiceV7.CategoryType[] {
-                    new AcadreServiceV7.CategoryType(){ Principle="KL Koder", Literal = journalizingCode }
-                       ,new AcadreServiceV7.CategoryType(){ Principle="Facetter", Literal = facet }
+                Category = new AcadreLib.AcadreServiceV7.CategoryType[] {
+                    new AcadreLib.AcadreServiceV7.CategoryType(){ Principle="KL Koder", Literal = journalizingCode }
+                       ,new AcadreLib.AcadreServiceV7.CategoryType(){ Principle="Facetter", Literal = facet }
                    }
             };
 
-            caseFile.Party = new AcadreServiceV7.PartyType[] { new AcadreServiceV7.PartyType() {
+            caseFile.Party = new AcadreLib.AcadreServiceV7.PartyType[] { new AcadreLib.AcadreServiceV7.PartyType() {
                 CreationDate = DateTime.Now
                 ,ContactReference = contactGUID
                 ,PublicAccessLevelReference = "3"
@@ -151,7 +189,7 @@ namespace AcadrePWS
             } };
 
             var userList = configurationService.GetUserList(
-                new AcadreServiceV7.EmptyRequestType()).ToList();
+                new AcadreLib.AcadreServiceV7.EmptyRequestType()).ToList();
             var user = userList.SingleOrDefault(u => u.Initials == caseResponsible);
             if (user != null)
             {
@@ -162,7 +200,7 @@ namespace AcadrePWS
 
             var createCaseResponse = caseService.CreateCase(createCaseRequest);
             // check for multicase (samlesag) response.
-            if (createCaseResponse.CreateCaseAndAMCResult == AcadreServiceV7.CreateCaseAndAMCResultType.CaseNotCreatedAndListAMCReceived)
+            if (createCaseResponse.CreateCaseAndAMCResult == AcadreLib.AcadreServiceV7.CreateCaseAndAMCResultType.CaseNotCreatedAndListAMCReceived)
             {
                 // create the case in all the multicases
                 createCaseRequest.MultiCaseIdentifiers = createCaseResponse.MultiCaseIdentifiers;
@@ -186,7 +224,7 @@ namespace AcadrePWS
             /* Case identifier returned by CreateCase */
             string caseId)
         {
-            return AcadrePWS.Properties.Settings.Default.AcadreFrontEndBaseURL + "/Case/Details?caseId=" + caseId;
+            return Config.AcadreFrontEndBaseURL + "/Case/Details?caseId=" + caseId;
         }
         public static string GetCaseNumber(
             /* Case identifier returned by CreateCase */
@@ -234,10 +272,10 @@ namespace AcadrePWS
             byte[] fileBytes
             )
         {
-            var doc = new AcadreServiceV7.CreateMainDocumentRequestType2();
+            var doc = new AcadreLib.AcadreServiceV7.CreateMainDocumentRequestType2();
 
             //Record Type
-            var record = new AcadreServiceV7.RecordType2();
+            var record = new AcadreLib.AcadreServiceV7.RecordType2();
             doc.Record = record;
             record.CaseFileReference = documentCaseId;
             record.RecordStatusCode = recordStatusCode;
@@ -249,14 +287,14 @@ namespace AcadrePWS
             record.PublicationIndicator = recordPublicIndicator;
 
             //Document type
-            var docType = new AcadreServiceV7.DocumentType();
+            var docType = new AcadreLib.AcadreServiceV7.DocumentType();
             doc.Document = docType;
             docType.DocumentStatusCode = documentStatusCode;
             docType.DocumentCategoryCode = documentCategoryCode;
             docType.DocumentTitleText = documentTitleText;
 
             //Document link type
-            var docLinkType = new AcadreServiceV7.DocumentLinkType();
+            var docLinkType = new AcadreLib.AcadreServiceV7.DocumentLinkType();
             doc.DocumentLink = docLinkType;
             doc.FileName = fileName;
             doc.XMLBinary = fileBytes;
@@ -264,6 +302,61 @@ namespace AcadrePWS
             var documentService = Acadre.AcadreServiceFactory.GetMainDocumentService7();
             var documentId = documentService.CreateMainDocument(doc);
             return documentId;
+        }
+
+        /// <summary>
+        /// Create Memo
+        /// </summary>
+        /// <param name="fileName"></param>
+        /// <param name="accessCode"></param>
+        /// <param name="caseFileReference"></param>
+        /// <param name="titleText"></param>
+        /// <param name="creatorReference"></param>
+        /// <param name="memoTypeReference"></param>
+        /// <param name="isLocked"></param>
+        /// <param name="fileBytes"></param>
+        /// <returns></returns>
+        public static string CreateMemo(
+            string fileName,
+            string accessCode,
+            string caseFileReference,
+            string titleText,
+            string creatorReference,
+            string memoTypeReference,
+            bool isLocked,
+            byte[] fileBytes,
+            DateTime eventDate
+            )
+        {
+
+            var configurationService = Acadre.AcadreServiceFactory.GetConfigurationService7();
+            var now = DateTime.Now;
+
+            var memoType = new AcadreLib.AcadreServiceV7.TimedJournalMemoType();
+            memoType.AccessCode = accessCode;
+            memoType.CaseFileReference = caseFileReference;
+            memoType.CreationDate = now;
+
+            var userList = configurationService.GetUserList(new AcadreLib.AcadreServiceV7.EmptyRequestType()).ToList();
+            var user = userList.SingleOrDefault(ut => ut.Initials == creatorReference);
+            if (user != null)
+            {
+                memoType.CreatorReference = user.Id;
+            }
+
+            memoType.MemoTypeReference = memoTypeReference;
+            memoType.IsLocked = isLocked;
+            memoType.MemoEventDate = eventDate;
+            memoType.MemoTitleText = titleText;
+
+            var tempMemo = new AcadreLib.AcadreServiceV7.CreateTimedJournalMemoRequestType();
+            tempMemo.FileName = fileName;
+            tempMemo.XMLBinary = fileBytes;
+            tempMemo.TimedJournalMemo = memoType;
+
+            var memoService = Acadre.AcadreServiceFactory.GetMemoService7();
+            var memoId = memoService.CreateMemo(tempMemo);
+            return memoId;
         }
     }
 }

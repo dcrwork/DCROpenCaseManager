@@ -9,7 +9,7 @@
         <table class="table table-responsive entityDetailTable">
             <tr>
                 <th class="caseTitle"><span id="caseTitle"></span></th>
-                <td><span style="float:right" class="caseNum"><span id="caseNo"></span></span><span style="float:right;display:none;" class="caseLink"><a target="_blank" id="caseLink" href="#"><img width="12px" src="../content/images/caseLink.png"></a></span></td>
+                <td><span style="float:right" class="caseNum"><span id="caseNo"></span></span><span style="float:right;display:none;" class="caseLink"><a target="_blank" id="caseLink" href="#"><img width="12px" src="../content/images/standard/caseLink.png"></a></span></td>
             </tr>
         </table>
     </div>
@@ -181,7 +181,7 @@
                     '<td>' + moment(new Date(item.Due)).format('L') + '</td>' +
                     '<td  style="display:none">';
                 returnHtml += '<button type="button" taskid="' + item.EventId + '" graphid="' + item.GraphId + '" simulationid="' + item.InstanceId + '" instanceid="'
-                    + item.InstanceId + '" id="' + item.EventId + '" name="execute" value="execute" class="btn btn-info taskExecutionBtn"><img src="../Content/Images/execute.png" /></button> ';
+                    + item.InstanceId + '" id="' + item.EventId + '" name="execute" value="execute" class="btn btn-info taskExecutionBtn"><img src="../Content/Images/standard/execute.png" /></button> ';
                 returnHtml += '</td>' + '</tr>';
             }
             else if (item.IsExecuted) {
@@ -197,7 +197,7 @@
                     '<td>' + moment(new Date(item.Due)).format('L') + '</td>' +
                     '<td  style="display:none">';
                 returnHtml += '<button type="button" taskid="' + item.EventId + '" graphid="' + item.GraphId + '" simulationid="' + item.InstanceId + '" instanceid="'
-                    + item.InstanceId + '" id="' + item.EventId + '" name="execute" value="execute" class="btn btn-info taskExecutionBtn"><img src="../Content/Images/execute.png" /></button> ';
+                    + item.InstanceId + '" id="' + item.EventId + '" name="execute" value="execute" class="btn btn-info taskExecutionBtn"><img src="../Content/Images/standard/execute.png" /></button> ';
                 returnHtml += '</td>' + '</tr>';
 
             }
@@ -214,7 +214,7 @@
                     '<td>' + moment(new Date(item.Due)).format('L') + '</td>' +
                     '<td  style="display:none">';
                 returnHtml += '<button type="button" taskid="' + item.EventId + '" graphid="' + item.GraphId + '" simulationid="' + item.InstanceId + '" instanceid="'
-                    + item.InstanceId + '" id="' + item.EventId + '" name="execute" value="execute" class="btn btn-info taskExecutionBtn"><img src="../Content/Images/execute.png" /></button> ';
+                    + item.InstanceId + '" id="' + item.EventId + '" name="execute" value="execute" class="btn btn-info taskExecutionBtn"><img src="../Content/Images/standard/execute.png" /></button> ';
                 returnHtml += '</td>' + '</tr>';
             }
             if (item.Description !== "")
@@ -247,6 +247,8 @@
 
     function getParameterByName(name, url) {
         if (!url) url = window.location.href;
+        url = url.toLowerCase();
+        name = name.toLowerCase();
         name = name.replace(/[\[\]]/g, "\\$&");
         var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
             results = regex.exec(url);

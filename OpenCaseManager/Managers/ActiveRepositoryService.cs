@@ -73,6 +73,28 @@ namespace OpenCaseManager.Managers
         }
 
         /// <summary>
+        /// Execute an event
+        /// </summary>
+        /// <param name="graphId"></param>
+        /// <param name="simulationId"></param>
+        /// <param name="eventId"></param>
+        /// <returns></returns>
+        public string ExecuteEventWithTime(string graphId, string simulationId, string eventId, string time)
+        {
+            var url = string.Format("api/graphs/{0}/sims/{1}/events/{2} ", graphId, simulationId, eventId);
+            string body = "<absoluteTime>" + time + "</absoluteTime>";
+            var serviceModel = GetServiceModel(url, Method.POST, body);
+
+            var request = _service.GetRequest(serviceModel);
+            var obj = new { time = serviceModel.Body };
+            request.AddParameter("application/json", SimpleJson.SerializeObject(obj), ParameterType.RequestBody);
+            var response = _service.GetResponse(serviceModel, request);
+
+            var content = response.Content;
+            return content;
+        }
+
+        /// <summary>
         /// Get Process Roles
         /// </summary>
         /// <param name="graphId"></param>
@@ -152,9 +174,62 @@ namespace OpenCaseManager.Managers
 
             var request = _service.GetRequest(serviceModel);
             var obj = new { time = serviceModel.Body };
-            request.AddParameter("application/json", SimpleJson.SimpleJson.SerializeObject(obj), ParameterType.RequestBody);
+            request.AddParameter("application/json", SimpleJson.SerializeObject(obj), ParameterType.RequestBody);
             var response = _service.GetResponse(serviceModel, request);
 
+            var content = response.Content;
+            return content;
+        }
+
+        /// <summary>
+        /// Get refer xml from graph xml
+        /// </summary>
+        /// <param name="graphId"></param>
+        /// <param name="simulationId"></param>
+        /// <param name="eventId"></param>
+        /// <returns></returns>
+        public string GetReferXmlByEventId(string graphId, string simulationId, dynamic eventId)
+        {
+            var url = string.Format("api/graphs/{0}/sims/{1}?filter=refer&eventid={2} ", graphId, simulationId, eventId);
+            var serviceModel = GetServiceModel(url, Method.GET);
+
+            var request = _service.GetRequest(serviceModel);
+            var response = _service.GetResponse(serviceModel, request);
+            var content = response.Content;
+            return content;
+        }
+
+        /// <summary>
+        /// Merge executed xml with graph
+        /// </summary>
+        /// <param name="graphId"></param>
+        /// <param name="simulationId"></param>
+        /// <param name="referXml"></param>
+        /// <param name="eventId"></param>
+        public void MergeReferXmlWithMainXml(string graphId, string simulationId, dynamic referXml, dynamic eventId)
+        {
+            var url = string.Format("api/graphs/{0}/sims/{1}?filter=refer ", graphId, simulationId);
+            var serviceModel = GetServiceModel(url, Method.PUT);
+
+            var request = _service.GetRequest(serviceModel);
+            var obj = new { eventid = eventId, referXML = referXml };
+            request.AddParameter("application/json", SimpleJson.SerializeObject(obj), ParameterType.RequestBody);
+            var response = _service.GetResponse(serviceModel, request);
+            var content = response.Content;
+        }
+
+        /// <summary>
+        /// Get major revisions of a graph
+        /// </summary>
+        /// <param name="graphId"></param>
+        /// <returns></returns>
+        public string GetMajorRevisions(string graphId)
+        {
+            var url = string.Format("/api/graphs/{0}/versions?versions=major", graphId);
+            var serviceModel = GetServiceModel(url, Method.GET);
+
+            var request = _service.GetRequest(serviceModel);
+            var response = _service.GetResponse(serviceModel, request);
             var content = response.Content;
             return content;
         }

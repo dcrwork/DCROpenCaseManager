@@ -20,10 +20,9 @@
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
     <Use64BitIISExpress />
-    <IISExpressSSLPort>
-    </IISExpressSSLPort>
-    <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
-    <IISExpressWindowsAuthentication>disabled</IISExpressWindowsAuthentication>
+    <IISExpressSSLPort>44397</IISExpressSSLPort>
+    <IISExpressAnonymousAuthentication>disabled</IISExpressAnonymousAuthentication>
+    <IISExpressWindowsAuthentication>enabled</IISExpressWindowsAuthentication>
     <IISExpressUseClassicPipelineMode />
     <UseGlobalApplicationHostFile />
     <NuGetPackageImportStamp>
@@ -57,18 +56,44 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AcadreLib, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Dependencies\AcadreLib.dll</HintPath>
+    </Reference>
+    <Reference Include="BouncyCastle.Crypto, Version=1.8.5.0, Culture=neutral, PublicKeyToken=0e99375e54769942">
+      <HintPath>..\packages\BouncyCastle.1.8.5\lib\BouncyCastle.Crypto.dll</HintPath>
+    </Reference>
     <Reference Include="CommonServiceLocator, Version=2.0.4.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
       <HintPath>..\packages\Unity.5.8.10\lib\net46\CommonServiceLocator.dll</HintPath>
     </Reference>
-    <Reference Include="FSharp.Core, Version=3.259.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+    <Reference Include="Core, Version=3.1.0.3, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Dependencies\Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Engine, Version=3.1.0.3, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Dependencies\Engine.dll</HintPath>
+    </Reference>
+    <Reference Include="FSharp.Core, Version=4.7.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Dependencies\FSharp.Core.dll</HintPath>
     </Reference>
-    <Reference Include="HtmlRenderer, Version=1.5.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\HtmlRenderer.Core.1.5.1-beta1\lib\net45\HtmlRenderer.dll</HintPath>
+    <Reference Include="FsLexYacc.Runtime, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Dependencies\FsLexYacc.Runtime.dll</HintPath>
     </Reference>
-    <Reference Include="HtmlRenderer.PdfSharp, Version=1.5.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\HtmlRenderer.PdfSharp.1.5.1-beta1\lib\net45\HtmlRenderer.PdfSharp.dll</HintPath>
+    <Reference Include="HtmlRenderer">
+      <HintPath>..\packages\HtmlRenderer.Core.1.5.0.5\lib\net45\HtmlRenderer.dll</HintPath>
+    </Reference>
+    <Reference Include="HtmlRenderer.PdfSharp">
+      <HintPath>..\packages\HtmlRenderer.PdfSharp.1.5.0.6\lib\net45\HtmlRenderer.PdfSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="Log, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Dependencies\Log.dll</HintPath>
+    </Reference>
+    <Reference Include="MailKit, Version=2.2.0.0, Culture=neutral, PublicKeyToken=4e064fe7c44a8f1b, processorArchitecture=MSIL">
+      <HintPath>..\packages\MailKit.2.2.0\lib\net45\MailKit.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=1.0.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.7\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
@@ -122,8 +147,11 @@
     <Reference Include="Microsoft.Owin.Security.OpenIdConnect, Version=4.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Owin.Security.OpenIdConnect.4.0.1\lib\net45\Microsoft.Owin.Security.OpenIdConnect.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="MimeKit, Version=2.2.0.0, Culture=neutral, PublicKeyToken=bede1c8a46c66814, processorArchitecture=MSIL">
+      <HintPath>..\packages\MimeKit.2.2.0\lib\net45\MimeKit.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
       <HintPath>..\packages\NLog.4.5.11\lib\net45\NLog.dll</HintPath>
@@ -134,14 +162,22 @@
     <Reference Include="Owin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0ebd12fd5e55cc5, processorArchitecture=MSIL">
       <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
     </Reference>
+    <Reference Include="Parser, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Dependencies\Parser.dll</HintPath>
+    </Reference>
     <Reference Include="PdfSharp, Version=1.50.5147.0, Culture=neutral, PublicKeyToken=f94615aa0424f9eb, processorArchitecture=MSIL">
       <HintPath>..\packages\PDFsharp.1.50.5147\lib\net20\PdfSharp.dll</HintPath>
     </Reference>
     <Reference Include="PdfSharp.Charting, Version=1.50.5147.0, Culture=neutral, PublicKeyToken=f94615aa0424f9eb, processorArchitecture=MSIL">
       <HintPath>..\packages\PDFsharp.1.50.5147\lib\net20\PdfSharp.Charting.dll</HintPath>
     </Reference>
-    <Reference Include="RestSharp, Version=106.2.2.0, Culture=neutral, PublicKeyToken=598062e77f915f75, processorArchitecture=MSIL">
-      <HintPath>..\packages\RestSharp.106.2.2\lib\net452\RestSharp.dll</HintPath>
+    <Reference Include="ProcessEngine, Version=3.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Dependencies\ProcessEngine.dll</HintPath>
+    </Reference>
+    <Reference Include="RestSharp, Version=106.6.10.0, Culture=neutral, PublicKeyToken=598062e77f915f75, processorArchitecture=MSIL">
+      <HintPath>..\packages\RestSharp.106.6.10\lib\net452\RestSharp.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration.ConfigurationManager, Version=4.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
@@ -155,6 +191,7 @@
       <HintPath>..\packages\System.IdentityModel.Tokens.Jwt.5.3.0\lib\net461\System.IdentityModel.Tokens.Jwt.dll</HintPath>
     </Reference>
     <Reference Include="System.IO.Compression" />
+    <Reference Include="System.Security" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.Transactions" />
     <Reference Include="System.Web.Entity" />
@@ -246,6 +283,10 @@
       <Private>True</Private>
       <HintPath>..\packages\Antlr.3.4.1.9004\lib\Antlr3.Runtime.dll</HintPath>
     </Reference>
+    <Reference Include="Xml, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Dependencies\Xml.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.ApplicationInsights">
@@ -275,7 +316,6 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\Exception.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
-    <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\UnityConfig.cs" />
     <Compile Include="App_Start\UnityMvcActivator.cs" />
     <Compile Include="App_Start\UnityWebApiActivator.cs" />
@@ -308,19 +348,32 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\SampleDirection.cs" />
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
+    <Compile Include="Commons\AutomaticEvents.cs" />
     <Compile Include="Commons\Common.cs" />
-    <Compile Include="Commons\MyFontResolverPdfSharp.cs" />
+    <Compile Include="Commons\Commons.cs" />
+    <Compile Include="Commons\IAutomaticEvents.cs" />
+    <Compile Include="Commons\ICommons.cs" />
+    <Compile Include="Commons\IMailRepository.cs" />
+    <Compile Include="Commons\MailRepository.cs" />
+    <Compile Include="Configurations\Config.cs" />
     <Compile Include="Controllers\ChildController.cs" />
     <Compile Include="Controllers\FileController.cs" />
     <Compile Include="Controllers\ChildInstanceController.cs" />
+    <Compile Include="Controllers\LogController.cs" />
     <Compile Include="Controllers\MyChildrenController.cs" />
     <Compile Include="Controllers\JournalNoteController.cs" />
+    <Compile Include="Custom\Syddjurs\ISyddjursWork.cs" />
+    <Compile Include="Custom\Syddjurs\SyddjursWork.cs" />
     <Compile Include="Managers\DocumentManager.cs" />
-    <Compile Include="Managers\IDocumnentManager.cs" />
+    <Compile Include="Managers\IDocumentManager.cs" />
+    <Compile Include="Managers\IProcessEngineService.cs" />
+    <Compile Include="Managers\ProcessEngineService.cs" />
     <Compile Include="Models\AddChildModel.cs" />
+    <Compile Include="Models\Address.cs" />
+    <Compile Include="Models\Child.cs" />
+    <Compile Include="Models\ChildCase.cs" />
     <Compile Include="Models\DBEntityNames.cs" />
-    <Compile Include="Configurations\Config.cs" />
-    <Compile Include="Controllers\AdminController.cs" />
+    <Compile Include="Content\Config.cs" />
     <Compile Include="Controllers\ApiControllers\RecordsController.cs" />
     <Compile Include="Controllers\ApiControllers\ServicesController.cs" />
     <Compile Include="Controllers\DigitalAssistantController.cs" />
@@ -347,15 +400,20 @@
     <Compile Include="Models\Condition.cs" />
     <Compile Include="Models\DataModel.cs" />
     <Compile Include="Models\Enums.cs" />
-    <Compile Include="Commons\Extentions.cs" />
+    <Compile Include="Commons\Extensions.cs" />
     <Compile Include="Models\Filter.cs" />
+    <Compile Include="Models\GlobalEvents.cs" />
+    <Compile Include="Models\InitializeGraphModel.cs" />
+    <Compile Include="Models\JournalDocument.cs" />
+    <Compile Include="Models\MajorRevision.cs" />
+    <Compile Include="Models\Memo.cs" />
     <Compile Include="Models\Model.cs" />
     <Compile Include="Models\Order.cs" />
     <Compile Include="Models\Parameter.cs" />
     <Compile Include="Models\ServiceModel.cs" />
+    <Compile Include="Models\SimplePerson.cs" />
     <Compile Include="Models\UserRole.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\HelpPage\HelpPage.css" />
@@ -365,69 +423,128 @@
     <Content Include="Content\bootstrap-toggle.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
-    <Content Include="Content\breadcrumbs.css" />
-    <Content Include="Content\CopenhagenCountry.css" />
-    <Content Include="Content\DCR.css" />
+    <Content Include="Content\Styles\Standard\breadcrumbs.css" />
+    <Content Include="Content\Styles\Standard\Child.css" />
+    <Content Include="Content\Styles\Standard\ChildInstance.css" />
     <Content Include="Content\fontastic.css" />
+    <Content Include="Content\Styles\Standard\PartialViews.css" />
     <Content Include="Content\FontAwsome\css\all.min.css" />
     <Content Include="Content\FontAwsome\webfonts\fa-brands-400.svg" />
     <Content Include="Content\FontAwsome\webfonts\fa-regular-400.svg" />
     <Content Include="Content\FontAwsome\webfonts\fa-solid-900.svg" />
-    <Content Include="Content\Images\add.png" />
-    <Content Include="Content\Images\add2.png" />
-    <Content Include="Content\Images\addicon.png" />
-    <Content Include="Content\Images\addicon.svg" />
-    <Content Include="Content\Images\addInstance.png" />
-    <Content Include="Content\Images\addNewForm.png" />
-    <Content Include="Content\Images\addNewQuestion.png" />
-    <Content Include="Content\Images\addQuestion.png" />
-    <Content Include="Content\Images\cancel.png" />
-    <Content Include="Content\Images\caseLink.png" />
-    <Content Include="Content\Images\check.png" />
-    <Content Include="Content\Images\cross.png" />
-    <Content Include="Content\Images\dash.png" />
-    <Content Include="Content\Images\dcrLogo.png" />
-    <Content Include="Content\Images\dcrLogoHeader.png" />
-    <Content Include="Content\Images\delete-question.png" />
-    <Content Include="Content\Images\delete.png" />
-    <Content Include="Content\Images\edit.png" />
-    <Content Include="Content\Images\execute.png" />
-    <Content Include="Content\Images\executed.png" />
-    <Content Include="Content\Images\executed1.png" />
-    <Content Include="Content\Images\footerleft.png" />
-    <Content Include="Content\Images\footerRight.png" />
-    <Content Include="Content\Images\goto.png" />
-    <Content Include="Content\Images\headerImg.jpg" />
-    <Content Include="Content\Images\ie-internet-options.jpg" />
-    <Content Include="Content\Images\ie-security-settings.jpg" />
-    <Content Include="Content\Images\InfoIcon.svg" />
-    <Content Include="Content\Images\loader.gif" />
-    <Content Include="Content\Images\logo.png" />
-    <Content Include="Content\Images\logokkDkHeader.png" />
-    <Content Include="Content\Images\logoOpenManager.png" />
-    <Content Include="Content\Images\pending.png" />
-    <Content Include="Content\Images\priorityicon.png" />
-    <Content Include="Content\Images\priorityicon.svg" />
-    <Content Include="Content\Images\tasks.png" />
-    <Content Include="Content\Images\update.png" />
-    <Content Include="Content\Images\InfoIconV2.svg" />
+    <Content Include="Content\Images\Standard\add.png" />
+    <Content Include="Content\Images\Standard\add2.png" />
+    <Content Include="Content\Images\Standard\addicon.png" />
+    <Content Include="Content\Images\Standard\addicon.svg" />
+    <Content Include="Content\Images\Standard\addInstance.png" />
+    <Content Include="Content\Images\Standard\addNewForm.png" />
+    <Content Include="Content\Images\Standard\addNewQuestion.png" />
+    <Content Include="Content\Images\Standard\addQuestion.png" />
+    <Content Include="Content\Images\Standard\cancel.png" />
+    <Content Include="Content\Images\Standard\caseLink.png" />
+    <Content Include="Content\Images\Standard\check.png" />
+    <Content Include="Content\Images\Standard\cross.png" />
+    <Content Include="Content\Images\Standard\dash.png" />
+    <Content Include="Content\Images\Standard\dcrLogo.png" />
+    <Content Include="Content\Images\Standard\dcrLogoHeader.png" />
+    <Content Include="Content\Images\Standard\delete-question.png" />
+    <Content Include="Content\Images\Standard\delete.png" />
+    <Content Include="Content\Images\Standard\edit.png" />
+    <Content Include="Content\Images\Standard\exchange.png" />
+    <Content Include="Content\Images\Standard\execute.png" />
+    <Content Include="Content\Images\Standard\executed.png" />
+    <Content Include="Content\Images\Standard\executed1.png" />
+    <Content Include="Content\Images\Standard\exportFile.png" />
+    <Content Include="Content\Images\Custom\footerleft.png" />
+    <Content Include="Content\Images\Standard\footerRight.png" />
+    <Content Include="Content\Images\Standard\goto.png" />
+    <Content Include="Content\Images\Standard\goto2.png" />
+    <Content Include="Content\Images\Standard\headerImg.jpg" />
+    <Content Include="Content\Images\Standard\ie-internet-options.jpg" />
+    <Content Include="Content\Images\Standard\ie-security-settings.jpg" />
+    <Content Include="Content\Images\Standard\InfoIcon.svg" />
+    <Content Include="Content\Images\Standard\loader.gif" />
+    <Content Include="Content\Images\Custom\logo.png" />
+    <Content Include="Content\Images\Standard\logokkDkHeader.png" />
+    <Content Include="Content\Images\Standard\logoOpenManager.png" />
+    <Content Include="Content\Images\Standard\pending.png" />
+    <Content Include="Content\Images\Standard\priorityicon.png" />
+    <Content Include="Content\Images\Standard\priorityicon.svg" />
+    <Content Include="Content\Images\Standard\refresh.png" />
+    <Content Include="Content\Images\Standard\tasks.png" />
+    <Content Include="Content\Images\Standard\update.png" />
+    <Content Include="Content\Images\Standard\InfoIconV2.svg" />
     <Content Include="Content\jasmine\jasmine.css" />
     <Content Include="Content\jasmine\jasmine_favicon.png" />
-    <Content Include="Content\journalnote.css" />
-    <Content Include="Content\jquery.treegrid.css" />
+    <Content Include="Content\Styles\Standard\journalnote.css" />
+    <Content Include="Content\Styles\Standard\jquery.treegrid.css" />
     <Content Include="Content\noty\noty.css" />
-    <Content Include="Content\tabs.css" />
+    <Content Include="Content\Styles\Standard\sortable.css" />
+    <Content Include="Content\Styles\Standard\tabs.css" />
     <Content Include="Content\noty\themes\mint.css" />
-    <Content Include="Content\myChildren.css" />
+    <Content Include="Content\Styles\Standard\myChildren.css" />
+    <Content Include="Dependencies\AcadreLib.dll" />
+    <Content Include="Dependencies\Core.dll" />
+    <Content Include="Dependencies\Engine.dll" />
+    <Content Include="Dependencies\FSharp.Core.dll" />
+    <Content Include="Dependencies\FsLexYacc.Runtime.dll" />
+    <Content Include="Dependencies\Log.dll" />
+    <Content Include="Dependencies\Parser.dll" />
+    <Content Include="Dependencies\ProcessEngine.dll" />
+    <Content Include="Dependencies\Time.dll" />
+    <Content Include="Dependencies\Xml.dll" />
     <Content Include="HtmlTemplates\FormTemplate.html" />
+    <Content Include="HtmlTemplates\Instruction.html" />
     <Content Include="HtmlTemplates\InstructionsForActiveXOutlook.html" />
     <Content Include="HtmlTemplates\FormInstruction.html" />
     <Content Include="karma.conf.js" />
     <Content Include="Scripts\addDocument.js" />
     <Content Include="Scripts\breadcrumbs.js" />
+    <Content Include="Scripts\changeResponsible.js" />
+    <Content Include="Scripts\child-instance.js" />
     <Content Include="Scripts\child.js" />
     <Content Include="Scripts\createprocess.js" />
+    <Content Include="Scripts\DataTables\DataTables-1.10.20\css\dataTables.bootstrap.css" />
+    <Content Include="Scripts\DataTables\DataTables-1.10.20\css\dataTables.bootstrap.min.css" />
+    <Content Include="Scripts\DataTables\DataTables-1.10.20\css\dataTables.bootstrap4.css" />
+    <Content Include="Scripts\DataTables\DataTables-1.10.20\css\dataTables.bootstrap4.min.css" />
+    <Content Include="Scripts\DataTables\DataTables-1.10.20\css\dataTables.foundation.css" />
+    <Content Include="Scripts\DataTables\DataTables-1.10.20\css\dataTables.foundation.min.css" />
+    <Content Include="Scripts\DataTables\DataTables-1.10.20\css\dataTables.jqueryui.css" />
+    <Content Include="Scripts\DataTables\DataTables-1.10.20\css\dataTables.jqueryui.min.css" />
+    <Content Include="Scripts\DataTables\DataTables-1.10.20\css\dataTables.semanticui.css" />
+    <Content Include="Scripts\DataTables\DataTables-1.10.20\css\dataTables.semanticui.min.css" />
+    <Content Include="Scripts\DataTables\DataTables-1.10.20\css\jquery.dataTables.css" />
+    <Content Include="Scripts\DataTables\DataTables-1.10.20\css\jquery.dataTables.min.css" />
+    <Content Include="Scripts\DataTables\DataTables-1.10.20\images\sort_asc.png" />
+    <Content Include="Scripts\DataTables\DataTables-1.10.20\images\sort_asc_disabled.png" />
+    <Content Include="Scripts\DataTables\DataTables-1.10.20\images\sort_both.png" />
+    <Content Include="Scripts\DataTables\DataTables-1.10.20\images\sort_desc.png" />
+    <Content Include="Scripts\DataTables\DataTables-1.10.20\images\sort_desc_disabled.png" />
+    <Content Include="Scripts\DataTables\DataTables-1.10.20\js\dataTables.bootstrap.js" />
+    <Content Include="Scripts\DataTables\DataTables-1.10.20\js\dataTables.bootstrap.min.js" />
+    <Content Include="Scripts\DataTables\DataTables-1.10.20\js\dataTables.bootstrap4.js" />
+    <Content Include="Scripts\DataTables\DataTables-1.10.20\js\dataTables.bootstrap4.min.js" />
+    <Content Include="Scripts\DataTables\DataTables-1.10.20\js\dataTables.foundation.js" />
+    <Content Include="Scripts\DataTables\DataTables-1.10.20\js\dataTables.foundation.min.js" />
+    <Content Include="Scripts\DataTables\DataTables-1.10.20\js\dataTables.jqueryui.js" />
+    <Content Include="Scripts\DataTables\DataTables-1.10.20\js\dataTables.jqueryui.min.js" />
+    <Content Include="Scripts\DataTables\DataTables-1.10.20\js\dataTables.semanticui.js" />
+    <Content Include="Scripts\DataTables\DataTables-1.10.20\js\dataTables.semanticui.min.js" />
+    <Content Include="Scripts\DataTables\DataTables-1.10.20\js\jquery.dataTables.js" />
+    <Content Include="Scripts\DataTables\DataTables-1.10.20\js\jquery.dataTables.min.js" />
+    <Content Include="Scripts\DataTables\datatables.css" />
+    <Content Include="Scripts\DataTables\datatables.js" />
+    <Content Include="Scripts\DataTables\datatables.min.css" />
+    <Content Include="Scripts\DataTables\datatables.min.js" />
+    <Content Include="Scripts\DataTables\jQuery-3.3.1\jquery-3.3.1.js" />
+    <Content Include="Scripts\DataTables\jQuery-3.3.1\jquery-3.3.1.min.js" />
+    <Content Include="Scripts\export-dcrxml-log.js" />
     <Content Include="Scripts\formserver.js" />
+    <Content Include="Scripts\header.js" />
+    <Content Include="Scripts\jquery.shorten.1.0.js" />
+    <Content Include="Scripts\Log.js" />
+    <Content Include="Scripts\my-activities.js" />
     <Content Include="Scripts\myChildren.js" />
     <Content Include="Scripts\htmlRender.js" />
     <Content Include="Scripts\jasmine\boot.js" />
@@ -436,6 +553,7 @@
     <Content Include="Scripts\jasmine\jasmine.js" />
     <Content Include="Scripts\journalNote.js" />
     <Content Include="Scripts\journalNoteCreate.js" />
+    <Content Include="Scripts\ObsBox.js" />
     <Content Include="Scripts\plugins\Albe_Timeline\data-albe-timeline.js" />
     <Content Include="Scripts\plugins\Albe_Timeline\jquery-albe-timeline.js" />
     <Content Include="Scripts\plugins\Albe_Timeline\jquery-albe-timeline.min.js" />
@@ -444,7 +562,7 @@
     <Content Include="Scripts\plugins\slick\fonts\slick.svg" />
     <Content Include="Scripts\plugins\slick\slick-theme.css" />
     <Content Include="Scripts\plugins\slick\slick.css" />
-    <Content Include="Content\Syddjurs.css" />
+    <Content Include="Content\Styles\Custom\Syddjurs.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="fonts\instanceStatus.svg" />
@@ -522,6 +640,7 @@
     <Content Include="fonts\OpenSans-Regular.ttf" />
     <Content Include="fonts\OpenSans-Semibold.ttf" />
     <Content Include="fonts\OpenSans-SemiboldItalic.ttf" />
+    <Content Include="App_Data\rtf-template.rtf" />
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -530,11 +649,6 @@
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="package.json" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
-    <None Include="Properties\PublishProfiles\OpenCaseManager - FTP.pubxml" />
-    <None Include="Properties\PublishProfiles\OpenCaseManager - Web Deploy.pubxml" />
-    <None Include="Properties\PublishProfiles\opencasemanagerdemo - FTP.pubxml" />
-    <None Include="Properties\PublishProfiles\opencasemanagerdemo - Web Deploy.pubxml" />
-    <None Include="Properties\PublishProfiles\OpenCaseManagerEarlyBird - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\core.js" />
     <Content Include="Scripts\CustomFunctions.js" />
@@ -1004,17 +1118,22 @@
     <Content Include="Scripts\plugins\Trumbowyg\src\ui\icons\unordered-list.svg" />
     <Content Include="Scripts\plugins\Trumbowyg\src\ui\icons\view-html.svg" />
     <Content Include="Scripts\proces-overview.js" />
+    <Content Include="Scripts\process.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\search-case.js" />
     <Content Include="Scripts\plugins\slick\slick.min.js" />
+    <Content Include="Scripts\sortable.js" />
     <Content Include="Scripts\stamdata.js" />
+    <Content Include="Scripts\SyncEvents.js" />
     <Content Include="Scripts\task.js" />
     <Content Include="Scripts\timeline.js" />
+    <Content Include="Scripts\translations.js" />
     <Content Include="Scripts\Translations\da-DK.js" />
     <Content Include="Scripts\Translations\DCR translations - data.csv" />
     <Content Include="Scripts\Translations\en-US.js" />
     <Content Include="Scripts\Translations\index.js" />
+    <Content Include="Scripts\Translations\it-IT.js" />
     <Content Include="Scripts\Translations\node_modules\csvtojson\dist\csvtojson.js" />
     <Content Include="Scripts\Translations\node_modules\csvtojson\dist\csvtojson.min.js" />
     <Content Include="Scripts\Translations\node_modules\csvtojson\index.js" />
@@ -1054,7 +1173,7 @@
     <Content Include="Scripts\Translations\node_modules\csvtojson\package.json" />
     <Content Include="Scripts\Translations\node_modules\csvtojson\readme.md" />
     <Content Include="Areas\HelpPage\Views\_ViewStart.cshtml" />
-    <Content Include="Content\Site.css" />
+    <Content Include="Content\Styles\Standard\Site.css" />
     <Content Include="Specs\ChildJSTests.js" />
     <Content Include="Specs\CreateJournalNoteTest.js" />
     <Content Include="Specs\MyChildrenJSTest.js" />
@@ -1066,8 +1185,8 @@
     <Content Include="Views\Instance\Index.cshtml" />
     <Content Include="Views\Search\Index.cshtml" />
     <Content Include="Views\MUS\Index.cshtml" />
-    <Content Include="Views\Admin\SearchProcess.cshtml" />
-    <Content Include="Views\Admin\Processes.cshtml" />
+    <Content Include="Views\Process\SearchProcess.cshtml" />
+    <Content Include="Views\Process\Processes.cshtml" />
     <Content Include="Views\DigitalAssistant\Index.cshtml" />
     <Content Include="Views\DigitalAssistant\Details.cshtml" />
     <Content Include="Views\Instance\Search.cshtml" />
@@ -1089,7 +1208,9 @@
     <Content Include="Views\Child\index.cshtml" />
     <Content Include="Views\PartialViews\AddButton.cshtml" />
     <Content Include="Views\PartialViews\AddJournalNote.cshtml" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Scripts\plugins\Trumbowyg\.bowerrc" />
     <Content Include="Scripts\plugins\Trumbowyg\.gitattributes" />
     <Content Include="Scripts\plugins\Trumbowyg\.gitignore" />
@@ -1162,6 +1283,21 @@
     <Content Include="Views\ChildInstance\Index.cshtml" />
     <Content Include="Views\ChildInstance\Search.cshtml" />
     <Content Include="Views\PartialViews\AdditionalTasks.cshtml" />
+    <Content Include="Views\PartialViews\AddTask.cshtml" />
+    <Content Include="Views\PartialViews\JournalNotatButton.cshtml" />
+    <Content Include="Views\PartialViews\AddChildCase.cshtml" />
+    <Content Include="Views\PartialViews\ObsBox.cshtml" />
+    <Content Include="Views\PartialViews\Loader.cshtml" />
+    <Content Include="Views\PartialViews\ResponsibleModal.cshtml" />
+    <Content Include="Views\PartialViews\NotApplicableModal.cshtml" />
+    <Content Include="Views\PartialViews\DesignerIframe.cshtml" />
+    <Content Include="Views\PartialViews\ExportModal.cshtml" />
+    <Content Include="Views\PartialViews\UpdateInstanceTitle.cshtml" />
+    <Content Include="Views\Process\ProcessHistory.cshtml" />
+    <Content Include="Views\File\DownloadDCRXMLLog.cshtml" />
+    <Content Include="Views\Instance\MyActivities.cshtml" />
+    <Content Include="Views\Log\Index.cshtml" />
+    <Content Include="Views\Instance\SyncEvents.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -1170,7 +1306,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App_Data\" />
     <Folder Include="Views\Account\" />
   </ItemGroup>
   <ItemGroup>
@@ -1179,10 +1314,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\AcadrePWS\AcadreLib.csproj">
-      <Project>{2feaebe9-ab50-4aca-89b3-31e342426858}</Project>
-      <Name>AcadreLib</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Repository\Repository.csproj">
       <Project>{4F503613-7D20-4F7D-BDF5-693EA1A62938}</Project>
       <Name>Repository</Name>

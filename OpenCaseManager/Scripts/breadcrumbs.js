@@ -1,8 +1,8 @@
 ﻿
 $(document).ready(function () {
     var pageUrl = window.location.href.toLowerCase();
-    if (pageUrl.includes("instance")) setInstancePageBreadcrumb();
-    else setChildPageBreadcrumb();
+    //    if (pageUrl.includes("instance")) setInstancePageBreadcrumb();
+    //    else setChildPageBreadcrumb();
 });
 
 async function getChildId(instanceId) {
@@ -75,10 +75,10 @@ async function setInstancePageBreadcrumb() {
     var childIds = await getChildId(instanceId)
     if (childIds[0] != undefined) {
         var childId = childIds[0].ChildId;
-        var path = "/Child?id=" + childId;
-        var childnames = await getChildName(childId);
-        var childName = (childnames[0] == undefined) ? 'Intet barn at finde' : ((childnames[0].Name == null) ? "Intet navn på barn" : childnames[0].Name);
-        $('a#childLink').attr("href", path).text(childName);
+        //        var path = "/Child?id=" + childId;
+        //        var childnames = await getChildName(childId);
+        //        var childName = (childnames[0] == undefined) ? 'Intet barn at finde' : ((childnames[0].Name == null) ? "Intet navn på barn" : childnames[0].Name);
+        //        $('a#childLink').attr("href", path).text(childName);
 
         var instanceNames = await getInstanceName(instanceId);
         var instanceName = instanceNames[0].Title;
@@ -92,6 +92,18 @@ async function setInstancePageBreadcrumb() {
 async function setChildPageBreadcrumb() {
     var childId = App.getParameterByName("id", window.location.href);
     var childnames = await getChildName(childId);
-    var childName = (childnames[0] == undefined) ? 'Intet barn at finde' : ((childnames[0].Name == null) ? "Intet navn på barn" : childnames[0].Name);
+    var childName = (childnames[0] == undefined) ? 'Intet barn at findeZZ' : ((childnames[0].Name == null) ? "Intet navn på barn" : childnames[0].Name);
     $('li.child').text(childName);
 }
+
+async function setChildPageBreadcrumbX(childName, childId) {
+    //	var o = document.getElementById('childLink');
+    $('li.child').text(childName);
+}
+
+async function setInstancePageBreadcrumbX(childName, childId, instanceName) {
+    var path = "/Child?id=" + childId;
+    $('a#childLink').attr("href", path).text(childName);
+    $("li.instance").text(instanceName);
+}
+

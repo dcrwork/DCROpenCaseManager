@@ -30,14 +30,15 @@ $(document).ready(function () {
     })
 
     // To create a template funtion
-    $('body').on('click', 'table.tasksTable tbody td a[name="downloadDoc"]', function () {
-        elem = $(this);
-        var link = elem.attr('documentLink');
-        var win = window.open(window.location.origin + "/File/DownloadFile?link=" + link, '_blank');
-        win.focus();
-    })
-    
-    
+    /*
+        $('body').on('click', 'table.tasksTable tbody td a[name="downloadDoc"]', function () {
+            elem = $(this);
+            var link = elem.attr('documentLink');
+            var win = window.open(window.location.origin + "/File/DownloadFile?link=" + link, '_blank');
+            win.focus();
+        })
+    */
+
     $('body').on('click', '#addNewDocumentBtn', function () {
         initializeForm();
         $('#addNewDocumentModal').modal('toggle');
@@ -46,14 +47,14 @@ $(document).ready(function () {
         $('.instanceModalHeading').text(translations.AddDocument);
         $('#addDocument').text(translations.Add);
     })
-    
+
 });
 
 
 function deleteDocument(docId) {
     var query = {
         "Id": docId,
-        "Type": webPortalType+"Document",
+        "Type": webPortalType + "Document",
         "InstanceId": instanceId
     }
     API.service('records/deleteDocument', query)
@@ -183,15 +184,35 @@ function submitFilesDocuments() {
 }
 
 function uploadFileDocuments(file, docId) {
+    if (instanceId == null)
+        instanceId = getParameterByName("id");
+    var data = {};
+    $('#loadMe').show();
+    count++;
     if (isAdd && $('#documentName').val() != '') {
+        var filename = $('#documentName').val();
+        var i = file.name.lastIndexOf('.');
+        if (i > -1) filename += file.name.substr(i);
         $.ajax({
-            url: window.location.origin + "/api/records/AddDocument",
+            url: window.location.origin + "/api/services/UploadDocumentAcadre",
             type: 'POST',
             headers: {
-                'filename': file.name,
-                'type': webPortalType+"Document",
+                'documentCategoryCode': 'Notat', //'documentCategoryCode',
+                'documentTitleText': filename, //'documentTitleText',
+                'documentStatusCode': 'B', //'documentStatusCode',
+                'documentAccessCode': 'BO', //'documentAccessCode',
+                'documentCaseId': '$(InternalCaseId)',
+                'documentDescriptionText': 'Uploaded fra OCM', //'documentDescriptionText',
+                'documentAccessLevel': 'BO', //'documentAccessLevel',
+                'documentTypeCode': 'N', //'documentTypeCode',
+                'recordStatusCode': 'J', //'recordStatusCode',
+                'documentUserId': '$(loggedInUser)',
+                'recordPublicationIndicator': '1', //'recordPublicationIndicator'
+                'documentDate': moment(new Date()).format('MM/DD/YYYY HH:mm:ss'),
+                //                'type': webPortalType + "Document",
                 'instanceId': instanceId,
-                'givenFileName': $('#documentName').val()
+                //                'givenFileName': $('#documentName').val(),
+                'filename': file.name
             },
             data: file,
             async: false,
@@ -206,6 +227,17 @@ function uploadFileDocuments(file, docId) {
                 var $el = $('#fileElem');
                 $el.wrap('<form>').closest('form').get(0).reset();
                 $el.unwrap();
+
+                if (count > 0)
+                    count--;
+                if (count == 0)
+                    $('#loadMe').hide();
+            },
+            error: function (e) {
+                if (count > 0)
+                    count--;
+                if (count == 0)
+                    $('#loadMe').hide();
             }
         });
     }
@@ -216,7 +248,7 @@ function uploadFileDocuments(file, docId) {
             headers: {
                 'id': docId,
                 'filename': (file == null ? "" : file.name),
-                'type': webPortalType+"Document",
+                'type': webPortalType + "Document",
                 'instanceId': instanceId,
                 'givenFileName': $('#documentName').val(),
                 'isNewFileAdded': (file == null ? "false" : "true")
@@ -234,83 +266,218 @@ function uploadFileDocuments(file, docId) {
                 var $el = $('#fileElem');
                 $el.wrap('<form>').closest('form').get(0).reset();
                 $el.unwrap();
+            },
+            error: function (e) {
+                $('#loadMe').hide();
+                if (count > 0)
+                    count--;
             }
         });
     }
 }
 
-function getDocuments() {
-    var query = {
-        "type": "SELECT",
-        "entity": "Document",
-        "filters": [
-            {
-                "column": "IsActive",
-                "operator": "equal",
-                "value": true,
-                "valueType": "boolean",
-                "logicalOperator": "and"
-            },
-            {
-                "column": "Type",
-                "operator": "equal",
-                "value": webPortalType+"Document",
-                "valueType": "string",
-                "logicalOperator": "and"
-            }
-        ],
-        "resultSet": ["Id", "Title", "Link", "IsActive"],
-        "order": [{ "column": "Title", "descending": false }]
-    }
+async function getDocuments() {
+    var prefix = await App.getKeyValue('AcadreFrontEndBaseURL');
+    if (instanceId === null && webPortalType === "Instance") {
+        var caseNoForeign = App.getParameterByName("casenoforeign", window.location.href.toLowerCase());
 
-    switch (webPortalType) {
-        case 'Personal':
-            query.filters.push({
-                "column": "Responsible",
-                "operator": "equal",
-                "value": "$(loggedInUser)",
-                "valueType": "string"
-            });
-            break;
-        case 'Instance':
-            query.filters.push({
-                "column": "InstanceId",
-                "operator": "equal",
-                "value": instanceId,
-                "valueType": "string"
-
-            });
-            break;
-    }
-
-    API.service('records', query)
-        .done(function (response) {
-            
-            var result = JSON.parse(response)
-            var list = "";
-            if (result.length === 0)
-                list = "<tr class=\"trStyleClass\"><td colspan=\"100%\"> " + translations.NoRecordFound + " </td></tr>";
-            else {
-                for (i = 0; i < result.length; i++) {
-                    var item = result[i];
-
-                    var returnHtml = '';
-                    returnHtml = '<tr class="trStyleClass">' +
-                        '<td style="display:none"> ' + item.Id + ' </td><td>' + GetIconType(item.Link) + '</td><td><a name="downloadDoc" href="#" documentLink="' + item.Link + '" documentId="' + item.Id + '" > ' + item.Title + '</a> </td><td>';
-                    returnHtml += '<span documentId=' + item.Id + ' name="editDoc" value="editDoc" class="spanMUS floatLeftPro glyphicon glyphicon-edit" title="' + translations.Edit + '"></span> ';
-                    returnHtml += '<span documentId=' + item.Id + ' name="deleteDoc" value="deleteDoc" class="spanMUS floatLeftPro glyphicon glyphicon-trash" title="' + translations.Delete + '"></span> ';
-                    returnHtml += '</td>' + '</tr>';
-
-                    list += returnHtml;
+        var query = {
+            "type": "SELECT",
+            "entity": "Instance",
+            "resultSet": ["Id"],
+            "filters": [
+                {
+                    "column": "CaseNoForeign",
+                    "operator": "equal",
+                    "value": caseNoForeign,
+                    "valueType": "string"
                 }
-            }
-            $("#files").html("").append(list);
+            ],
+            "order": [{ "column": "Title", "descending": true }]
+        };
 
-        })
-        .fail(function (e) {
-            //showExceptionErrorMessage(e);
-        });
-    initializeForm();
+        API.service('records', query)
+            .done(function (response) {
+                var result = JSON.parse(response)
+                instanceId = result[0].Id;
+
+                //query = {
+                //    "type": "SELECT",
+                //    "entity": "Document",
+                //    "filters": [
+                //        {
+                //            "column": "IsActive",
+                //            "operator": "equal",
+                //            "value": true,
+                //            "valueType": "boolean",
+                //            "logicalOperator": "and"
+                //        },
+                //        {
+                //            "column": "Type",
+                //            "operator": "equal",
+                //            "value": webPortalType + "Document",
+                //            "valueType": "string",
+                //            "logicalOperator": "and"
+                //        }
+                //    ],
+                //    "resultSet": ["Id", "Title", "Link", "IsActive"],
+                //    "order": [{ "column": "Title", "descending": false }]
+                //}
+                //query.filters.push({
+                //    "column": "InstanceId",
+                //    "operator": "equal",
+                //    "value": instanceId,
+                //    "valueType": "string"
+                //});
+                query =
+                    {
+                        "InstanceId": instanceId
+                    }
+
+                API.service('services/GetChildCaseDocuments', query)
+                    .done(function (response) {
+
+                        console.log("data", response);
+                        var result = JSON.parse(response)
+                        var list = "";
+                        if (result.length === 0)
+                            list = "<tr class=\"trStyleClass\"><td colspan=\"100%\"> " + translations.NoRecordFound + " </td></tr>";
+                        else {
+                            for (i = 0; i < result.length; i++) {
+                                var item = result[i];
+                                var Link = GetDocumentLink(prefix, item.DocumentID);
+
+                                var returnHtml = '';
+                                returnHtml = '<tr class="trStyleClass">' +
+                                    '<td style="display:none"> ' + item.DocumentID + ' </td><td>' + GetIconType(item.Type) + '</td><td><a name="downloadDoc" target="_blank" href="' + Link + '" documentLink="' + item.Type + '" documentId="' + item.DocumentID + '" > ' + item.Title + '</a> </td><td>';
+                                //returnHtml += '<span documentId=' + item.Id + ' name="editDoc" value="editDoc" class="spanMUS floatLeftPro fa fa-pencil-alt" title="' + translations.Edit + '"></span> ';
+                                //returnHtml += '<span documentId=' + item.Id + ' name="deleteDoc" value="deleteDoc" class="spanMUS floatLeftPro fa fa-trash" title="' + translations.Delete + '"></span> ';
+                                if (item.LastChangedDate != null)
+                                    returnHtml += item.LastChangedDate.substr(8, 2) + '/' + item.LastChangedDate.substr(5, 2) + '-' + item.LastChangedDate.substr(0, 4);
+                                returnHtml += '</td>' + '</tr>';
+
+                                list += returnHtml;
+                            }
+                        }
+                        $("#files").html("").append(list);
+
+                    })
+                    .fail(function (e) {
+                        //showExceptionErrorMessage(e);
+                    });
+                initializeForm();
+
+            })
+            .fail(function (e) {
+                App.showExceptionErrorMessage(e);
+            });
+    }
+    else {
+
+        query = {
+            "type": "SELECT",
+            "entity": "[Instance]",
+            "resultSet": ["Id", "CaseNoForeign"],
+            "filters": new Array(),
+            "order": []
+        }
+
+        var whereInstanceIdMatchesFilter = {
+            "column": "Id",
+            "operator": "equal",
+            "value": instanceId,
+            "valueType": "int",
+            "logicalOperator": "and"
+        };
+        query.filters.push(whereInstanceIdMatchesFilter);
+        var result2 = await API.service('records', query);
+        var instance2 = JSON.parse(result2);
+
+        //query = {
+        //    "type": "SELECT",
+        //    "entity": "Document",
+        //    "filters": [
+        //        {
+        //            "column": "IsActive",
+        //            "operator": "equal",
+        //            "value": true,
+        //            "valueType": "boolean",
+        //            "logicalOperator": "and"
+        //        },
+        //        {
+        //            "column": "Type",
+        //            "operator": "equal",
+        //            "value": webPortalType + "Document",
+        //            "valueType": "string",
+        //            "logicalOperator": "and"
+        //        }
+        //    ],
+        //    "resultSet": ["Id", "Title", "Link", "IsActive"],
+        //    "order": [{ "column": "Title", "descending": false }]
+        //}
+
+        //switch (webPortalType) {
+        //    case 'Personal':
+        //        query.filters.push({
+        //            "column": "Responsible",
+        //            "operator": "equal",
+        //            "value": "$(loggedInUser)",
+        //            "valueType": "string"
+        //        });
+        //        break;
+        //    case 'Instance':
+        //        query.filters.push({
+        //            "column": "InstanceId",
+        //            "operator": "equal",
+        //            "value": instanceId,
+        //            "valueType": "string"
+        //        });
+        //        break;
+        //}
+        if (instance2[0].CaseNoForeign == null || instance2[0].CaseNoForeign == '') {
+            list = "";
+
+            $("#files").html("<tr class=\"trStyleClass\"><td colspan=\"100%\"> " + "Ingen Acadre sag fundet" + " </td></tr>")
+        }
+        else {
+            query =
+                {
+                    "InstanceId": instanceId
+                }
+
+            API.service('services/GetChildCaseDocuments', query)
+                .done(function (response) {
+
+                    var result = JSON.parse(response)
+                    var list = "";
+                    if (result.length === 0)
+                        list = "<tr class=\"trStyleClass\"><td colspan=\"100%\"> " + translations.NoRecordFound + " </td></tr>";
+                    else {
+                        for (i = 0; i < result.length; i++) {
+                            var item = result[i];
+
+                            var returnHtml = '';
+                            var Link = GetDocumentLink(prefix, item.DocumentID);
+                            returnHtml = '<tr class="trStyleClass">' +
+                                '<td style="display:none"> ' + item.DocumentID + ' </td><td>' + GetIconType(item.Type) + '</td><td><a target="_blank" name="downloadDoc" href="' + Link + '" documentLink="' + item.Type + '" documentId="' + item.DocumentID + '" > ' + item.Title + '</a> </td><td>';
+                            //returnHtml += '<span documentId=' + item.DocumentID + ' name="editDoc" value="editDoc" class="spanMUS floatLeftPro glyphicon glyphicon-edit" title="' + translations.Edit + '"></span> ';
+                            //returnHtml += '<span documentId=' + item.DocumentID + ' name="deleteDoc" value="deleteDoc" class="spanMUS floatLeftPro glyphicon glyphicon-trash" title="' + translations.Delete + '"></span> ';
+                            if (item.LastChangedDate != null)
+                                returnHtml += item.LastChangedDate.substr(8, 2) + '/' + item.LastChangedDate.substr(5, 2) + '-' + item.LastChangedDate.substr(0, 4);
+                            returnHtml += '</td>' + '</tr>';
+
+                            list += returnHtml;
+                        }
+                    }
+                    $("#files").html("").append(list);
+
+                })
+                .fail(function (e) {
+                    //showExceptionErrorMessage(e);
+                });
+            initializeForm();
+        }
+    }
 }
 
 function initializeForm() {
@@ -327,42 +494,36 @@ function GetIconType(link) {
         case 'doc':
         case 'docx':
             return '<i title="Word" class="fa fa-file-word faIconStyling"></i>';
-            break;
         case 'ppt':
         case 'pptx':
             return '<i title="PowerPoint" class="fa fa-file-powerpoint faIconStyling"></i>';
-            break;
         case 'xls':
         case 'xlsx':
             return '<i title="Excel" class="fa fa-file-excel faIconStyling"></i>';
-            break;
         case 'pdf':
             return '<i title="PDF" class="fa fa-file-pdf faIconStyling"></i>';
-            break;
         case 'zip':
         case '7z':
         case 'rar':
             return '<i title="Compressed" class="fas fa-file-archive faIconStyling"></i>';
-            break;
         case 'png':
         case 'jpeg':
         case 'jpg':
             return '<i title="Image" class="fas fa-file-image faIconStyling"></i>';
-            break;
         case 'mp3':
             return '<i title="Audio" class="fa fa-file-audio faIconStyling"></i>';
-            break;
         case 'mp4':
         case 'wmv':
         case 'mkv':
         case 'avi':
             return '<i title="Video" class="fa fa-file-movie faIconStyling"></i>';
-            break;
         case 'txt':
             return '<i title="Text" class="fa fa-file-text faIconStyling"></i>';
-            break;
         default:
             return '<i title="Unknown Type" class="fas fa-file faIconStyling"></i>';
-            break;
     }
+}
+
+function GetDocumentLink(prefix, docId) {
+    return prefix + '/MainDocument/Details?documentId=' + docId;
 }

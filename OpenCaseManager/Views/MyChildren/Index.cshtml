@@ -1,41 +1,88 @@
 ﻿@{
-    ViewBag.Title = "Mine Børn";
+    /**/
+
+    /**/
+
+    ViewBag.Title = "Mine Sager";
 }
 <link href="~/Content/bootstrap-multiselect.css" rel="stylesheet" />
 <script src="~/Scripts/bootstrap-multiselect.js"></script>
 <script type="text/javascript" src="~/Scripts/myChildren.js"></script>
 
 <div class="containerChildren">
-    <div class="leftContainer">
-        <div class="buttonView">
-            <div data-toggle="modal" data-target="#add-child-modal" class="add-child-button">
-                @Html.Partial("~/Views/PartialViews/AddButton.cshtml", new ViewDataDictionary { { "add-text", "Tilføj barn" } })
-            </div>
-        </div>
+    <div class="leftContainer col-lg-2 col-md-2 col-sm-12 col-xs-12">
+        <!--
+                <div class="buttonView">
+                    <div id="addbuttonDiv" class="add-child-button">
+                        @Html.Partial("~/Views/PartialViews/AddButton.cshtml", new ViewDataDictionary { { "add-text", "AddChild" } })
+                    </div>
+                </div>
+        -->
         <div class="pendingActivitiesBox">
             @Html.Partial("~/Views/PartialViews/PendingActivities.cshtml")
         </div>
     </div>
 
-    <div class="tabsBox">
-        <table class="table headline table-responsive entityDetailTable">
-            <tr>
-                <th><span>Mine Børn</span></th>
-            </tr>
-        </table>
-        <table class="table tasksTable table-striped">
-            <thead class="childrenHeader">
-                <tr>
-                    <th width="6%">Status</th>
-                    <th width="140px">Antal aktiviteter</th>
-                    <th width="">Navn</th>
-                    <th width="170px">CPR-nr</th>
-                    <th width="">Ansvarlig</th>
-                    <th width="200px">Næste Deadline</th>
-                </tr>
-            </thead>
-            <tbody id="allMyChildren"></tbody>
-        </table>
+    <div class="tabsBox col-lg-10 col-md-10 col-sm-12 col-xs-12">
+        <div>
+            <h2 class="marginBtm30"><span id="myChildrenTitle" data-locale data-apply="text" data-key="MyChildren"></span></h2>
+        </div>
+        <form>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <div class="form-group row">
+                        <label for="responsible lineHeightStyling" class="col-sm-2 col-form-label" style="line-height:2.5em">Ansvarlig:</label>
+                        <div class="col-sm-7">
+                            <select class="form-control" id="responsibleny">
+                                <options></options>
+                            </select>
+                        </div>
+                        <button type="button" class="btn btn-primary btn-md submitBtn maxWidth95" onclick="SearchChildren()">Vis sager</button>
+                    </div>
+                </div>
+
+                <div class="form-group col-md-6">
+                    <div class="form-group row">
+                        <label for="CPR" class="col-sm-1 col-form-label lineHeightStyling">CPR:</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" id="cprny" aria-describedby="" placeholder="CPR-nr eller navn">
+                        </div>
+                        <button type="button" class="btn btn-primary btn-md col-sm-2 maxWidth95 submitBtn" onclick="getChild()">Slå op</button>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-sm-1">
+                        </div>
+                        <div class="col-sm-8">
+                            <input style="display:none" type="text" class="col-sm-2 form-control" readonly id="navnny" aria-describedby="" placeholder="Barnets navn">
+                        </div>
+                        <div class="">
+                            <button style="display:none" id="opretBarnBtn" type="button" class="btn btn-primary btn-md maxWidth95 submitBtn" onclick="opretBarn()">Opret barn</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <!-- dont change display none here-->
+
+        <div id="divTableContainerMyChildrenHidden" style="display:none">
+            <table class="table tasksTable table-striped">
+                <thead class="childrenHeader">
+                    <tr>
+                        <th type="customSort" width="6%"><a style="color:white" href="#"><span data-locale data-apply="text" data-key="Status"></span></a></th>
+                        <th style="display:none;" width="140px" type="number"><a style="color:white" href="#"><span data-locale data-apply="text" data-key="Status">StatusNumber</span></a></th>
+                        <th width="140px" type="number"><a style="color:white" href="#"><span data-locale data-apply="text" data-key="NumberOfActivites">&nbsp;</span></a></th>
+                        <th width=""><a style="color:white" href="#"><span data-locale data-apply="text" data-key="Name"></span></a></th>
+                        <th width="170px"><a style="color:white" href="#"><span data-locale data-apply="text" data-key="CPR"></span></a></th>
+                        <th width=""><a style="color:white" href="#"><span data-locale data-apply="text" data-key="Responsible"></span></a></th>
+                        <th width="200px" type="date"><a style="color:white" href="#"><span data-locale data-apply="text" data-key="NextDeadline"></span></a></th>
+                        <th style="display:none;"><a style="color:white" href="#"><span data-locale data-apply="text" data-key="NextDeadline"></span></a></th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+        <div id="divTableContainerMyChildren">
+        </div>
     </div>
 </div>
 
@@ -45,24 +92,29 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4>Tilføj barn</h4>
+                <h4><span data-locale data-apply="text" data-key="AddChild"></span></h4>
             </div>
             <div class="modal-body">
                 <form role="form">
                     <div class="form-group">
-                        <label for="title">Navn på barn</label>
-                        <input type="text" class="form-control" id="child-name" placeholder="Barnets navn">
+                        <label for="title"><span data-locale data-apply="text" data-key="CPR"></span></label>
+                        <input type="text" data-locale data-apply="attribute" data-attribute="placeholder" data-key="CPR" class="form-control" id="child-CPRnummer" placeholder="CPRnummer">
 
-                        <label for="title">Sagsnummer</label>
-                        <input type="text" class="form-control" id="case-number" placeholder="Sagsnummer">
+                        <label for="title"><span data-locale data-apply="text" data-key="BarnetsNavn">Barnets navn</span></label>
+                        <input type="text" disabled="disabled" class="form-control" id="Barnets-navn" placeholder="Barnets navn">
                     </div>
                     <div class="form-group">
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" id="add-child" class="btn btn-default">Tilføj</button>
+                        <button type="submit" id="add-child" class="btn btn-default"><span data-locale data-apply="text" data-key="Add"></span></button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
 </div>
+
+@Html.Partial("~/Views/PartialViews/ResponsibleModal.cshtml")
+
+<script src="~/Scripts/sortable.js"></script>
+<link href="~/Content/Standard/sortable.css" rel="stylesheet" />

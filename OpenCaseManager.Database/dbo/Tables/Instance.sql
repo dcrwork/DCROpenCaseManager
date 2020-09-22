@@ -15,8 +15,16 @@
     [CaseStatus]     INT             NULL,
     [InternalCaseID] NVARCHAR (500)  NULL,
     [Description]    NVARCHAR (MAX)  NULL,
+    [Modified]       DATETIME2 (7)   CONSTRAINT [DF_Instance_Modified] DEFAULT (getdate()) NULL,
+    [CurrentTime]    DATETIME2 (7)   NULL,
+    [MajorVersionId] INT             NULL,
+    [Created]        DATETIME2 (7)   CONSTRAINT [DF_Instance_Created] DEFAULT (getdate()) NULL,
     CONSTRAINT [PK_Instance] PRIMARY KEY CLUSTERED ([Id] ASC)
 );
+
+
+
+
 
 
 
