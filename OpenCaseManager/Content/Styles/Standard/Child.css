@@ -1,0 +1,27 @@
+﻿:root {
+    --child-instances-header-background-color: var(--main-color);
+}
+
+/*
+:root {
+    --child-instances-header-background-color: #9C1A5E;
+}
+
+*/
+.wholeChildPage {
+    margin: 20px 60px 0px 60px;
+}
+   
+.childInstancesHeader {
+    background: var(--child-instances-header-background-color);
+    color: #fff;
+    font-weight: lighter;
+}
+
+.childInstancesBox {
+    padding-top: 10px;
+}
+
+.pendingActivitiesBox {
+    margin-top: 16px;
+}

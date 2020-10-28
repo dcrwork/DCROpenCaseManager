@@ -16,6 +16,7 @@
     }
 
     function getFormServerJS(data, callback, errorCallback) {
+        incrementLoaderCount("formserver");
         fetch(data + '/Scripts/dynamicform/CallBackHandler.js', { method: 'GET', mode: 'no-cors' })
             .then(async (r) => {
                 API.getJSFile(data + '/Scripts/dynamicform/CallBackHandler.js')
@@ -28,12 +29,7 @@
                 return r;
             }).then(async (r) => {
                 setTimeout(function () {
-                    if (count > 0) {
-                        count--;
-                    }
-                    if (count == 0) {
-                        $('#loadMe').hide();
-                    }
+                    decrementLoaderCount("formserver");
                 }, 3000);
             }).catch(e => {
                 console.log(e);

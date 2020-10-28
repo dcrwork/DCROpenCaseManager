@@ -130,12 +130,7 @@
                                 });
                         }).then(async (r) => {
                             setTimeout(function () {
-                                if (count > 0) {
-                                    count--;
-                                }
-                                if (count == 0) {
-                                    $('#loadMe').hide();
-                                }
+                                decrementLoaderCount("instancetitle");
                             }, 3000);
                         }).catch(e => {
                             console.log(e);

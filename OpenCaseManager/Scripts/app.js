@@ -414,10 +414,12 @@ var Responsible = null;
 
                 var result = JSON.parse(response);
                 if (typeof (Instruction) == 'undefined') Instruction = null;
-                if (Instruction != null)
-                    Instruction.setInstanceIsAccepting(result[0].IsOpen);
+                
                 //set workflow title
-                if (result.length > 0)
+                if (result.length > 0) {
+                    if (Instruction != null) {
+                        Instruction.setInstanceIsAccepting(result[0].IsOpen);
+                    }
                     if (result[0].GraphId != null) {
                         query = {
                             "type": "SELECT",
@@ -444,6 +446,7 @@ var Responsible = null;
                                 App.showExceptionErrorMessage(e);
                             });
                     }
+                }
             })
             .fail(function (e) {
                 showExceptionErrorMessage(e);

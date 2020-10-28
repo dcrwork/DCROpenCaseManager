@@ -1,0 +1,45 @@
+﻿
+@{
+    ViewBag.Title = "Sync Events";
+}
+
+<div class="row tableDataRow">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <h4 class="tasksHeading">
+            <span data-locale data-apply="text" data-key="SyncEvents">Sync Events</span>
+        </h4>
+        <div class="table-responsive" style="border:none">
+            <div class="container">
+                <div class="form-group">
+                    <label for="instanceTitle"><span data-locale data-apply="text" data-key="EventsXml">Events Xml</span>:</label>
+                    <textarea style="height:300px" class="form-control" id="eventsXml" autofocus></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="instanceTitle"><span data-locale data-apply="text" data-key="InstanceId">Instance Id</span>:</label>
+                    <input type="number" class="form-control" id="instanceId">
+                </div>
+                <div class="form-group">
+                    <button id="btnSyncEvents" class="btn submitBtn pull-right">Sync Events</button>
+                </div>
+            </div>
+        </div>
+    </div><!-- Cols Div End -->
+</div><!-- Row Div End -->
+
+<script type="text/javascript" src="~/Scripts/SyncEvents.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        // click event
+        $('#btnSyncEvents').click(function (e) {
+            var xml = $('#eventsXml').val();
+            var instanceId = $('#instanceId').val();
+            if (xml !== '' && instanceId !== '') {
+                SyncEvents.syncInstanceEvents(xml, instanceId);
+            }
+            else {
+                App.showWarningMessage('XML or InstanceId is missing.');
+                e.preventDefault();
+            }
+        });
+    });
+</script>

@@ -187,8 +187,7 @@ function uploadFileDocuments(file, docId) {
     if (instanceId == null)
         instanceId = getParameterByName("id");
     var data = {};
-    $('#loadMe').show();
-    count++;
+    incrementLoaderCount("before uploadFileDocuments");
     if (isAdd && $('#documentName').val() != '') {
         var filename = $('#documentName').val();
         var i = file.name.lastIndexOf('.');
@@ -227,17 +226,10 @@ function uploadFileDocuments(file, docId) {
                 var $el = $('#fileElem');
                 $el.wrap('<form>').closest('form').get(0).reset();
                 $el.unwrap();
-
-                if (count > 0)
-                    count--;
-                if (count == 0)
-                    $('#loadMe').hide();
+                decrementLoaderCount("uploadfiledocuments succes");
             },
             error: function (e) {
-                if (count > 0)
-                    count--;
-                if (count == 0)
-                    $('#loadMe').hide();
+                decrementLoaderCount("uploadfiledocuments error");
             }
         });
     }
@@ -266,11 +258,10 @@ function uploadFileDocuments(file, docId) {
                 var $el = $('#fileElem');
                 $el.wrap('<form>').closest('form').get(0).reset();
                 $el.unwrap();
+                decrementLoaderCount("update document succes");
             },
             error: function (e) {
-                $('#loadMe').hide();
-                if (count > 0)
-                    count--;
+                decrementLoaderCount("update document error");
             }
         });
     }

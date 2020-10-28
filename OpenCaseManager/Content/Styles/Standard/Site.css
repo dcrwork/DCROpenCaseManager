@@ -1,0 +1,318 @@
+﻿:root {
+    --headline-color: var(--header-text-color);
+}
+
+/*Common css for all open case manager Apps*/
+div.wrapper {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+body {
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+    body.swal2-shown:not(.swal2-no-backdrop):not(.swal2-toast-shown) {
+        overflow-y: visible !important;
+    }
+
+main {
+    flex: 1;
+}
+
+    main div.inner-block {
+        height: 100%;
+        overflow: auto;
+    }
+
+ul.menu-header-ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+    ul.menu-header-ul li {
+        float: right;
+    }
+
+h4.tasksHeading, h4.instancesHeading, h4.phaseHeading {
+    padding: 10px 10px;
+}
+
+.executedTask {
+    color: green;
+}
+
+label.labelStyling {
+    float: left;
+    width: 30%;
+    line-height: 2;
+    display: inline;
+}
+
+.headerContainer {
+    margin: 1vh 9vw 0vw 4vw;
+}
+
+.formFieldStyling {
+    float: right;
+    width: 70%;
+    display: inline;
+}
+
+div.rolesBlock {
+    max-height: 150px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    margin-top: 30px;
+}
+
+div.modal-footer button.instanceAdd {
+    color: #fff;
+    padding: 4px 12px;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+.selectBox {
+    width: 10px;
+}
+
+div.phaseBlock {
+    width: 100%;
+    text-align: center;
+    margin-top: 15px;
+}
+
+div ul.phaseUl {
+    margin: 2px auto;
+    line-height: 3.4;
+    padding-left: 0;
+}
+
+ul.phaseUl li {
+    display: inline;
+}
+
+ul.events-log-ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+    .floatLeftPro,
+    ul.events-log-ul li {
+        float: left;
+    }
+
+        ul.events-log-ul li a {
+            display: inline-block;
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            border-right: 1px solid #fff;
+        }
+
+.red {
+    background: red;
+}
+
+    .red:hover {
+        background: #cc0606;
+    }
+
+.green {
+    background: green;
+}
+
+    .green:hover {
+        background: #0b5a0b;
+    }
+
+.circle {
+    border-radius: 2px;
+    color: white;
+    height: 23px;
+    font-weight: bold;
+    width: 25px;
+    display: table;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.case-table tbody tr.trStyleClass {
+    cursor: pointer;
+}
+
+.case-status-data {
+    padding: 0px;
+    border-top: none;
+}
+
+.displayEvents td {
+    border-top: none !important;
+    background: #f9f9f9;
+}
+
+.log-status {
+    width: 15px !important;
+    height: 15px !important;
+    box-shadow: 0 0 10px rgba(0,0,0,0.6);
+}
+
+.displayEvents > td {
+    padding: 8px 8px 8px 1.8cm !important;
+}
+
+table.entityDetailTable tr th {
+    color: var(--headline-color);
+    font-size: xx-large;
+    padding: 0px;
+    border-top: none;
+}
+
+table.entityDetailTable {
+    margin: 0px;
+    border: none;
+}
+
+.drop-area {
+    border: 2px dashed #ccc;
+    border-radius: 20px;
+    width: 100%;
+    padding: 20px;
+}
+
+    .drop-area.highlight {
+        border-color: purple;
+    }
+
+.fileElem {
+    display: none !important;
+}
+
+table.tasksTable tr td {
+    vertical-align: middle;
+}
+.tasksTable {
+    /*overflow: hidden;*/
+}
+
+a > span.sort-arrow-head {
+    display: inline-block;
+    margin-left: 5px;
+}
+
+.phasesMainBlock {
+    max-width: 188px;
+    margin-left: 25px;
+}
+
+.phasesUl {
+    margin: 0px !important;
+    padding: 0px !important;
+}
+
+    .phasesUl h4 {
+        font-size: 14px;
+        margin: 0px;
+        padding: 2px 8px;
+        position: relative;
+        text-align: center;
+        font-weight: normal;
+        text-transform: none;
+    }
+
+    .phasesUl .slick-center h4 {
+        -moz-transform: scale(1.08);
+        -ms-transform: scale(1.08);
+        -o-transform: scale(1.08);
+        -webkit-transform: scale(1.08);
+        opacity: 1;
+        transform: scale(1.08);
+    }
+
+.currentPhase {
+    background: #9C1A5E;
+    color: #ffffff;
+    border-radius: 3px;
+}
+
+.spanMUS {
+    padding: 3px 4px;
+    margin: 0px 6px 0px 0px;
+    color: #9C1A5E;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+    .spanMUS.disabled {
+        background-color: gray !important;
+    }
+
+.multi-select-year-styling {
+    width: auto;
+    top: 18px;
+    position: absolute;
+    right: 25px !important;
+    padding: 2px 6px;
+    height: 23px;
+}
+
+.faIconStyling {
+    font-size: 16px;
+    color: #9C1A5E;
+}
+
+.arrow {
+    border: solid #9C1A5E;
+    border-width: 0 3px 3px 0;
+    display: block;
+    height 50%;
+    padding: 3px;
+    cursor: pointer;
+}
+
+    .arrow.up {
+        transform: rotate(-135deg);
+        -webkit-transform: rotate(-135deg);
+    }
+
+    .arrow.down {
+        transform: rotate(45deg);
+        -webkit-transform: rotate(45deg);
+    }
+
+.pending-icon {
+    color: rgb(3, 161, 252);
+}
+
+.chageResFormating {
+    float: left !important;
+    padding: 20px 0px !important;
+}
+
+.responsibleImg {
+    width:16px;    
+}
+.responsibleImgSpan {
+    padding: 2px;
+    border: 2px solid #9C1A5E;
+    border-radius: 50%;
+}
+
+ul.notApplicableUl {
+    min-width: 115px !important;
+    left: -20px !important; 
+}
+ul.notApplicableUl li>a {
+    padding: 3px 12px !important;
+}
+table#tasksTable tbody tr td>div.btn-group {
+    display:flex !important;
+}
+.marginBottom10 {margin-bottom: 10px;}

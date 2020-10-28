@@ -1,0 +1,31 @@
+﻿<div class="modal fade" id="create-process-modal" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 id="processTitle">Tilføj indsats</h4>
+            </div>
+            <div class="modal-body">
+                <form role="form">
+                    <input type="hidden" id="Case-Number-Identifier">
+                    <input type="hidden" id="CaseId">
+                    <div class="form-group">
+                        <label for="processes">Proces</label>
+                        <select class="form-control" id="processes"></select>
+                    </div>
+                    <div class="form-group">
+                        <label for="title">Titel</label>
+                        <input type="text" class="form-control" id="process-title" placeholder="Tilføj titel">
+                    </div>
+                    <div class="form-group">
+                        <div id="responsible"></div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" id="create-process" class="btn btn-default">Tilføj</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

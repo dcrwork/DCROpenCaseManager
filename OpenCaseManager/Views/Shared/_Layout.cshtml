@@ -124,24 +124,10 @@
         }
 
         var xhrInProgress = false;
-        var count = 0;
-
-        jQuery.ajaxSetup({
-            beforeSend: function () {
-                $('#loadMe').show();
-                count++
-            },
-            complete: function () {
-                if (count > 0)
-                    count--;
-                if (count == 0) {
-                    $('#loadMe').hide();
-                }
-            },
-            success: function () {
-            }
-        });
     </script>
+
+
+    <script src="~/Scripts/loader.js"></script>
 
     @RenderSection("scripts", required: false)
     @Scripts.Render("~/bundles/modernizr")

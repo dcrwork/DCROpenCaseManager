@@ -373,7 +373,6 @@
     <Compile Include="Models\Child.cs" />
     <Compile Include="Models\ChildCase.cs" />
     <Compile Include="Models\DBEntityNames.cs" />
-    <Compile Include="Content\Config.cs" />
     <Compile Include="Controllers\ApiControllers\RecordsController.cs" />
     <Compile Include="Controllers\ApiControllers\ServicesController.cs" />
     <Compile Include="Controllers\DigitalAssistantController.cs" />
@@ -543,6 +542,7 @@
     <Content Include="Scripts\formserver.js" />
     <Content Include="Scripts\header.js" />
     <Content Include="Scripts\jquery.shorten.1.0.js" />
+    <Content Include="Scripts\Loader.js" />
     <Content Include="Scripts\Log.js" />
     <Content Include="Scripts\my-activities.js" />
     <Content Include="Scripts\myChildren.js" />
