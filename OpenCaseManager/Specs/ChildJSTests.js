@@ -63,7 +63,7 @@ describe("getChildInstanceHtml", function () {
             LastUpdated: null
         }
         //Act
-        var result = getChildInstanceHtml(item);
+        var result = getAdjunktInstanceHtml(item);
         //Assert
         expect(result).toContain("instanceClosed");
     });
@@ -80,7 +80,7 @@ describe("getChildInstanceHtml", function () {
             LastUpdated: null
         }
         //Act
-        var result = getChildInstanceHtml(item);
+        var result = getAdjunktInstanceHtml(item);
         //Assert
         expect(result).toContain("Lukket");
     });
@@ -97,7 +97,7 @@ describe("getChildInstanceHtml", function () {
             LastUpdated: null
         }
         //Act
-        var result = getChildInstanceHtml(item);
+        var result = getAdjunktInstanceHtml(item);
         //Assert
         expect(result).toContain("Thomas");
     });
@@ -114,7 +114,7 @@ describe("getChildInstanceHtml", function () {
             LastUpdated: null
         }
         //Act
-        var result = getChildInstanceHtml(item);
+        var result = getAdjunktInstanceHtml(item);
         //Assert
         expect(result).toContain("intet gjort");
     });
@@ -131,7 +131,7 @@ describe("getChildInstanceHtml", function () {
             LastUpdated: "2012-12-12 16:00:05"
         }
         //Act
-        var result = getChildInstanceHtml(item);
+        var result = getAdjunktInstanceHtml(item);
         //Assert
         expect(result).toContain("2012-12-12");
     });
@@ -148,7 +148,7 @@ describe("getChildInstanceHtml", function () {
             LastUpdated: "2012-12-12 16:00:05"
         }
         //Act
-        var result = getChildInstanceHtml(item);
+        var result = getAdjunktInstanceHtml(item);
         //Assert
         expect(result).toContain("dot");
     });

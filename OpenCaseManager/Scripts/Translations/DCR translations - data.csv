@@ -150,8 +150,8 @@ SocialSecurityID,CPR,CPR,CPR
 ChangeResponsible,Change Responsible,Ændr ansvarlig,
 ChangeResponsibleTo,Change Responsible To,Ændr ansvarlig til,
 CurrentResponsible,Current Responsible,Nuværende ansvarlige,
-ChangeResponsibleOfActivities,Change responsible of instance and activities,Ændr ansvarlig for indsats og aktiviteter
-ChangeResponsibleOfActivity,Change responsible of activity,Ændr ansvarlig for indsats
+ChangeResponsibleOfActivities,Change responsible of instance and activities,Ændr ansvarlig for indsats og aktiviteter,
+ChangeResponsibleOfActivity,Change responsible of activity,Ændr ansvarlig for indsats,
 ChangeResponsibleOfChild,Change responsible of Child Instances and Activities,Ændr ansvarlig for barn Indsatser og aktiviteer,
 NotApplicable,Not Applicable,Ikke relevant,
 ExportDCRXML, Export DCR XML, Eksporter DCR XML,
@@ -171,3 +171,24 @@ ReleaseDate,Release Date,Udgivelses dato,
 UpdateProcess,Update Process With New Version,Opdateringsproces med ny version,
 DoUpdateProcess,You are going to update process with a new major version '$MajorRevisionTitle'. </br>Press Yes to continue,Du vil opdatere processen med en ny større version '$MajorRevisionTitle'. </br>Tryk på Ja for at fortsætte,
 NewVersionAvailable,New Version Available,Ny version tilgængelig,
+CreateNewTestCase,Create New Test Case,Opret ny test,
+TestCases,Test Cases,tests,
+SendInvite,Send Invite,send invitation,
+SuccessfullyCopied,Successfully copied to clipboard,URL for test kopieret til clipboard,
+EditTestCase,Edit Test Case,Rediger test,
+CopyUrl,Copy Url,Kopier url,
+EnterName,Enter name,Indtast navn,
+EnterEmail,Enter email,Indtast email,
+Launch,Launch,Start,
+Understood,OK,OK,
+Recommendation,Recommendation,Anbefaling,
+Successfullay_Updated,Sucessfully updated,Opdatering ok,
+Successfullay_Added,Successfully Added,Tilføjelse ok,
+Roles_played_by_user,Roles played by user,Roller der udføres af brugeren,
+Please_enter_title,Please enter title,Venligst vælg titel
+Please_enter_description,Please enter description,Venligst vælg beskrivelse
+Please_select_date_from,Please select valid from date,Venligst vælg fra dato
+Please_select_date_to,Please select valid to date,Venligst vælg til dato
+Please_select_graph,Please select a process model,Venligst vælg en proces model
+Please_select_role,Please select role,Venligst vælg rolle
+Please_select_delay,Please select delay,Venlist vælg forsinkelse

@@ -78,7 +78,7 @@ describe("getChildInstanceHtml", function () {
         };
         var expected = "/Child?id=1";
         // Act
-        var result = getChildInstanceHtml(item);
+        var result = getAdjunktInstanceHtml(item);
         //Assert
         expect(result).toContain(expected);
     });
@@ -90,7 +90,7 @@ describe("getChildInstanceHtml", function () {
         };
         var expected = "dotGrey";
         // Act
-        var result = getChildInstanceHtml(item);
+        var result = getAdjunktInstanceHtml(item);
         //Assert
         expect(result).toContain(expected);
     });
@@ -103,7 +103,7 @@ describe("getChildInstanceHtml", function () {
         var expected = "Ingen kommende deadlines";
 
         //Act
-        var result = getChildInstanceHtml(item);
+        var result = getAdjunktInstanceHtml(item);
 
         //Assert
         expect(result).toContain(expected);

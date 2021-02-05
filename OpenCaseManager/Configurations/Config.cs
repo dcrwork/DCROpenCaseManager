@@ -12,6 +12,13 @@ namespace OpenCaseManager.Configurations
                 return ConfigurationManager.ConnectionStrings["Default"].ToString();
             }
         }
+        public static string MainCSSFile
+        {
+            get
+            {
+                return ConfigurationManager.AppSettings["MainCSSFile"].ToString();
+            }
+        }
         public static string DCRActiveRepository
         {
             get

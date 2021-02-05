@@ -219,6 +219,7 @@
         if (typeof iFrameModule != "undefined") {
             var instanceId = App.getParameterByName("id", window.location.href);
 
+
             var query = {
                 "type": "SELECT",
                 "entity": "Instance",

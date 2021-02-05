@@ -2,9 +2,9 @@
 
 <div class="activitiesBox">
     <h4 class="instancesHeading instancesHeadingTop">
-        <span data-locale data-apply="text" data-key="MyActivities"></span><span class="hoverInfo"><img src='../Content/Images/InfoIconV2.svg' class="info-icon" /><span class="hoverInfoText"><span data-locale data-apply="text" data-key="PendingActivities"></span></span></span>
+        <span data-locale data-apply="text" id="myActivitiesHead" data-key="MyActivities">MyActivities</span><span class="hoverInfo"><img src='../Content/Images/Standard/InfoIconV2.svg' class="info-icon" /><span class="hoverInfoText"><span data-locale data-apply="text" data-key="PendingActivities"></span></span></span>
         <button type="button" class="btn AddNewTaskCase" data-toggle="modal" data-target="#addNewCaseTask" id="addTasks">
-            <span><img src="~/Content/Images/addicon.png"></span>
+            <span><img src="~/Content/Images/Standard/addicon.png"></span>
         </button>
     </h4>
     <div class="scrollTable1">
@@ -12,11 +12,12 @@
             <thead>
                 <tr id="trTasksWarning" style="display:none"><td colspan="4"><font color="red">Advarsel - Opgavelisten er gammel. Tryk F5 for at opfriske listen og se de nyeste data</font></td></tr>
                 <tr class="trStyleClass">
-                    <th width="10%"></th>
-                    <th width="35%"><span data-locale data-apply="text" data-key="Title"></span></th>
-                    <th width="20%"><span data-locale data-apply="text" data-key="DueDate"></span></th>
-                    <th width="25%"><span data-locale data-apply="text" data-key="Responsible"></span></th>
-                    <th width="15%"><span data-locale data-apply="text" data-key="Action"></span></th>
+                    <th width="5%"></th>
+                    <th width="30%"><span data-locale data-apply="text" data-key="Title">Title</span></th>
+                    <th width="20%"><span data-locale data-apply="text" data-key="DueDate">Due Date</span></th>
+                    <th width="20%"><span data-locale data-apply="text" data-key="Responsible" id="responsibleHead">Responsible</span></th>
+                    <th width="15%"><span data-locale data-apply="text" data-key="CaseWorker" id="caseWorkerHead">CaseWorker</span></th>
+                    <th width="15%"><span data-locale data-apply="text" data-key="Action">Action</span></th>
                 </tr>
                 <tr class="trStyleClass" id="singleInstanceFilters" style="display:none;">
                     <th width="15%">

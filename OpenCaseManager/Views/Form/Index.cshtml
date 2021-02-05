@@ -3,14 +3,12 @@
     ViewBag.Title = "Form";
 }
 
-<link href="~/Content/jquery.treegrid.css" rel="stylesheet" />
-
 @Html.Partial("~/Views/PartialViews/Instruction.cshtml")
 
 <div class="">
     <div class="create-form-groupedBtn-block">
         <div class="btn-group" name="create-form-label">
-            <button id="buttonNewForm" type="button" class="btn groupedBtnStyling"><img src="../content/images/addNewForm.png" class="newFormAddIcon" /><span data-locale data-apply="text" data-key="BlankForm">Blank Form</span> </button>
+            <button id="buttonNewForm" type="button" class="btn groupedBtnStyling"><img src="../content/images/standard/addNewForm.png" class="newFormAddIcon" /><span data-locale data-apply="text" data-key="BlankForm">Blank Form</span> </button>
             <button type="button" class="btn dropdown-toggle groupedBtnStyling" data-toggle="dropdown">
                 <span class="caret"></span>
             </button>
@@ -57,7 +55,7 @@
                 <div class="is-template-innerblock"><label for="demo"><span data-locale data-apply="text" data-key="IsTemplate">Is Template</span></label></div>
             </div>
         </div>
-        <!-- <div class="add-new-question-block"><img class="add-question-plus-icon" src="images/addQuestion.png"><span class="add-new-question-text">Add Question</span></div> -->
+        <!-- <div class="add-new-question-block"><img class="add-question-plus-icon" src="images/standard/addQuestion.png"><span class="add-new-question-text">Add Question</span></div> -->
         <button type="btn" class="add-question-btn"><div class="add-new-question-img backgroundImagesCss"></div> <span data-locale data-apply="text" data-key="NewItem">New Item</span></button>
         <div class="question-table-block">
             <table class="table table-bordered questions-table">

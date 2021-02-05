@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>@ViewBag.Title</title>
-    @Styles.Render("~/Content/css")
+    @Styles.Render("~/Content/cssbundle")
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/api")
     <script src="~/Scripts/htmlRender.js"></script>
@@ -19,7 +19,7 @@
                 <div class="headerContainer">
                     <div class="pull-left">
                         <a href="~/">
-                            <img style="cursor: pointer; max-width: 300px; max-height: 130px; padding-top:10px;" src="~/content/images/logo.png" />
+                            <img style="cursor: pointer; max-width: 300px; max-height: 130px; padding-top:10px;" src="~/content/images/Custom/logo.png" />
                         </a>
                     </div>
 
@@ -96,7 +96,7 @@
             <div class="footer">
                 <div class="footer-content clearfix">
                     <div class="col-lg-3 col-md-3 col-sm-3 pull-left">
-                        <img class="left-footer-img" src="~/content/images/footerleft.png" />
+                        <img class="left-footer-img" src="~/content/images/Custom/footerleft.png" />
                     </div>
                     <span class="col-lg-6 col-md-6 col-sm-6 allrights"></span>
                     <div class="col-lg-3 col-md-3 col-sm-3 pull-right">
@@ -152,8 +152,13 @@
     <script type="text/javascript">
         moment.locale(locale);
     </script>
-
+    @{
+        if (ViewBag.IsLandingPage == null)
+        {
+            @Scripts.Render("~/bundles/app")
+        }
+    }
     @Scripts.Render("~/bundles/noty")
-    @Scripts.Render("~/bundles/app")
+
 </body>
 </html>

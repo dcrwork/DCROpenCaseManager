@@ -141,6 +141,8 @@ edit in sortable.css
 
         // #### click 'thead' to sort
         $thtd.click(function (event, initdesc) {
+            // Collapses all descriptions
+            $table.find('.showMe').remove();
             var i = $(this).index();
             var order = ($(this).hasClass('asc') || initdesc) ? 'desc' : 'asc';
             var type = $(this).attr('type');

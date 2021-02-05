@@ -151,9 +151,9 @@ $(function () {
                 DoHeader(null);
         }
         else {
-            displayChildNameX(navnt);
+            displayAdjunktNameX(navnt);
             setChildPageBreadcrumbX(navnt, x);
-            setChildResponsible(firstElement, id);
+            setAdjunktResponsible(firstElement, id);
         }
     }
 

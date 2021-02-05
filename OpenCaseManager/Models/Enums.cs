@@ -22,7 +22,8 @@ namespace OpenCaseManager.Models
             _decimal,
             _boolean,
             _datetime,
-            _xml
+            _xml,
+            _guid
         }
 
         public enum CompareOperator

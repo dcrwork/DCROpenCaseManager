@@ -366,6 +366,10 @@ namespace OpenCaseManager.Managers
                         value = Common.GetSqlDateTimeFormat(DateTime.Parse(param.ColumnValue));
                         values.Append("\'" + value + "\'");
                         break;
+                    case "guid":
+                        value = Guid.Parse(param.ColumnValue);
+                        values.Append("\'" + value + "\'");
+                        break;
                     case "xml":
                     case "string":
                     default:

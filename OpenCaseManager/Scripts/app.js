@@ -20,6 +20,23 @@ var Responsible = null;
             });
     }
 
+    function getAllProcessesForAdministrator() {
+        var query = {
+            "type": "SELECT",
+            "entity": "Processes",
+            "resultSet": ["Id", "ProcessId", "GraphId", "Title", "OnFrontPage", "MajorVersionTitle", "MajorVerisonDate", "ProcessOwner", "InstanceId", "ProcessApprovalState"],
+            "order": [{ "column": "OnFrontPage", "descending": true }, { "column": "title", "descending": false }]
+        }
+
+        var result = API.service('records', query)
+            .done(function (response) {
+                fillDropDown(response);
+            })
+            .fail(function (e) {
+                showExceptionErrorMessage(e);
+            });
+    }
+
     function getProcessAsync(filters) {
         if (filters)
             filters.push({
@@ -100,6 +117,76 @@ var Responsible = null;
         });
     }
 
+
+    function getMyTestCases() {
+        API.serviceGET('records/getTestCases')
+            .done(function (response) {
+                var data = JSON.parse(response);
+                var html = '';
+                if (data.length === 0)
+                    html = "<tr class=\"trStyleClass\"><td colspan=\"100%\"> " + translations.NoRecordFound + " </td></tr>";
+                $(data).each(function (index, item) {
+                    html += '<tr><td> <a class="formLink" id=' + item.Id + ' href="#">' + item.Title + '</a></td>';
+                    html += '<td> <a class="formLink" id=' + item.Id + ' href="#">' + moment(new Date(item.Created)).format('L') + '</a></td>';
+                    html += '<td> <a class="formLink" id=' + item.Id + ' href="#">' + moment(new Date(item.ValidFrom)).format('L') + ' - ' + moment(new Date(item.ValidTo)).format('L') + '</a></td>';
+                    html += '<td> <a class="formLink" id=' + item.Id + ' href="#">' + item.NoOfTests + '</a></td>';
+                    html += '<td style="width:15%;"><button graphId="' + item.DCRGraphId + '" type="button" onclick="App.getMyTestCase(' + item.Id + ')" name="editTestCase" value="editTestCase" class="btn btn-info taskExecutionBtn"><img title="' + translations.Edit + '" src="../../content/images/standard/edit.png"></button>';
+                    html += '<button style="margin-left: 5px;" testId="' + item.Id + '" onclick="App.deleteTestCase(' + item.Id + ')" type="button" name="deleteTestCase" value="deleteTestCase" class="btn btn-info taskExecutionBtn"><img title="' + translations.Delete + '" src="../../content/images/standard/delete.png"></button>';
+                    html += '<button style="margin-left: 5px;" testId="' + item.Id + '" graphId="' + item.DCRGraphId + '" type="button" name="sendInvite" url="/Evaluate?id=' + item.Guid + '" class="btn btn-info taskExecutionBtn"><img title="' + translations.CopyUrl + '" src="../../content/images/standard/goto.png"></button>';
+                    html += '<button style="margin-left: 5px;" testId="' + item.Id + '" graphId="' + item.DCRGraphId + '" type="button" name="exportTestCaseModal" value="exportModal" class="btn btn-info taskExecutionBtn"><img title="' + translations.ExportDCRXML + '" src="../../content/images/standard/exportFile.png"></button></td>';
+                    html += "</tr>";
+                });
+                $('#myTestCases').html(html);
+                exportDCRXMLLogForTestCase();
+                sendInvite();
+
+            })
+            .fail(function (e) {
+                App.showExceptionErrorMessage(e);
+            });
+    }
+
+    function getMyTestCase(id) {
+        var query = {
+            "type": "SELECT",
+            "entity": "TESTCASE",
+            "resultSet": ["Id", "Title", "Description", "Created", "ValidFrom", "ValidTo", "DCRGraphId", "RoleToTest", "Delay"],
+            "filters": [{
+                "column": "Id",
+                "operator": "equal",
+                "value": id,
+                "valueType": "int",
+                "logicalOperator": "and"
+            }]
+        }
+
+        API.service('records', query)
+            .done(function (response) {
+                var data = JSON.parse(response);
+                var html = '';
+                if (data.length === 0)
+                    html = "<tr class=\"trStyleClass\"><td colspan=\"100%\"> " + translations.NoRecordFound + " </td></tr>";
+                $(data).each(function (index, item) {
+                    $('#graphIdDropdown').find('option:selected').prop("selected", false);
+                    $('#testCaseLabel').val(item.Title),
+                        $('#testCaseDesc').val(item.Description),
+                        $('#datepickerTo').val(moment(new Date(item.ValidTo)).format('L')),
+                        $('#datepickerFrom').val(moment(new Date(item.ValidFrom)).format('L')),
+                        $('#graphIdDropdown [id=' + item.DCRGraphId + ']').prop('selected', true),
+                        $('#timeDelay').val(item.Delay)
+                    getRolesForTestCases(item.DCRGraphId, item.RoleToTest);
+                    $('#addTestCase').attr('data-key', translations.Edit).attr('data-id', item.Id).attr('data-edit', true).html(translations.Update)
+                    $('#testCaseHeader').attr('data-key', translations.EditTestCase).html(translations.EditTestCase)
+                    console.log(data[0].DCRGraphId)
+                });
+                $('#rolesContent').css('display', 'block');
+                $('#addNewTestCase').modal('show');
+            })
+            .fail(function (e) {
+                App.showExceptionErrorMessage(e);
+            });
+    }
+
     function renderProcesses(response) {
         renderData("processes", response, getProcessesHtml);
         registerEditProcessEvent();
@@ -110,6 +197,16 @@ var Responsible = null;
         registerGotoDCRGraphsEvent();
         registerCheckOnFrontPage();
         exportDCRXMLLog();
+        fillDropDown(response);
+    }
+
+    function fillDropDown(response) {
+        var dropdown = $('#graphIdDropdown');
+        dropdown.empty();
+        dropdown.append('<option selected>Select Graph</option>');
+        $(JSON.parse(response)).map(function () {
+            dropdown.append('<option id="' + this.GraphId + '">' + this.GraphId + ' - ' + this.Title + '</option>');
+        });
     }
 
     async function hideUpdateMajorRevision(graph) {
@@ -221,6 +318,46 @@ var Responsible = null;
             .fail(function (e) {
                 showExceptionErrorMessage(e);
             });
+    }
+
+    function addTestCase(data) {
+        API.service('records/addTestCase', data)
+            .done(function (response) {
+                var result = JSON.parse(response);
+                $('#addNewTestCase').modal('hide');
+                getMyTestCases();
+                showSuccessMessage(translations.Successfullay_Added);
+            })
+            .fail(function (e) {
+                showExceptionErrorMessage(e);
+            });
+    }
+
+    function updateTestCase(data) {
+        API.service('records/updateTestCase', data)
+            .done(function (response) {
+                // var result = JSON.parse(response);
+                $('#addNewTestCase').attr('data-key', translations.Add).attr('data-edit', false).attr('data-id', '0').modal('hide');
+                $('#addTestCase').html(translations.Add)
+                getMyTestCases();
+                showSuccessMessage(translations.Successfullay_Updated);
+            })
+            .fail(function (e) {
+                showExceptionErrorMessage(e);
+            });
+    }
+
+    function deleteTestCase(id) {
+        if (confirm('Are you sure you want to delete')) {
+            API.service('records/deleteTestCase', id)
+                .done(function (response) {
+                    getMyTestCases();
+                })
+                .fail(function (e) {
+                    showExceptionErrorMessage(e);
+                });
+        }
+        return false;
     }
 
     async function executeEvent(data, isFrontPage, uiEvent, isMUS, type, adjunkt) {
@@ -658,7 +795,7 @@ var Responsible = null;
         var data = {
             "type": "SELECT",
             "entity": "AllInstances",
-            "resultSet": ["Id", "Title", "CaseNoForeign", "IsOpen", "Responsible"],
+            "resultSet": ["Id", "Title", "CaseNoForeign", "IsOpen", "Responsible", "AdjunktName"],
             "filters": [
                 {
                     "column": "Title",
@@ -890,6 +1027,36 @@ var Responsible = null;
         });
     }
 
+    function exportDCRXMLLogForTestCase() {
+        $('button[name="exportTestCaseModal"]').on('click', function () {
+            var graphId = 1335;
+            var testId = $(this).attr('testId');
+            graphId = $(this).attr('graphId');
+            window.open('../File/DownloadDCRXMLLog?graphId=' + graphId + '&isaccepting=' + false + '&toXES=' + false + '&from=' + null + '&to=' + null + '&testId=' + testId + '', '_blank');
+        });
+    }
+
+
+
+    function sendInvite() {
+        $('button[name="sendInvite"]').on('click', function (e) {
+            var urlToLaunch = e.currentTarget.attributes.url.value;
+            urlToLaunch = window.location.href + urlToLaunch;
+            var testId = e.currentTarget.attributes.testId.value;
+            console.log(urlToLaunch);
+            //$('#sendInviteModal').modal('toggle');
+
+            // $('#sendInviteBtn').attr('url', urlToLaunch.attr('testId', testId));
+            var $temp = $("<input>");
+            $("body").append($temp);
+            $temp.val(urlToLaunch).select();
+            document.execCommand("copy");
+            $temp.remove();
+            e.preventDefault();
+            showSuccessMessage(translations.SuccessfullyCopied)
+        });
+    }
+
     async function showTaskWithNoteFullPopup(data, elem, isFrontPage, uievent, isMUS) {
         var globalEvents = [];
         if (data.eventId.toLocaleLowerCase().startsWith("global")) {
@@ -997,19 +1164,20 @@ var Responsible = null;
             '</td>' +
             '<td>';
         returnHtml += '<button style="margin-right:3px;" processId="' + item.ProcessId + '" title="' + item.Title + '" graphId="' + item.GraphId + '" type="button" value="" class="btn btn-info taskExecutionBtn"><img class="btn btn-info taskExecutionBtn" src="../Content/Images/update.png" name="checkMajorVersions" graphId="' + item.GraphId + '" style="cursor:pointer" /></button>';
-        returnHtml += '<button style="margin-right:3px;display:none;" approval="' + item.ProcessApprovalState + '" processId="' + item.ProcessId + '" title="' + item.Title + '" graphId="' + item.GraphId + '" type="button" name="updateMajorRevision" value="" class="btn btn-info taskExecutionBtn"><img title="' + translations.NewVersionAvailable + '" src="../../content/images/refresh.png"></button>';
+        returnHtml += '<button style="margin-right:3px;display:none;" approval="' + item.ProcessApprovalState + '" processId="' + item.ProcessId + '" title="' + item.Title + '" graphId="' + item.GraphId + '" type="button" name="updateMajorRevision" value="" class="btn btn-info taskExecutionBtn"><img title="' + translations.NewVersionAvailable + '" src="../../content/images/standard/refresh.png"></button>';
         if (item.ProcessApprovalState === 0) {
             returnHtml += '<button style="display:inline" approval="' + item.ProcessApprovalState + '" processId="' + item.ProcessId + '" title="' + translations.InApproval + '" graphId="' + item.GraphId + '" type="button" name="inApproval" value="" class="btn btn-info taskExecutionBtn"><i class="fas fa-user-edit"></i></button>&nbsp;';
         }
         if (item.InstanceId !== null)
-            returnHtml += '<a name="processInstance" target="_blank" href="../instance?id=' + item.InstanceId + '" graphId="' + item.GraphId + '" class="btn btn-info taskExecutionBtn"><i class="fas fa-infinity" style="color: white" title="' + translations.ProcessInstance + '"></i></a> ';
-        returnHtml += '<a name="processHistory" graphId="' + item.GraphId + '" target="_blank" href="../process/processhistory?graphid=' + item.GraphId + '" class="btn btn-info taskExecutionBtn"><i class="fas fa-history" style="color: white" title="' + translations.ProcessHistory + '"></i></a> ';
-        returnHtml += '<button graphId="' + item.GraphId + '" processId="' + item.ProcessId + '" type="button" name="editProcess" value="editProcess" class="btn btn-info taskExecutionBtn"><img title="' + translations.Edit + '" src="../../content/images/edit.png"></button> ';
-        returnHtml += '<button  graphId="' + item.GraphId + '" style="display:none" processId="' + item.ProcessId + '" type="button" name="updateProcess" value="updateProcess" class="btn btn-info taskExecutionBtn"><img title="' + translations.Edit + '" src="../../content/images/edit.png"></button> ';
-        returnHtml += '<button  graphId="' + item.GraphId + '"  style="display:none" processId="' + item.ProcessId + '" type="button" name="cancelUpdateProcess" value="cancelUpdateProcess" class="btn btn-info taskExecutionBtn"><img title="' + translations.Cancel + '" src="../../content/images/cancel.png"></button> ';
-        returnHtml += '<button graphId="' + item.GraphId + '" processId="' + item.ProcessId + '" type="button" name="deleteProcess" value="deleteProcess" class="btn btn-info taskExecutionBtn"><img title="' + translations.Delete + '" src="../../content/images/delete.png"></button> ';
-        returnHtml += '<button processId="' + item.ProcessId + '" graphId="' + item.GraphId + '" type="button" name="gotoProcess" value="gotoProcess" class="btn btn-info taskExecutionBtn"><i title="' + translations.GotoGraph + '" class="fas fa-external-link-alt"></i></button> ';
-        returnHtml += '<button processId="' + item.ProcessId + '" graphId="' + item.GraphId + '" type="button" name="exportModal" value="exportModal" class="btn btn-info taskExecutionBtn"><i title="' + translations.ExportDCRXML + '" class="fas fa-file-export"></i></button> ';
+            returnHtml += '<a name="processInstance" target="_blank" href="../instance?id=' + item.InstanceId + '" graphId="' + item.GraphId + '" class="btn btn-info taskExecutionBtn"><i class="fas fa-infinity" title="' + translations.ProcessInstance + '"></i></a> ';
+        returnHtml += '<a name="processHistory" graphId="' + item.GraphId + '" target="_blank" href="../process/processhistory?graphid=' + item.GraphId + '" class="btn btn-info taskExecutionBtn"><i class="fas fa-history" title="' + translations.ProcessHistory + '"></i></a> ';
+        returnHtml += '<button graphId="' + item.GraphId + '" processId="' + item.ProcessId + '" type="button" name="editProcess" value="editProcess" class="btn btn-info taskExecutionBtn"><img title="' + translations.Edit + '" src="../../content/images/standard/edit.png"></button> ';
+        returnHtml += '<button  graphId="' + item.GraphId + '" style="display:none" processId="' + item.ProcessId + '" type="button" name="updateProcess" value="updateProcess" class="btn btn-info taskExecutionBtn"><img title="' + translations.Edit + '" src="../../content/images/standard/edit.png"></button> ';
+        returnHtml += '<button  graphId="' + item.GraphId + '"  style="display:none" processId="' + item.ProcessId + '" type="button" name="cancelUpdateProcess" value="cancelUpdateProcess" class="btn btn-info taskExecutionBtn"><img title="' + translations.Cancel + '" src="../../content/images/standard/cancel.png"></button> ';
+        //returnHtml += '<button style="display:none;" processId="' + item.ProcessId + '" graphId="' + item.GraphId + '" type="button" name="refreshProcess" value="refreshProcess" class="btn btn-info taskExecutionBtn"><img title="' + translations.Update + '" src="../../content/images/standard/update.png"></button> ';
+        returnHtml += '<button graphId="' + item.GraphId + '" processId="' + item.ProcessId + '" type="button" name="deleteProcess" value="deleteProcess" class="btn btn-info taskExecutionBtn"><img title="' + translations.Delete + '" src="../../content/images/standard/delete.png"></button> ';
+        returnHtml += '<button processId="' + item.ProcessId + '" graphId="' + item.GraphId + '" type="button" name="gotoProcess" value="gotoProcess" class="btn btn-info taskExecutionBtn"><img title="' + translations.GotoGraph + '" src="../../content/images/standard/goto.png"></button> ';
+        returnHtml += '<button processId="' + item.ProcessId + '" graphId="' + item.GraphId + '" type="button" name="exportModal" value="exportModal" class="btn btn-info taskExecutionBtn"><img title="' + translations.ExportDCRXML + '" src="../../content/images/standard/exportFile.png"></button> ';
         returnHtml += '</td>' + '</tr>';
         return returnHtml;
     }
@@ -1120,7 +1288,7 @@ var Responsible = null;
         else
             item.IsOpen = translations.Close;
         var returnHtml = '';
-        returnHtml = '<tr class="trStyleClass"><td> <a href="../Instance?id=' + item.Id + '">' + item.Title + '</a></td><td>' + item.CaseNoForeign + '</td><td>' + item.Responsible + '</td><td>' + item.IsOpen + '</td></tr>';
+        returnHtml = '<tr class="trStyleClass"><td> <a href="../Instance?id=' + item.Id + '">' + item.Title + '</a></td><td>' + item.AdjunktName + '</td><td>' + item.Responsible + '</td><td>' + item.IsOpen + '</td></tr>';
         return returnHtml;
     }
 
@@ -1226,8 +1394,7 @@ var Responsible = null;
                 }
             }
         }
-        else
-        {
+        else {
             message = exception.responseText;
         }
 
@@ -1487,6 +1654,13 @@ var Responsible = null;
         this.getKeyValue = getKeyValue;
         this.getAllProcesses = getAllProcesses;
         this.hideUpdateMajorRevision = hideUpdateMajorRevision;
+        this.getAllProcessesForAdministrator = getAllProcessesForAdministrator;
+        this.skipAutoRoles = skipAutoRoles;
+        this.addTestCase = addTestCase;
+        this.updateTestCase = updateTestCase;
+        this.getMyTestCases = getMyTestCases;
+        this.getMyTestCase = getMyTestCase;
+        this.deleteTestCase = deleteTestCase;
     };
 
     setTexts();

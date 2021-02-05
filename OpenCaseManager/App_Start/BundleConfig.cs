@@ -25,20 +25,19 @@ namespace OpenCaseManager
             bundles.Add(new ScriptBundle("~/bundles/bluebird").Include(
           "~/Scripts/bluebird.min.js"));
 
-            // syddjurs css
-            bundles.Add(new StyleBundle("~/Content/css").Include(
-                      "~/Content/DemoStyling.css", //Change this line to change which main style should be used
-                      "~/Content/bootstrap.css",
-                      "~/Content/fontastic.css",
+
+            Bundle styleBundle = new StyleBundle("~/Content/cssbundle").Include(
+                      "~/Content/bootstrap.css" ,
                       "~/Content/noty/noty.css",
                       "~/Content/noty/themes/mint.css",
-                      "~/Content/site.css",
-                      "~/Content/myChildren.css",
-                      "~/Content/Child.css",
-                      "~/Content/PartialViews.css",
-                      "~/Content/tabs.css",
-                      "~/Content/breadcrumbs.css",
-                      "~/Content/journalnote.css"));
+                      "~/Content/fontastic.css");
+
+
+            styleBundle.IncludeDirectory("~/Content/Styles/Standard", "*.css");
+            styleBundle.IncludeDirectory("~/Content/Styles/Custom", "*.css");
+
+
+            bundles.Add(styleBundle);
 
             bundles.Add(new ScriptBundle("~/bundles/moment").Include(
                       "~/Scripts/moment.min.js",

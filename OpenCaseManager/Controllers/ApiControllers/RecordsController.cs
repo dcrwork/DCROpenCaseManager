@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using OpenCaseManager.Commons;
 using OpenCaseManager.Custom.Syddjurs;
 using OpenCaseManager.Managers;
@@ -10,6 +11,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Web;
 using System.Web.Http;
@@ -27,20 +29,26 @@ namespace OpenCaseManager.Controllers.ApiControllers
         private IDCRService _dCRService;
         private IDataModelManager _dataModelManager;
         private IDocumentManager _documentManager;
+        private IAutomaticEvents _automaticEvents;
         private ISyddjursWork _syddjursWork;
         private ICommons _commons;
+        private ServicesController _servicesController;
 
         public RecordsController(IManager manager, IService service, IDCRService dCRService,
                                     IDataModelManager dataModelManager, IDocumentManager documentManager,
-                                    ISyddjursWork syddjursWork, ICommons commons)
+                                    ISyddjursWork syddjursWork, IAutomaticEvents automaticEvents,
+                                    IMailRepository mailRepository, ICommons commons)
         {
             _manager = manager;
             _service = service;
             _dCRService = dCRService;
             _dataModelManager = dataModelManager;
+            _automaticEvents = automaticEvents;
             _documentManager = documentManager;
             _syddjursWork = syddjursWork;
             _commons = commons;
+            // This dependancy is only needed for CreateInstanceAPI, and should be removed if it is possible to add a call to servicesController via HTTP instead.
+            _servicesController = new ServicesController(manager, service, dCRService, dataModelManager, documentManager, automaticEvents, mailRepository, commons);
         }
 
         // POST api/values
@@ -50,6 +58,29 @@ namespace OpenCaseManager.Controllers.ApiControllers
             try
             {
                 if (model.Type == Enums.SQLOperation.SELECT.ToString())
+                {
+                    var output = _manager.SelectData(model);
+                    return Ok(Common.ToJson(output));
+                }
+                return BadRequest("Only Select statement is allowed.");
+            }
+            catch (Exception ex)
+            {
+                _manager.LogSQLModel(model, ex, "Post");
+                Common.LogError(ex);
+                return InternalServerError(ex);
+            }
+        }
+
+        // POST api/values
+        [AllowAnonymous]
+        [HttpPost]
+        [Route("anonymous")]
+        public IHttpActionResult PostAnonymous(DataModel model)
+        {
+            try
+            {
+                if (Enum.IsDefined(typeof(DBEntityNames.AnonymousTables), model.Entity) && model.Type == Enums.SQLOperation.SELECT.ToString())
                 {
                     var output = _manager.SelectData(model);
                     return Ok(Common.ToJson(output));
@@ -91,6 +122,99 @@ namespace OpenCaseManager.Controllers.ApiControllers
         }
 
         /// <summary>
+        /// Return Test cases
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("getTestCases")]
+        // GET api/values
+        public IHttpActionResult getTestCasesApi()
+        {
+            try
+            {
+                _dataModelManager.GetDefaultDataModel(Enums.SQLOperation.SP, DBEntityNames.StoredProcedures.GetTestCases.ToString());
+                return Ok(Common.ToJson(_manager.ExecuteStoredProcedure(_dataModelManager.DataModel)));
+            }
+            catch (Exception ex)
+            {
+                Common.LogInfo(_manager, _dataModelManager, "GetTestCase - Failed. ");
+                Common.LogError(ex);
+                return InternalServerError(ex);
+            }
+        }
+
+        /// <summary>
+        /// Add Test Case
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("addTestCase")]
+        // POST api/values
+        public IHttpActionResult AddTestCaseApi(AddTestCase input)
+        {
+            try
+            {
+                return Ok(Common.ToJson(AddTestCase(input)));
+            }
+            catch (Exception ex)
+            {
+                Common.LogInfo(_manager, _dataModelManager, "AddTestCase - Failed. - " + Common.ToJson(input));
+                Common.LogError(ex);
+                return InternalServerError(ex);
+            }
+        }
+
+        /// <summary>
+        /// Update Test Case
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("updateTestCase")]
+        //POST api/values
+        public IHttpActionResult UpdateTestCaseApi(AddTestCase input)
+        {
+            try
+            {
+                UpdateTestCase(input);
+                return Ok(Common.ToJson(new { }));
+            }
+            catch (Exception ex)
+            {
+                Common.LogInfo(_manager, _dataModelManager, "UpdateTestCase - Failed. - " + Common.ToJson(input));
+                Common.LogError(ex);
+                return InternalServerError(ex);
+            }
+        }
+
+        /// <summary>
+        /// Delete Test Case
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("deleteTestCase")]
+        public IHttpActionResult DeleteTestCaseApi(dynamic input)
+        {
+            try
+            {
+                _dataModelManager.GetDefaultDataModel(Enums.SQLOperation.SP, DBEntityNames.StoredProcedures.DeleteTestCase.ToString());
+                _dataModelManager.AddParameter(DBEntityNames.DeleteTestCase.Id.ToString(), Enums.ParameterType._int, input.ToString());
+
+                var dataTable = _manager.ExecuteStoredProcedure(_dataModelManager.DataModel);
+
+                return Ok(Common.ToJson(new { }));
+            }
+            catch (Exception ex)
+            {
+                Common.LogInfo(_manager, _dataModelManager, "DeleteTestCase - Failed. - " + Common.ToJson(input));
+                Common.LogError(ex);
+                return InternalServerError(ex);
+            }
+        }
+
+        /// <summary>
         /// Add Instance
         /// </summary>
         /// <param name="input"></param>
@@ -103,14 +227,18 @@ namespace OpenCaseManager.Controllers.ApiControllers
             try
             {
                 // add Instance
-                var instanceId = Common.AddInstance(input, _manager, _dataModelManager);
-                if (input.ChildId != null)
+                var instanceId = AddInstance(input);
+                if (instanceId != "")
                 {
-                    if (!string.IsNullOrEmpty(input.CaseId))
-                        LinkCaseToInstance(input.CaseId, input.CaseNumberIdentifier, instanceId);
-                    ConnectInstanceToChild(instanceId, input.ChildId);
+                    return Ok(Common.ToJson(instanceId));
                 }
-                return Ok(Common.ToJson(instanceId));
+                else
+                {
+                    Common.LogInfo(_manager, _dataModelManager, "AddInstance - Failed. - " + Common.ToJson(input));
+                    Exception ex = new Exception("AddInstance failed");
+                    Common.LogError(ex);
+                    return InternalServerError(ex);
+                }
             }
             catch (Exception ex)
             {
@@ -119,6 +247,217 @@ namespace OpenCaseManager.Controllers.ApiControllers
                 return InternalServerError(ex);
             }
         }
+
+        #region Anonymous Functions
+
+        /// <summary>
+        /// Return Delay time
+        /// </summary>
+        /// <returns></returns>
+        [AllowAnonymous]
+        [HttpGet]
+        [Route("getWarningDelay")]
+        // GET api/values
+        public IHttpActionResult GetWarningDelayApi(string id)
+        {
+            try
+            {
+                return Ok(Common.ToJson(GetWarningDelay(id)));
+            }
+            catch (Exception ex)
+            {
+                Common.LogInfo(_manager, _dataModelManager, "GetWarningDelay - Failed. ");
+                Common.LogError(ex);
+                return InternalServerError(ex);
+            }
+        }
+
+        /// <summary>
+        /// Return Instance Phases
+        /// </summary>
+        /// <returns></returns>
+        [AllowAnonymous]
+        [HttpGet]
+        [Route("getInstancePhases")]
+        // GET api/values
+        public IHttpActionResult GetInstancePhasesApi(string id)
+        {
+            try
+            {
+                return Ok(Common.ToJson(GetInstancePhases(id)));
+            }
+            catch (Exception ex)
+            {
+                Common.LogInfo(_manager, _dataModelManager, "GetInstancePhases - Failed. ");
+                Common.LogError(ex);
+                return InternalServerError(ex);
+            }
+        }
+
+        /// <summary>
+        /// Return Tasks
+        /// </summary>
+        /// <returns></returns>
+        [AllowAnonymous]
+        [HttpGet]
+        [Route("getTasks")]
+        // GET api/values
+        public IHttpActionResult GetTasksApi(string id)
+        {
+            try
+            {
+                return Ok(Common.ToJson(GetTasks(id)));
+            }
+            catch (Exception ex)
+            {
+                Common.LogInfo(_manager, _dataModelManager, "GetTask - Failed. ");
+                Common.LogError(ex);
+                return InternalServerError(ex);
+            }
+        }
+
+        /// <summary>
+        /// Return My Test case
+        /// </summary>
+        /// <returns></returns>
+        [AllowAnonymous]
+        [HttpGet]
+        [Route("getMyTestCase")]
+        // GET api/values
+        public IHttpActionResult GetMyTestCaseApi(string id)
+        {
+            try
+            {
+                Guid guidOutput;
+                if (!Guid.TryParse(id, out guidOutput))
+                {
+                    _dataModelManager.GetDefaultDataModel(Enums.SQLOperation.SELECT, DBEntityNames.Tables.TestCaseInstance.ToString());
+                    _dataModelManager.AddResultSet(new List<string> { DBEntityNames.TestCaseInstance.TestCaseId.ToString()});
+                    _dataModelManager.AddFilter(DBEntityNames.TestCaseInstance.InstanceId.ToString(), Enums.ParameterType._int, id, Enums.CompareOperator.equal, Enums.LogicalOperator.none);
+
+                   id = _manager.SelectData(_dataModelManager.DataModel).Rows[0].ItemArray[0].ToString();
+
+                }
+
+                _dataModelManager.GetDefaultDataModel(Enums.SQLOperation.SELECT, DBEntityNames.Tables.TestCase.ToString());
+                _dataModelManager.AddResultSet(new List<string> { DBEntityNames.TestCase.Title.ToString(), DBEntityNames.TestCase.ValidFrom.ToString(), DBEntityNames.TestCase.ValidTo.ToString(), DBEntityNames.TestCase.RoleToTest.ToString(), DBEntityNames.TestCase.DCRGraphId.ToString(), DBEntityNames.TestCase.Delay.ToString() });
+                Guid guidResult;
+                if (Guid.TryParse(id, out guidResult))
+                    _dataModelManager.AddFilter(DBEntityNames.TestCase.Guid.ToString(), Enums.ParameterType._guid, id, Enums.CompareOperator.equal, Enums.LogicalOperator.none);
+                else
+                    _dataModelManager.AddFilter(DBEntityNames.TestCase.Id.ToString(), Enums.ParameterType._int, id, Enums.CompareOperator.equal, Enums.LogicalOperator.none);
+
+                return Ok(Common.ToJson(_manager.SelectData(_dataModelManager.DataModel)));
+            }
+            catch (Exception ex)
+            {
+                Common.LogInfo(_manager, _dataModelManager, "GetMyTestCase - Failed. ");
+                Common.LogError(ex);
+                return InternalServerError(ex);
+            }
+        }
+
+        /// <summary>
+        /// Launch Test Case
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [AllowAnonymous]
+        [Route("launchTestCase")]
+        // POST api/values
+        public IHttpActionResult LaunchTestCaseApi(dynamic input)
+        {
+            try
+            {
+                var email = input["email"].ToString();
+                var name = input["name"].ToString();
+                var guid = input["guid"].ToString();
+                return Ok(Common.ToJson(AddTestCaseInstance(new AddTestCaseInstance()
+                {
+                    email = email,
+                    name = name,
+                    guid = guid
+                })));
+            }
+            catch (Exception ex)
+            {
+                Common.LogInfo(_manager, _dataModelManager, "AddTestCase - Failed. - " + Common.ToJson(input));
+                Common.LogError(ex);
+                return InternalServerError(ex);
+            }
+        }
+
+        /// <summary>
+        /// Return AI Robotic Events
+        /// <param name="id"></param>
+        /// </summary>
+        /// <returns></returns>
+        [AllowAnonymous]
+        [HttpGet]
+        [Route("getAIRoboticEvents")]
+        // GET api/values
+        public IHttpActionResult GetAIRoboticEventsApi(string id)
+        {
+            try
+            {
+                return Ok(Common.ToJson(GetAIRoboticEvents(id)));
+            }
+            catch (Exception ex)
+            {
+                Common.LogInfo(_manager, _dataModelManager, "GetTestCase - Failed. ");
+                Common.LogError(ex);
+                return InternalServerError(ex);
+            }
+        }
+
+        #endregion
+
+        /// <summary>
+        /// Add Instance and Initialize graph
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("createInstance")]
+        // POST api/values
+        public IHttpActionResult CreateInstanceApi(AddInstanceModel input)
+        {
+            try
+            {
+                // Call AddInstanceAPI
+                var instanceString = AddInstance(input);
+
+                // Call InitializeGraph via http
+
+
+                var json = @"{""instanceId"":" + instanceString + @",""graphId"":" + input.GraphId + "}";
+                dynamic graphInput = JObject.Parse(json);
+
+
+                var result = _servicesController.InitializeGraph(graphInput, out string output);
+                if (result)
+                {
+                    return Ok(Common.ToJson(instanceString));
+                }
+                else
+                {
+                    Common.LogInfo(_manager, _dataModelManager, "CreateInstance - InitializeGraph - Failed. - " + Common.ToJson(input));
+                    Exception ex = new Exception();
+                    Common.LogError(ex);
+                    return InternalServerError(ex);
+                }
+            }
+            catch (Exception ex)
+            {
+                Common.LogInfo(_manager, _dataModelManager, "CreateInstance - AddInstance - Failed. - " + Common.ToJson(input));
+                Common.LogError(ex);
+                return InternalServerError(ex);
+            }
+        }
+
+
+
 
         /// <summary>
         /// Update Child
@@ -274,17 +613,20 @@ namespace OpenCaseManager.Controllers.ApiControllers
         // Post api/values
         public IHttpActionResult GetAdjunkter(AdjunktModel input)
         {
-            try {
+            try
+            {
                 var adjunktId = input.AdjunktId;
-                
+
                 _dataModelManager.GetDefaultDataModel(Enums.SQLOperation.SELECT, DBEntityNames.Tables.AdjunktView.ToString());
                 _dataModelManager.AddFilter(DBEntityNames.Adjunkt.Responsible.ToString(), Enums.ParameterType._int, adjunktId.ToString(), Enums.CompareOperator.equal, Enums.LogicalOperator.none);
                 _dataModelManager.AddResultSet(new List<string> { DBEntityNames.AdjunktView.Id.ToString(), DBEntityNames.AdjunktView.Responsible.ToString(), DBEntityNames.AdjunktView.Name.ToString(), DBEntityNames.AdjunktView.ResponsibleName.ToString() });
 
-                var datatable =_manager.SelectData(_dataModelManager.DataModel);
+                var datatable = _manager.SelectData(_dataModelManager.DataModel);
                 return Ok(Common.ToJson(datatable));
 
-            } catch (Exception ex) {
+            }
+            catch (Exception ex)
+            {
                 Common.LogInfo(_manager, _dataModelManager, "UpdateProcess - Failed. - " + Common.ToJson(input));
                 Common.LogError(ex);
                 return InternalServerError(ex);
@@ -345,13 +687,16 @@ namespace OpenCaseManager.Controllers.ApiControllers
 
 
                 var adjunktdatatable = _manager.SelectData(_dataModelManager.DataModel);
-                
-                int adjunktId = (int) adjunktdatatable.Rows[0].ItemArray[0];
+
+                if (adjunktdatatable.Rows.Count < 1) return InternalServerError(new Exception("No data found for user."));
+
+
+                int adjunktId = (int)adjunktdatatable.Rows[0].ItemArray[0];
                 int tempUserId = (int)adjunktdatatable.Rows[0].ItemArray[1];
 
                 var input = new MineAktiviteterModel() { AdjunktId = adjunktId, UserId = tempUserId };
 
-                OkNegotiatedContentResult<string> res = (OkNegotiatedContentResult<string>) GetMineAktiviteter(input);
+                OkNegotiatedContentResult<string> res = (OkNegotiatedContentResult<string>)GetMineAktiviteter(input);
                 var content = res.Content;
                 return Ok(content);
 
@@ -384,8 +729,10 @@ namespace OpenCaseManager.Controllers.ApiControllers
                 if (userId != 0) _dataModelManager.AddFilter(DBEntityNames.MineAktiviteter.Responsible.ToString(), Enums.ParameterType._int, userId.ToString(), Enums.CompareOperator.equal, Enums.LogicalOperator.none);
                 _dataModelManager.AddResultSet(new List<string> { DBEntityNames.MineAktiviteter.Acadreorgid.ToString(), DBEntityNames.MineAktiviteter.ChildId.ToString(), DBEntityNames.MineAktiviteter.Department.ToString(), DBEntityNames.MineAktiviteter.DepartmentId.ToString(), DBEntityNames.MineAktiviteter.Description.ToString(), DBEntityNames.MineAktiviteter.Due.ToString(), DBEntityNames.MineAktiviteter.EventId.ToString(), DBEntityNames.MineAktiviteter.EventType.ToString(), DBEntityNames.MineAktiviteter.EventTypeData.ToString(), DBEntityNames.MineAktiviteter.Familieafdelingen.ToString(), DBEntityNames.MineAktiviteter.InstanceId.ToString(), DBEntityNames.MineAktiviteter.IsEnabled.ToString(), DBEntityNames.MineAktiviteter.IsExecuted.ToString(), DBEntityNames.MineAktiviteter.IsIncluded.ToString(), DBEntityNames.MineAktiviteter.IsManager.ToString(),
                     DBEntityNames.MineAktiviteter.isOpen.ToString(), DBEntityNames.MineAktiviteter.IsPending.ToString(), DBEntityNames.MineAktiviteter.ManagerId.ToString(), DBEntityNames.MineAktiviteter.Name.ToString(), DBEntityNames.MineAktiviteter.NotApplicable.ToString(), DBEntityNames.MineAktiviteter.Note.ToString(), DBEntityNames.MineAktiviteter.NoteIsHtml.ToString(), DBEntityNames.MineAktiviteter.ParentId.ToString(), DBEntityNames.MineAktiviteter.PhaseId.ToString(), DBEntityNames.MineAktiviteter.Responsible.ToString(), DBEntityNames.MineAktiviteter.Roles.ToString(), DBEntityNames.MineAktiviteter.SamAccountName.ToString(), DBEntityNames.MineAktiviteter.Title.ToString(), DBEntityNames.MineAktiviteter.UserTitle.ToString(), DBEntityNames.MineAktiviteter.InstanceTitle.ToString(), DBEntityNames.MineAktiviteter.Type.ToString(), DBEntityNames.MineAktiviteter.Modified.ToString(), DBEntityNames.MineAktiviteter.GraphId.ToString(), DBEntityNames.MineAktiviteter.SimulationId.ToString(), DBEntityNames.MineAktiviteter.TrueEventId.ToString(), DBEntityNames.MineAktiviteter.EventTitle.ToString()});
-                
-                
+                _dataModelManager.AddOrderBy(DBEntityNames.MineAktiviteter.IsPending.ToString(), true);
+                _dataModelManager.AddOrderBy(DBEntityNames.MineAktiviteter.IsEnabled.ToString(), true);
+                _dataModelManager.AddOrderBy("ISNULL(Due, DateFromParts(3000, 10, 10))", false);
+
                 var datatable = _manager.SelectData(_dataModelManager.DataModel);
                 return Ok(Common.ToJson(datatable));
 
@@ -399,14 +746,14 @@ namespace OpenCaseManager.Controllers.ApiControllers
         }
 
         /// <summary>
-        /// Get Adjunkter from database
+        /// Get AdjunktInfo from database
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
         [HttpPost]
-        [Route("GetAdjunktCases")]
+        [Route("GetAdjunktInfo")]
         // Post api/values
-        public IHttpActionResult GetAdjunktCases(AdjunktModel input)
+        public IHttpActionResult GetAdjunktInfo(AdjunktModel input)
         {
             try
             {
@@ -414,7 +761,7 @@ namespace OpenCaseManager.Controllers.ApiControllers
 
                 _dataModelManager.GetDefaultDataModel(Enums.SQLOperation.SELECT, DBEntityNames.Tables.Adjunkt.ToString());
                 _dataModelManager.AddFilter(DBEntityNames.Adjunkt.Id.ToString(), Enums.ParameterType._int, adjunktId.ToString(), Enums.CompareOperator.equal, Enums.LogicalOperator.none);
-                _dataModelManager.AddResultSet(new List<string> {DBEntityNames.Adjunkt.Responsible.ToString(), DBEntityNames.Adjunkt.Name.ToString(), DBEntityNames.Adjunkt.Id.ToString()});
+                _dataModelManager.AddResultSet(new List<string> { DBEntityNames.Adjunkt.Responsible.ToString(), DBEntityNames.Adjunkt.Name.ToString(), DBEntityNames.Adjunkt.Id.ToString() });
 
                 var datatable = _manager.SelectData(_dataModelManager.DataModel);
                 return Ok(Common.ToJson(datatable));
@@ -422,7 +769,7 @@ namespace OpenCaseManager.Controllers.ApiControllers
             }
             catch (Exception ex)
             {
-                Common.LogInfo(_manager, _dataModelManager, "UpdateProcess - Failed. - " + Common.ToJson(input));
+                Common.LogInfo(_manager, _dataModelManager, "GetAdjunktInfo - Failed. - " + Common.ToJson(input));
                 Common.LogError(ex);
                 return InternalServerError(ex);
             }
@@ -1263,6 +1610,7 @@ namespace OpenCaseManager.Controllers.ApiControllers
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
+        [AllowAnonymous]
         [Route("LogJsError")]
         [HttpPost]
         public IHttpActionResult LogJsError(dynamic input)
@@ -1440,7 +1788,8 @@ namespace OpenCaseManager.Controllers.ApiControllers
         /// <returns></returns>        
         [HttpPost]
         [Route("UpdateResponsible")]
-        public IHttpActionResult UpdateResponsible(dynamic input) {
+        public IHttpActionResult UpdateResponsible(dynamic input)
+        {
 
             try
             {
@@ -1480,13 +1829,13 @@ namespace OpenCaseManager.Controllers.ApiControllers
                     default:
                         return BadRequest();
                 }
-                
+
             }
             catch (Exception ex)
             {
                 Common.LogInfo(_manager, _dataModelManager, "GetMenuItems - Failed.");
                 Common.LogError(ex);
-                return InternalServerError(ex); 
+                return InternalServerError(ex);
             }
 
 
@@ -1721,6 +2070,207 @@ namespace OpenCaseManager.Controllers.ApiControllers
             _dataModelManager.AddParameter(DBEntityNames.Child.Responsible.ToString(), Enums.ParameterType._int, Common.GetResponsibleId());
             // Returns child id
             return _manager.InsertData(_dataModelManager.DataModel).Rows[0][DBEntityNames.Child.Id.ToString()].ToString();
+        }
+        
+
+        /// <summary>
+        /// Add Child 
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        private string AddTestCase(AddTestCase model)
+        {
+            _dataModelManager.GetDefaultDataModel(Enums.SQLOperation.INSERT, DBEntityNames.Tables.TestCase.ToString());
+            _dataModelManager.AddParameter(DBEntityNames.TestCase.Created.ToString(), Enums.ParameterType._datetime, DateTime.Now.ToString());
+            _dataModelManager.AddParameter(DBEntityNames.TestCase.CreatedBy.ToString(), Enums.ParameterType._int, Common.GetResponsibleId().ToString());
+            _dataModelManager.AddParameter(DBEntityNames.TestCase.Title.ToString(), Enums.ParameterType._string, model.title);
+            _dataModelManager.AddParameter(DBEntityNames.TestCase.Description.ToString(), Enums.ParameterType._string, model.desc);
+            _dataModelManager.AddParameter(DBEntityNames.TestCase.Guid.ToString(), Enums.ParameterType._string, Guid.NewGuid().ToString());
+            _dataModelManager.AddParameter(DBEntityNames.TestCase.ValidFrom.ToString(), Enums.ParameterType._datetime, model.validFrom);
+            _dataModelManager.AddParameter(DBEntityNames.TestCase.ValidTo.ToString(), Enums.ParameterType._datetime, model.validTo);
+            _dataModelManager.AddParameter(DBEntityNames.TestCase.DCRGraphId.ToString(), Enums.ParameterType._int, model.graphId);
+            _dataModelManager.AddParameter(DBEntityNames.TestCase.Delay.ToString(), Enums.ParameterType._int, model.delay);
+            _dataModelManager.AddParameter(DBEntityNames.TestCase.RoleToTest.ToString(), Enums.ParameterType._string, model.roles);
+            _dataModelManager.AddParameter(DBEntityNames.TestCase.Page.ToString(), Enums.ParameterType._int, Convert.ToString(0));
+            // Returns child id
+            return _manager.InsertData(_dataModelManager.DataModel).Rows[0][DBEntityNames.TestCase.Id.ToString()].ToString();
+        }
+
+        /// <summary>
+        /// Add Child 
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        private string AddTestCaseInstance(AddTestCaseInstance model)
+        {
+            var testCaseId = new DataTable();
+            var instanceId = string.Empty;
+            if (model.guid != null)
+            {
+                _dataModelManager.GetDefaultDataModel(Enums.SQLOperation.SELECT, DBEntityNames.Tables.TestCase.ToString());
+                _dataModelManager.AddResultSet(new List<string> { DBEntityNames.TestCase.Id.ToString(), DBEntityNames.TestCase.RoleToTest.ToString(), DBEntityNames.TestCase.DCRGraphId.ToString(), DBEntityNames.TestCase.Title.ToString(), DBEntityNames.TestCase.CreatedBy.ToString() });
+                _dataModelManager.AddFilter(DBEntityNames.TestCase.Guid.ToString(), Enums.ParameterType._guid, model.guid.ToString(), Enums.CompareOperator.equal, Enums.LogicalOperator.none);
+
+                testCaseId =_manager.SelectData(_dataModelManager.DataModel);
+
+                var responsible = int.Parse(Common.GetResponsibleId());
+                var roles = testCaseId.Rows[0]["RoleToTest"].ToString().Split(',');
+                var rolesList = new List<UserRole>();
+                foreach (var item in roles)
+                {
+                    var userRole = new UserRole()
+                    {
+                        RoleId = item,
+                        UserId = responsible
+                    };
+                    rolesList.Add(userRole);
+                }
+                var graphId = (int)testCaseId.Rows[0]["DCRGraphId"];
+                instanceId = AddInstance(new AddInstanceModel()
+                {
+                    Title = testCaseId.Rows[0]["Title"].ToString(),
+                    GraphId = graphId,
+                    Responsible = (int)testCaseId.Rows[0]["CreatedBy"],
+                    UserRoles = rolesList
+                });
+
+                var json = @"{""instanceId"":" + instanceId + @",""graphId"":" + graphId + "}";
+                dynamic graphInput = JObject.Parse(json);
+
+
+                var result = _servicesController.InitializeGraph(graphInput, out string output);
+                if (!result)
+                {
+                    Common.LogInfo(_manager, _dataModelManager, "AddTestCaseInstance - InitializeGraph - Failed. - " + Common.ToJson(model));
+                    Exception ex = new Exception();
+                    Common.LogError(ex);
+                }
+            }
+
+            _dataModelManager.GetDefaultDataModel(Enums.SQLOperation.INSERT, DBEntityNames.Tables.TestCaseInstance.ToString());
+            _dataModelManager.AddParameter(DBEntityNames.TestCaseInstance.Created.ToString(), Enums.ParameterType._datetime, DateTime.Now.ToString());
+            _dataModelManager.AddParameter(DBEntityNames.TestCaseInstance.Email.ToString(), Enums.ParameterType._string, model.email);
+            _dataModelManager.AddParameter(DBEntityNames.TestCaseInstance.Name.ToString(), Enums.ParameterType._string, model.name);
+            _dataModelManager.AddParameter(DBEntityNames.TestCaseInstance.TestCaseId.ToString(), Enums.ParameterType._int, testCaseId.Rows[0]["Id"].ToString());
+            _dataModelManager.AddParameter(DBEntityNames.TestCaseInstance.InstanceId.ToString(), Enums.ParameterType._int, instanceId);
+           
+            _manager.InsertData(_dataModelManager.DataModel).Rows[0][DBEntityNames.TestCaseInstance.Id.ToString()].ToString();
+            // Returns Instace id
+            return instanceId;
+        }
+
+        /// <summary>
+        /// Update a document
+        /// </summary>
+        /// <param name="documentName"></param>
+        /// <param name="type"></param>
+        /// <param name="link"></param>
+        private void UpdateTestCase(AddTestCase model)
+        {
+            _dataModelManager.GetDefaultDataModel(Enums.SQLOperation.UPDATE, DBEntityNames.Tables.TestCase.ToString());
+            _dataModelManager.AddParameter(DBEntityNames.TestCase.Modified.ToString(), Enums.ParameterType._datetime, DateTime.Now.ToString());
+            _dataModelManager.AddParameter(DBEntityNames.TestCase.ModifiedBy.ToString(), Enums.ParameterType._int, Common.GetResponsibleId().ToString());
+            if (!string.IsNullOrEmpty(model.title))
+                _dataModelManager.AddParameter(DBEntityNames.TestCase.Title.ToString(), Enums.ParameterType._string, model.title);
+            if (!string.IsNullOrEmpty(model.desc))
+                _dataModelManager.AddParameter(DBEntityNames.TestCase.Description.ToString(), Enums.ParameterType._string, model.desc);
+            if (!string.IsNullOrEmpty(model.validFrom))
+                _dataModelManager.AddParameter(DBEntityNames.TestCase.ValidFrom.ToString(), Enums.ParameterType._datetime, model.validFrom);
+            if (!string.IsNullOrEmpty(model.validTo))
+                _dataModelManager.AddParameter(DBEntityNames.TestCase.ValidTo.ToString(), Enums.ParameterType._datetime, model.validTo);
+            if (!string.IsNullOrEmpty(model.graphId))
+                _dataModelManager.AddParameter(DBEntityNames.TestCase.DCRGraphId.ToString(), Enums.ParameterType._int, model.graphId);
+            if (!string.IsNullOrEmpty(model.delay))
+                _dataModelManager.AddParameter(DBEntityNames.TestCase.Delay.ToString(), Enums.ParameterType._int, model.delay);
+            if (!string.IsNullOrEmpty(model.roles))
+                _dataModelManager.AddParameter(DBEntityNames.TestCase.RoleToTest.ToString(), Enums.ParameterType._string, model.roles);
+
+            _dataModelManager.AddFilter(DBEntityNames.TestCase.Id.ToString(), Enums.ParameterType._int, model.id, Enums.CompareOperator.equal, Enums.LogicalOperator.none);
+            _manager.UpdateData(_dataModelManager.DataModel);
+        }
+
+        
+        /// <summary>
+        /// Return Instance Phases
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        private DataTable GetInstancePhases(string id)
+        {
+            _dataModelManager.GetDefaultDataModel(Enums.SQLOperation.SELECT, DBEntityNames.Tables.InstancePhases.ToString());
+            _dataModelManager.AddResultSet(new List<string> { DBEntityNames.InstancePhases.Title.ToString(), DBEntityNames.InstancePhases.PhaseId.ToString(), DBEntityNames.InstancePhases.CurrentPhase.ToString() });
+            _dataModelManager.AddFilter(DBEntityNames.InstancePhases.InstanceId.ToString(), Enums.ParameterType._int, id, Enums.CompareOperator.equal, Enums.LogicalOperator.none);
+            _dataModelManager.AddOrderBy(DBEntityNames.InstancePhases.SequenceNumber.ToString(), false);
+
+            return _manager.SelectData(_dataModelManager.DataModel);
+        }
+
+        /// <summary>
+        /// Return Instance Phases
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        private DataTable GetWarningDelay(string id)
+        {
+            _dataModelManager.GetDefaultDataModel(Enums.SQLOperation.SELECT, DBEntityNames.Tables.Instance.ToString());
+            _dataModelManager.AddResultSet(new List<string> { DBEntityNames.Instance.Id.ToString(), DBEntityNames.Instance.NextDelay.ToString(), Convert.ToString("Datediff(millisecond, getUTCDate(), " + DBEntityNames.Instance.NextDelay.ToString() + ") as DIFF"), "getUTCDate() as UTC" });
+            _dataModelManager.AddFilter(DBEntityNames.Instance.Id.ToString(), Enums.ParameterType._int, id, Enums.CompareOperator.equal, Enums.LogicalOperator.and);
+
+            return _manager.SelectData(_dataModelManager.DataModel);
+        }
+
+        /// <summary> 
+        /// Return AI Robotic Events
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        private DataTable GetAIRoboticEvents(string id)
+        {
+            _dataModelManager.GetDefaultDataModel(Enums.SQLOperation.SELECT, DBEntityNames.Tables.InstanceAIRoboticEvents.ToString());
+            _dataModelManager.AddResultSet(new List<string> { DBEntityNames.InstanceAutomaticEvents.EventId.ToString(), DBEntityNames.InstanceAutomaticEvents.EventTitle.ToString(), DBEntityNames.InstanceAutomaticEvents.EventOpen.ToString(), DBEntityNames.InstanceAutomaticEvents.IsEnabled.ToString(), DBEntityNames.InstanceAutomaticEvents.IsIncluded.ToString(), DBEntityNames.InstanceAutomaticEvents.IsExecuted.ToString(), DBEntityNames.InstanceAutomaticEvents.EventType.ToString(), DBEntityNames.InstanceAutomaticEvents.InstanceId.ToString(), DBEntityNames.InstanceAutomaticEvents.Responsible.ToString(), DBEntityNames.InstanceAutomaticEvents.EventTypeData.ToString(), DBEntityNames.InstanceAutomaticEvents.Modified.ToString(), DBEntityNames.InstanceAutomaticEvents.SimulationId.ToString(), DBEntityNames.InstanceAutomaticEvents.GraphId.ToString(), DBEntityNames.InstanceAutomaticEvents.TrueEventId.ToString(), DBEntityNames.InstanceAutomaticEvents.Description.ToString() });
+            _dataModelManager.AddFilter(DBEntityNames.InstanceAutomaticEvents.InstanceId.ToString(), Enums.ParameterType._int, id, Enums.CompareOperator.equal, Enums.LogicalOperator.none);
+
+            return _manager.SelectData(_dataModelManager.DataModel);
+        }
+
+        /// <summary>
+        /// Add instance
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        private string AddInstance(AddInstanceModel input)
+        {
+            try
+            {
+                // add Instance
+                var instanceId = Common.AddInstance(input, _manager, _dataModelManager);
+                if (input.ChildId != null)
+                {
+                    if (!string.IsNullOrEmpty(input.CaseId))
+                        LinkCaseToInstance(input.CaseId, input.CaseNumberIdentifier, instanceId);
+                    ConnectInstanceToChild(instanceId, input.ChildId);
+                }
+                return instanceId;
+            }
+            catch (Exception ex)
+            {
+                Common.LogInfo(_manager, _dataModelManager, "AddInstance - Failed. - " + Common.ToJson(input));
+                Common.LogError(ex);
+                return "";
+            }
+        }
+
+        /// <summary>
+        /// Return Tasks
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        private DataTable GetTasks(string id)
+        {
+            _dataModelManager.GetDefaultDataModel(Enums.SQLOperation.SP, Convert.ToString(DBEntityNames.StoredProcedures.InstanceTasksAI.ToString()));
+            _dataModelManager.AddParameter(DBEntityNames.Event.Responsible.ToString(), Enums.ParameterType._int, Common.GetResponsibleId());
+            _dataModelManager.AddParameter(DBEntityNames.Event.InstanceId.ToString(), Enums.ParameterType._int, id);
+            return _manager.ExecuteStoredProcedure(_dataModelManager.DataModel);
         }
 
         /// <summary>

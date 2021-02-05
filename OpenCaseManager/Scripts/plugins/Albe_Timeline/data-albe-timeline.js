@@ -13,6 +13,7 @@ function documentType(data) {
     return {
         type: "Dokument",
         time: formatDateTimeline(data.EventDate),
+        realtime: data.EventDate,
         responsible: data.DocumentResponsible,
         body: [{
             tag: 'h3',
@@ -32,6 +33,7 @@ function journalNoteType(data) {
     return {
         type: "Journalnotat",
         time: formatDateTimeline(data.EventDate),
+        realtime: data.EventDate,
         responsible: data.DocumentResponsible,
         body: [{
             tag: 'h3',
@@ -52,6 +54,7 @@ function activitiesType(data) {
     return {
         type: eventtype,
         time: formatDateTimeline(data.EventDate),
+        realtime: data.EventDate,
         responsible: data.EventResponsible,
         body: [{
             tag: 'h3',
@@ -72,22 +75,23 @@ var hasTimelineData = false;
 var timeLineData = [];
 
 
-$(document).ready(function () {
-    async function getData(activity, journalnote, document) {
-        var childId = App.getParameterByName("id", window.location.href);
-        var data = await getTimelineData(childId);
+async function getData(activity, journalnote, document) {
+    var childId = App.getParameterByName("id", window.location.href);
+    var data = await getTimelineData(childId);
 
-        var normData = [];
-        $.each(data, function (index, value) {
-            if (journalnote && (value.DocumentType === 'JournalNote' || value.Type === 'JournalNoteBig' || value.Type === 'JournalNoteLittle')) normData.push(journalNoteType(value));
-            if (document && value.DocumentType === 'InstanceDocument') normData.push(documentType(value));
-            if (activity && value.Type === 'Event') normData.push(activitiesType(value));
-        });
+    var normData = [];
+    $.each(data, function (index, value) {
+        if (journalnote && (value.DocumentType === 'JournalNote' || value.Type === 'JournalNoteBig' || value.Type === 'JournalNoteLittle')) normData.push(journalNoteType(value));
+        if (document && value.DocumentType === 'InstanceDocument') normData.push(documentType(value));
+        if (activity && value.Type === 'Event') normData.push(activitiesType(value));
+    });
 
-        $('#myTimeline').albeTimeline(normData);
-        $('#timeline-menu').trigger('change');
-    }
+    $('#myTimeline').albeTimeline(normData);
+    $('#timeline-menu').trigger('change');
+}
 
+
+function Timeline() {
     var activityChecked = true;
     var journalnoteChecked = true;
     var documentChecked = true;
@@ -102,6 +106,10 @@ $(document).ready(function () {
         if (!activityChecked && !journalnoteChecked && !documentChecked) getData(true, true, true);
         else getData(activityChecked, journalnoteChecked, documentChecked);
     });
+}
+
+$(document).ready(function () {
+    Timeline();
 
 });
 

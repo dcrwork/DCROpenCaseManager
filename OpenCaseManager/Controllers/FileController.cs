@@ -80,7 +80,7 @@ namespace OpenCaseManager.Controllers
         /// <param name="isAccepting"></param>
         /// <param name="toXES"></param>
         /// <returns></returns>
-        public FileResult DownloadDCRXMLLog(string graphId, DateTime? from, DateTime? to, bool isAccepting, bool toXES)
+        public FileResult DownloadDCRXMLLog(string graphId, DateTime? from, DateTime? to, bool isAccepting, bool toXES, string testId = null)
         {
             var xmlString = string.Empty;
 
@@ -91,6 +91,8 @@ namespace OpenCaseManager.Controllers
             if (to.HasValue)
                 _dataModelManager.AddParameter(DBEntityNames.GetDCRXMLLog.To.ToString(), Enums.ParameterType._datetime, to.ToString());
             _dataModelManager.AddParameter(DBEntityNames.GetDCRXMLLog.IsAccepting.ToString(), Enums.ParameterType._boolean, isAccepting.ToString());
+            if (!string.IsNullOrEmpty(testId))
+                _dataModelManager.AddParameter(DBEntityNames.GetDCRXMLLog.TestId.ToString(), Enums.ParameterType._int, testId);
 
             var data = _manager.ExecuteStoredProcedure(_dataModelManager.DataModel);
 

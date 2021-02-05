@@ -202,8 +202,9 @@ $(document).on('click', '.add-journal-note-button', function (event) {
     var eventId = $.urlParam("eventId");
     var documentName = $('#input-journal-title').val();
     var journalText = "<div>" + $('#input-journal-note').html() + "</div>";
-    saveJournalInAcadre(id, documentName, journalText, true);
-    //    saveFile(false, true, event);
+    //saveJournalInAcadre(id, documentName, journalText, true);
+    //saveFile(false, true, event);
+    alert("Saving of journalnotes currently disabled");
     event.preventDefault();
 });
 

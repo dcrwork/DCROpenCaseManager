@@ -43,7 +43,15 @@ namespace OpenCaseManager.Models
             StamdataDummyData,
             StamdataDummyDataExtension,
             ProcessHistory,
-            ContextInstances
+            ContextInstances,
+            TestCase,
+            TestCaseInstance,
+            InstanceAIRoboticEvents
+        }
+
+        public enum AnonymousTables
+        {
+            InstanceEvents
         }
 
         public enum StoredProcedures
@@ -67,7 +75,10 @@ namespace OpenCaseManager.Models
             ChangeResponsibleOfChild,
             GetDCRXMLLog,
             ReleaseProcessInstance,
-            GetEventResponsibleRoles
+            GetEventResponsibleRoles,
+            DeleteTestCase,
+            GetTestCases,
+            InstanceTasksAI
         }
 
         public enum Functions
@@ -209,7 +220,12 @@ namespace OpenCaseManager.Models
             EventType,
             InstanceId,
             Responsible,
-            EventTypeData
+            EventTypeData,
+            Modified,
+            GraphId,
+            SimulationId,
+            TrueEventId,
+            Description
         }
 
         public enum InstanceEventHistory
@@ -260,6 +276,41 @@ namespace OpenCaseManager.Models
             SequenceNumber,
             CurrentPhase,
             PhaseId
+        }
+
+        public enum InstanceTask
+        {
+            EventId,
+            TrueEventId,
+            Responsible,
+            InstanceId,
+            EventTitle,
+            SimulationId,
+            GraphId,
+            IsPending,
+            IsExecuted,
+            CanExecute,
+            ResponsibleName,
+            Description,
+            IsUIEvent,
+            UIEventValue,
+            EventType,
+            Type,
+            Case,
+            CaseLink,
+            CaseTitle,
+            IsOverDue,
+            DaysPassedDue,
+            NotApplicable,
+            ParentId,
+            Roles,
+            Due,
+            Modified,
+            ActualIsPending,
+            ActualIsEnabled,
+            ActualIsExecuted,
+            IsEnabled,
+            RoleToTest
         }
 
         public enum InstanceRole
@@ -484,6 +535,11 @@ namespace OpenCaseManager.Models
             FormItemId
         }
 
+        public enum DeleteTestCase
+        {
+            Id
+        }
+
         public enum SetCurrentPhase
         {
             instanceId
@@ -636,7 +692,8 @@ namespace OpenCaseManager.Models
             GraphId,
             From,
             To,
-            IsAccepting
+            IsAccepting,
+            TestId
         }
 
         public enum ContextInstances
@@ -652,6 +709,35 @@ namespace OpenCaseManager.Models
             EventId,
             ResponsibleId,
             EventsXML
+        }
+
+        public enum TestCase
+        {
+            Id,
+            Created,
+            CreatedBy,
+            Modified,
+            ModifiedBy,
+            Title,
+            Description,
+            Guid,
+            ValidFrom,
+            ValidTo,
+            Status,
+            DCRGraphId,
+            Delay,
+            RoleToTest,
+            Page
+        }
+
+        public enum TestCaseInstance
+        {
+            Id,
+            Created,
+            TestCaseId,
+            Name,
+            Email,
+            InstanceId
         }
     }
 }

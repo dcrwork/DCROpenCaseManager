@@ -2,7 +2,7 @@
 @{
     /**/
 
-    ViewBag.Title = "Child";
+    ViewBag.Title = "Adjunkt";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -15,22 +15,7 @@
 <div class="wholeChildPage cont">
     <input type="hidden" id="childIdHidden">
     <div class="row">
-
-        <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
-            <div class="buttonsBox">
-                <div data-toggle="modal" data-target="#create-process-modal" class="create-process-button">
-                    @Html.Partial("~/Views/PartialViews/AddButton.cshtml", new ViewDataDictionary { { "add-text", "AddProcess" } })
-                </div>
-
-                @Html.Partial("~/Views/PartialViews/AddButton.cshtml", new ViewDataDictionary { { "add-text", "AddJournalNote" }, { "onClick", "CreateJournalNoteView()" } })
-            </div>
-
-            <div class="pendingActivitiesBox">
-                @Html.Partial("~/Views/PartialViews/PendingActivities.cshtml")
-            </div>
-        </div>
-
-        <div class="tabsBox col-lg-6 col-md-6 col-sm-12 col-xs-12">
+        <div class="tabsBox col-lg-10 col-md-10 col-sm-12 col-xs-12">
             <nav aria-label="breadcrumb" class="breadcrumbsNavigation">
                 <ol class="breadcrumb arr-right bg-dark ">
                     <li class="breadcrumb-item "><a href="~/MineAdjunkter"><span data-locale data-apply="text" data-key="MyChildren"></span></a></li>
@@ -40,11 +25,11 @@
             <table class="table table-responsive entityDetailTable">
                 <tr>
                     <th class="childName"><span id="childName"></span></th>
-                    <td><span style="float:right;display:none;" class="caseLink"><a target="_blank" id="entityLink" href="#"><img width="12px" src="../content/images/caseLink.png"></a></span><span style="float:right;display:none;padding-right:10px;" class="caseNum"><span id="childCaseNo"></span></span></td>
+                    <td><span style="float:right;display:none;" class="caseLink"><a target="_blank" id="entityLink" href="#"><img width="12px" src="../content/images/Standard/caseLink.png"></a></span><span style="float:right;display:none;padding-right:10px;" class="caseNum"><span id="childCaseNo"></span></span></td>
                 </tr>
             </table>
             <div>
-                <div class="chageResFormating responsibleSelectOptions" id="itemResponsible"> <span class="responsibleImgSpan"><img src="~/Content/Images/exchange.png" class="responsibleImg" /></span> <strong id="childResponsibleName" class="linkStyling"></strong></div>
+                <div class="chageResFormating responsibleSelectOptions" id="itemResponsible"> <span class="responsibleImgSpan"><img src="~/Content/Images/Standard/exchange.png" class="responsibleImg" /></span> <strong id="childResponsibleName" class="linkStyling"></strong></div>
 
                 <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
                     <li class="nav-item active">
@@ -63,10 +48,10 @@
                                     <tr>
                                         <th type="customSort" width="6%"><span data-locale data-apply="text" data-key="Status"></span></th>
                                         <th style="display:none;" width="140px" type="number"><span data-locale data-apply="text" data-key="Status">StatusNumber</span></th>
-                                        <th width="52px" type="customSort"><img src='../Content/Images/priorityicon.svg' height='16' width='16' /></th>
+                                        <th width="52px" type="customSort"><img src='../Content/Images/Standard/priorityicon.svg' height='16' width='16' /></th>
                                         <th style="display:none;" width="140px" type="number"><span data-locale data-apply="text" data-key="Status">PActivityCount</span></th>
                                         <th width=""><a style="color:white" href="#"><span data-locale data-apply="text" data-key="Title"></span></a></th>
-                                        <th width="25%"><a style="color:white" href="#"><span data-locale data-apply="text" data-key="DCRProcess"></span></a></th>
+                                        <th width="35%"><a style="color:white" href="#"><span data-locale data-apply="text" data-key="DCRProcess"></span></a></th>
                                         <th width="10%"><a style="color:white" href="#"><span data-locale data-apply="text" data-key="Responsible"></span></a></th>
                                         <th type="date" width="10%"><a style="color:white" href="#"><span data-locale data-apply="text" data-key="Opdated"></span></a></th>
                                         <th style="display:none" width="10%"><a style="color:white" href="#"><span data-locale data-apply="text" data-key="Opdated"></span></a></th>
@@ -83,10 +68,19 @@
                 </div>
             </div>
         </div>
+        <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+            <div class="buttonsBox">
+                <div data-toggle="modal" data-target="#create-process-modal" class="create-process-button">
+                    @Html.Partial("~/Views/PartialViews/AddButton.cshtml", new ViewDataDictionary { { "add-text", "AddProcess" } })
+                </div>
 
-        <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                @Html.Partial("~/Views/PartialViews/AddButton.cshtml", new ViewDataDictionary { { "add-text", "AddJournalNote" }, { "onClick", "CreateJournalNoteView()" } })
+            </div>
             <div class="stamdataBox">
                 @Html.Partial("~/Views/PartialViews/ObsBox.cshtml")
+            </div>
+            <div class="pendingActivitiesBox">
+                @Html.Partial("~/Views/PartialViews/PendingActivities.cshtml")
             </div>
         </div>
 
@@ -121,4 +115,4 @@
 <script type="text/javascript" src="~/Scripts/addDocument.js"></script>
 
 <script src="~/Scripts/sortable.js"></script>
-<link href="~/Content/sortable.css" rel="stylesheet" />
+<link href="~/Content/Styles/Standard/sortable.css" rel="stylesheet" />

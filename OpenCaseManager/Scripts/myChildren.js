@@ -144,7 +144,7 @@ function displayChildren(response) {
         } else {
             for (i = 0; i < result.length; i++) {
                 if (!result[i].IsClosed) {
-                    list += getChildInstanceHtml(result[i]);
+                    list += getAdjunktInstanceHtml(result[i]);
                     childList += result[i].Id + ",";
                     iCount += 1;
                 }
@@ -214,7 +214,8 @@ function updateChildStatus(response) {
         else {
             status = getStatus(result[i]);
             o.cells[0].innerHTML = status;
-            o.cells[2].innerHTML = result[i].SumOfEvents;
+            o.cells[2].innerHTML = "<div title='" + result[i].SumOfEvents + " afventende aktiviteter'>" + result[i].SumOfEvents + "</div>";
+            o.cells[3].innerHTML = "<div>" + result[i].SumOfEvents + "</div>";
             var statusClass = $(status).attr('class');
             switch (statusClass) {
                 case 'dot dotRed':
@@ -234,13 +235,13 @@ function updateChildStatus(response) {
                     break;
             }
             if (result[i].NextDeadline == null)
-                o.cells[6].innerHTML = "Ingen kommende deadlines";
+                o.cells[6].innerHTML = "Ingen kommende frister";
             else {
                 var objDate = new Date(result[i].NextDeadline);
                 var date = objDate.getDate() + '/' + (objDate.getMonth() + 1) + '-' + objDate.getFullYear();
                 var time = addZero(objDate.getHours()) + ":" + addZero(objDate.getMinutes());
                 o.cells[6].innerHTML = date + " " + time;
-                o.cells[6].innerHTML = objDate;
+                o.cells[7].innerHTML = objDate;
             }
         }
     } // 26.8.2019
@@ -268,14 +269,15 @@ function FormatCPR(s) {
     return s;
 }
 
-function getChildInstanceHtml(item) {
+function getAdjunktInstanceHtml(item) {
     var childLink = "../Adjunkt?id=" + item.Id;
 
     var returnHtml = "<tr class='trStyleClass' id='trchild" + item.Id + "'>";
     returnHtml += "<td><span class='dot dotGrey' title='...'></span></td>";
-    returnHtml += "<td style='display:none;'></td>";
+    returnHtml += "<td style='display:none;'>4</td>";
     returnHtml += "<td>" + '' + "</td>";
-    returnHtml += "<td><a href='" + childLink + "'>" + GetName(item.Name) + "</a></td>";
+    returnHtml += "<td style='display:none;'>" + '' + "</td>";
+    returnHtml += "<td><a class='linkStyling' href='" + childLink + "'>" + item.Name + "</a></td>";
     //returnHtml += "<td>" + FormatCPR("") + "</td>";
     if (item.CaseManagerInitials != undefined) {
         returnHtml += '<td><a href="#" class="linkStyling responsibleSelectOptions" oldresponsible="' + item.CaseManagerInitials + '" itemResponsible="' + item.CaseManagerName.substr(0, 1).toUpperCase() + item.CaseManagerName.substr(1) + '" itemTitle="' + item.ChildName + '" itemchildid="' + item.CaseID + '" changeResponsibleFor="child">' + item.CaseManagerName.substr(0, 1).toUpperCase() + item.CaseManagerName.substr(1) + '</a></td>';
@@ -284,7 +286,7 @@ function getChildInstanceHtml(item) {
 
     }
     returnHtml += "<td></td>";
-    returnHtml += "<td style='display:none;'>" + new Date('1002-01-01') + "</td>";
+    returnHtml += "<td style='display:none'>" + new Date('1002-01-01') + "</td>";
     returnHtml += "</tr>";
 
     return returnHtml;
@@ -297,17 +299,17 @@ function getStatus(item) {
         var now = new Date().getTime();
         deadline = new Date(deadline).getTime();
         if (now >= deadline) {
-            return "<span class='dot dotRed'></span>";
+            return "<span title='Frist overskredet' class='dot dotRed'></span>";
         } else if (now + 604800000 >= deadline) {
-            return "<span class='dot dotYellow'></span>";
+            return "<span title='Frist snart overskredet' class='dot dotYellow'></span>";
         }
 
         if (deadline == null && sumOfEvents > 0) {
-            return "<span class='dot dotGreen'></span>";
+            return "<span title='Ingen kommende frister' class='dot dotGreen'></span>";
         }
     }
 
-    return "<span class='dot dotGreen'></span>";
+    return "<span title='Ingen kommende frister' class='dot dotGreen'></span>";
 }
 
 function getChild() {

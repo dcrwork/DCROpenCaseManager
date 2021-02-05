@@ -32,17 +32,14 @@ namespace OpenCaseManager.Controllers
         public async Task<ActionResult> Index()
         {
             ViewBag.Title = "Home Page";
-            try
-            {
-                var data = Common.GetIsManager(_manager, _dataModelManager);
-                bool.TryParse(data.Rows[0].ItemArray[0].ToString(), out bool isManager);
-                if (isManager) return Redirect("~/MineAdjunkter");
-                return Redirect("~/MineAktiviteter");
-            } catch (Exception e)
-            {
-                return Redirect("~/MineAktiviteter");
-            }
-        }
+
+            var data = Common.GetIsManager(_manager, _dataModelManager);
+            if (data.Rows.Count < 1) return Redirect("~/MineAktiviteter");
+
+            bool.TryParse(data.Rows[0].ItemArray[0].ToString(), out bool isManager);
+            if (isManager) return Redirect("~/MineAdjunkter");
+            return Redirect("~/MineAktiviteter");
+    }
 
         [AllowAnonymous]
         public ActionResult UnAuthorized()

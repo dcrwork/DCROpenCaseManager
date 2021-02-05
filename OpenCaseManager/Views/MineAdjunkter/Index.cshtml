@@ -3,7 +3,7 @@
 
     /**/
 
-    ViewBag.Title = "Mine Sager";
+    ViewBag.Title = "Mine Adjunkter";
 }
 <link href="~/Content/bootstrap-multiselect.css" rel="stylesheet" />
 <script src="~/Scripts/bootstrap-multiselect.js"></script>
@@ -29,28 +29,15 @@
         </div>
         <form>
             <div class="form-row">
-                <div class="form-group col-md-6">
+                <div class="form-group col-md-12">
                     <div class="form-group row">
-                        <label for="responsible lineHeightStyling" class="col-sm-2 col-form-label tag" style="line-height:2.5em">Ansvarlig:</label>
-                        <div class="col-sm-7">
+                        <label for="responsible lineHeightStyling" class="col-sm-2 col-form-label tag" style="line-height:2.5em" data-locale data-apply="text" data-key="Responsible"></label>
+                        <div class="col-sm-4">
                             <select class="form-control" id="responsibleny">
                                 <options></options>
                             </select>
                         </div>
-                        <button type="button" class="btn btn-primary btn-md submitBtn maxWidth95" onclick="visSager()">Vis sager</button>
-                    </div>
-                </div>
-
-                <div class="form-group col-md-6">
-                    <div class="form-group row">
-                        <div class="col-sm-1">
-                        </div>
-                        <div class="col-sm-8">
-                            <input style="display:none" type="text" class="col-sm-2 form-control" readonly id="navnny" aria-describedby="" placeholder="Barnets navn">
-                        </div>
-                        <div class="">
-                            <button style="display:none" id="opretBarnBtn" type="button" class="btn btn-primary btn-md maxWidth95 submitBtn" onclick="opretBarn()">Opret barn</button>
-                        </div>
+                        <button type="button" class="btn btn-primary btn-md submitBtn" onclick="visSager()" data-locale data-apply="text" data-key="ShowAssistantProfessors"></button>
                     </div>
                 </div>
             </div>
@@ -63,7 +50,8 @@
                     <tr>
                         <th type="customSort" width="6%"><a style="color:white" href="#"><span data-locale data-apply="text" data-key="Status"></span></a></th>
                         <th style="display:none;" width="140px" type="number"><a style="color:white" href="#"><span data-locale data-apply="text" data-key="Status">StatusNumber</span></a></th>
-                        <th width="140px" type="number"><a style="color:white" href="#"><span data-locale data-apply="text" data-key="NumberOfActivites">&nbsp;</span></a></th>
+                        <th width="160px" type="number"><a style="color:white" href="#"><span data-locale data-apply="text" data-key="NumberOfPendingActivites">Pending aktiviteter</span></a></th>
+                        <th style="display:none;" width="140px" type="number"><span data-locale data-apply="text" data-key="Status">PActivityCount</span></th>
                         <th width=""><a style="color:white" href="#"><span data-locale data-apply="text" data-key="Name"></span></a></th>
                         <th width=""><a style="color:white" href="#"><span data-locale data-apply="text" data-key="Responsible"></span></a></th>
                         <th width="200px" type="date"><a style="color:white" href="#"><span data-locale data-apply="text" data-key="NextDeadline"></span></a></th>
@@ -109,4 +97,4 @@
 @Html.Partial("~/Views/PartialViews/ResponsibleModal.cshtml")
 
 <script src="~/Scripts/sortable.js"></script>
-<link href="~/Content/sortable.css" rel="stylesheet" />
+<link href="~/Content/Styles/Standard/sortable.css" rel="stylesheet" />
