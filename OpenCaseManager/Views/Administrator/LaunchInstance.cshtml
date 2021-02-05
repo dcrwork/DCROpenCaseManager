@@ -1,0 +1,64 @@
+﻿@{
+    ViewBag.Title = "Instance";
+    ViewBag.IsLandingPage = true;
+}
+<div class="row">
+    <div class="col-lg-10">
+        <div class="row tableDataRow">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="phaseBlock">
+                    <ul class="phaseUl" id="processPhase"></ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="row tableDataRow">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <table class="table table-responsive entityDetailTable">
+                    <tr>
+                        <th class="caseTitle"><span id="instanceTitle"></span></th>
+                        <td><span style="float:right;display:none;" class="caseLink"><a target="_blank" id="entityLink" href="#"><img width="12px" src="../content/images/standard/caseLink.png"></a></span><span style="float:right;display:none;padding-right:10px;" class="caseNum"><span id="instanceCaseNo"></span></span></td>
+                    </tr>
+                </table>
+            </div>
+        </div><!-- Row End -->
+
+        <div class="row tableDataRow">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                @Html.Partial("~/Views/PartialViews/AIRobot.cshtml")
+            </div><!-- Cols Div End -->
+        </div><!-- Row Div End -->
+
+
+
+        <div class="row tableDataRow">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="table-responsive" style="border:none">
+                    @Html.Partial("~/Views/PartialViews/Tasks.cshtml")
+                </div>
+            </div><!-- Cols Div End -->
+        </div><!-- Row Div End -->
+
+    </div>
+    <div class="col-lg-2">
+        <div class="row tableDataRow">
+            <span class="ui-icon ui-icon-clock"></span>
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="table-responsive" style="border:none">
+                    <!-- Display the countdown timer in an element -->
+                    <p class="countdown">
+                        <label id="demo">0</label>
+                        <button id="pause" style="display:none" class="btn">Pause</button>
+                        <button id="resume" style="display:none" class="btn">Resume</button>
+                    </p>
+                </div>
+            </div><!-- Cols Div End -->
+        </div><!-- Row Div End -->
+    </div>
+</div>
+
+@Html.Partial("~/Views/PartialViews/DCRForm.cshtml")
+@Html.Partial("~/Views/PartialViews/AddTask.cshtml")
+@Html.Partial("~/Views/PartialViews/DesignerIframe.cshtml")
+<script src="~/Scripts/instance.js"></script>
+<script src="~/Scripts/launchInstance.js"></script>
