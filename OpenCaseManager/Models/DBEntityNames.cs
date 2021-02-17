@@ -51,7 +51,8 @@ namespace OpenCaseManager.Models
 
         public enum AnonymousTables
         {
-            InstanceEvents
+            InstanceEvents,
+            InstanceAIRoboticEvents
         }
 
         public enum StoredProcedures

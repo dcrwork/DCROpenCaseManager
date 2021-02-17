@@ -33,7 +33,8 @@ function countdown() {
             cddisplay();
             if (count === 0) {
                 // time is up
-                $('button[name="executeAIRoboticEventBtn_0"]').click();
+                console.log("Countdown reached 0");
+                $('button[name="executeNonUserRoles_0"]').click();
             } else {
                 count--;
                 t = setTimeout(Start, 1000);
@@ -81,10 +82,6 @@ function countdown() {
 
     // ms
 
-}
-
-function executeAIRoboticEvent(e) {
-    $('button[name="execute"]').click();
 }
 
 function getRolesOnGraphDDChange() {
@@ -283,13 +280,19 @@ async function execute(e, isAIRoboticEvent) {
     var Modified = elem.attr('Modified');
 
     // Check event is current - begin
-    var query = {
+    var query = isAIRoboticEvent ? {
         "type": "SELECT",
-        "entity": "InstanceEvents",
+        "entity": "InstanceAIRoboticEvents",
         "resultSet": ["NextDelay", "NextDeadline", "Modified", "NeedToSetTime"],
         "filters": new Array(),
         "order": []
-    }
+    } : {
+            "type": "SELECT",
+            "entity": "InstanceEvents",
+            "resultSet": ["NextDelay", "NextDeadline", "Modified", "NeedToSetTime"],
+            "filters": new Array(),
+            "order": []
+        }
 
     var whereInstanceIdMatchesFilter = {
         "column": "instanceId",
@@ -598,8 +601,13 @@ function tasksHtml(id, response, showCaseInfo, onlyMyTasks, isAIRoboticEvent) {
     });
 
     // bind execute event
-    $('button[name="executeAIRoboticEventBtn_0"]').on('click', async function (e) {
+    $('button[name="executeAIRobot"]').on('click', async function (e) {
         execute(e, true);
+    });
+
+    
+    $('button[name="executeNonUserRoles_0"]').on('click', async function (e) {
+        execute(e, false);
     });
 
     if (showCaseInfo) {
@@ -870,7 +878,7 @@ function getTaskHtml(item, showCaseInfo, index, rolesToTest) {
         var display = '';
         var name = "execute";
         if (rolesToTest.indexOf(item.Roles) < 0) {
-            name = "executeAIRoboticEventBtn_" + index;
+            name = "executeNonUserRoles_" + index;
             display = 'style="visibility: hidden;"';
         }
         returnHtml += '<div class="btn-group" ' + display + ' ><button';
@@ -912,7 +920,8 @@ function getRecommendation(result, isAIRoboticEvent) {
     $("#recommendation" + (response.length + 1)).html("");
 
      // bind execute event
-     $('button[name="execute"]').on('click', async function (e) {
+    
+    $('button[name="execute"]').on('click', async function (e) {
         execute(e, false);
     });
 }
@@ -928,7 +937,7 @@ function getRecommendationHtml(item, index) {
 
     returnHtml += '<div class="btn-group" style="min-width:115px;"><button style="border-radius: 5px !important;"';
     returnHtml += ' type="button" taskid="' + item.EventId + '" eventType= "' + item.EventType + '"  graphid="' + item.GraphId + '" simulationid="' + item.SimulationId + '" instanceid="'
-        + item.InstanceId + '" id="' + item.EventId + '" trueEventId="' + item.TrueEventId + '"  Modified="' + item.Modified + '" name="execute" value="execute" class="btn btn-default" data-toggle="modal" data-target="#executeTaskModal">' + translations.Understood + '</button><div class="title" style="display: none;">' + item.EventTitle + '</div>';
+        + item.InstanceId + '" id="' + item.EventId + '" trueEventId="' + item.TrueEventId + '"  Modified="' + item.Modified + '" name="executeAIRobot" value="execute" class="btn btn-default" data-toggle="modal" data-target="#executeTaskModal">' + translations.Understood + '</button><div class="title" style="display: none;">' + item.EventTitle + '</div>';
     + '</div></td>' + '</tr>';
     return returnHtml;
 }

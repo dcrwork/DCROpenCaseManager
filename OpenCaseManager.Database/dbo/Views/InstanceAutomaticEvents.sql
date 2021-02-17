@@ -4,11 +4,5 @@ SELECT        dbo.Event.EventId, dbo.Event.Title AS EventTitle, dbo.Event.isOpen
                          dbo.Event.Responsible, dbo.Event.EventTypeData
 FROM            dbo.Event INNER JOIN
                          dbo.Instance ON dbo.Event.InstanceId = dbo.Instance.Id
-WHERE        (dbo.Event.Responsible = N'-1') AND (dbo.Event.IsPending = 1) AND (dbo.Event.IsEnabled = 1)
+WHERE        ((dbo.Event.Responsible = N'-1') AND (dbo.Event.IsPending = 1) AND (dbo.Event.IsEnabled = 1) AND dbo.Event.Roles != 'AIRobot') 
 GO
-
-
-
-GO
-
-
